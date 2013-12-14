@@ -25,7 +25,7 @@ commcost - function :: job, job, agent, agent -> time to transfer results
 
 from functools import partial
 from collections import namedtuple
-from util import reverse_dict
+from heft.util import reverse_dict
 
 Event = namedtuple('Event', 'job start end')
 

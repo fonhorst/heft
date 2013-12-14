@@ -1,1 +1,1 @@
-from core import schedule, makespan, Event, insert_sendrecvs
+from heft.core import schedule, makespan, Event, insert_sendrecvs
