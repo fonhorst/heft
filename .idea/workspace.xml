@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/heft/online-heft/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/heft/online-heft/core.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/heft/core.py" afterPath="$PROJECT_DIR$/heft/core.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/heft/tests/test_core.py" afterPath="$PROJECT_DIR$/heft/tests/test_core.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/heft/online-dvm-heft/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/heft/online-dvm-heft/core.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
@@ -50,7 +48,7 @@
       <file leaf-file-name="core.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/heft/core.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="186" column="0" selection-start="6054" selection-end="6054" vertical-scroll-proportion="0.0" vertical-offset="672" max-vertical-offset="3456">
+            <state line="98" column="51" selection-start="3273" selection-end="3273" vertical-scroll-proportion="-20.703703" vertical-offset="1205" max-vertical-offset="3456">
               <folding>
                 <element signature="e#879#908#0" expanded="true" />
               </folding>
@@ -58,10 +56,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="core.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="core.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/heft/online-heft/core.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="215" column="42" selection-start="5700" selection-end="5700" vertical-scroll-proportion="0.47058824" vertical-offset="3678" max-vertical-offset="4086">
+            <state line="179" column="4" selection-start="4393" selection-end="4393" vertical-scroll-proportion="0.0" vertical-offset="3086" max-vertical-offset="4086">
+              <folding>
+                <element signature="e#25#54#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="core.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/heft/online-dvm-heft/core.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="227" column="22" selection-start="6377" selection-end="6377" vertical-scroll-proportion="0.87848103" vertical-offset="3739" max-vertical-offset="5976">
               <folding>
                 <element signature="e#25#54#0" expanded="true" />
               </folding>
@@ -118,6 +127,7 @@
         <option value="$PROJECT_DIR$/heft/tests/test_core.py" />
         <option value="$PROJECT_DIR$/heft/online-heft/core.py" />
         <option value="$PROJECT_DIR$/heft/core.py" />
+        <option value="$PROJECT_DIR$/heft/online-dvm-heft/core.py" />
       </list>
     </option>
   </component>
@@ -218,6 +228,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="online-heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="online-dvm-heft" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -501,13 +529,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/heft/util.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="342">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/heft/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="15" selection-start="15" selection-end="15" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="126">
@@ -601,18 +622,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/heft/online-heft/core.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="179" column="4" selection-start="4393" selection-end="4393" vertical-scroll-proportion="0.0" vertical-offset="3086" max-vertical-offset="4086">
+          <folding>
+            <element signature="e#25#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/heft/core.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="186" column="0" selection-start="6054" selection-end="6054" vertical-scroll-proportion="0.0" vertical-offset="672" max-vertical-offset="3456">
+        <state line="98" column="51" selection-start="3273" selection-end="3273" vertical-scroll-proportion="-20.703703" vertical-offset="1205" max-vertical-offset="3456">
           <folding>
             <element signature="e#879#908#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/heft/online-heft/core.py">
+    <entry file="file://$PROJECT_DIR$/heft/online-dvm-heft/core.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="215" column="42" selection-start="5700" selection-end="5700" vertical-scroll-proportion="0.47058824" vertical-offset="3678" max-vertical-offset="4086">
+        <state line="227" column="22" selection-start="6377" selection-end="6377" vertical-scroll-proportion="0.87848103" vertical-offset="3739" max-vertical-offset="5976">
           <folding>
             <element signature="e#25#54#0" expanded="true" />
           </folding>
