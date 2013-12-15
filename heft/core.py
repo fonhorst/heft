@@ -183,3 +183,4 @@ def insert_sendrecvs(orders, jobson, succ, send, recv):
         order = insert_recvs(order, jobson, prec, recv)
         neworders[agent] = order
     return neworders, jobson
+

@@ -146,5 +146,12 @@ class TestSolver(TestCase):
         assert jobson == {i: 'A' for i in (3,4,5,6,7,8,9)}
 
 
+class OnlineHEFT(TestCase):
+    def test_current_info(self):
+        pass
+    def test_reschedule_by_new_wf(self):
+        pass
+
+
 if __name__ == '__main__':
     unittest.main()
