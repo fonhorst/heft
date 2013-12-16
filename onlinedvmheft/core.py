@@ -24,6 +24,21 @@ Linux = Soft('Linux')
 WindowsR2 = Soft('WindowsR2')
 
 """
+for testing only
+=========================
+"""
+OS_1 = Soft('OS_1')
+OS_2 = Soft('OS_2')
+OS_3 = Soft('OS_3')
+OS_4 = Soft('OS_4')
+OS_5 = Soft('OS_5')
+OS_6 = Soft('OS_6')
+OS_7 = Soft('OS_7')
+"""
+=========================
+"""
+
+"""
 ===========================================================================
 """
 """
@@ -67,6 +82,9 @@ class Factory():
 
     tasks =dict()
 
+    def t(self,id):
+        return self.tasks[id]
+
     def createTask(self, id, wf, mips):
         if id not in self.tasks:
             self.tasks[id] = Task(id, wf, mips)
@@ -80,6 +98,26 @@ class Factory():
                t("5"): (t("7"),),
                t("6"): (t("7"),),
                t("7"): (t("8"), t("9"))}
+        wf.dag = dag
+        return wf
+
+    def createDiffWf(self):
+        wf = Workflow("wf1", None)
+        t = partial(self.createTask, wf=wf, mips=2000)
+        dag = {t("3"): (t("5"),),
+               t("4"): (t("6"),),
+               t("5"): (t("7"),),
+               t("6"): (t("7"),),
+               t("7"): (t("8"), t("9"))}
+
+        self.t("3").type = OS_1
+        self.t("4").type = OS_2
+        self.t("5").type = OS_3
+        self.t("6").type = OS_4
+        self.t("7").type = OS_5
+        self.t("8").type = OS_6
+        self.t("9").type = OS_7
+
         wf.dag = dag
         return wf
 
@@ -322,7 +360,7 @@ def re_start_time(job, orders, jobson, prec, commcost, up_time, down_time, time,
             return max(agent_ready, comm_ready)
         else:
             free_time, slot = take_free_slot_or_find_freepoint_of_busy(agent, orders, time)
-            real_start = register_vm_for_slot(free_time, slot, agent, orders, up_time, down_time, True)
+            real_start = register_vm_for_slot(free_time, slot, agent, orders, up_time, down_time, job, True)
             """
                 register_vm_for_slot(free_time, slot, agent)
             """
@@ -358,12 +396,12 @@ UP_JOB = Task("up_job", None, -1)
 DOWN_JOB = Task("down_job", None, -1)
 
 
-def register_vm_for_slot(free_time, slot, agent, orders, up_time, down_time, only_estimate):
+def register_vm_for_slot(free_time, slot, agent, orders, up_time, down_time, job, only_estimate):
     old_vm = slot_register[slot]
     if not only_estimate:
         slot_register[slot] = agent.id
     time_to_up = down_vm(old_vm, orders, free_time, down_time, only_estimate)
-    ready_time = up_vm(agent, orders, time_to_up, up_time, only_estimate)
+    ready_time = up_vm(agent, orders, time_to_up, up_time, job, only_estimate)
     return ready_time
 
 
@@ -378,20 +416,25 @@ def down_vm(old_vm, orders, free_time, down_time, only_estimate):
         orders[old_vm].append(down_event)
         """TODO: it is not right, remake it later"""
         old_vm.state = Down
+        old_vm.soft_types = [ANY_SOFT]
     return time_to_up
 
 
-def up_vm(old_vm, orders, free_time, up_time, only_estimate):
-    if len(orders[old_vm]) > 0 and orders[old_vm][-1].job.id == UP_JOB.id:
+def up_vm(new_vm, orders, free_time, up_time, job, only_estimate):
+    if len(orders[new_vm]) > 0 and orders[new_vm][-1].job.id == UP_JOB.id:
         return free_time
     ready_time = free_time + up_time
     if not only_estimate:
         up_event = Event(UP_JOB, free_time, ready_time)
-        orders[old_vm].append(up_event)
+        orders[new_vm].append(up_event)
         """TODO: it is not right, remake it later"""
-        old_vm.state = Busy
+        new_vm.state = Busy
+        new_vm.soft_types = build_vm_soft_types(new_vm, job)
     return ready_time
 
+def build_vm_soft_types(vm, job):
+    """TODO: extend it later"""
+    return [job.type]
 
 def take_free_slot_or_find_freepoint_of_busy(agent, orders, current_time):
     if agent.state != Down:
@@ -467,7 +510,7 @@ def mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time
             if agent.state == Down:
                 free_time, slot = take_free_slot_or_find_freepoint_of_busy(agent, new_plan, time)
                 """TODO: remake it later"""
-                start = register_vm_for_slot(free_time, slot, agent, new_plan, up_time, down_time, False)
+                start = max(start, register_vm_for_slot(free_time, slot, agent, new_plan, up_time, down_time, job, False))
                 end = start + compcost(job, agent)
 
             new_plan[agent].append(Event(job, start, end))
