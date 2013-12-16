@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/onlinedvmheft/tests/test_online_dvm_heft.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/heft.iml" afterPath="$PROJECT_DIR$/.idea/heft.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="D:\wspace\heft\heft\online-dvm-heft\__init__.py" afterPath="$PROJECT_DIR$/onlinedvmheft/__init__.py" />
-      <change type="MOVED" beforePath="D:\wspace\heft\heft\online-dvm-heft\core.py" afterPath="$PROJECT_DIR$/onlinedvmheft/core.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/onlinedvmheft/core.py" afterPath="$PROJECT_DIR$/onlinedvmheft/core.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/onlinedvmheft/tests/test_online_dvm_heft.py" afterPath="$PROJECT_DIR$/onlinedvmheft/tests/test_online_dvm_heft.py" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,7 +29,7 @@
       <file leaf-file-name="test_online_dvm_heft.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/onlinedvmheft/tests/test_online_dvm_heft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="0" selection-start="1034" selection-end="1034" vertical-scroll-proportion="0.0" vertical-offset="1035" max-vertical-offset="1950">
+            <state line="39" column="0" selection-start="796" selection-end="796" vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="2050">
               <folding>
                 <element signature="e#23#38#0" expanded="true" />
               </folding>
@@ -44,7 +40,7 @@
       <file leaf-file-name="core.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/onlinedvmheft/core.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="114" column="25" selection-start="2095" selection-end="2095" vertical-scroll-proportion="0.49820143" vertical-offset="2573" max-vertical-offset="10950">
+            <state line="164" column="14" selection-start="2987" selection-end="2987" vertical-scroll-proportion="0.35205182" vertical-offset="3937" max-vertical-offset="12325">
               <folding>
                 <element signature="e#25#54#0" expanded="true" />
               </folding>
@@ -55,7 +51,7 @@
       <file leaf-file-name="core.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/heft/core.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="114" column="44" selection-start="3777" selection-end="3817" vertical-scroll-proportion="0.0" vertical-offset="2509" max-vertical-offset="4800">
+            <state line="114" column="0" selection-start="3773" selection-end="3773" vertical-scroll-proportion="0.0" vertical-offset="2485" max-vertical-offset="4800">
               <folding>
                 <element signature="e#879#908#0" expanded="true" />
               </folding>
@@ -66,7 +62,7 @@
       <file leaf-file-name="test_core.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/heft/tests/test_core.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="2281" max-vertical-offset="4075">
+            <state line="69" column="0" selection-start="2076" selection-end="2076" vertical-scroll-proportion="0.0" vertical-offset="1510" max-vertical-offset="4075">
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -333,6 +329,30 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
+    <configuration default="false" name="Unittest TestSolver.test_schedule" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/heft/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/heft/tests/test_core.py" />
+      <option name="CLASS_NAME" value="TestSolver" />
+      <option name="METHOD_NAME" value="test_schedule" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="py.test">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -478,16 +498,18 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.test_core" />
       <item index="1" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
       <item index="2" class="java.lang.String" itemvalue="Python tests.Nosetests in D:/wspace/heft" />
       <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in test_online_dvm_heft" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestSolver.test_schedule" />
     </list>
     <recent_temporary>
-      <list size="2">
+      <list size="3">
         <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in test_online_dvm_heft" />
-        <item index="1" class="java.lang.String" itemvalue="Python.test_core" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest TestSolver.test_schedule" />
+        <item index="2" class="java.lang.String" itemvalue="Python.test_core" />
       </list>
     </recent_temporary>
   </component>
@@ -526,11 +548,11 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16309524" sideWeight="0.6935123" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16309524" sideWeight="0.58948547" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24944071" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3064877" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3064877" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3064877" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41051453" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -550,7 +572,14 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="28" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/heft/tests/test_core.py</url>
+          <line>69</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="42" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -644,7 +673,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/heft/tests/test_core.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4075">
+        <state line="69" column="0" selection-start="2076" selection-end="2076" vertical-scroll-proportion="0.0" vertical-offset="1510" max-vertical-offset="4075">
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -653,7 +682,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/heft/core.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="114" column="44" selection-start="3777" selection-end="3817" vertical-scroll-proportion="0.0" vertical-offset="2509" max-vertical-offset="4800">
+        <state line="114" column="0" selection-start="3773" selection-end="3773" vertical-scroll-proportion="0.0" vertical-offset="2635" max-vertical-offset="4800">
           <folding>
             <element signature="e#879#908#0" expanded="true" />
           </folding>
@@ -662,7 +691,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/onlinedvmheft/tests/test_online_dvm_heft.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="0" selection-start="1034" selection-end="1034" vertical-scroll-proportion="0.0" vertical-offset="1035" max-vertical-offset="1950">
+        <state line="39" column="0" selection-start="796" selection-end="796" vertical-scroll-proportion="0.0" vertical-offset="1050" max-vertical-offset="2050">
           <folding>
             <element signature="e#23#38#0" expanded="true" />
           </folding>
@@ -671,7 +700,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/onlinedvmheft/core.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="114" column="25" selection-start="2095" selection-end="2095" vertical-scroll-proportion="0.49820143" vertical-offset="2573" max-vertical-offset="10950">
+        <state line="164" column="14" selection-start="2987" selection-end="2987" vertical-scroll-proportion="0.35205182" vertical-offset="3937" max-vertical-offset="12325">
           <folding>
             <element signature="e#25#54#0" expanded="true" />
           </folding>

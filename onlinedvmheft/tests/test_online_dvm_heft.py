@@ -5,7 +5,7 @@ from heft.util import reverse_dict
 
 from onlinedvmheft.core import Workflow
 from onlinedvmheft.core import Factory
-from onlinedvmheft.core import (reschedule, commcost, compcost, Resource, Down, Schedule)
+from onlinedvmheft.core import (reschedule, commcost, compcost, Resource, Down, Schedule, ANY_SOFT)
 
 from unittest import TestCase
 
@@ -33,6 +33,10 @@ class OnlineHEFT(TestCase):
         vm0 = Resource("vm0", Down, 1000)
         vm1 = Resource("vm1", Down, 1000)
         vm2 = Resource("vm2", Down, 1000)
+
+        vm0.soft_types = [ANY_SOFT]
+        vm1.soft_types = [ANY_SOFT]
+        vm2.soft_types = [ANY_SOFT]
 
 
         resources = [vm0, vm1, vm2]

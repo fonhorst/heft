@@ -65,8 +65,12 @@ vm2:
 class Factory():
     resId = 0
 
+    tasks =dict()
+
     def createTask(self, id, wf, mips):
-        return Task(id, wf, mips)
+        if id not in self.tasks:
+            self.tasks[id] = Task(id, wf, mips)
+        return self.tasks[id]
 
     def createWf(self):
         wf = Workflow("wf1", None)
@@ -160,6 +164,31 @@ def commcost(ni, nj, A, B):
     """TODO: remake it later"""
     return 100
 
+"""
+Right schedule for commcost 100(I think in that way):
+vm0		Event(job=up_job, start=0, end=20)
+	Event(job=wf1.4, start=20, end=40.0)
+	Event(job=wf1.6, start=40.0, end=60.0)
+	Event(job=wf1.7, start=160.0, end=180.0)
+	Event(job=wf1.9, start=180.0, end=200.0)
+	Event(job=wf1.8, start=200.0, end=220.0)
+vm1		Event(job=up_job, start=0, end=20)
+	Event(job=wf1.3, start=20, end=40.0)
+	Event(job=wf1.5, start=40.0, end=60.0)
+vm2
+
+Right schedule for commcost 10(I think in that way):
+vm0		Event(job=up_job, start=0, end=20)
+	Event(job=wf1.4, start=20, end=40.0)
+	Event(job=wf1.6, start=40.0, end=60.0)
+	Event(job=wf1.7, start=70.0, end=90.0)
+	Event(job=wf1.9, start=90.0, end=110.0)
+vm1		Event(job=up_job, start=0, end=20)
+	Event(job=wf1.3, start=20, end=40.0)
+	Event(job=wf1.5, start=40.0, end=60.0)
+	Event(job=wf1.8, start=100.0, end=120.0)
+vm2
+"""
 
 def rewbar(ni, agents, compcost):
     """ Average computation cost """
@@ -189,10 +218,16 @@ def reranku(ni, agents, succ, compcost, commcost):
     w = partial(rewbar, compcost=compcost, agents=agents)
     c = partial(recbar, agents=agents, commcost=commcost)
 
+    result = None
+
     if ni in succ and succ[ni]:
-        return w(ni) + max(c(ni, nj) + rank(nj) for nj in succ[ni])
+        result = w(ni) + max(c(ni, nj) + rank(nj) for nj in succ[ni])
     else:
-        return w(ni)
+        result = w(ni)
+
+    """print( "%s %s" % (ni, result))"""
+
+    return result
 
 
 def reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_time, down_time):
@@ -215,13 +250,13 @@ def reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_ti
                        compcost=compcost, commcost=commcost)
         jobs = set(wf.dag.keys()) | set(x for xx in wf.dag.values() for x in xx)
         jobs = sorted(jobs, key=rank)
-        wf_jobs[wf] = jobs
+        wf_jobs[wf] =list(reversed(jobs))
 
     old_dag_jobs = get_unstarted_tasks(current_schedule, time)
 
     all_jobs = old_dag_jobs.copy()
     all_jobs.update(wf_jobs)
-
+    """set(wf.dag.set(x for xx in wf.dag.values() for x in xx)keys())"""
     sorted_jobs = sorted(all_jobs.items(), key=lambda tuple: tuple[0].arrival_time)
 
     unchanged_schedule = get_unchanged_schedule(current_schedule, time)
@@ -265,7 +300,7 @@ def endtime(job, events):
             return e.end
 
 
-def re_start_time(job, orders, jobson, prec, commcost, agent):
+def re_start_time(job, orders, jobson, prec, commcost, up_time, down_time, time, agent):
     """
         (We work without any window)
         1. check for correspondence of resource and job
@@ -277,7 +312,7 @@ def re_start_time(job, orders, jobson, prec, commcost, agent):
     """
 
     if can_be_executed(agent, job):
-        if (agent.state != "ghost"):
+        if agent.state is not Down:
             agent_ready = orders[agent][-1].end if orders[agent] else 0
             if job in prec:
                 comm_ready = max([endtime(p, orders[jobson[p]])
@@ -286,12 +321,13 @@ def re_start_time(job, orders, jobson, prec, commcost, agent):
                 comm_ready = 0
             return max(agent_ready, comm_ready)
         else:
-            free_time, slot = take_free_slot_or_find_freepoint_of_busy(agent)
+            free_time, slot = take_free_slot_or_find_freepoint_of_busy(agent, orders, time)
+            real_start = register_vm_for_slot(free_time, slot, agent, orders, up_time, down_time, True)
             """
                 register_vm_for_slot(free_time, slot, agent)
             """
 
-            agent_ready = free_time
+            agent_ready = real_start
             if job in prec:
                 comm_ready = max([endtime(p, orders[jobson[p]])
                                   + commcost(p, job, agent, jobson[p]) for p in prec[job]])
@@ -299,6 +335,7 @@ def re_start_time(job, orders, jobson, prec, commcost, agent):
                 comm_ready = 0
             return max(agent_ready, comm_ready)
     else:
+        """TODO: remake it later. It means task cannot be executed on this resource"""
         return 1000000
 
 
@@ -321,29 +358,39 @@ UP_JOB = Task("up_job", None, -1)
 DOWN_JOB = Task("down_job", None, -1)
 
 
-def register_vm_for_slot(free_time, slot, agent, orders):
+def register_vm_for_slot(free_time, slot, agent, orders, up_time, down_time, only_estimate):
     old_vm = slot_register[slot]
-    slot_register[slot] = agent.id
-    down_vm(old_vm, orders)
-    up_vm(agent, orders)
+    if not only_estimate:
+        slot_register[slot] = agent.id
+    time_to_up = down_vm(old_vm, orders, free_time, down_time, only_estimate)
+    ready_time = up_vm(agent, orders, time_to_up, up_time, only_estimate)
+    return ready_time
 
 
-def down_vm(old_vm, orders):
+def down_vm(old_vm, orders, free_time, down_time, only_estimate):
     if old_vm == '':
-        return
+        return free_time
     if len(orders[old_vm]) > 0 and orders[old_vm][-1].job.id == DOWN_JOB.id:
-        return
-    orders[old_vm].append(DOWN_JOB)
-    """TODO: it is not right, remake it later"""
-    old_vm.state = Down
+        return free_time
+    time_to_up = free_time + down_time
+    if not only_estimate:
+        down_event = Event(DOWN_JOB, free_time, time_to_up)
+        orders[old_vm].append(down_event)
+        """TODO: it is not right, remake it later"""
+        old_vm.state = Down
+    return time_to_up
 
 
-def up_vm(old_vm, orders):
+def up_vm(old_vm, orders, free_time, up_time, only_estimate):
     if len(orders[old_vm]) > 0 and orders[old_vm][-1].job.id == UP_JOB.id:
-        return
-    orders[old_vm].append(UP_JOB)
-    """TODO: it is not right, remake it later"""
-    old_vm.state = Busy
+        return free_time
+    ready_time = free_time + up_time
+    if not only_estimate:
+        up_event = Event(UP_JOB, free_time, ready_time)
+        orders[old_vm].append(up_event)
+        """TODO: it is not right, remake it later"""
+        old_vm.state = Busy
+    return ready_time
 
 
 def take_free_slot_or_find_freepoint_of_busy(agent, orders, current_time):
@@ -402,18 +449,26 @@ def mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time
 
     new_plan = dict(unchanged_schedule.plan)
 
+    def ft(machine):
+        cost = st(machine) + compcost(job, machine)
+        print("machine: %s job:%s cost: %s" % (machine.id, job.id, cost))
+        return cost
+
     for wf, jobs in sorted_jobs:
         prec = reverse_dict(wf.dag)
         for job in jobs:
-            st = partial(re_start_time, job, new_plan, jobson, prec, commcost)
-            ft = lambda machine: st(machine) + compcost(job, machine)
+            print("======================")
+            st = partial(re_start_time, job, new_plan, jobson, prec, commcost, up_time, down_time, time)
+            """ft = lambda machine: st(machine) + compcost(job, machine)"""
             agent = min(new_plan.keys(), key=ft)
             start = st(agent)
             end = ft(agent)
 
             if agent.state == Down:
                 free_time, slot = take_free_slot_or_find_freepoint_of_busy(agent, new_plan, time)
-                register_vm_for_slot(free_time, slot, agent, new_plan)
+                """TODO: remake it later"""
+                start = register_vm_for_slot(free_time, slot, agent, new_plan, up_time, down_time, False)
+                end = start + compcost(job, agent)
 
             new_plan[agent].append(Event(job, start, end))
             jobson[job] = agent
