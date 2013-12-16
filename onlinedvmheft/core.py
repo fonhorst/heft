@@ -8,15 +8,24 @@ Event = namedtuple('Event', 'job start end')
 
 Slot = namedtuple('Slot', 'id')
 
+State = namedtuple('State', 'name')
 
+Soft = namedtuple('Soft', 'name')
+
+Busy = State('Busy')
+Uping = State('Uping')
+Downing = State('Downing')
+Idle = State('Idle')
+Down = State('Down')
+
+ANY_SOFT = Soft('Any_soft')
+Windows7 = Soft('Windows7')
+Linux = Soft('Linux')
+WindowsR2 = Soft('WindowsR2')
 
 """
 ===========================================================================
 """
-
-
-
-
 """
 schedule =
 {
@@ -52,67 +61,122 @@ vm2:
 
 """
 
+
+class Factory():
+    resId = 0
+
+    def createTask(self, id, wf, mips):
+        return Task(id, wf, mips)
+
+    def createWf(self):
+        wf = Workflow("wf1", None)
+        t = partial(self.createTask, wf=wf, mips=2000)
+        dag = {t("3"): (t("5"),),
+               t("4"): (t("6"),),
+               t("5"): (t("7"),),
+               t("6"): (t("7"),),
+               t("7"): (t("8"), t("9"))}
+        wf.dag = dag
+        return wf
+
+    def createResource(self):
+        id = "vm" + self.resId
+        self.resId += 1
+        return Resource(id, Down)
+
+
 class Workflow():
     id = ""
     arrival_time = 0
-    dag = {3: (5,),
-           4: (6,),
-           5: (7,),
-           6: (7,),
-           7: (8, 9)}
-    pass
+    dag = None
+
+    def __init__(self, id, dag):
+        self.id = id
+        self.dag = dag
+
 
 class Task():
     id = ""
-    wf = Workflow()
+    wf = None
     mips = 0
     type = ""
-    in_to_out_size_func=None
-    intra_priority=0
+    in_to_out_size_func = None
+    intra_priority = 0
 
-    def __init__(self, id, wf):
+    def __init__(self, id, wf, mips):
         self.id = id
         self.wf = wf
-    pass
+        self.mips = mips
+
+    def __str__(self):
+        return self.str()
+
+    def __repr__(self):
+        return self.str()
+
+    def str(self):
+        if self.id == UP_JOB.id or self.id == DOWN_JOB.id:
+            return self.id
+        return self.wf.id + "." + self.id
 
 class Schedule():
-    id=""
-    plan={
-        'vm0':[],
-        'vm1':[]
+    id = ""
+    plan = {
+        'vm0': [],
+        'vm1': []
     }
 
     def __init__(self, id, plan):
         self.id = id
         self.plan = plan
-    pass
+
 
 class Resource():
-    id=""
-    mips=0
-    bw=0
-    soft_types=[]
-    """
-    busy, uping, downing,idle,down
-    """
-    state = ""
-    pass
+    id = ""
+    mips = 0
+    bw = 0
+    soft_types = []
+    state = None
+
+    def __init__(self, id, state, mips):
+        self.id = id
+        self.state = state
+        self.mips = mips
+
+    def __str__(self):
+        return self.id
+
+    def __repr__(self):
+        return self.id
+
+
+def compcost(job, agent):
+    return (job.mips / agent.mips) * 10
+
+
+def commcost(ni, nj, A, B):
+    if A == B:
+        return 0
+    """TODO: remake it later"""
+    return 100
 
 
 def rewbar(ni, agents, compcost):
     """ Average computation cost """
     return sum(compcost(ni, agent) for agent in agents) / len(agents)
 
+
 def recbar(ni, nj, agents, commcost):
     """ Average communication cost """
     n = len(agents)
     if n == 1:
         return 0
-    npairs = n * (n-1)
+    npairs = n * (n - 1)
     return 1. * sum(commcost(ni, nj, a1, a2) for a1 in agents for a2 in agents
-                                        if a1 != a2) / npairs
+                    if a1 != a2) / npairs
 
-def reranku(ni, agents, succ,  compcost, commcost):
+
+def reranku(ni, agents, succ, compcost, commcost):
     """ Rank of job
 
     This code is designed to mirror the wikipedia entry.
@@ -121,7 +185,7 @@ def reranku(ni, agents, succ,  compcost, commcost):
     [1]. http://en.wikipedia.org/wiki/Heterogeneous_Earliest_Finish_Time
     """
     rank = partial(reranku, compcost=compcost, commcost=commcost,
-                           succ=succ, agents=agents)
+                   succ=succ, agents=agents)
     w = partial(rewbar, compcost=compcost, agents=agents)
     c = partial(recbar, agents=agents, commcost=commcost)
 
@@ -129,6 +193,8 @@ def reranku(ni, agents, succ,  compcost, commcost):
         return w(ni) + max(c(ni, nj) + rank(nj) for nj in succ[ni])
     else:
         return w(ni)
+
+
 def reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_time, down_time):
     """
     without performance variability:
@@ -146,27 +212,29 @@ def reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_ti
     wf_jobs = {wf: [] for wf in wfs}
     for wf in wfs:
         rank = partial(reranku, agents=resources, succ=wf.dag,
-                              compcost=compcost, commcost=commcost)
+                       compcost=compcost, commcost=commcost)
         jobs = set(wf.dag.keys()) | set(x for xx in wf.dag.values() for x in xx)
         jobs = sorted(jobs, key=rank)
         wf_jobs[wf] = jobs
 
     old_dag_jobs = get_unstarted_tasks(current_schedule, time)
 
-    all_jobs = dict(old_dag_jobs.items() + wf_jobs.items())
+    all_jobs = old_dag_jobs.copy()
+    all_jobs.update(wf_jobs)
 
     sorted_jobs = sorted(all_jobs.items(), key=lambda tuple: tuple[0].arrival_time)
 
     unchanged_schedule = get_unchanged_schedule(current_schedule, time)
 
-    new_schedule = mapping(sorted_jobs, resources, unchanged_schedule, time, up_time, down_time)
+    new_schedule = mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time, up_time, down_time)
 
     return new_schedule
+
 
 def get_unstarted_tasks(sched, time):
     wf_jobs = dict()
     for vm, plan in sched.plan.items():
-        unstarted_events = filter(function_or_None=lambda evt: evt.start > time, iterable=plan)
+        unstarted_events = list(filter(lambda evt: evt.start > time, plan))
         for event in unstarted_events:
             wf_jobs.get(event.job.wf, []).append(event.job)
 
@@ -175,21 +243,27 @@ def get_unstarted_tasks(sched, time):
 
     return wf_jobs
 
+
 def get_unchanged_schedule(sched, time):
     new_plan = dict()
     for vm, plan in sched.plan.items():
-        unstarted_events = filter(function_or_None=lambda evt: evt.start < time, iterable=plan)
+        unstarted_events = list(filter(lambda evt: evt.start < time, plan))
         new_plan[vm] = unstarted_events
 
-    new_sched = Schedule(id,new_plan)
+    new_sched = Schedule(id, new_plan)
 
     return new_sched
+
+
 """========================================================="""
+
+
 def endtime(job, events):
     """ Endtime of job in list of events """
     for e in events:
         if e.job == job:
             return e.end
+
 
 def re_start_time(job, orders, jobson, prec, commcost, agent):
     """
@@ -202,12 +276,12 @@ def re_start_time(job, orders, jobson, prec, commcost, agent):
         4. if resource is ghost, find first time of freeing a slot, take it and schedule uping of the ghost
     """
 
-    if (agent.soft_types.contains(job)):
+    if can_be_executed(agent, job):
         if (agent.state != "ghost"):
             agent_ready = orders[agent][-1].end if orders[agent] else 0
             if job in prec:
                 comm_ready = max([endtime(p, orders[jobson[p]])
-                       + commcost(p, job, agent, jobson[p]) for p in prec[job]])
+                                  + commcost(p, job, agent, jobson[p]) for p in prec[job]])
             else:
                 comm_ready = 0
             return max(agent_ready, comm_ready)
@@ -220,56 +294,78 @@ def re_start_time(job, orders, jobson, prec, commcost, agent):
             agent_ready = free_time
             if job in prec:
                 comm_ready = max([endtime(p, orders[jobson[p]])
-                       + commcost(p, job, agent, jobson[p]) for p in prec[job]])
+                                  + commcost(p, job, agent, jobson[p]) for p in prec[job]])
             else:
                 comm_ready = 0
             return max(agent_ready, comm_ready)
     else:
         return 1000000
 
+
+"""
 slot_register={
     Slot("slot_1"):'vm0',
     Slot("slot_2"):'vm1',
     Slot("slot_3"):'vm2'
 }
+"""
 
-UP_JOB = Task("up_job", None)
+slot_register = {
+    Slot("slot_1"): '',
+    Slot("slot_2"): '',
+    Slot("slot_3"): ''
+}
 
-DOWN_JOB = Task("down_job", None)
+UP_JOB = Task("up_job", None, -1)
+
+DOWN_JOB = Task("down_job", None, -1)
+
 
 def register_vm_for_slot(free_time, slot, agent, orders):
     old_vm = slot_register[slot]
-    slot_register[slot] = agent
+    slot_register[slot] = agent.id
     down_vm(old_vm, orders)
     up_vm(agent, orders)
 
+
 def down_vm(old_vm, orders):
-    if orders[old_vm][-1].id == DOWN_JOB.id:
+    if old_vm == '':
+        return
+    if len(orders[old_vm]) > 0 and orders[old_vm][-1].job.id == DOWN_JOB.id:
         return
     orders[old_vm].append(DOWN_JOB)
+    """TODO: it is not right, remake it later"""
+    old_vm.state = Down
+
 
 def up_vm(old_vm, orders):
-    if orders[old_vm][-1].id == UP_JOB.id:
+    if len(orders[old_vm]) > 0 and orders[old_vm][-1].job.id == UP_JOB.id:
         return
     orders[old_vm].append(UP_JOB)
+    """TODO: it is not right, remake it later"""
+    old_vm.state = Busy
 
 
 def take_free_slot_or_find_freepoint_of_busy(agent, orders, current_time):
-    if (agent.state != "ghost"):
+    if agent.state != Down:
         raise Exception("agent isn't a ghost, id: " + agent.id)
-    free_slots = filter(lambda tuple: tuple.value == "", slot_register)
-    if (free_slots != list()):
+
+    def filter_lambda(slt):
+        return slot_register[slt] == ""
+
+    free_slots = list(filter(filter_lambda, slot_register))
+    if free_slots != list():
         """slot_register[free_slots[0].key] = agent"""
-        slot = free_slots[0].key
+        slot = free_slots[0]
         return current_time, slot
     else:
         min_time_of_freeing = 1000000
         minK = -1
         for k, v in slot_register.items():
-            end = endtime(orders[v][-1],orders[v])
+            end = endtime(orders[v][-1], orders[v])
             if is_not_downing(orders[v][-1]):
                 downing_time = downing_time_for(v)
-                end = end + downing_time
+                end += downing_time
             min_time_of_freeing = end if end < min_time_of_freeing else min_time_of_freeing
             minK = k
         """
@@ -279,16 +375,21 @@ def take_free_slot_or_find_freepoint_of_busy(agent, orders, current_time):
         """
         return min_time_of_freeing, minK
 
+
 def is_not_downing(job):
     return job.id == DOWN_JOB.id
+
 
 def downing_time_for(job):
     return 100
 
+
 """========================================================="""
+
 
 def get_next_sched_id():
     return -1;
+
 
 def mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time, up_time, down_time):
     """def allocate(job, orders, jobson, prec, compcost, commcost):"""
@@ -310,9 +411,9 @@ def mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time
             start = st(agent)
             end = ft(agent)
 
-            if agent.state == "ghost":
-                free_time, slot = take_free_slot_or_find_freepoint_of_busy(agent)
-                register_vm_for_slot(free_time, slot, agent,new_plan)
+            if agent.state == Down:
+                free_time, slot = take_free_slot_or_find_freepoint_of_busy(agent, new_plan, time)
+                register_vm_for_slot(free_time, slot, agent, new_plan)
 
             new_plan[agent].append(Event(job, start, end))
             jobson[job] = agent
@@ -320,6 +421,11 @@ def mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time
     new_id = get_next_sched_id()
     new_sched = Schedule(new_id, new_plan)
     return new_sched
+
+
+def can_be_executed(resource, job):
+    return (job.type in resource.soft_types) or (ANY_SOFT in resource.soft_types)
+
 
 """
 ===============================================================
