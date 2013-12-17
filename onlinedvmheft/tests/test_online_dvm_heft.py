@@ -30,6 +30,8 @@ class OnlineHEFT(TestCase):
         vm1 = Resource("vm1", Down, 1000)
         vm2 = Resource("vm2", Down, 1000)
 
+        current_res_count = 2
+
         vm0.soft_types = [ANY_SOFT]
         vm1.soft_types = [ANY_SOFT]
         vm2.soft_types = [ANY_SOFT]
@@ -43,7 +45,10 @@ class OnlineHEFT(TestCase):
         up_time = 20
         down_time = 10
 
-        schedule = reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_time, down_time)
+        def generate_new_ghost_machine():
+            raise Exception("generate_new_ghost_machine mustn't be invoked in this test")
+
+        schedule = reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_time, down_time, generate_new_ghost_machine)
 
 
 
@@ -86,6 +91,8 @@ class OnlineHEFT(TestCase):
             or schedule.plan =={vm0:l3,vm1:l2,vm2:l1}
         assert condition
 
+    current_res_count = 2
+
     def test_all_different_task(self):
 
         factory = Factory()
@@ -102,6 +109,7 @@ class OnlineHEFT(TestCase):
         vm1.soft_types = [ANY_SOFT]
         vm2.soft_types = [ANY_SOFT]
 
+        self.current_res_count = 2
 
         resources = [vm0, vm1, vm2]
 
@@ -111,7 +119,11 @@ class OnlineHEFT(TestCase):
         up_time = 20
         down_time = 10
 
-        schedule = reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_time, down_time)
+        def generate_new_ghost_machine():
+            self.current_res_count += 1
+            return Resource("vm" + self.current_res_count.__str__(), Down, 1000)
+
+        schedule = reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_time, down_time, generate_new_ghost_machine)
 
 
 

@@ -268,7 +268,7 @@ def reranku(ni, agents, succ, compcost, commcost):
     return result
 
 
-def reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_time, down_time):
+def reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_time, down_time, generate_new_ghost_machine):
     """
     without performance variability:
     1. take all unstarted tasks of previous dags
@@ -299,7 +299,7 @@ def reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_ti
 
     unchanged_schedule = get_unchanged_schedule(current_schedule, time)
 
-    new_schedule = mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time, up_time, down_time)
+    new_schedule = mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time, up_time, down_time, generate_new_ghost_machine)
 
     return new_schedule
 
@@ -386,9 +386,9 @@ slot_register={
 """
 
 slot_register = {
-    Slot("slot_1"): '',
-    Slot("slot_2"): '',
-    Slot("slot_3"): ''
+    Slot("slot_1"): None,
+    Slot("slot_2"): None,
+    Slot("slot_3"): None
 }
 
 UP_JOB = Task("up_job", None, -1)
@@ -399,14 +399,14 @@ DOWN_JOB = Task("down_job", None, -1)
 def register_vm_for_slot(free_time, slot, agent, orders, up_time, down_time, job, only_estimate):
     old_vm = slot_register[slot]
     if not only_estimate:
-        slot_register[slot] = agent.id
+        slot_register[slot] = agent
     time_to_up = down_vm(old_vm, orders, free_time, down_time, only_estimate)
     ready_time = up_vm(agent, orders, time_to_up, up_time, job, only_estimate)
     return ready_time
 
 
 def down_vm(old_vm, orders, free_time, down_time, only_estimate):
-    if old_vm == '':
+    if old_vm == None:
         return free_time
     if len(orders[old_vm]) > 0 and orders[old_vm][-1].job.id == DOWN_JOB.id:
         return free_time
@@ -441,7 +441,7 @@ def take_free_slot_or_find_freepoint_of_busy(agent, orders, current_time):
         raise Exception("agent isn't a ghost, id: " + agent.id)
 
     def filter_lambda(slt):
-        return slot_register[slt] == ""
+        return slot_register[slt] == None
 
     free_slots = list(filter(filter_lambda, slot_register))
     if free_slots != list():
@@ -452,7 +452,7 @@ def take_free_slot_or_find_freepoint_of_busy(agent, orders, current_time):
         min_time_of_freeing = 1000000
         minK = -1
         for k, v in slot_register.items():
-            end = endtime(orders[v][-1], orders[v])
+            end = endtime(orders[v][-1].job, orders[v])
             if is_not_downing(orders[v][-1]):
                 downing_time = downing_time_for(v)
                 end += downing_time
@@ -466,8 +466,8 @@ def take_free_slot_or_find_freepoint_of_busy(agent, orders, current_time):
         return min_time_of_freeing, minK
 
 
-def is_not_downing(job):
-    return job.id == DOWN_JOB.id
+def is_not_downing(event):
+    return event.job.id == DOWN_JOB.id
 
 
 def downing_time_for(job):
@@ -481,7 +481,7 @@ def get_next_sched_id():
     return -1;
 
 
-def mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time, up_time, down_time):
+def mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time, up_time, down_time, generate_new_ghost_machine):
     """def allocate(job, orders, jobson, prec, compcost, commcost):"""
     """ Allocate job to the machine with earliest finish time
 
@@ -503,9 +503,29 @@ def mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time
             print("======================")
             st = partial(re_start_time, job, new_plan, jobson, prec, commcost, up_time, down_time, time)
             """ft = lambda machine: st(machine) + compcost(job, machine)"""
+
+
             agent = min(new_plan.keys(), key=ft)
+            """
+            if agent.cost >= 100000:
+                ghost = geberate_new_ghost_machine
+                new_plan[ghost] = []
+                print("Creating new ghost: " + ft(ghost))
+                agent = ghost
+            """
+
             start = st(agent)
             end = ft(agent)
+
+            if start >= 1000000:
+                ghost = generate_new_ghost_machine()
+                new_plan[ghost] = []
+                ghost.soft_types = [ANY_SOFT]
+                print("Creating new ghost: %s cost: %s" % (ghost.id, ft(ghost)))
+                agent = ghost
+                start = st(agent)
+                end = ft(agent)
+
 
             if agent.state == Down:
                 free_time, slot = take_free_slot_or_find_freepoint_of_busy(agent, new_plan, time)
