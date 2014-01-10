@@ -299,7 +299,15 @@ def reschedule(wfs, resources, compcost, commcost, current_schedule, time, up_ti
 
     unchanged_schedule = get_unchanged_schedule(current_schedule, time)
 
-    new_schedule = mapping(sorted_jobs, resources, unchanged_schedule, commcost, compcost, time, up_time, down_time, generate_new_ghost_machine)
+    new_schedule = mapping(sorted_jobs,
+                           resources,
+                           unchanged_schedule,
+                           commcost,
+                           compcost,
+                           time,
+                           up_time,
+                           down_time,
+                           generate_new_ghost_machine)
 
     return new_schedule
 
