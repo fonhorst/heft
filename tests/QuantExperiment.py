@@ -23,7 +23,7 @@ class ExperimentEstimator(Estimator):
         def get_transfer_time(name):
             file = task1.output_files.get(name,None)
             return 0 if file is None else file.size
-        return sum([ get_transfer_time(name) for (name,file) in task2.input_files])/per_unit_of_time
+        return sum([ get_transfer_time(name) for (name,file) in task2.input_files.items()])/per_unit_of_time
 
 
     ## estimate probability of successful ending of the task on the node
@@ -36,7 +36,7 @@ class ExperimentResourceManager(ResourceManager):
 
     ##get all resources in the system
     def get_resources(self):
-        self.resources
+        return self.resources
 
 
 class QuantExperiment(TestCase):
@@ -44,8 +44,8 @@ class QuantExperiment(TestCase):
         ##Preparing
         ut = Utility()
 
-        dax1 = ""
-        dax2 = ""
+        dax1 = 'C:\\WorkspaceDisk\\wfsim\\heft\\resources\\Montage_25.xml'
+        dax2 = 'C:\\WorkspaceDisk\\wfsim\\heft\\resources\\CyberShake_30.xml'
 
         wf_start_id_1 = "00"
         task_postfix_id_1 = "00"
@@ -65,7 +65,7 @@ class QuantExperiment(TestCase):
                                                wf_start_id_2,
                                                task_postfix_id_2,
                                                deadline_2)
-        common_pipeline = pipeline_1.append(pipeline_2)
+        common_pipeline = pipeline_1 + pipeline_2
 
         rgen = ResourceGenerator()
         resources = rgen.generate()
@@ -83,3 +83,5 @@ class QuantExperiment(TestCase):
         ##TODO: fake run remake it later.
         self.assertTrue(True)
 
+if __name__ == '__main__':
+    unittest.main()

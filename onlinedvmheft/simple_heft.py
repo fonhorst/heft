@@ -34,7 +34,8 @@ class StaticHeftPlanner(Scheduler):
         """
 
         def byPriority(wf):
-            wf.priority
+            ##TODO: remake it later
+           return 0 if wf.priority is None else wf.priority
 
         ##simple inter priority sorting
         sorted_wfs = sorted(self.workflows, key=byPriority)
@@ -45,6 +46,7 @@ class StaticHeftPlanner(Scheduler):
             result = set()
             for resource in resources:
                 result.update(resource.nodes)
+            return result
 
         def compcost(job, agent):
             return self.estimator.estimate_runtime(job, agent)
@@ -53,24 +55,37 @@ class StaticHeftPlanner(Scheduler):
         def commcost(ni, nj, A, B):
             return self.estimator.estimate_transfer_time(A, B, ni, nj)
 
+        nodes = toNodes(resources)
+
         ##without mapping
         for wf in sorted_wfs:
             wf_dag = self.convert_to_parent_children_map(wf)
-            rank = partial(self.ranking, nodes=toNodes(resources), succ=wf_dag,
+            rank = partial(self.ranking, nodes=nodes, succ=wf_dag,
                                          compcost=compcost, commcost=commcost)
             jobs = set(wf_dag.keys()) | set(x for xx in wf_dag.values() for x in xx)
+            jobs = list(jobs)
+
+            for job in jobs:
+                print('Calculate: ' + str(job))
+                print('Rank: ' + str(rank(job)))
+
             jobs = sorted(jobs, key=rank)
             wf_jobs[wf] = list(reversed(jobs))
 
+        new_plan = {node:[] for node in nodes}
+
         for jobs in wf_jobs:
             new_schedule = self.mapping(jobs,
+                               new_plan,
                                resources,
                                commcost,
                                compcost)
+            new_plan = new_schedule.mapping
 
         return new_schedule
 
     def ranking(self, ni, nodes, succ, compcost, commcost):
+
         """ Rank of job
 
         This code is designed to mirror the wikipedia entry.
@@ -79,7 +94,7 @@ class StaticHeftPlanner(Scheduler):
         [1]. http://en.wikipedia.org/wiki/Heterogeneous_Earliest_Finish_Time
         """
         rank = partial(self.ranking, compcost=compcost, commcost=commcost,
-                       succ=succ, agents=nodes)
+                       succ=succ, nodes=nodes)
         w = partial(self.avr_compcost, compcost=compcost, nodes=nodes)
         c = partial(self.avr_commcost, nodes=nodes, commcost=commcost)
 
@@ -94,12 +109,12 @@ class StaticHeftPlanner(Scheduler):
 
         return result
 
-    def avr_compcost(ni, nodes, compcost):
+    def avr_compcost(self,ni, nodes, compcost):
         """ Average computation cost """
         return sum(compcost(ni, node) for node in nodes) / len(nodes)
 
 
-    def avr_commcost(ni, nj, nodes, commcost):
+    def avr_commcost(self,ni, nj, nodes, commcost):
         """ Average communication cost """
         n = len(nodes)
         if n == 1:
@@ -113,12 +128,14 @@ class StaticHeftPlanner(Scheduler):
         map = dict()
         def mapp(parents, map):
             for parent in parents:
-                map.get(parent, set()).append(parent.children)
+                st = map.get(parent, set())
+                st.update(parent.children)
+                map[parent] = st
                 mapp(parent.children, map)
         mapp(head.children, map)
         return map
 
-    def mapping(self, sorted_jobs, resources, commcost, compcost):
+    def mapping(self, sorted_jobs, existing_plan, resources, commcost, compcost):
         """def allocate(job, orders, jobson, prec, compcost, commcost):"""
         """ Allocate job to the machine with earliest finish time
 
@@ -131,7 +148,7 @@ class StaticHeftPlanner(Scheduler):
         for resource in resources:
             nodes.update(resource.nodes)
 
-        new_plan = {node:[] for node in nodes}
+        new_plan = existing_plan
 
 
         def ft(machine):

@@ -10,9 +10,9 @@ class DAXParser:
         pass
 
     def readFiles(self, job, task):
-        files = job.findall("./uses")
+        files = job.findall('./{http://pegasus.isi.edu/schema/DAX}uses')
         def buildFile(file):
-            return File(file.attrib['file'],file.attrib['size'])
+            return File(file.attrib['file'],int(file.attrib['size']))
         output_files = {fl.name:fl for fl in [buildFile(file) for file in files if file.attrib['link'] == "output"]}
         input_files = {fl.name:fl for fl in [buildFile(file) for file in files if file.attrib['link'] == "input"]}
         task.output_files = output_files
@@ -22,8 +22,8 @@ class DAXParser:
     def parseXml(self, filepath, wfId, taskPostfixId):
         tree = ET.parse(filepath)
         root = tree.getroot()
-        jobs = root.findall("./job")
-        children = root.findall("./child")
+        jobs = root.findall('./{http://pegasus.isi.edu/schema/DAX}job')
+        children = root.findall('./{http://pegasus.isi.edu/schema/DAX}child')
         internal_id2Task = dict()
         for job in jobs:
             ## build task
@@ -32,19 +32,19 @@ class DAXParser:
             soft = job.attrib['name']
             task = Task(id,internal_id)
             task.soft_reqs.add(soft)
-            task.runtime = job.attrib['runtime']
+            task.runtime = float(job.attrib['runtime'])
             self.readFiles(job, task)
             internal_id2Task[task.internal_wf_id] = task
 
         for child in children:
             id = child.attrib['ref']
-            parents = [internal_id2Task[prt.attrib['ref']] for prt in child.findall('./parent')]
+            parents = [internal_id2Task[prt.attrib['ref']] for prt in child.findall('./{http://pegasus.isi.edu/schema/DAX}parent')]
             child = internal_id2Task[id]
             child.parents.update(parents)
             for parent in parents:
                 parent.children.add(child)
 
-        heads = [ task for (name,task) in internal_id2Task if len(task.parents) == 0 ]
+        heads = [ task for (name,task) in internal_id2Task.items() if len(task.parents) == 0 ]
 
         common_head = Task("000_" + taskPostfixId,"000")
         common_head.children = heads

@@ -1,7 +1,7 @@
 __author__ = 'Николай'
 
 from environment.DAXParser import DAXParser
-from random import random
+from random import Random
 from environment.Resource import Workflow
 from environment.Resource import Task
 import copy
@@ -16,8 +16,9 @@ class Utility:
 
     def generateUrgentPipeline(self, dax_filepath, wf_start_id, task_postfix_id, deadline):
         parser = DAXParser()
+        random = Random()
         pipelineSize = random.randint(Utility.MIN_PIPELINE_SIZE,Utility.MAX_PIPELINE_SIZE)
-        wfs = [parser.parseXml(dax_filepath,wf_start_id + i, task_postfix_id + i) for i in range(0, pipelineSize)]
+        wfs = [parser.parseXml(dax_filepath,wf_start_id + str(i), task_postfix_id + str(i)) for i in range(0, pipelineSize)]
         for wf in wfs:
             wf.deadline = deadline
         return wfs

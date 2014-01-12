@@ -22,13 +22,13 @@
     <favorites_list name="heft" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.77185315">
+    <splitter split-orientation="horizontal" split-proportion="0.6512238">
       <split-first>
         <leaf>
-          <file leaf-file-name="simple_heft.py" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="simple_heft.py" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/onlinedvmheft/simple_heft.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="20" column="21" selection-start="559" selection-end="559" vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="3366">
+                <state line="101" column="0" selection-start="3270" selection-end="3270" vertical-scroll-proportion="4.6257143" vertical-offset="98" max-vertical-offset="3655">
                   <folding>
                     <element signature="e#48#77#0" expanded="true" />
                   </folding>
@@ -36,10 +36,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="QuantExperiment.py" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="QuantExperiment.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/tests/QuantExperiment.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="82" column="41" selection-start="2785" selection-end="2785" vertical-scroll-proportion="2.3788395" vertical-offset="0" max-vertical-offset="1547">
+                <state line="25" column="0" selection-start="1020" selection-end="1020" vertical-scroll-proportion="0.0" vertical-offset="336" max-vertical-offset="1581">
                   <folding>
                     <element signature="e#24#39#0" expanded="true" />
                   </folding>
@@ -50,13 +50,9 @@
           <file leaf-file-name="DAXParser.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/environment/DAXParser.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="1" column="0" selection-start="23" selection-end="23" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="1156">
+                <state line="14" column="69" selection-start="440" selection-end="440" vertical-scroll-proportion="0.0" vertical-offset="73" max-vertical-offset="1156">
                   <folding>
                     <element signature="e#24#58#0" expanded="true" />
-                    <marker date="1389543604928" expanded="true" signature="194:1921" placeholder="..." />
-                    <marker date="1389543604928" expanded="true" signature="268:712" placeholder="..." />
-                    <marker date="1389543604928" expanded="true" signature="335:400" placeholder="..." />
-                    <marker date="1389543604928" expanded="true" signature="769:1921" placeholder="..." />
                   </folding>
                 </state>
               </provider>
@@ -65,7 +61,7 @@
           <file leaf-file-name="ResourceManager.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="3" column="0" selection-start="25" selection-end="165" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="1785">
+                <state line="9" column="12" selection-start="165" selection-end="165" vertical-scroll-proportion="0.0" vertical-offset="1199" max-vertical-offset="1785">
                   <folding />
                 </state>
               </provider>
@@ -74,7 +70,7 @@
           <file leaf-file-name="Resource.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/environment/Resource.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="130" column="13" selection-start="3459" selection-end="3471" vertical-scroll-proportion="0.0" vertical-offset="816" max-vertical-offset="2465">
+                <state line="135" column="22" selection-start="3600" selection-end="3600" vertical-scroll-proportion="0.0" vertical-offset="2040" max-vertical-offset="2601">
                   <folding />
                 </state>
               </provider>
@@ -84,10 +80,10 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="test_online_dvm_heft.py" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="test_online_dvm_heft.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/onlinedvmheft/tests/test_online_dvm_heft.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="17" column="0" selection-start="430" selection-end="430" vertical-scroll-proportion="0.24637681" vertical-offset="153" max-vertical-offset="3043">
+                <state line="172" column="14" selection-start="5443" selection-end="5489" vertical-scroll-proportion="0.0" vertical-offset="857" max-vertical-offset="3043">
                   <folding>
                     <element signature="e#23#38#0" expanded="true" />
                   </folding>
@@ -95,13 +91,31 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="core.py" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/onlinedvmheft/core.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="188" column="9" selection-start="3559" selection-end="3648" vertical-scroll-proportion="0.775076" vertical-offset="2907" max-vertical-offset="9554">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="Utility.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/environment/Utility.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="16" column="64" selection-start="361" selection-end="376" vertical-scroll-proportion="0.0" vertical-offset="5" max-vertical-offset="663">
+                <state line="20" column="26" selection-start="561" selection-end="561" vertical-scroll-proportion="0.0" vertical-offset="107" max-vertical-offset="680">
                   <folding>
                     <element signature="e#24#67#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="core.py" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/heft/core.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="107" column="19" selection-start="3537" selection-end="3537" vertical-scroll-proportion="0.0" vertical-offset="1520" max-vertical-offset="3230">
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -136,12 +150,12 @@
         <option value="$PROJECT_DIR$/environment/ResourceManager.py" />
         <option value="$PROJECT_DIR$/onlinedvmheft/heft-scheduler.py" />
         <option value="$PROJECT_DIR$/environment/Java_version.py" />
-        <option value="$PROJECT_DIR$/environment/Resource.py" />
-        <option value="$PROJECT_DIR$/environment/DAXParser.py" />
-        <option value="$PROJECT_DIR$/environment/Utility.py" />
         <option value="$PROJECT_DIR$/onlinedvmheft/simple-heft.py" />
-        <option value="$PROJECT_DIR$/onlinedvmheft/simple_heft.py" />
+        <option value="$PROJECT_DIR$/environment/Utility.py" />
         <option value="$PROJECT_DIR$/tests/QuantExperiment.py" />
+        <option value="$PROJECT_DIR$/environment/DAXParser.py" />
+        <option value="$PROJECT_DIR$/environment/Resource.py" />
+        <option value="$PROJECT_DIR$/onlinedvmheft/simple_heft.py" />
       </list>
     </option>
   </component>
@@ -287,6 +301,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="environment" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -318,27 +346,7 @@
       <recent name="D:\wspace\heft" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Unittest OnlineHEFT.test_all_different_task">
-    <configuration default="false" name="test_core" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/heft/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/heft/tests/test_core.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python tests.Unittests in QuantExperiment">
     <configuration default="false" name="Unittests in test_online_dvm_heft" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -436,6 +444,32 @@
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
       <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittests in QuantExperiment" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/QuantExperiment.py" />
+      <option name="CLASS_NAME" value="QuantExperiment" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_CLASS" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -586,19 +620,19 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="1" class="java.lang.String" itemvalue="Python.test_core" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in test_online_dvm_heft" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestSolver.test_schedule" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest OnlineHEFT.test_all_different_task" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittest OnlineHEFT.test_schedule" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in test_online_dvm_heft" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestSolver.test_schedule" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest OnlineHEFT.test_all_different_task" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest OnlineHEFT.test_schedule" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittests in QuantExperiment" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest OnlineHEFT.test_all_different_task" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest OnlineHEFT.test_schedule" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in test_online_dvm_heft" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestSolver.test_schedule" />
-        <item index="4" class="java.lang.String" itemvalue="Python.test_core" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in QuantExperiment" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest OnlineHEFT.test_all_different_task" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest OnlineHEFT.test_schedule" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in test_online_dvm_heft" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestSolver.test_schedule" />
       </list>
     </recent_temporary>
   </component>
@@ -629,23 +663,23 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13398694" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16251831" sideWeight="0.6944444" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24944071" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16251831" sideWeight="0.6356209" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14705883" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30555555" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14653243" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36437908" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13422818" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -677,8 +711,25 @@
           <line>462</line>
           <option name="timeStamp" value="47" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/onlinedvmheft/simple_heft.py</url>
+          <line>158</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/onlinedvmheft/simple_heft.py</url>
+          <line>71</line>
+          <option name="timeStamp" value="79" />
+        </line-breakpoint>
+        <breakpoint enabled="true" type="python-exception">
+          <properties exception="AttributeError" />
+          <option name="timeStamp" value="54" />
+        </breakpoint>
       </breakpoints>
-      <option name="time" value="49" />
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="80" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -711,23 +762,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/onlinedvmheft/core.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="22" selection-start="320" selection-end="320" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="9588">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/heft/online-heft/core.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="179" column="4" selection-start="4393" selection-end="4393" vertical-scroll-proportion="0.0" vertical-offset="3086" max-vertical-offset="4086">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/heft/core.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="153" column="0" selection-start="5023" selection-end="5023" vertical-scroll-proportion="0.0" vertical-offset="2720" max-vertical-offset="3230">
           <folding />
         </state>
       </provider>
@@ -741,63 +778,73 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/environment/Utility.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="64" selection-start="361" selection-end="376" vertical-scroll-proportion="0.0" vertical-offset="5" max-vertical-offset="663">
+        <state line="20" column="26" selection-start="561" selection-end="561" vertical-scroll-proportion="0.0" vertical-offset="107" max-vertical-offset="680">
           <folding>
             <element signature="e#24#67#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="12" selection-start="165" selection-end="165" vertical-scroll-proportion="0.0" vertical-offset="1199" max-vertical-offset="1785">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/environment/DAXParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="69" selection-start="440" selection-end="440" vertical-scroll-proportion="0.0" vertical-offset="73" max-vertical-offset="1156">
+          <folding>
+            <element signature="e#24#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/heft/core.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="107" column="19" selection-start="3537" selection-end="3537" vertical-scroll-proportion="0.0" vertical-offset="1520" max-vertical-offset="3230">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/onlinedvmheft/tests/test_online_dvm_heft.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="0" selection-start="430" selection-end="430" vertical-scroll-proportion="0.24637681" vertical-offset="153" max-vertical-offset="3043">
+        <state line="172" column="14" selection-start="5443" selection-end="5489" vertical-scroll-proportion="0.0" vertical-offset="857" max-vertical-offset="3043">
           <folding>
             <element signature="e#23#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/environment/DAXParser.py">
+    <entry file="file://$PROJECT_DIR$/onlinedvmheft/core.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="23" selection-end="23" vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="1156">
-          <folding>
-            <element signature="e#24#58#0" expanded="true" />
-            <marker date="1389543604928" expanded="true" signature="194:1921" placeholder="..." />
-            <marker date="1389543604928" expanded="true" signature="268:712" placeholder="..." />
-            <marker date="1389543604928" expanded="true" signature="335:400" placeholder="..." />
-            <marker date="1389543604928" expanded="true" signature="769:1921" placeholder="..." />
-          </folding>
+        <state line="188" column="9" selection-start="3559" selection-end="3648" vertical-scroll-proportion="0.775076" vertical-offset="2907" max-vertical-offset="9554">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/environment/Resource.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="130" column="13" selection-start="3459" selection-end="3471" vertical-scroll-proportion="0.0" vertical-offset="1887" max-vertical-offset="2465">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/onlinedvmheft/simple_heft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="21" selection-start="559" selection-end="559" vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="3366">
-          <folding>
-            <element signature="e#48#77#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="25" selection-end="165" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1785">
+        <state line="135" column="22" selection-start="3600" selection-end="3600" vertical-scroll-proportion="0.0" vertical-offset="2040" max-vertical-offset="2601">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/QuantExperiment.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="41" selection-start="2785" selection-end="2785" vertical-scroll-proportion="2.3788395" vertical-offset="0" max-vertical-offset="1547">
+        <state line="25" column="0" selection-start="1020" selection-end="1020" vertical-scroll-proportion="0.0" vertical-offset="336" max-vertical-offset="1581">
           <folding>
             <element signature="e#24#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/onlinedvmheft/simple_heft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="101" column="0" selection-start="3270" selection-end="3270" vertical-scroll-proportion="4.6257143" vertical-offset="98" max-vertical-offset="3655">
+          <folding>
+            <element signature="e#48#77#0" expanded="true" />
           </folding>
         </state>
       </provider>

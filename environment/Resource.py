@@ -1,6 +1,6 @@
 __author__ = 'nikolay'
 
-from random import random
+from random import Random
 
 ##just an enum
 class SoftItem:
@@ -54,19 +54,21 @@ class ResourceGenerator:
          pass
 
      def generate(self):
+         random = Random()
          resCount = random.randint(ResourceGenerator.MIN_RES_COUNT, ResourceGenerator.MAX_RES_COUNT)
          resources = list()
          for i in range(0,resCount):
-             res = Resource("res_" + i)
+             res = Resource("res_" + str(i))
              resources.append(res)
              nodeCount = random.randint(ResourceGenerator.MIN_NODE_COUNT, ResourceGenerator.MAX_NODE_COUNT)
              for j in range(0,nodeCount):
-                 node = Node( res.name +  "_node_" + j, res, [SoftItem.ANY_SOFT])
+                 node = Node( res.name +  "_node_" + str(j), res, [SoftItem.ANY_SOFT])
                  node.flops = random.randint(ResourceGenerator.MIN_FLOPS, ResourceGenerator.MAX_FLOPS)
                  res.nodes.add(node)
          return resources
 
      def generateTransferMatrix(self, resources):
+         random = Random()
          allNodes = list()
          for res in resources:
              for node in res.nodes:
@@ -108,9 +110,9 @@ class PolicyChecker:
 
 class Workflow:
     def __init__(self, id, head_task):
-        self.id = None
+        self.id = id
         self.owner = None ## here must be a user
-        self.head_task = None ## tasks here
+        self.head_task = head_task ## tasks here
         self.deadline = None ## deadline time
         self.deadline_type = None ## deadline type
         self.priority = None ## priority of wf
@@ -118,8 +120,8 @@ class Workflow:
 
 class Task:
     def __init__(self, id, internal_wf_id):
-        self.id = None
-        self.internal_wf_id = None
+        self.id = id
+        self.internal_wf_id = internal_wf_id
         self.wf = None
         self.parents = set() ## set of parents tasks
         self.children = set() ## set of children tasks
@@ -130,10 +132,16 @@ class Task:
         self.input_files = None ##
         self.output_files = None
 
+    def __str__(self):
+        return self.id
+
+    def __repr__(self):
+        return self.id
+
 class File:
      def __init__(self, name, size):
          self.name = name
          self.size = size
 
-UP_JOB = Task("up_job")
-DOWN_JOB = Task("down_job")
+UP_JOB = Task("up_job","up_job")
+DOWN_JOB = Task("down_job", "down_job")
