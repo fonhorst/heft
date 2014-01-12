@@ -12,13 +12,6 @@ from environment.Resource import UP_JOB
 from environment.Resource import DOWN_JOB
 
 
-
-
-
-
-
-
-
 class DynamicHeftPlanner(Scheduler):
     def __init__(self):
         pass
