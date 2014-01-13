@@ -48,6 +48,8 @@ class StaticHeftPlanner(Scheduler):
                 result.update(resource.nodes)
             return result
 
+        print("common nodes count:" + str(len(toNodes(resources))))
+
         def compcost(job, agent):
             return self.estimator.estimate_runtime(job, agent)
 
@@ -65,22 +67,29 @@ class StaticHeftPlanner(Scheduler):
             jobs = set(wf_dag.keys()) | set(x for xx in wf_dag.values() for x in xx)
             jobs = list(jobs)
 
+            counter = 0
             for job in jobs:
                 print('Calculate: ' + str(job))
                 print('Rank: ' + str(rank(job)))
-
-            jobs = sorted(jobs, key=rank)
-            wf_jobs[wf] = list(reversed(jobs))
-
+                ##TODO: remove it later
+                counter += 1
+                if counter == 3:
+                    break
+            ##TODO: uncomment it later
+            ##jobs = sorted(jobs, key=rank)
+            ##wf_jobs[wf] = list(reversed(jobs))
+            break
+        ##TODO: remove it later
+        return None
         new_plan = {node:[] for node in nodes}
 
-        for jobs in wf_jobs:
+        """for jobs in wf_jobs:
             new_schedule = self.mapping(jobs,
                                new_plan,
                                resources,
                                commcost,
                                compcost)
-            new_plan = new_schedule.mapping
+            new_plan = new_schedule.mapping"""
 
         return new_schedule
 
@@ -115,13 +124,28 @@ class StaticHeftPlanner(Scheduler):
 
 
     def avr_commcost(self,ni, nj, nodes, commcost):
+        ##TODO: remake it later
+        ##return 0
         """ Average communication cost """
         n = len(nodes)
         if n == 1:
             return 0
         npairs = n * (n - 1)
-        return 1. * sum(commcost(ni, nj, a1, a2) for a1 in nodes for a2 in nodes
-                        if a1 != a2) / npairs
+        """commcost(ni, nj, a1, a2)"""
+        """sum( 0 for a1 in nodes for a2 in nodes if a1 != a2)"""
+        sm = 0
+        l = len(nodes)
+        a1 = 0
+        while a1 < l:
+            a2 = 0
+            while a2 < l:
+                a2 += 1
+            a1 += 1
+            sm += commcost(ni, nj, a1, a2)
+        """for a1 in nodes:
+            for a2 in nodes:
+                sm += 0"""
+        return 1. * sm/ npairs
 
     def convert_to_parent_children_map(self, wf):
         head = wf.head_task

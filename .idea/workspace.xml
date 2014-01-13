@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="" />
+    <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/QuantExperiment.py" afterPath="$PROJECT_DIR$/tests/QuantExperiment.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/heft.iml" afterPath="$PROJECT_DIR$/.idea/heft.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/onlinedvmheft/simple_heft.py" afterPath="$PROJECT_DIR$/onlinedvmheft/simple_heft.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,10 +31,10 @@
     <splitter split-orientation="horizontal" split-proportion="0.6512238">
       <split-first>
         <leaf>
-          <file leaf-file-name="simple_heft.py" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="simple_heft.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/onlinedvmheft/simple_heft.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="101" column="0" selection-start="3270" selection-end="3270" vertical-scroll-proportion="4.6257143" vertical-offset="98" max-vertical-offset="3655">
+                <state line="125" column="41" selection-start="4032" selection-end="4032" vertical-scroll-proportion="-82.68" vertical-offset="1058" max-vertical-offset="5975">
                   <folding>
                     <element signature="e#48#77#0" expanded="true" />
                   </folding>
@@ -36,23 +42,12 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="QuantExperiment.py" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="QuantExperiment.py" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/tests/QuantExperiment.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="25" column="0" selection-start="1020" selection-end="1020" vertical-scroll-proportion="0.0" vertical-offset="336" max-vertical-offset="1581">
+                <state line="32" column="46" selection-start="1274" selection-end="1274" vertical-scroll-proportion="0.7048093" vertical-offset="375" max-vertical-offset="3125">
                   <folding>
                     <element signature="e#24#39#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="DAXParser.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/environment/DAXParser.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="14" column="69" selection-start="440" selection-end="440" vertical-scroll-proportion="0.0" vertical-offset="73" max-vertical-offset="1156">
-                  <folding>
-                    <element signature="e#24#58#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -61,7 +56,7 @@
           <file leaf-file-name="ResourceManager.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="9" column="12" selection-start="165" selection-end="165" vertical-scroll-proportion="0.0" vertical-offset="1199" max-vertical-offset="1785">
+                <state line="9" column="12" selection-start="165" selection-end="165" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="2625">
                   <folding />
                 </state>
               </provider>
@@ -70,7 +65,7 @@
           <file leaf-file-name="Resource.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/environment/Resource.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="135" column="22" selection-start="3600" selection-end="3600" vertical-scroll-proportion="0.0" vertical-offset="2040" max-vertical-offset="2601">
+                <state line="147" column="0" selection-start="3825" selection-end="3825" vertical-scroll-proportion="0.0" vertical-offset="3675" max-vertical-offset="3825">
                   <folding />
                 </state>
               </provider>
@@ -83,10 +78,8 @@
           <file leaf-file-name="test_online_dvm_heft.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/onlinedvmheft/tests/test_online_dvm_heft.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="172" column="14" selection-start="5443" selection-end="5489" vertical-scroll-proportion="0.0" vertical-offset="857" max-vertical-offset="3043">
-                  <folding>
-                    <element signature="e#23#38#0" expanded="true" />
-                  </folding>
+                <state line="172" column="14" selection-start="5443" selection-end="5489" vertical-scroll-proportion="0.0" vertical-offset="4300" max-vertical-offset="4475">
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -94,19 +87,8 @@
           <file leaf-file-name="core.py" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/onlinedvmheft/core.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="188" column="9" selection-start="3559" selection-end="3648" vertical-scroll-proportion="0.775076" vertical-offset="2907" max-vertical-offset="9554">
+                <state line="188" column="9" selection-start="3559" selection-end="3648" vertical-scroll-proportion="-0.08291874" vertical-offset="4700" max-vertical-offset="14050">
                   <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Utility.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/environment/Utility.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="20" column="26" selection-start="561" selection-end="561" vertical-scroll-proportion="0.0" vertical-offset="107" max-vertical-offset="680">
-                  <folding>
-                    <element signature="e#24#67#0" expanded="true" />
-                  </folding>
                 </state>
               </provider>
             </entry>
@@ -114,7 +96,7 @@
           <file leaf-file-name="core.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/heft/core.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="107" column="19" selection-start="3537" selection-end="3537" vertical-scroll-proportion="0.0" vertical-offset="1520" max-vertical-offset="3230">
+                <state line="107" column="19" selection-start="3537" selection-end="3537" vertical-scroll-proportion="0.0" vertical-offset="2675" max-vertical-offset="4800">
                   <folding />
                 </state>
               </provider>
@@ -152,18 +134,18 @@
         <option value="$PROJECT_DIR$/environment/Java_version.py" />
         <option value="$PROJECT_DIR$/onlinedvmheft/simple-heft.py" />
         <option value="$PROJECT_DIR$/environment/Utility.py" />
-        <option value="$PROJECT_DIR$/tests/QuantExperiment.py" />
         <option value="$PROJECT_DIR$/environment/DAXParser.py" />
         <option value="$PROJECT_DIR$/environment/Resource.py" />
         <option value="$PROJECT_DIR$/onlinedvmheft/simple_heft.py" />
+        <option value="$PROJECT_DIR$/tests/QuantExperiment.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="width" value="1696" />
+    <option name="height" value="1026" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -191,6 +173,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -198,10 +181,6 @@
               <option name="myItemId" value="heft" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -224,119 +203,26 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="penv" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="penv" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="onlinedvmheft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="onlinedvmheft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="environment" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/penv-home" />
+    <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/penv-home" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
-      <PyConsoleSettings />
+      <console-settings />
     </option>
   </component>
   <component name="RecentsManager">
@@ -663,23 +549,23 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13398694" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16251831" sideWeight="0.6356209" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14705883" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1625" sideWeight="0.7181208" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27964205" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30555555" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36437908" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2818792" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13398694" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -713,13 +599,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/onlinedvmheft/simple_heft.py</url>
-          <line>158</line>
+          <line>182</line>
           <option name="timeStamp" value="65" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/onlinedvmheft/simple_heft.py</url>
-          <line>71</line>
-          <option name="timeStamp" value="79" />
         </line-breakpoint>
         <breakpoint enabled="true" type="python-exception">
           <properties exception="AttributeError" />
@@ -729,10 +610,24 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="80" />
+      <option name="time" value="81" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/onlinedvmheft/core.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="188" column="9" selection-start="3559" selection-end="3648" vertical-scroll-proportion="0.0" vertical-offset="4700" max-vertical-offset="14100">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/heft/core.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="107" column="19" selection-start="3537" selection-end="3537" vertical-scroll-proportion="0.0" vertical-offset="2675" max-vertical-offset="4800">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/heft/util.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="376" />
@@ -757,47 +652,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/environment/EventAutomata.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="0" selection-start="1108" selection-end="1108" vertical-scroll-proportion="0.0" vertical-offset="902" max-vertical-offset="1675">
-          <folding />
-        </state>
+        <state line="61" column="0" selection-start="1108" selection-end="1108" vertical-scroll-proportion="0.0" vertical-offset="902" max-vertical-offset="1675" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/heft/online-heft/core.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="179" column="4" selection-start="4393" selection-end="4393" vertical-scroll-proportion="0.0" vertical-offset="3086" max-vertical-offset="4086">
-          <folding />
-        </state>
+        <state line="179" column="4" selection-start="4393" selection-end="4393" vertical-scroll-proportion="0.0" vertical-offset="3086" max-vertical-offset="4086" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/onlinedvmheft/heft-scheduler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="37" selection-start="0" selection-end="13389" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5916">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/environment/Utility.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="26" selection-start="561" selection-end="561" vertical-scroll-proportion="0.0" vertical-offset="107" max-vertical-offset="680">
-          <folding>
-            <element signature="e#24#67#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="6" column="37" selection-start="0" selection-end="13389" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5916" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="12" selection-start="165" selection-end="165" vertical-scroll-proportion="0.0" vertical-offset="1199" max-vertical-offset="1785">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/environment/DAXParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="69" selection-start="440" selection-end="440" vertical-scroll-proportion="0.0" vertical-offset="73" max-vertical-offset="1156">
-          <folding>
-            <element signature="e#24#58#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -811,40 +682,38 @@
     <entry file="file://$PROJECT_DIR$/onlinedvmheft/tests/test_online_dvm_heft.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="172" column="14" selection-start="5443" selection-end="5489" vertical-scroll-proportion="0.0" vertical-offset="857" max-vertical-offset="3043">
-          <folding>
-            <element signature="e#23#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/onlinedvmheft/core.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="188" column="9" selection-start="3559" selection-end="3648" vertical-scroll-proportion="0.775076" vertical-offset="2907" max-vertical-offset="9554">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/environment/Resource.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="135" column="22" selection-start="3600" selection-end="3600" vertical-scroll-proportion="0.0" vertical-offset="2040" max-vertical-offset="2601">
+        <state line="147" column="0" selection-start="3825" selection-end="3825" vertical-scroll-proportion="0.0" vertical-offset="3675" max-vertical-offset="3825">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/QuantExperiment.py">
+    <entry file="file://$PROJECT_DIR$/onlinedvmheft/core.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="0" selection-start="1020" selection-end="1020" vertical-scroll-proportion="0.0" vertical-offset="336" max-vertical-offset="1581">
-          <folding>
-            <element signature="e#24#39#0" expanded="true" />
-          </folding>
+        <state line="188" column="9" selection-start="3559" selection-end="3648" vertical-scroll-proportion="-0.08291874" vertical-offset="4700" max-vertical-offset="14050">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/onlinedvmheft/simple_heft.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="0" selection-start="3270" selection-end="3270" vertical-scroll-proportion="4.6257143" vertical-offset="98" max-vertical-offset="3655">
+        <state line="125" column="41" selection-start="4032" selection-end="4032" vertical-scroll-proportion="-82.68" vertical-offset="1058" max-vertical-offset="5975">
           <folding>
             <element signature="e#48#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/QuantExperiment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="46" selection-start="1274" selection-end="1274" vertical-scroll-proportion="0.7048093" vertical-offset="375" max-vertical-offset="3125">
+          <folding>
+            <element signature="e#24#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
