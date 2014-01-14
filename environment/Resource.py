@@ -33,16 +33,16 @@ class Node:
         ##self.memory = 0
         ##self.bandwidth = 0
         ##self.resource = None
-        ##self.state = Node.Unknown
+        self.state = Node.Unknown
 
 
 
 class ResourceGenerator:
 
-     MIN_RES_COUNT = 1
+     MIN_RES_COUNT = 15
      MAX_RES_COUNT = 16
-     MIN_NODE_COUNT = 1
-     MAX_NODE_COUNT = 32
+     MIN_NODE_COUNT = 15
+     MAX_NODE_COUNT = 16
 
      MIN_FLOPS = 5
      MAX_FLOPS = 20

@@ -17,7 +17,7 @@ class Utility:
     def generateUrgentPipeline(self, dax_filepath, wf_start_id, task_postfix_id, deadline):
         parser = DAXParser()
         random = Random()
-        pipelineSize = random.randint(Utility.MIN_PIPELINE_SIZE,Utility.MAX_PIPELINE_SIZE)
+        pipelineSize = 1##random.randint(Utility.MIN_PIPELINE_SIZE,Utility.MAX_PIPELINE_SIZE)
         wfs = [parser.parseXml(dax_filepath,wf_start_id + str(i), task_postfix_id + str(i)) for i in range(0, pipelineSize)]
         for wf in wfs:
             wf.deadline = deadline

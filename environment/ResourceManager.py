@@ -28,8 +28,8 @@ class Estimator:
 
 
 class ScheduleItem:
-    def __init__(self, operation, start_time, end_time):
-        self.operation = operation ## either task or service operation like vm up
+    def __init__(self, job, start_time, end_time):
+        self.job = job ## either task or service operation like vm up
         self.start_time = start_time
         self.end_time = end_time
 

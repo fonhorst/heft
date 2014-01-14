@@ -78,11 +78,11 @@ def wrap():
                                            task_postfix_id_1,
                                            deadline_1)
 
-    pipeline_2 = ut.generateUrgentPipeline(dax2,
-                                           wf_start_id_2,
-                                           task_postfix_id_2,
-                                           deadline_2)
-    common_pipeline = pipeline_1 + pipeline_2
+    ##pipeline_2 = ut.generateUrgentPipeline(dax2,
+    ##                                       wf_start_id_2,
+    ##                                       task_postfix_id_2,
+    ##                                       deadline_2)
+    common_pipeline = pipeline_1 ## + pipeline_2
 
     rgen = ResourceGenerator()
     resources = rgen.generate()
@@ -96,6 +96,8 @@ def wrap():
     planner.workflows = common_pipeline
 
     schedule = planner.schedule()
+
+    print("planner.global_count: " + str(planner.global_count))
 
 class QuantExperiment(TestCase):
 

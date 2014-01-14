@@ -15,24 +15,16 @@ from environment.Resource import DOWN_JOB
 
 
 class StaticHeftPlanner(Scheduler):
+    global_count = 0
     def __init__(self):
+        self.task_rank_cache = dict()
         pass
 
     def schedule(self):
-        """
-        without performance variability:
-        1. take all unstarted tasks of previous dags
-        2. set inter priority for every task of it
-        3. create priority(intra and inter) for new incomings
-        4. sort by priority decreasing
-        5. map all tasks (for ghosts machine calculate time of possible start)
-        WITH performance variability:
-        """
 
         """
          create inter-priority
         """
-
         def byPriority(wf):
             ##TODO: remake it later
            return 0 if wf.priority is None else wf.priority
@@ -66,34 +58,24 @@ class StaticHeftPlanner(Scheduler):
                                          compcost=compcost, commcost=commcost)
             jobs = set(wf_dag.keys()) | set(x for xx in wf_dag.values() for x in xx)
             jobs = list(jobs)
+            jobs = sorted(jobs, key=rank)
+            wf_jobs[wf] = list(reversed(jobs))
 
-            counter = 0
-            for job in jobs:
-                print('Calculate: ' + str(job))
-                print('Rank: ' + str(rank(job)))
-                ##TODO: remove it later
-                counter += 1
-                if counter == 3:
-                    break
-            ##TODO: uncomment it later
-            ##jobs = sorted(jobs, key=rank)
-            ##wf_jobs[wf] = list(reversed(jobs))
-            break
-        ##TODO: remove it later
-        return None
         new_plan = {node:[] for node in nodes}
-
-        """for jobs in wf_jobs:
-            new_schedule = self.mapping(jobs,
+        new_schedule = None
+        for (wf, jobs) in wf_jobs.items():
+            new_schedule = self.mapping([(wf, jobs)],
                                new_plan,
-                               resources,
+                               nodes,
                                commcost,
                                compcost)
-            new_plan = new_schedule.mapping"""
+            new_plan = new_schedule.mapping
 
         return new_schedule
 
     def ranking(self, ni, nodes, succ, compcost, commcost):
+
+
 
         """ Rank of job
 
@@ -102,20 +84,24 @@ class StaticHeftPlanner(Scheduler):
 
         [1]. http://en.wikipedia.org/wiki/Heterogeneous_Earliest_Finish_Time
         """
-        rank = partial(self.ranking, compcost=compcost, commcost=commcost,
-                       succ=succ, nodes=nodes)
+        ##rank = partial(self.ranking, compcost=compcost, commcost=commcost,
+        ##               succ=succ, nodes=nodes)
         w = partial(self.avr_compcost, compcost=compcost, nodes=nodes)
         c = partial(self.avr_commcost, nodes=nodes, commcost=commcost)
 
-        result = None
-
-        if ni in succ and succ[ni]:
-            result = w(ni) + max(c(ni, nj) + rank(nj) for nj in succ[ni])
-        else:
-            result = w(ni)
+        def estimate(ni):
+            result = self.task_rank_cache.get(ni,None)
+            if result is not None:
+                return result
+            if ni in succ and succ[ni]:
+                result = w(ni) + max(c(ni, nj) + estimate(nj) for nj in succ[ni])
+            else:
+                result = w(ni)
+            self.task_rank_cache[ni] = result
+            return result
 
         """print( "%s %s" % (ni, result))"""
-
+        result = estimate(ni)
         return result
 
     def avr_compcost(self,ni, nodes, compcost):
@@ -136,16 +122,20 @@ class StaticHeftPlanner(Scheduler):
         sm = 0
         l = len(nodes)
         a1 = 0
-        while a1 < l:
+
+        """while a1 < l:
             a2 = 0
             while a2 < l:
                 a2 += 1
-            a1 += 1
-            sm += commcost(ni, nj, a1, a2)
+                ##sm += 0##commcost(ni, nj, a1, a2)
+            a1 += 1"""
+        for a1 in range(0,l):
+            for a2 in range(0,l):
+               StaticHeftPlanner.global_count += 1
         """for a1 in nodes:
             for a2 in nodes:
                 sm += 0"""
-        return 1. * sm/ npairs
+        return 1. * sm/npairs
 
     def convert_to_parent_children_map(self, wf):
         head = wf.head_task
@@ -159,7 +149,7 @@ class StaticHeftPlanner(Scheduler):
         mapp(head.children, map)
         return map
 
-    def mapping(self, sorted_jobs, existing_plan, resources, commcost, compcost):
+    def mapping(self, sorted_jobs, existing_plan, nodes, commcost, compcost):
         """def allocate(job, orders, jobson, prec, compcost, commcost):"""
         """ Allocate job to the machine with earliest finish time
 
@@ -168,16 +158,16 @@ class StaticHeftPlanner(Scheduler):
 
         jobson = dict()
 
-        nodes = set()
-        for resource in resources:
-            nodes.update(resource.nodes)
+        ##nodes = set()
+        ##for resource in resources:
+        ##    nodes.update(resource.nodes)
 
         new_plan = existing_plan
 
 
         def ft(machine):
             cost = st(machine) + compcost(task, machine)
-            print("machine: %s job:%s cost: %s" % (machine.id, task.id, cost))
+            print("machine: %s job:%s cost: %s" % (machine.name, task.id, cost))
             return cost
 
         for wf, tasks in sorted_jobs:
@@ -211,7 +201,7 @@ class StaticHeftPlanner(Scheduler):
         if self.can_be_executed(node, task):
             ## static or running virtual machine
             if node.state is not Node.Down:
-                agent_ready = orders[node][-1].end if orders[node] else 0
+                agent_ready = orders[node][-1].end_time if orders[node] else 0
                 if task in prec:
                     comm_ready = max([self.endtime(p, orders[jobson[p]])
                                       + commcost(p, task, node, jobson[p]) for p in prec[task]])
@@ -230,4 +220,4 @@ class StaticHeftPlanner(Scheduler):
         """ Endtime of job in list of events """
         for e in events:
             if e.job == job:
-                return e.end
+                return e.end_time
