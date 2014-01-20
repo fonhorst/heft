@@ -1,6 +1,6 @@
 __author__ = 'nikolay'
 
-
+##interface ResourceManager
 class ResourceManager:
     def __init__(self):
         pass
@@ -9,7 +9,7 @@ class ResourceManager:
     def get_resources(self):
         pass
 
-
+##interface Estimator
 class Estimator:
     def __init__(self):
         pass
@@ -26,7 +26,7 @@ class Estimator:
     def estimate_reliability(self, task, node):
         pass
 
-
+## element of Schedule
 class ScheduleItem:
     def __init__(self, job, start_time, end_time):
         self.job = job ## either task or service operation like vm up
@@ -52,7 +52,7 @@ class Schedule:
     def get_the_most_upcoming_item(self,time):
         pass
 
-
+##interface Executor
 class Executor:
     def __init__(self):
         self.schedule = None
@@ -80,10 +80,7 @@ class Executor:
     def generate_events(self):
         pass
 
-
-
-
-
+##interface Scheduler
 class Scheduler:
     def __init__(self):
         ##previously built schedule
@@ -94,5 +91,5 @@ class Scheduler:
         self.workflows = None
 
     ## build and returns new schedule
-    def build_schedule(self):
+    def schedule(self):
         pass

@@ -80,14 +80,6 @@ class ResourceGenerator:
              transferMx[node.name] = {nd.name: gen(node,nd)  for nd in allNodes}
          return transferMx
 
-
-
-
-
-
-
-
-
 class User:
     def __init__(self):
         self.name = ""
@@ -99,7 +91,7 @@ class AccessMode:
     common = "common"
     restricted = "restricted"
 
-
+##interface
 class PolicyChecker:
     def __init__(self):
         pass
