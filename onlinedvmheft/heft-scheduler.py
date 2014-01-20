@@ -10,6 +10,7 @@ from environment.ResourceManager import ScheduleItem
 from environment.ResourceManager import Schedule
 from environment.Resource import UP_JOB
 from environment.Resource import DOWN_JOB
+import math
 
 ##HEFT with management of virtual machine and full rescheduling in dynamic
 class ReschedulingHeftPlanner(Scheduler):
@@ -95,13 +96,17 @@ class ReschedulingHeftPlanner(Scheduler):
         ##               succ=succ, nodes=nodes)
         w = partial(self.avr_compcost, compcost=compcost, nodes=nodes)
         c = partial(self.avr_commcost, nodes=nodes, commcost=commcost)
+        cnt = partial(self.node_count_by_soft, nodes=nodes)
 
         def estimate(ni):
             result = self.task_rank_cache.get(ni,None)
             if result is not None:
                 return result
             if ni in succ and succ[ni]:
-                result = w(ni) + max(c(ni, nj) + estimate(nj) for nj in succ[ni])
+                ##the last component cnt(ni)/nodes.len is needed to account
+                ## software restrictions of particular task
+                ## and
+                result = w(ni) + max(c(ni, nj) + estimate(nj) for nj in succ[ni]) + math.pow((nodes.len - cnt(ni)),2)/nodes.len
             else:
                 result = w(ni)
             self.task_rank_cache[ni] = result
@@ -111,12 +116,12 @@ class ReschedulingHeftPlanner(Scheduler):
         result = estimate(ni)
         return result
 
-    def avr_compcost(ni, nodes, compcost):
+    def avr_compcost(self, ni, nodes, compcost):
         """ Average computation cost """
         return sum(compcost(ni, node) for node in nodes) / len(nodes)
 
 
-    def avr_commcost(ni, nj, nodes, commcost):
+    def avr_commcost(self, ni, nj, nodes, commcost):
         """ Average communication cost """
         n = len(nodes)
         if n == 1:
@@ -124,6 +129,12 @@ class ReschedulingHeftPlanner(Scheduler):
         npairs = n * (n - 1)
         return 1. * sum(commcost(ni, nj, a1, a2) for a1 in nodes for a2 in nodes
                         if a1 != a2) / npairs
+
+    def node_count_by_soft(self, ni, nodes):
+        count = 0
+        for node in nodes:
+           count += 1 if self.can_be_executed(node, ni) else 0
+        return count
 
     def convert_to_parent_children_map(self, wf):
         head = wf.head_task
