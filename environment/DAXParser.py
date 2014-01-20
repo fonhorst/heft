@@ -1,5 +1,3 @@
-__author__ = 'Николай'
-
 import xml.etree.ElementTree as ET
 from environment.Resource import Task
 from environment.Resource import File

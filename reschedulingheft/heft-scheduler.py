@@ -1,8 +1,5 @@
-__author__ = 'nikolay'
-
 from functools import partial
-from collections import namedtuple
-from heft.util import reverse_dict
+from environment.Utility import reverse_dict
 from environment.ResourceManager import Scheduler
 from environment.Resource import Node
 from environment.Resource import SoftItem
@@ -22,22 +19,12 @@ class ReschedulingHeftPlanner(Scheduler):
         pass
 
     def schedule(self, time):
-        """
-        without performance variability:
-        1. take all unstarted tasks of previous dags
-        2. set inter priority for every task of it
-        3. create priority(intra and inter) for new incomings
-        4. sort by priority decreasing
-        5. map all tasks (for ghosts machine calculate time of possible start)
-        WITH performance variability:
-        """
 
         """
          create inter-priority
         """
 
         def byPriority(wf):
-            ##TODO: remake it later
            return 0 if wf.priority is None else wf.priority
 
         ##simple inter priority sorting
@@ -85,15 +72,7 @@ class ReschedulingHeftPlanner(Scheduler):
         return new_schedule
 
     def ranking(self, ni, nodes, succ, compcost, commcost):
-        """ Rank of job
 
-        This code is designed to mirror the wikipedia entry.
-        Please see that for details
-
-        [1]. http://en.wikipedia.org/wiki/Heterogeneous_Earliest_Finish_Time
-        """
-        ##rank = partial(self.ranking, compcost=compcost, commcost=commcost,
-        ##               succ=succ, nodes=nodes)
         w = partial(self.avr_compcost, compcost=compcost, nodes=nodes)
         c = partial(self.avr_commcost, nodes=nodes, commcost=commcost)
         cnt = partial(self.node_count_by_soft, nodes=nodes)
@@ -291,7 +270,6 @@ class ReschedulingHeftPlanner(Scheduler):
             raise Exception("agent isn't a ghost, name: " + node.name)
 
         def filter_lambda(slt):
-            ## TODO:special type of resource
             return node.resource.slot_register[slt] == None
 
         free_slots = list(filter(filter_lambda, node.resource))

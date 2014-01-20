@@ -1,5 +1,3 @@
-__author__ = 'nikolay'
-
 from random import Random
 
 ##just an enum
@@ -8,7 +6,6 @@ class SoftItem:
     unix = "unix"
     matlab = "matlab"
     ANY_SOFT = "any_soft"
-    ##TODO: complete it later
 
 
 class Resource:
@@ -26,13 +23,7 @@ class Node:
         self.name = name
         self.soft = soft
         self.resource = resource
-        ##TODO: make correct resource properties here
         self.flops = 0
-        ##self.cpu_count = 0
-        ##self.cpu_flops
-        ##self.memory = 0
-        ##self.bandwidth = 0
-        ##self.resource = None
         self.state = Node.Unknown
 
 
@@ -119,8 +110,6 @@ class Task:
         self.children = set() ## set of children tasks
         self.soft_reqs = set() ## set of soft requirements
         self.runtime = None ## flops for calculating
-        ##self.hardware_reqs = None ## set of hardware requirements
-        ##self.generated_output_size = None ## size of generated output data, needed for transfering
         self.input_files = None ##
         self.output_files = None
 

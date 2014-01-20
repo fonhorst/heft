@@ -1,5 +1,3 @@
-__author__ = 'nikolay'
-
 ##interface ResourceManager
 class ResourceManager:
     def __init__(self):
