@@ -90,7 +90,6 @@ class Scheduler:
         self.old_schedule = None
         self.resource_manager = None
         self.estimator = None
-        self.event = None
         self.executor = None
         self.workflows = None
 

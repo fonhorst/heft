@@ -11,20 +11,16 @@ from environment.ResourceManager import Schedule
 from environment.Resource import UP_JOB
 from environment.Resource import DOWN_JOB
 
-
-class DynamicHeftPlanner(Scheduler):
-    def __init__(self):
+##HEFT with management of virtual machine and full rescheduling in dynamic
+class ReschedulingHeftPlanner(Scheduler):
+    def __init__(self, up_time, down_time, generate_new_ghost_machine):
+        self.task_rank_cache = dict()
+        self.up_time = up_time
+        self.down_time = down_time
+        self.generate_new_ghost_machine = generate_new_ghost_machine
         pass
 
-    def schedule(self, wfs,
-                        resources,
-                        compcost,
-                        commcost,
-                        current_schedule,
-                        time,
-                        up_time,
-                        down_time,
-                        generate_new_ghost_machine):
+    def schedule(self, time):
         """
         without performance variability:
         1. take all unstarted tasks of previous dags
@@ -40,7 +36,8 @@ class DynamicHeftPlanner(Scheduler):
         """
 
         def byPriority(wf):
-            wf.priority
+            ##TODO: remake it later
+           return 0 if wf.priority is None else wf.priority
 
         ##simple inter priority sorting
         sorted_wfs = sorted(self.workflows, key=byPriority)
@@ -51,36 +48,27 @@ class DynamicHeftPlanner(Scheduler):
             result = set()
             for resource in resources:
                 result.update(resource.nodes)
+            return result
 
         def compcost(job, agent):
-            return self.executor.estimate_runtime(job, agent)
-            ##return (job.mips / agent.mips) * 10
+            return self.estimator.estimate_runtime(job, agent)
 
 
         def commcost(ni, nj, A, B):
-            return self.executor.estimate_transfer_time(A, B, ni, nj)
-            ##if A == B:
-            ##    return 0
-            ##"""TODO: remake it later"""
-            ##return 100
+            return self.estimator.estimate_transfer_time(A, B, ni, nj)
 
+        nodes = toNodes(resources)
         ##without mapping
         for wf in sorted_wfs:
             wf_dag = self.convert_to_parent_children_map(wf)
-            rank = partial(self.ranking, nodes=toNodes(resources), succ=wf_dag,
+            rank = partial(self.ranking, nodes=nodes, succ=wf_dag,
                                          compcost=compcost, commcost=commcost)
             jobs = set(wf_dag.keys()) | set(x for xx in wf_dag.values() for x in xx)
             jobs = sorted(jobs, key=rank)
             wf_jobs[wf] = list(reversed(jobs))
 
-        ##old_dag_jobs = get_unstarted_tasks(current_schedule, time)
 
-        ##all_jobs = old_dag_jobs.copy()
-        ##all_jobs.update(wf_jobs)
-        """set(wf.dag.set(x for xx in wf.dag.values() for x in xx)keys())"""
-        ##sorted_jobs = sorted(all_jobs.items(), key=lambda tuple: tuple[0].arrival_time)
-
-        new_schedule = self.get_unchanged_schedule(current_schedule, time)
+        new_schedule = self.get_unchanged_schedule(self.old_schedule, time)
 
         for jobs in wf_jobs:
             new_schedule = self.mapping(jobs,
@@ -89,9 +77,9 @@ class DynamicHeftPlanner(Scheduler):
                                commcost,
                                compcost,
                                time,
-                               up_time,
-                               down_time,
-                               generate_new_ghost_machine)
+                               self.up_time,
+                               self.down_time,
+                               self.generate_new_ghost_machine)
 
         return new_schedule
 
@@ -103,20 +91,24 @@ class DynamicHeftPlanner(Scheduler):
 
         [1]. http://en.wikipedia.org/wiki/Heterogeneous_Earliest_Finish_Time
         """
-        rank = partial(self.ranking, compcost=compcost, commcost=commcost,
-                       succ=succ, agents=nodes)
+        ##rank = partial(self.ranking, compcost=compcost, commcost=commcost,
+        ##               succ=succ, nodes=nodes)
         w = partial(self.avr_compcost, compcost=compcost, nodes=nodes)
         c = partial(self.avr_commcost, nodes=nodes, commcost=commcost)
 
-        result = None
-
-        if ni in succ and succ[ni]:
-            result = w(ni) + max(c(ni, nj) + rank(nj) for nj in succ[ni])
-        else:
-            result = w(ni)
+        def estimate(ni):
+            result = self.task_rank_cache.get(ni,None)
+            if result is not None:
+                return result
+            if ni in succ and succ[ni]:
+                result = w(ni) + max(c(ni, nj) + estimate(nj) for nj in succ[ni])
+            else:
+                result = w(ni)
+            self.task_rank_cache[ni] = result
+            return result
 
         """print( "%s %s" % (ni, result))"""
-
+        result = estimate(ni)
         return result
 
     def avr_compcost(ni, nodes, compcost):
@@ -144,15 +136,15 @@ class DynamicHeftPlanner(Scheduler):
         return map
 
     def get_unchanged_schedule(self, sched, time):
-        ##new_plan = dict()
-        ##for vm, plan in sched.plan.items():
-        ##    unstarted_events = list(filter(lambda evt: evt.start < time, plan))
-        ##    new_plan[vm] = unstarted_events
-        ##new_sched = Schedule(id, new_plan)
-        ##return new_sched
-        return sched.get_schedule_in_time(time)
+        new_plan = dict()
+        for vm, plan in sched.plan.items():
+            unstarted_events = list(filter(lambda evt: evt.start < time, plan))
+            new_plan[vm] = unstarted_events
+        new_sched = Schedule(id, new_plan)
+        return new_sched
+        ##return sched.get_schedule_in_time(time)
 
-    def mapping(self, sorted_jobs, resources, existing_schedule, commcost, compcost, time, up_time, down_time, generate_new_ghost_machine):
+    def mapping(self, sorted_jobs, nodes, existing_schedule, commcost, compcost, time, up_time, down_time, generate_new_ghost_machine):
         """def allocate(job, orders, jobson, prec, compcost, commcost):"""
         """ Allocate job to the machine with earliest finish time
 
@@ -161,7 +153,7 @@ class DynamicHeftPlanner(Scheduler):
 
         jobson = dict()
 
-        new_plan = dict(existing_schedule.mapping)
+        new_plan = existing_schedule.mapping
 
         def ft(machine):
             cost = st(machine) + compcost(task, machine)
@@ -174,17 +166,8 @@ class DynamicHeftPlanner(Scheduler):
             for task in tasks:
                 print("======================")
                 st = partial(self.start_time, task, new_plan, jobson, prec, commcost, up_time, down_time, time)
-                """ft = lambda machine: st(machine) + compcost(job, machine)"""
-
 
                 agent = min(new_plan.keys(), key=ft)
-                """
-                if agent.cost >= 100000:
-                    ghost = geberate_new_ghost_machine
-                    new_plan[ghost] = []
-                    print("Creating new ghost: " + ft(ghost))
-                    agent = ghost
-                """
 
                 start = st(agent)
                 end = ft(agent)
@@ -192,7 +175,6 @@ class DynamicHeftPlanner(Scheduler):
                 if start >= 1000000:
                     ghost = generate_new_ghost_machine()
                     new_plan[ghost] = []
-                    ##TODO: correct it later
                     ghost.soft = [SoftItem.ANY_SOFT]
                     print("Creating new ghost: %s cost: %s" % (ghost.id, ft(ghost)))
                     agent = ghost
@@ -209,14 +191,11 @@ class DynamicHeftPlanner(Scheduler):
                 new_plan[agent].append(ScheduleItem(task, start, end))
                 jobson[task] = agent
 
-        ##new_id = get_next_sched_id()
-        ##new_sched = Schedule(new_id, new_plan)
         new_sched = Schedule(new_plan)
         return new_sched
 
     def start_time(self, task, orders, jobson, prec, commcost, up_time, down_time, time, node):
         """
-            (We work without any window)
             1. check for correspondence of resource and job
             2. if resource is running(the last block in the old schedule is just a run), find first possible free time and put entry there
                 - else if resource is up, find first possible free time and put entry there (it should be performed to find a better solution)
@@ -229,7 +208,7 @@ class DynamicHeftPlanner(Scheduler):
         if self.can_be_executed(node, task):
             ## static or running virtual machine
             if node.state is not Node.Down:
-                agent_ready = orders[node][-1].end if orders[node] else 0
+                agent_ready = orders[node][-1].end_time if orders[node] else 0
                 if task in prec:
                     comm_ready = max([self.endtime(p, orders[jobson[p]])
                                       + commcost(p, task, node, jobson[p]) for p in prec[task]])
@@ -237,11 +216,9 @@ class DynamicHeftPlanner(Scheduler):
                     comm_ready = 0
                 return max(agent_ready, comm_ready)
             else:
+                ##find time and slot where running vm will become empty
                 free_time, slot = self.take_free_slot_or_find_freepoint_of_busy(node, orders, time)
                 real_start = self.register_vm_for_slot(free_time, slot, node, orders, up_time, down_time, task, True)
-                """
-                    register_vm_for_slot(free_time, slot, agent)
-                """
 
                 agent_ready = real_start
                 if task in prec:
@@ -251,7 +228,7 @@ class DynamicHeftPlanner(Scheduler):
                     comm_ready = 0
                 return max(agent_ready, comm_ready)
         else:
-            """TODO: remake it later. It means task cannot be executed on this resource"""
+            """It means task cannot be executed on this resource"""
             return 1000000
 
     def can_be_executed(self, node, job):
@@ -308,7 +285,6 @@ class DynamicHeftPlanner(Scheduler):
 
         free_slots = list(filter(filter_lambda, node.resource))
         if free_slots != list():
-            """slot_register[free_slots[0].key] = agent"""
             slot = free_slots[0]
             return current_time, slot
         else:
@@ -321,11 +297,6 @@ class DynamicHeftPlanner(Scheduler):
                     end += downing_time
                 min_time_of_freeing = end if end < min_time_of_freeing else min_time_of_freeing
                 minK = k
-            """
-            old_vm = slot_register[minK]
-            slot_register[minK] = agent
-            down_vm(old_vm)
-            """
         return min_time_of_freeing, minK
 
     def endtime(self, job, events):
@@ -336,7 +307,6 @@ class DynamicHeftPlanner(Scheduler):
 
     def is_not_downing(self,event):
         return event.job.id == DOWN_JOB.id
-
 
     def downing_time_for(self,job):
         return 100
