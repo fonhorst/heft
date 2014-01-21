@@ -10,9 +10,12 @@ from environment.Resource import DOWN_JOB
 import math
 
 ##HEFT with management of virtual machine and full rescheduling in dynamic
+from reschedulingheft.HeftHelper import HeftHelper
+
+
 class ReschedulingHeftPlanner(Scheduler):
     def __init__(self, up_time, down_time, generate_new_ghost_machine):
-        self.task_rank_cache = dict()
+        ##self.task_rank_cache = dict()
         self.up_time = up_time
         self.down_time = down_time
         self.generate_new_ghost_machine = generate_new_ghost_machine
@@ -29,14 +32,7 @@ class ReschedulingHeftPlanner(Scheduler):
 
         ##simple inter priority sorting
         sorted_wfs = sorted(self.workflows, key=byPriority)
-        wf_jobs = {wf: [] for wf in sorted_wfs}
         resources = self.resource_manager.get_resources()
-
-        def toNodes(resources):
-            result = set()
-            for resource in resources:
-                result.update(resource.nodes)
-            return result
 
         def compcost(job, agent):
             return self.estimator.estimate_runtime(job, agent)
@@ -45,16 +41,11 @@ class ReschedulingHeftPlanner(Scheduler):
         def commcost(ni, nj, A, B):
             return self.estimator.estimate_transfer_time(A, B, ni, nj)
 
-        nodes = toNodes(resources)
-        ##without mapping
-        for wf in sorted_wfs:
-            wf_dag = self.convert_to_parent_children_map(wf)
-            rank = partial(self.ranking, nodes=nodes, succ=wf_dag,
-                                         compcost=compcost, commcost=commcost)
-            jobs = set(wf_dag.keys()) | set(x for xx in wf_dag.values() for x in xx)
-            jobs = sorted(jobs, key=rank)
-            wf_jobs[wf] = list(reversed(jobs))
+        nodes = HeftHelper.to_nodes(resources)
 
+        ranking_func = HeftHelper.build_ranking_func(nodes, compcost, commcost)
+
+        wf_jobs = {wf: ranking_func(wf) for wf in sorted_wfs}
 
         new_schedule = self.get_unchanged_schedule(self.old_schedule, time)
 
@@ -71,59 +62,13 @@ class ReschedulingHeftPlanner(Scheduler):
 
         return new_schedule
 
-    def ranking(self, ni, nodes, succ, compcost, commcost):
 
-        w = partial(self.avr_compcost, compcost=compcost, nodes=nodes)
-        c = partial(self.avr_commcost, nodes=nodes, commcost=commcost)
-        cnt = partial(self.node_count_by_soft, nodes=nodes)
-
-        def estimate(ni):
-            result = self.task_rank_cache.get(ni,None)
-            if result is not None:
-                return result
-            if ni in succ and succ[ni]:
-                ##the last component cnt(ni)/nodes.len is needed to account
-                ## software restrictions of particular task
-                ## and
-                result = w(ni) + max(c(ni, nj) + estimate(nj) for nj in succ[ni]) + math.pow((nodes.len - cnt(ni)),2)/nodes.len
-            else:
-                result = w(ni)
-            self.task_rank_cache[ni] = result
-            return result
-
-        """print( "%s %s" % (ni, result))"""
-        result = estimate(ni)
-        return result
-
-    def avr_compcost(self, ni, nodes, compcost):
-        """ Average computation cost """
-        return sum(compcost(ni, node) for node in nodes) / len(nodes)
-
-
-    def avr_commcost(self, ni, nj, nodes, commcost):
-        """ Average communication cost """
-        n = len(nodes)
-        if n == 1:
-            return 0
-        npairs = n * (n - 1)
-        return 1. * sum(commcost(ni, nj, a1, a2) for a1 in nodes for a2 in nodes
-                        if a1 != a2) / npairs
 
     def node_count_by_soft(self, ni, nodes):
         count = 0
         for node in nodes:
            count += 1 if self.can_be_executed(node, ni) else 0
         return count
-
-    def convert_to_parent_children_map(self, wf):
-        head = wf.head_task
-        map = dict()
-        def mapp(parents, map):
-            for parent in parents:
-                map.get(parent, set()).append(parent.children)
-                mapp(parent.children, map)
-        mapp(head.children, map)
-        return map
 
     def get_unchanged_schedule(self, sched, time):
         new_plan = dict()

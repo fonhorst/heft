@@ -41,22 +41,40 @@ class ResourceGenerator:
      MIN_TRANSFER_SPEED = 1*1024*1024 ## 1MB
      MAX_TRANSFER_SPEED = 1*1024*1024*1024 ## 1GB
 
-     def __init__(self):
-         pass
+     def __init__(self, min_res_count=MIN_RES_COUNT,
+                        max_res_count=MAX_RES_COUNT,
+                        min_node_count=MIN_NODE_COUNT,
+                        max_node_count=MAX_NODE_COUNT,
+                        min_flops = MIN_FLOPS,
+                        max_flops = MAX_FLOPS,
+                        min_transfer_speed = MIN_TRANSFER_SPEED,
+                        max_transfer_speed = MAX_TRANSFER_SPEED):
+         self.min_res_count = min_res_count
+         self.max_res_count = max_res_count
+         self.min_node_count = min_node_count
+         self.max_node_count = max_node_count
+         self.min_flops = min_flops
+         self.max_flops = max_flops
+         self.min_transfer_speed = min_transfer_speed
+         self.max_transfer_speed = max_transfer_speed
 
      def generate(self):
          random = Random()
-         resCount = random.randint(ResourceGenerator.MIN_RES_COUNT, ResourceGenerator.MAX_RES_COUNT)
+         resCount = self.rand(random, self.min_res_count, self.max_res_count)
          resources = list()
          for i in range(0,resCount):
              res = Resource("res_" + str(i))
              resources.append(res)
-             nodeCount = random.randint(ResourceGenerator.MIN_NODE_COUNT, ResourceGenerator.MAX_NODE_COUNT)
-             for j in range(0,nodeCount):
-                 node = Node( res.name +  "_node_" + str(j), res, [SoftItem.ANY_SOFT])
-                 node.flops = random.randint(ResourceGenerator.MIN_FLOPS, ResourceGenerator.MAX_FLOPS)
+             nodeCount = self.rand(random, self.min_node_count, self.max_node_count)
+             for j in range(0, nodeCount):
+                 node = Node(res.name + "_node_" + str(j), res, [SoftItem.ANY_SOFT])
+                 node.flops = self.rand(random, self.min_flops, self.max_flops)
                  res.nodes.add(node)
          return resources
+
+     @staticmethod
+     def rand(random, min, max):
+         return min if min == max else random.randint(min, max)
 
      def generateTransferMatrix(self, resources):
          random = Random()
@@ -66,9 +84,9 @@ class ResourceGenerator:
                  allNodes.append(node)
          transferMx = dict()
          def gen(node, nd):
-             return  0 if node.name == nd.name else random.randint(ResourceGenerator.MIN_TRANSFER_SPEED, ResourceGenerator.MAX_TRANSFER_SPEED)
+             return  0 if node.name == nd.name else self.rand(random, self.min_transfer_speed, self.max_transfer_speed)
          for node in allNodes:
-             transferMx[node.name] = {nd.name: gen(node,nd)  for nd in allNodes}
+             transferMx[node.name] = {nd.name: gen(node, nd) for nd in allNodes}
          return transferMx
 
 class User:
@@ -99,6 +117,19 @@ class Workflow:
         self.deadline = None ## deadline time
         self.deadline_type = None ## deadline type
         self.priority = None ## priority of wf
+
+    def get_task_count(self):
+        def add_tasks(unique_tasks, task):
+            unique_tasks.update(task.children)
+            for child in task.children:
+                add_tasks(unique_tasks, child)
+        unique_tasks = set()
+        if self.head_task is None:
+            result = 0
+        else:
+            add_tasks(unique_tasks, self.head_task)
+            result = len(unique_tasks)
+        return result
 
 
 class Task:

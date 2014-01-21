@@ -21,7 +21,8 @@ class Utility:
     def __init__(self):
          pass
 
-    def generateUrgentPipeline(self, dax_filepath, wf_start_id, task_postfix_id, deadline):
+    @staticmethod
+    def generateUrgentPipeline(dax_filepath, wf_start_id, task_postfix_id, deadline):
         parser = DAXParser()
         random = Random()
         pipelineSize = 1##random.randint(Utility.MIN_PIPELINE_SIZE,Utility.MAX_PIPELINE_SIZE)
@@ -29,6 +30,66 @@ class Utility:
         for wf in wfs:
             wf.deadline = deadline
         return wfs
+
+    @staticmethod
+    def readWorkflow(dax_filepath, wf_start_id, task_postfix_id, deadline):
+        parser = DAXParser()
+        wf = parser.parseXml(dax_filepath, wf_start_id + "0", task_postfix_id + "0")
+        wf.deadline = deadline
+        return wf
+
+    @staticmethod
+    def validateNodesSeq(schedule):
+        for (node, items) in schedule.mapping.items():
+            time = -1
+            for item in items:
+                if time > item.start_time:
+                    return False
+                    ##raise Exception("Node: " + str(node) + " all time: " + str(time) + " st_time: " + str(item.start_time))
+                else:
+                    time = item.start_time
+                if time > item.end_time:
+                    return False
+                else:
+                    time = item.end_time
+        return True
+
+    @staticmethod
+    def validateParentsAndChildren(schedule, workflow):
+        #{
+        #   task: (node,start_time,end_time),
+        #   ...
+        #}
+        task_to_node = dict()
+        for (node, items) in schedule.mapping.items():
+            for item in items:
+                task_to_node[item.job] = (node, item.start_time, item.end_time)
+
+        def check(task):
+            for child in task.children:
+                p_end_time = task_to_node[task][2]
+                c_start_time = task_to_node[child][1]
+                if c_start_time < p_end_time:
+                    return False
+                res = check(child)
+                if res is False:
+                    return False
+            return True
+
+        for task in workflow.head_task.children:
+            res = check(task)
+            if res is False:
+                    return False
+        return True
+
+
+
+
+
+
+
+
+
 
 
 

@@ -42,9 +42,11 @@ class DAXParser:
             for parent in parents:
                 parent.children.add(child)
 
-        heads = [ task for (name,task) in internal_id2Task.items() if len(task.parents) == 0 ]
+        heads = [task for (name,task) in internal_id2Task.items() if len(task.parents) == 0 ]
 
-        common_head = Task("000_" + taskPostfixId,"000")
+        common_head = Task("000_" + taskPostfixId, "000")
+        for head in heads:
+            head.parents = set([common_head])
         common_head.children = heads
 
         wf = Workflow(wfId, common_head)
