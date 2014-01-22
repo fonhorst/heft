@@ -5,6 +5,7 @@ from environment.Resource import SoftItem
 from environment.ResourceManager import ScheduleItem
 from environment.ResourceManager import Schedule
 from environment.Utility import reverse_dict
+from reschedulingheft.HeftHelper import HeftHelper
 
 
 class StaticHeftPlanner(Scheduler):
@@ -14,7 +15,6 @@ class StaticHeftPlanner(Scheduler):
         pass
 
     def schedule(self):
-
         """
          create inter-priority
         """
@@ -26,35 +26,29 @@ class StaticHeftPlanner(Scheduler):
         wf_jobs = {wf: [] for wf in sorted_wfs}
         resources = self.resource_manager.get_resources()
 
-        def toNodes(resources):
-            result = set()
-            for resource in resources:
-                result.update(resource.nodes)
-            return result
-
-        print("common nodes count:" + str(len(toNodes(resources))))
+        ##print("common nodes count:" + str(len(toNodes(resources))))
 
         def compcost(job, agent):
             return self.estimator.estimate_runtime(job, agent)
 
 
         def commcost(ni, nj, A, B):
-            return self.estimator.estimate_transfer_time(A, B, ni, nj)
+            ##TODO: remake it later
+            if A == B:
+                return 0
+            return 10
+            ##return self.estimator.estimate_transfer_time(A, B, ni, nj)
 
-        nodes = toNodes(resources)
+        nodes = HeftHelper.to_nodes(resources)
 
-        ##without mapping
-        for wf in sorted_wfs:
-            wf_dag = self.convert_to_parent_children_map(wf)
-            rank = partial(self.ranking, nodes=nodes, succ=wf_dag,
-                                         compcost=compcost, commcost=commcost)
-            jobs = set(wf_dag.keys()) | set(x for xx in wf_dag.values() for x in xx)
-            jobs = list(jobs)
-            jobs = sorted(jobs, key=rank)
-            wf_jobs[wf] = list(reversed(jobs))
+        ranking_func = HeftHelper.build_ranking_func(nodes, compcost, commcost)
 
-        new_plan = {node:[] for node in nodes}
-        new_schedule = None
+        wf_jobs = {wf: ranking_func(wf) for wf in sorted_wfs}
+
+        ##new_schedule = self.get_unchanged_schedule(self.old_schedule, time)
+        new_schedule = Schedule({node: [] for node in nodes})
+        new_plan = new_schedule.mapping
+
         for (wf, jobs) in wf_jobs.items():
             new_schedule = self.mapping([(wf, jobs)],
                                new_plan,
@@ -126,7 +120,7 @@ class StaticHeftPlanner(Scheduler):
 
         def ft(machine):
             cost = st(machine) + compcost(task, machine)
-            print("machine: %s job:%s cost: %s" % (machine.name, task.id, cost))
+            ##print("machine: %s job:%s cost: %s" % (machine.name, task.id, cost))
             return cost
 
         for wf, tasks in sorted_jobs:

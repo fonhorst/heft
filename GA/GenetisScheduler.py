@@ -1,6 +1,7 @@
 from GA.GA import GeneticFunctions, GeneticAlgorithm
 import random
 from environment.ResourceManager import ScheduleItem, Schedule, Scheduler
+from environment.Utility import Utility
 from reschedulingheft.HeftHelper import HeftHelper
 
 
@@ -44,14 +45,11 @@ class SchedluerGeneticFunctions(GeneticFunctions):
         ## built from the chromo
         ## chromo is {Task:Node},{Task:Node},... - fixed length
         schedule = self.build_schedule(chromo)
-        time = self.get_the_last_time(schedule)
+        ##time = self.get_the_last_time(schedule)
+        time = Utility.get_the_last_time(schedule)
         return time
 
-    def get_the_last_time(self, schedule):
-        def get_last_time(node_items):
-            return 0 if len(node_items) == 0 else node_items[-1].end_time
-        last_time = max([get_last_time(node_items) for (node, node_items) in schedule.mapping.items()])
-        return last_time
+
 
     def build_schedule(self, chromo):
         ## {
@@ -188,16 +186,19 @@ class StaticGeneticScheduler(Scheduler):
 
         def commcost(ni, nj, A, B):
             ##TODO: remake it later
+            if A == B:
+                return 0
             return 10
             ##return self.estimator.estimate_transfer_time(A, B, ni, nj)
 
         ranking = HeftHelper.build_ranking_func(nodes, compcost, commcost)
         sorted_tasks = ranking(self.wf)
 
-        print('=================')
-        for task in sorted_tasks:
-            print(str(task))
-        print('=================')
+        ##TODO: uncomment it later.
+        # print('=================')
+        # for task in sorted_tasks:
+        #     print(str(task))
+        # print('=================')
 
         functions = SchedluerGeneticFunctions(self.wf,
                                               nodes,

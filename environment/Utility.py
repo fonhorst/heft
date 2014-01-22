@@ -82,6 +82,13 @@ class Utility:
                     return False
         return True
 
+    @staticmethod
+    def get_the_last_time( schedule):
+        def get_last_time(node_items):
+            return 0 if len(node_items) == 0 else node_items[-1].end_time
+        last_time = max([get_last_time(node_items) for (node, node_items) in schedule.mapping.items()])
+        return last_time
+
 
 
 
