@@ -1,3 +1,4 @@
+import math
 from GA.GA import GeneticFunctions, GeneticAlgorithm
 import random
 from environment.ResourceManager import ScheduleItem, Schedule, Scheduler
@@ -98,10 +99,11 @@ class SchedluerGeneticFunctions(GeneticFunctions):
         schedule = Schedule(schedule_mapping)
         return schedule
 
-    def check_stop(self, fits_populations):
+    def check_stop(self, population):
         self.counter += 1
         if self.counter % 10 == 0:
             ##best_match = list(sorted(fits_populations, key=lambda pair: pair[0], reverse=True))[-1][1]
+            fits_populations = [(self.fitness(ch),  ch) for ch in population]
             fits = [f for f, ch in fits_populations]
             best = min(fits)
             worst = max(fits)
@@ -114,8 +116,10 @@ class SchedluerGeneticFunctions(GeneticFunctions):
 
     def parents(self, fits_populations):
         while True:
-            father = self.tournament(fits_populations)
-            mother = self.tournament(fits_populations)
+            ##father = self.tournament(fits_populations)
+            ##mother = self.tournament(fits_populations)
+            father = self.select_random(fits_populations)
+            mother = self.select_random(fits_populations)
             yield (father, mother)
             pass
         pass
@@ -131,13 +135,21 @@ class SchedluerGeneticFunctions(GeneticFunctions):
         return child1, child2
 
     def mutation(self, chromosome):
-        ## simply change one node of task mapping
+        # simply change one node of task mapping
         index = random.randint(0, self.workflow_size - 1)
         node_index = random.randint(0, len(self.nodes) - 1)
         (task, node) = chromosome[index]
         mutated = list(chromosome)
         mutated[index] = (task, self.nodes[node_index])
         return mutated
+
+        # count = random.randint(0, max(1, math.floor(self.workflow_size * 0.1)))
+        # indexes = [(random.randint(0, len(self.nodes) - 1), random.randint(0, self.workflow_size - 1)) for i in range(count)]
+        # mutated = list(chromosome)
+        # for (nd_index, task_index) in indexes:
+        #     (task, node) = chromosome[task_index]
+        #     mutated[task_index] = (task, self.nodes[nd_index])
+        # return mutated
 
     # internals
     def tournament(self, fits_populations):

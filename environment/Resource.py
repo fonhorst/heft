@@ -26,6 +26,12 @@ class Node:
         self.flops = 0
         self.state = Node.Unknown
 
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
 
 
 class ResourceGenerator:
@@ -68,7 +74,18 @@ class ResourceGenerator:
              nodeCount = self.rand(random, self.min_node_count, self.max_node_count)
              for j in range(0, nodeCount):
                  node = Node(res.name + "_node_" + str(j), res, [SoftItem.ANY_SOFT])
-                 node.flops = self.rand(random, self.min_flops, self.max_flops)
+                 ##TODO: repair it later
+                 ##node.flops = self.rand(random, self.min_flops, self.max_flops)
+
+                 if j == 0:
+                     node.flops = 10
+                 if j == 1:
+                     node.flops = 15
+                 if j == 2:
+                     node.flops = 20
+                 if j == 3:
+                     node.flops = 25
+
                  res.nodes.add(node)
          return resources
 

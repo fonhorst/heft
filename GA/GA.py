@@ -12,27 +12,52 @@ class GeneticAlgorithm(object):
     def run(self):
         population = self.genetics.initial()
         while True:
-            fits_pops = [(self.genetics.fitness(ch),  ch) for ch in population]
-            if self.genetics.check_stop(fits_pops):
+            ##fits_pops = [(self.genetics.fitness(ch),  ch) for ch in population]
+            if self.genetics.check_stop(population):
+                fits_pops = [(self.genetics.fitness(ch),  ch) for ch in population]
                 best_match = list(sorted(fits_pops, key=lambda pair: pair[0], reverse=True))[-1][1]
                 return best_match
-            population = self.next(fits_pops)
+            population = self.next(population)
             pass
 
-    def next(self, fits):
-        parents_generator = self.genetics.parents(fits)
-        size = len(fits)
+    def next(self, population):
+        parents_generator = self.genetics.parents(population)
+        size = len(population)
         nexts = []
         while len(nexts) < size:
             parents = next(parents_generator)
+            nexts += parents
             cross = random.random() < self.genetics.probability_crossover()
-            children = self.genetics.crossover(parents) if cross else parents
-            for ch in children:
-                mutate = random.random() < self.genetics.probability_mutation()
-                nexts.append(self.genetics.mutation(ch) if mutate else ch)
+            if cross:
+                children = self.genetics.crossover(parents)
+                for ch in children:
+                    mutate = random.random() < self.genetics.probability_mutation()
+                    nexts.append(self.genetics.mutation(ch) if mutate else ch)
                 pass
             pass
-        return nexts[0:size]
+        ##return nexts[0:size]
+        return self.roulette_wheel_selection(nexts, size)
+
+    def roulette_wheel_selection(self, population, size):
+        fits_pops = [(1/self.genetics.fitness(ch),  ch) for ch in population]
+        all_sum = sum([fit for fit, ch in fits_pops])
+        ##prob_pops = [(fit/all_sum, ch) for fit, ch in fits_pops]
+        prob_pops = []
+        pred = 0
+        for fit, ch in fits_pops:
+            prob = fit/all_sum
+            prob_pops.append((pred, pred + prob, ch))
+            pred += prob
+
+        selected = []
+        for i in range(size):
+            nt = random.random()
+            for st, end, ch in prob_pops:
+                if st < nt <= end:
+                    selected.append(ch)
+                    break
+        return selected
+
     pass
 
 class GeneticFunctions(object):
