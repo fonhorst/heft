@@ -59,52 +59,6 @@ class StaticHeftPlanner(Scheduler):
 
         return new_schedule
 
-    def ranking(self, ni, nodes, succ, compcost, commcost):
-
-        w = partial(self.avr_compcost, compcost=compcost, nodes=nodes)
-        c = partial(self.avr_commcost, nodes=nodes, commcost=commcost)
-
-        def estimate(ni):
-            result = self.task_rank_cache.get(ni,None)
-            if result is not None:
-                return result
-            if ni in succ and succ[ni]:
-                result = w(ni) + max(c(ni, nj) + estimate(nj) for nj in succ[ni])
-            else:
-                result = w(ni)
-            self.task_rank_cache[ni] = result
-            return result
-
-        """print( "%s %s" % (ni, result))"""
-        result = estimate(ni)
-        return result
-
-    def avr_compcost(self,ni, nodes, compcost):
-        """ Average computation cost """
-        return sum(compcost(ni, node) for node in nodes) / len(nodes)
-
-
-    def avr_commcost(self, ni, nj, nodes, commcost):
-        """ Average communication cost """
-        n = len(nodes)
-        if n == 1:
-            return 0
-        npairs = n * (n - 1)
-        return 1. * sum(commcost(ni, nj, a1, a2) for a1 in nodes for a2 in nodes
-                        if a1 != a2) / npairs
-
-    def convert_to_parent_children_map(self, wf):
-        head = wf.head_task
-        map = dict()
-        def mapp(parents, map):
-            for parent in parents:
-                st = map.get(parent, set())
-                st.update(parent.children)
-                map[parent] = st
-                mapp(parent.children, map)
-        mapp(head.children, map)
-        return map
-
     def mapping(self, sorted_jobs, existing_plan, nodes, commcost, compcost):
         """def allocate(job, orders, jobson, prec, compcost, commcost):"""
         """ Allocate job to the machine with earliest finish time
@@ -124,7 +78,8 @@ class StaticHeftPlanner(Scheduler):
             return cost
 
         for wf, tasks in sorted_jobs:
-            wf_dag = self.convert_to_parent_children_map(wf)
+            ##wf_dag = self.convert_to_parent_children_map(wf)
+            wf_dag = HeftHelper.convert_to_parent_children_map(wf)
             prec = reverse_dict(wf_dag)
             for task in tasks:
                 st = partial(self.start_time, task, new_plan, jobson, prec, commcost)

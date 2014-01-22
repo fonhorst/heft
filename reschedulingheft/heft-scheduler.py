@@ -96,7 +96,8 @@ class ReschedulingHeftPlanner(Scheduler):
             return cost
 
         for wf, tasks in sorted_jobs:
-            wf_dag = self.convert_to_parent_children_map(wf)
+            ##wf_dag = self.convert_to_parent_children_map(wf)
+            wf_dag = HeftHelper.convert_to_parent_children_map(wf)
             prec = reverse_dict(wf_dag)
             for task in tasks:
                 print("======================")
