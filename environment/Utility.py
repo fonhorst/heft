@@ -63,12 +63,12 @@ class Utility:
         task_to_node = dict()
         for (node, items) in schedule.mapping.items():
             for item in items:
-                task_to_node[item.job] = (node, item.start_time, item.end_time)
+                task_to_node[item.job.id] = (node, item.start_time, item.end_time)
 
         def check(task):
             for child in task.children:
-                p_end_time = task_to_node[task][2]
-                c_start_time = task_to_node[child][1]
+                p_end_time = task_to_node[task.id][2]
+                c_start_time = task_to_node[child.id][1]
                 if c_start_time < p_end_time:
                     return False
                 res = check(child)

@@ -109,13 +109,13 @@ class GAFunctions:
 
 def build():
     ##Preparing
-    ##dax1 = '..\\..\\resources\\CyberShake_30.xml'
-    dax1 = '..\\..\\resources\\Montage_50.xml'
+    dax1 = '..\\..\\resources\\CyberShake_30.xml'
+    ##dax1 = '..\\..\\resources\\Montage_50.xml'
 
     wf_start_id_1 = "00"
     task_postfix_id_1 = "00"
     deadline_1 = 1000
-    ideal_flops = 2
+    ideal_flops = 0.5
 
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
     rgen = ResourceGenerator(min_res_count=1,
@@ -163,7 +163,7 @@ def build():
     toolbox.register("select", tools.selTournament, tournsize=3)
 
     def main():
-        CXPB, MUTPB, NGEN = 0.5, 0.2, 40
+        CXPB, MUTPB, NGEN = 0.5, 0.2, 20
         pop = toolbox.population(n=300)
         # Evaluate the entire population
         fitnesses = list(map(toolbox.evaluate, pop))
@@ -208,7 +208,7 @@ def build():
         pass
 
         resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
-        result = max(resulted_pop, lambda x: x[1])
+        result = max(resulted_pop, key=lambda x: x[1])
         schedule = ga_functions.build_schedule(result[0])
         seq_time_validaty = Utility.validateNodesSeq(schedule)
         dependency_validaty = Utility.validateParentsAndChildren(schedule, wf)
