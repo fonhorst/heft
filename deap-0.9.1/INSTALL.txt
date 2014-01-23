@@ -1,0 +1,36 @@
+================================
+UNIX based platforms and Windows
+================================
+
+In order to install DEAP from sources, change directory to the root of deap and type in :
+
+$ python setup.py install
+
+This will try to install deap into your package directory, you might need permissions to write to this directory. 
+
+=======
+Options
+=======
+
+Prefix
+++++++
+
+You might want to install this software somewhere else by addind the prefix options to the installation.
+
+$ python setup.py install --prefix=somewhere/else
+
+cTools
+++++++
+
+DEAP is shipped with a module named 'cTools' which provides a C++ implementation of NSGA-II.
+In order to install this module, you need to have previously installed Python headers for your distirbution
+and have C++ compiler. For example, on Ubuntu, it requires you to install the following packages :
+gcc and python-dev. Once all requirement are fulfilled, you can build/install DEAP with the cTools module with
+the following option '--with-ctools' :
+
+$ python setup.py install --with-ctools
+
+Other
++++++
+
+Other basic options are provided by the building tools of Python, see http://docs.python.org/install/ for more information.

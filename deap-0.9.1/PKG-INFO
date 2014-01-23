@@ -1,0 +1,32 @@
+Metadata-Version: 1.1
+Name: deap
+Version: 0.9.1
+Summary: Distributed Evolutionary Algorithms in Python
+Home-page: http://deap.googlecode.com
+Author: deap Development Team
+Author-email: deap-users@googlegroups.com
+License: LGPL
+Download-URL: http://code.google.com/p/deap/downloads/list
+Description: DEAP stands for Distributed Evolutionary Algorithm in Python, it is dedicated to people who
+        wish to learn how to use evolutionary algorithms and to those who wish to
+        rediscover evolutionary algorithms. DEAP is the proof that evolutionary 
+        algorithms do **not** need to be neither complex or complicated.
+        
+        EAP is part of the DEAP project, that also includes some facilities for the 
+        automatic distribution and parallelization of tasks over a cluster of computers.
+        The D part of DEAP, called DTM, is under intense development and currently 
+        available as an alpha version. DTM currently provides two and a half ways to 
+        distribute work loads around a clusters or LAN of workstations, based MPI and 
+        TCP communication managers.
+        
+Keywords: evolutionary algorithms,genetic algorithms,genetic programming,cma-es,ga,gp,es,pso
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development

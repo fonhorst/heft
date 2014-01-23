@@ -8,7 +8,7 @@ from tests.ProfilingTestCase import ProfilingTestCase
 
 
 class GAvsHEFTTest(ProfilingTestCase):
-    ideal_flops = 40
+    ideal_flops = 2
     def wrap(self):
         ##Preparing
 
