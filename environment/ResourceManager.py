@@ -1,3 +1,12 @@
+##interface Algorithm
+class Algorithm:
+    def __init__(self):
+        self.resource_manager = None
+        self.estimator = None
+
+    def run(self, event):
+        pass
+
 ##interface ResourceManager
 class ResourceManager:
     def __init__(self):
@@ -5,6 +14,9 @@ class ResourceManager:
 
     ##get all resources in the system
     def get_resources(self):
+        pass
+
+    def change_performance(self, node, performance):
         pass
 
 ##interface Estimator
@@ -26,10 +38,14 @@ class Estimator:
 
 ## element of Schedule
 class ScheduleItem:
+    UNSTARTED = "unstarted"
+    FINISHED = "finished"
+    EXECUTING = "executing"
     def __init__(self, job, start_time, end_time):
         self.job = job ## either task or service operation like vm up
         self.start_time = start_time
         self.end_time = end_time
+        self.state = ScheduleItem.UNSTARTED
 
 
 class Schedule:
@@ -53,18 +69,33 @@ class Schedule:
 ##interface Executor
 class Executor:
     def __init__(self):
-        self.schedule = None
+        ##self.schedule = None
+        self.algorithm = None
+        self.resource_manager = None
+        self.estimator = None
+
+        self.posting_entity = None
+
 
     ## check if possible to interrupt execution of the current executing task on the node
     def can_interrupt_execution(self, task, node):
         pass
 
     def event_arrived(self, event):
-        if self.need_to_reschedule(event):
-            self.schedule = self.get_scheduler()
+        # if self.need_to_reschedule(event):
+        #     self.schedule = self.get_scheduler()
+        #
+        # self.clean_queue()
+        # self.generate_events()
+        schedule = self.algorithm.run(event)
+        if schedule is not None:
+            ##TODO: generate appropriate events
+            # select for executing and generate appropriate events
+            self.post_event(new_event)
 
-        self.clean_queue()
-        self.generate_events()
+
+    def post_event(self, event):
+        self.posting_entity.post(event)
 
     def need_to_reschedule(self, event):
         pass

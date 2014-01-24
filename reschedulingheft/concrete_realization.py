@@ -51,3 +51,7 @@ class ExperimentResourceManager(ResourceManager):
     ##get all resources in the system
     def get_resources(self):
         return self.resources
+
+    def change_performance(self, node, performance):
+        ##TODO: rethink it
+        self.resources[node.resource][node].flops = performance

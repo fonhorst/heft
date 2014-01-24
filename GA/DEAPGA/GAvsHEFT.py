@@ -1,10 +1,11 @@
+import json
 import random
 
 from deap import base
 from deap import creator
 from deap import tools
 from environment.Utility import Utility
-from environment.Resource import ResourceGenerator
+from environment.Resource import ResourceGenerator, Node
 from environment.ResourceManager import Schedule, ScheduleItem
 from reschedulingheft.HeftHelper import HeftHelper
 from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
@@ -115,7 +116,7 @@ def build():
     wf_start_id_1 = "00"
     task_postfix_id_1 = "00"
     deadline_1 = 1000
-    ideal_flops = 0.5
+    ideal_flops = 20
 
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
     rgen = ResourceGenerator(min_res_count=1,
@@ -228,6 +229,28 @@ def build():
     schedule_heft = planner.schedule()
     heft_makespan = Utility.get_the_last_time(schedule_heft)
     print("heft_makespan: " + str(heft_makespan))
+
+
+    class ScheduleEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if isinstance(obj, Schedule):
+                return {'mapping': [
+                    {'node': self.default(node),
+                      'value': [self.default(el) for el in values]}
+                     for (node, values) in obj.mapping.items()]}
+            if isinstance(obj, ScheduleItem):
+                return {'job': obj.job.id, 'start_time': obj.start_time,
+                        'end_time': obj.end_time, 'state': obj.state}
+            # Let the base class default method raise the TypeError
+            if isinstance(obj, Node):
+                return {'name': obj.name, 'soft': obj.soft,
+                        'resource': obj.resource.name, 'flops': obj.flops}
+            # Let the base class default method raise the TypeError
+            return json.JSONEncoder.default(self, obj)
+
+    f = open('..\\..\\resources\\saved_schedules\\text.txt', 'w')
+    heft_json = json.dump(schedule_heft, f, cls=ScheduleEncoder)
+    deser = json.load(f)
 
     ##================================
     ##GA Run
