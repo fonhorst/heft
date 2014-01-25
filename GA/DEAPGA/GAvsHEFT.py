@@ -4,7 +4,7 @@ import random
 from deap import base
 from deap import creator
 from deap import tools
-from environment.Utility import Utility
+from environment.Utility import Utility, ScheduleEncoder
 from environment.Resource import ResourceGenerator, Node
 from environment.ResourceManager import Schedule, ScheduleItem
 from reschedulingheft.HeftHelper import HeftHelper
@@ -231,46 +231,17 @@ def build():
     print("heft_makespan: " + str(heft_makespan))
 
 
-    class ScheduleEncoder(json.JSONEncoder):
-        def default(self, obj):
-            if isinstance(obj, Schedule):
-                return {'__cls__': 'Schedule', 'mapping': [
-                    {'node': self.default(node),
-                      'value': [self.default(el) for el in values]}
-                     for (node, values) in obj.mapping.items()]}
-            if isinstance(obj, ScheduleItem):
-                return {'__cls__': 'ScheduleItem', 'job': obj.job.id, 'start_time': obj.start_time,
-                        'end_time': obj.end_time, 'state': obj.state}
-            # Let the base class default method raise the TypeError
-            if isinstance(obj, Node):
-                return {'__cls__': 'Node', 'name': obj.name, 'soft': obj.soft,
-                        'resource': obj.resource.name, 'flops': obj.flops}
-            # Let the base class default method raise the TypeError
-            return json.JSONEncoder.default(self, obj)
 
 
-    def as_schedule(dct):
-        if '__cls__' in dct and dct['__cls__'] == 'Node':
-            ## TODO: replace resource name with proper resource found by the name
-            node = Node(dct['name'], dct['resource'], dct['soft'])
-            node.flops = dct['flops']
-            return node
-        if '__cls__' in dct and dct['__cls__'] == 'ScheduleItem':
-             ## TODO: replace task id with proper task found by the id
-            scItem = ScheduleItem(dct['job'], dct['start_time'], dct['end_time'])
-            scItem.state = dct['state']
-            return scItem
-        if '__cls__' in dct and dct['__cls__'] == 'Schedule':
-            mapping = {node_values['node']: node_values['value'] for node_values in dct['mapping']}
-            schedule = Schedule(mapping)
-            return schedule
-        return dct
+
+
+    decoder = Utility.build_schedule_decoder(wf.head_task, resources)
 
     f = open('..\\..\\resources\\saved_schedules\\text.txt', 'w')
     heft_json = json.dump(schedule_heft, f, cls=ScheduleEncoder)
     f.close()
     f = open('..\\..\\resources\\saved_schedules\\text.txt', 'r')
-    deser = json.load(f, object_hook=as_schedule)
+    deser = json.load(f, object_hook=decoder)
     f.close()
 
     ##================================

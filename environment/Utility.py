@@ -1,5 +1,9 @@
+import json
 from environment.DAXParser import DAXParser
 from random import Random
+from environment.Resource import Node
+from environment.ResourceManager import ScheduleItem, Schedule
+
 
 def reverse_dict(d):
     """ Reverses direction of dependence dict
@@ -88,6 +92,55 @@ class Utility:
             return 0 if len(node_items) == 0 else node_items[-1].end_time
         last_time = max([get_last_time(node_items) for (node, node_items) in schedule.mapping.items()])
         return last_time
+
+    @staticmethod
+    def build_schedule_decoder(head_task, resources):
+        res_dict = {res.name: res for res in resources}
+
+        def get_all_tasks(task, all):
+            for child in task.children:
+                all.add(child)
+                get_all_tasks(child, all)
+            return all
+
+        task_dict = {t.id: t for t in get_all_tasks(head_task, set())}
+
+        def as_schedule(dct):
+            if '__cls__' in dct and dct['__cls__'] == 'Node':
+                res = res_dict[dct['resource']]
+                node = Node(dct['name'], res, dct['soft'])
+                node.flops = dct['flops']
+                return node
+            if '__cls__' in dct and dct['__cls__'] == 'ScheduleItem':
+                task = task_dict[dct['job']]
+                scItem = ScheduleItem(task, dct['start_time'], dct['end_time'])
+                scItem.state = dct['state']
+                return scItem
+            if '__cls__' in dct and dct['__cls__'] == 'Schedule':
+                mapping = {node_values['node']: node_values['value'] for node_values in dct['mapping']}
+                schedule = Schedule(mapping)
+                return schedule
+            return dct
+
+        return as_schedule
+    pass
+
+class ScheduleEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if isinstance(obj, Schedule):
+                return {'__cls__': 'Schedule', 'mapping': [
+                    {'node': self.default(node),
+                      'value': [self.default(el) for el in values]}
+                     for (node, values) in obj.mapping.items()]}
+            if isinstance(obj, ScheduleItem):
+                return {'__cls__': 'ScheduleItem', 'job': obj.job.id, 'start_time': obj.start_time,
+                        'end_time': obj.end_time, 'state': obj.state}
+            # Let the base class default method raise the TypeError
+            if isinstance(obj, Node):
+                return {'__cls__': 'Node', 'name': obj.name, 'soft': obj.soft,
+                        'resource': obj.resource.name, 'flops': obj.flops}
+            # Let the base class default method raise the TypeError
+            return json.JSONEncoder.default(self, obj)
 
 
 
