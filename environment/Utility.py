@@ -134,7 +134,8 @@ class Utility:
 
                 dct['ga_schedule'].mapping = {all_nodes[node_name]:values for (node_name,values) in dct['ga_schedule'].mapping.items()}
 
-                bundle = SaveBundle(dct['dedicated_resources'],
+                bundle = SaveBundle(dct['name'],
+                                    dct['dedicated_resources'],
                                     dct['transfer_mx'],
                                     dct['ideal_flops'],
                                     dct['ga_schedule'],
@@ -148,12 +149,14 @@ class Utility:
 class SaveBundleEncoder(json.JSONEncoder):
         def default(self, obj):
             if isinstance(obj, SaveBundle):
-                return {'__cls__': 'SaveBundle',
+                result = {'__cls__': 'SaveBundle',
+                        'name': obj.name,
                         'dedicated_resources': [self.default(el) for el in obj.dedicated_resources],
                         'transfer_mx': self.encode(obj.transfer_mx),
-                        'ideal_flops': self.encode(obj.ideal_flops),
+                        'ideal_flops': obj.ideal_flops,
                         'ga_schedule': self.default(obj.ga_schedule),
-                        'wf_name': self.encode(obj.wf_name)}
+                        'wf_name': obj.wf_name}
+                return result
             if isinstance(obj, Resource):
                 return {'__cls__': 'Resource',
                         'name': obj.name,
@@ -174,7 +177,8 @@ class SaveBundleEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 class SaveBundle:
-    def __init__(self, dedicated_resources, transfer_mx, ideal_flops, ga_schedule, wf_name):
+    def __init__(self, name, dedicated_resources, transfer_mx, ideal_flops, ga_schedule, wf_name):
+        self.name = name
         self.dedicated_resources = dedicated_resources
         self.transfer_mx = transfer_mx
         self.ideal_flops = ideal_flops

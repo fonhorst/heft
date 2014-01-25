@@ -165,7 +165,7 @@ def build():
     toolbox.register("select", tools.selTournament, tournsize=3)
 
     def main():
-        CXPB, MUTPB, NGEN = 0.5, 0.2, 20
+        CXPB, MUTPB, NGEN = 0.5, 0.2, 1
         pop = toolbox.population(n=300)
         # Evaluate the entire population
         fitnesses = list(map(toolbox.evaluate, pop))
@@ -219,6 +219,17 @@ def build():
         print("          Seq validaty %s" % str(seq_time_validaty))
         print("   Dependancy validaty %s" % str(dependency_validaty))
 
+        decoder = Utility.build_bundle_decoder(wf.head_task)
+        name = wf_name +"_bundle"
+        bundle = SaveBundle(name, resources, transferMx, ideal_flops, schedule, wf_name)
+        f = open('..\\..\\resources\\saved_schedules\\' + name + '.json', 'w')
+        json.dump(bundle, f, cls=SaveBundleEncoder)
+        f.close()
+        #f = open('..\\..\\resources\\saved_schedules\\' + name + '.json', 'r')
+        #deser = json.load(f, object_hook=decoder)
+        #f.close()
+
+
     ##================================
     ##Heft Run
     ##================================
@@ -236,17 +247,6 @@ def build():
 
 
 
-    decoder = Utility.build_bundle_decoder(wf.head_task)
-
-
-    bundle = SaveBundle(resources, transferMx, ideal_flops, schedule_heft, wf_name)
-
-    f = open('..\\..\\resources\\saved_schedules\\text.txt', 'w')
-    heft_json = json.dump(bundle, f, cls=SaveBundleEncoder)
-    f.close()
-    f = open('..\\..\\resources\\saved_schedules\\text.txt', 'r')
-    deser = json.load(f, object_hook=decoder)
-    f.close()
 
     ##================================
     ##GA Run
