@@ -1,7 +1,7 @@
 import json
 from environment.DAXParser import DAXParser
 from random import Random
-from environment.Resource import Node
+from environment.Resource import Node, Resource
 from environment.ResourceManager import ScheduleItem, Schedule
 
 
@@ -94,9 +94,7 @@ class Utility:
         return last_time
 
     @staticmethod
-    def build_schedule_decoder(head_task, resources):
-        res_dict = {res.name: res for res in resources}
-
+    def build_bundle_decoder(head_task):
         def get_all_tasks(task, all):
             for child in task.children:
                 all.add(child)
@@ -107,7 +105,7 @@ class Utility:
 
         def as_schedule(dct):
             if '__cls__' in dct and dct['__cls__'] == 'Node':
-                res = res_dict[dct['resource']]
+                res = dct['resource']
                 node = Node(dct['name'], res, dct['soft'])
                 node.flops = dct['flops']
                 return node
@@ -120,16 +118,49 @@ class Utility:
                 mapping = {node_values['node']: node_values['value'] for node_values in dct['mapping']}
                 schedule = Schedule(mapping)
                 return schedule
+            if '__cls__' in dct and dct['__cls__'] == 'Resource':
+                res = Resource(dct['name'])
+                res.nodes = dct['nodes']
+                return res
+            if '__cls__' in dct and dct['__cls__'] == 'SaveBundle':
+
+                all_nodes = set()
+                for res in dct['dedicated_resources']:
+                    for node in res.nodes:
+                        node.resource = res
+                    all_nodes.update(res.nodes)
+
+                all_nodes = {node.name: node for node in all_nodes}
+
+                dct['ga_schedule'].mapping = {all_nodes[node_name]:values for (node_name,values) in dct['ga_schedule'].mapping.items()}
+
+                bundle = SaveBundle(dct['dedicated_resources'],
+                                    dct['transfer_mx'],
+                                    dct['ideal_flops'],
+                                    dct['ga_schedule'],
+                                    dct['wf_name'])
+                return bundle
             return dct
 
         return as_schedule
     pass
 
-class ScheduleEncoder(json.JSONEncoder):
+class SaveBundleEncoder(json.JSONEncoder):
         def default(self, obj):
+            if isinstance(obj, SaveBundle):
+                return {'__cls__': 'SaveBundle',
+                        'dedicated_resources': [self.default(el) for el in obj.dedicated_resources],
+                        'transfer_mx': self.encode(obj.transfer_mx),
+                        'ideal_flops': self.encode(obj.ideal_flops),
+                        'ga_schedule': self.default(obj.ga_schedule),
+                        'wf_name': self.encode(obj.wf_name)}
+            if isinstance(obj, Resource):
+                return {'__cls__': 'Resource',
+                        'name': obj.name,
+                        'nodes': [self.default(node) for node in obj.nodes]}
             if isinstance(obj, Schedule):
                 return {'__cls__': 'Schedule', 'mapping': [
-                    {'node': self.default(node),
+                    {'node': node.name,
                       'value': [self.default(el) for el in values]}
                      for (node, values) in obj.mapping.items()]}
             if isinstance(obj, ScheduleItem):
@@ -141,6 +172,14 @@ class ScheduleEncoder(json.JSONEncoder):
                         'resource': obj.resource.name, 'flops': obj.flops}
             # Let the base class default method raise the TypeError
             return json.JSONEncoder.default(self, obj)
+
+class SaveBundle:
+    def __init__(self, dedicated_resources, transfer_mx, ideal_flops, ga_schedule, wf_name):
+        self.dedicated_resources = dedicated_resources
+        self.transfer_mx = transfer_mx
+        self.ideal_flops = ideal_flops
+        self.ga_schedule = ga_schedule
+        self.wf_name = wf_name
 
 
 

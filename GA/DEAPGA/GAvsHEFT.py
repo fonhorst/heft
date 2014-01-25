@@ -4,7 +4,7 @@ import random
 from deap import base
 from deap import creator
 from deap import tools
-from environment.Utility import Utility, ScheduleEncoder
+from environment.Utility import Utility, SaveBundle, SaveBundleEncoder
 from environment.Resource import ResourceGenerator, Node
 from environment.ResourceManager import Schedule, ScheduleItem
 from reschedulingheft.HeftHelper import HeftHelper
@@ -110,6 +110,7 @@ class GAFunctions:
 
 def build():
     ##Preparing
+    wf_name = 'CyberShake_30'
     dax1 = '..\\..\\resources\\CyberShake_30.xml'
     ##dax1 = '..\\..\\resources\\Montage_50.xml'
 
@@ -235,10 +236,13 @@ def build():
 
 
 
-    decoder = Utility.build_schedule_decoder(wf.head_task, resources)
+    decoder = Utility.build_bundle_decoder(wf.head_task)
+
+
+    bundle = SaveBundle(resources, transferMx, ideal_flops, schedule_heft, wf_name)
 
     f = open('..\\..\\resources\\saved_schedules\\text.txt', 'w')
-    heft_json = json.dump(schedule_heft, f, cls=ScheduleEncoder)
+    heft_json = json.dump(bundle, f, cls=SaveBundleEncoder)
     f.close()
     f = open('..\\..\\resources\\saved_schedules\\text.txt', 'r')
     deser = json.load(f, object_hook=decoder)
