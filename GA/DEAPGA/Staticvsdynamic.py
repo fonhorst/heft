@@ -29,15 +29,15 @@ def main():
     ##======================
     nodes = HeftHelper.to_nodes(bundle.dedicated_resources)
     ## give 100% to all
-    realibility_map = { node.id: 1 for node in nodes}
+    realibility_map = { node.name: 1 for node in nodes}
     ## choose one node and give 75% to it
-    selected_node = nodes[1]
-    realibility_map[selected_node.id] = 0.75
+    selected_node = list(nodes)[1]
+    realibility_map[selected_node.name] = 0.75
 
     ##======================
     ## create ga_executor
     ##======================
-    estimator = ExperimentEstimator(bundle.transferMx, bundle.ideal_flops, realibility_map)
+    estimator = ExperimentEstimator(bundle.transfer_mx, bundle.ideal_flops, realibility_map)
     resource_manager = ExperimentResourceManager(bundle.dedicated_resources)
     ga_executor = GAExecutor(initial_schedule=bundle.ga_schedule,
                              estimator=estimator,
@@ -50,21 +50,22 @@ def main():
     event = TaskFinished()
     event.time_posted = 0
     event.time_happened = 0
-    event.job = wf.head_task
+    event.task = wf.head_task
     event.node = None
-    automata.post_event(event)
+    automata.post(event)
 
     automata.run()
 
     dynamic_ga_makespan = Utility.get_the_last_time(ga_executor.schedule)
     seq_time_validaty = Utility.validateNodesSeq(ga_executor.schedule)
     dependency_validaty = Utility.validateParentsAndChildren(ga_executor.schedule, wf)
-    ##Utility.validateUnavailabilityPeriods()
+    ##periods_validaty = Utility.validateUnavailabilityPeriods(ga_executor.schedule, unavailability_periods)
     print("heft_makespan: " + str(dynamic_ga_makespan))
-    print("=============HEFT Results====================")
+    print("=============Res Results====================")
     print("              Makespan %s" % str(dynamic_ga_makespan))
     print("          Seq validaty %s" % str(seq_time_validaty))
     print("   Dependancy validaty %s" % str(dependency_validaty))
+    ##print("      Periods validaty %s" % str(periods_validaty))
 
     ## 1. obtain ga_schedule
     ## 2. create ga_executor and run experiment there

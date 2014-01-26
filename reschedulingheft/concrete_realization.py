@@ -43,15 +43,16 @@ class ExperimentEstimator(Estimator):
 
     ## estimate probability of successful ending of the task on the node
     def estimate_reliability(self, task, node):
-        return self.reliability[node]
+        return self.reliability[node.name]
 
 class ExperimentResourceManager(ResourceManager):
     def __init__(self, resources):
         self.resources = resources
+        self.resources_map = {res.name: res for res in self.resources}
 
     ## TODO: fix problem with id
     def node(self, node):
-        result = [nd for nd in self.resources[node.resource.name].nodes if nd.name == node.name]
+        result = [nd for nd in self.resources_map[node.resource.name].nodes if nd.name == node.name]
         if len(result) == 0:
             return None
         return result[0]

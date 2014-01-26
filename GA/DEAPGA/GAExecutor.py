@@ -46,25 +46,50 @@ class GAExecutor(Executor):
 
     def event_arrived(self, event):
         if isinstance(event, TaskFinished):
-
             ##check_valid_event()
 
             current_time = event.time_happened
             to_run = []
             task = event.task
             node = event.node
-            # get next task to run on this node
-            nt = self.initial_schedule.get_next_item(task)
-            if nt is not None and  self.check_run(nt, node, current_time):
-                to_run.append(nt)
 
-            for child in task.children:
-                if self.check_run(child, self.initial_schedule.place(child), current_time):
-                    to_run.append(child)
+
+            if len(task.parents) != 0:
+                self.schedule.change_state(task,ScheduleItem.FINISHED)
+
+            # go through all nodes and find all empty and try to run next task
+            for nd in self.initial_schedule.mapping.keys():
+                if len(self.schedule.mapping[nd]) == 0:
+                    # we can start task here
+                    if len(self.initial_schedule.mapping[nd]) > 0:
+                        it = self.initial_schedule.mapping[nd][0]
+                        if self.check_run(it, nd, current_time):
+                            to_run.append(it.job)
+                    pass
+                elif self.schedule.mapping[nd][-1].state == ScheduleItem.FINISHED:
+                    # we can start task here
+                    tsk = self.schedule.mapping[nd][-1].job
+                    it = self.initial_schedule.get_next_item(tsk)
+                    if it is not None and  self.check_run(it, nd, current_time):
+                        to_run.append(it.job)
+                    pass
+
+            # check for head node
+            #if len(task.parents) != 0:
+            #    # get next task to run on this node
+            #    nt = self.initial_schedule.get_next_item(task)
+            #    if nt is not None and  self.check_run(nt, node, current_time):
+            #        to_run.append(nt.job)
+            #
+            ##if len(task.parents) == 0:
+            #for child in task.children:
+            #    (nd, scitem) = self.initial_schedule.place(child)
+            #    if child not in to_run and self.check_run(scitem, nd, current_time):
+            #            to_run.append(child)
 
             for tk in to_run:
                 (nd, scitem) = self.initial_schedule.place(tk)
-                self.schedule.mapping[nd].append(scitem)
+                #self.schedule.mapping[nd].append(scitem)
                 self.run(nd,scitem,current_time)
 
             ## 1. obtain ready tasks
@@ -98,7 +123,7 @@ class GAExecutor(Executor):
             for tk in to_run:
                 (nd, scitem) = self.initial_schedule.place(tk)
                 self.schedule.mapping[nd].append(scitem)
-                self.run(nd,scitem,current_time)
+                self.run(nd,scitem,current_time,self.schedule)
             return None
 
     def check_run(self, nt, node, current_time):
@@ -120,6 +145,7 @@ class GAExecutor(Executor):
         result = False in [check(p) for p in nt.job.parents]
         if result is True:
             return False
+
         return True
 
     def run(self,node, scitem, current_time):
@@ -132,7 +158,7 @@ class GAExecutor(Executor):
             event = TaskFinished()
             event.time_posted = current_time
             event.time_happened = end_time
-            event.job = scitem.job
+            event.task = scitem.job
             event.node = node
             self.post_event(event)
 
@@ -147,7 +173,7 @@ class GAExecutor(Executor):
             event = NodeFailed()
             event.time_posted = current_time
             event.time_happened = end_time
-            event.job = scitem.job
+            event.task = scitem.job
             event.node = node
             event.duration = duration
             self.post_event(event)
@@ -164,10 +190,10 @@ class GAExecutor(Executor):
         comp_time = self.estimator.estimate_runtime(scitem.job, node)
         end_time = current_time + comp_time
 
-        if check_fail(end_time):
-            failed_run(end_time)
-        else:
-            normal_run(end_time)
+        #if check_fail(end_time):
+        #    failed_run(end_time)
+        #else:
+        normal_run(end_time)
 
     def generate_nodeup(self, node_failed_event, current_time):
         nodeup = NodeUp()

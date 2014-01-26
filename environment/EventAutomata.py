@@ -19,11 +19,18 @@ class EventAutomata(PostingEntity):
         self.executor.posting_entity = self
 
     def run(self):
+        count = 0
         while len(self.queue) > 0:
             event = self.queue.popleft()
+            print(str(count) + " Event: " + str(event.time_happened) + ' ' + str(event.task.id))
+            count += 1
             self.executor.event_arrived(event)
 
     def post(self, event):
         self.queue.append(event)
-        sorted(self.queue, key=lambda x: x.time_happened)
+        self.queue = deque(sorted(self.queue, key=lambda x: x.time_happened))
+        #st = ''
+        #for el in self.queue:
+        #    st = st + str(el.time_happened) + ' '
+        #print(' Queue: ' + st)
 

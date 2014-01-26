@@ -1,5 +1,8 @@
+import cProfile
 import json
+import pstats
 import random
+import io
 
 from deap import base
 from deap import creator
@@ -27,8 +30,12 @@ class GAFunctions:
             self.workflow_size = len(sorted_tasks)
 
             ##interface Estimator
+
             self.estimator = estimator
             self.size = size
+
+            self.task_map = {task.id: task for task in sorted_tasks}
+            self.node_map = {node.name: node for node in nodes}
             pass
 
     def initial(self):
@@ -49,7 +56,7 @@ class GAFunctions:
         ##   ...
         ## }
         schedule_mapping = dict()
-        chrmo_mapping = {task.id: node for (task, node) in chromo}
+        chrmo_mapping = {task_id: self.node_map[node_name] for (task_id, node_name) in chromo}
         task_to_node = dict()
         estimate = self.estimator.estimate_transfer_time
 
@@ -81,7 +88,9 @@ class GAFunctions:
             ed_time = st_time + self.estimator.estimate_runtime(task, node)
             return st_time, ed_time
 
-        for (task, node) in chromo:
+        for (task_id, node_name) in chromo:
+            task = self.task_map[task_id]
+            node = self.node_map[node_name]
             (start_time, end_time) = get_possible_execution_time(task, node)
             item = ScheduleItem(task, start_time, end_time)
             lst = schedule_mapping.get(node, list())
@@ -97,15 +106,15 @@ class GAFunctions:
         def choose_node():
             index = random.randint(0, nodes_len - 1)
             return self.nodes[index]
-        return [(self.sorted_tasks[i], choose_node()) for i in range(self.workflow_size)]
+        return [(self.sorted_tasks[i].id, choose_node().name) for i in range(self.workflow_size)]
 
     def mutation(self, chromosome):
         # simply change one node of task mapping
         index = random.randint(0, self.workflow_size - 1)
         node_index = random.randint(0, len(self.nodes) - 1)
-        (task, node) = chromosome[index]
+        (task_id, node_name) = chromosome[index]
         mutated = list(chromosome)
-        mutated[index] = (task, self.nodes[node_index])
+        mutated[index] = (task_id, self.nodes[node_index].name)
         return mutated
     pass
 
@@ -116,12 +125,12 @@ def mark_finished(schedule):
 
 def build():
     ##Preparing
-    ##wf_name = 'CyberShake_30'
+    wf_name = 'CyberShake_30'
     ##wf_name = 'Montage_25'
     ##wf_name = 'Epigenomics_24'
 
     ##wf_name = 'CyberShake_50'
-    wf_name = 'Montage_50'
+    ##wf_name = 'Montage_50'
 
     dax1 = '..\\..\\resources\\' + wf_name + '.xml'
     ##dax1 = '..\\..\\resources\\Montage_50.xml'
@@ -177,9 +186,10 @@ def build():
     toolbox.register("mate", tools.cxTwoPoints)
     toolbox.register("mutate", ga_functions.mutation)
     toolbox.register("select", tools.selTournament, tournsize=3)
+    #toolbox.register("select", tools.selRoulette)
 
     def main():
-        CXPB, MUTPB, NGEN = 0.5, 0.2, 10
+        CXPB, MUTPB, NGEN = 0.8, 0.2, 100
         pop = toolbox.population(n=population)
         # Evaluate the entire population
         fitnesses = list(map(toolbox.evaluate, pop))
@@ -222,6 +232,10 @@ def build():
             print("    Avg %s" % str(1/mean))
             print("    Std %s" % str(1/std))
         pass
+
+        ##TODO: remove it later
+       ##print("======END-END======")
+        ##return None
 
         resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
         result = max(resulted_pop, key=lambda x: x[1])
@@ -287,7 +301,16 @@ def build():
     ##================================
     ##GA Run
     ##================================
+    pr = cProfile.Profile()
+    pr.enable()
     main()
+    pr.disable()
+    s = io.StringIO()
+    sortby = 'cumulative'
+    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    ps.print_stats()
+    print(s.getvalue())
+
 
 
 
