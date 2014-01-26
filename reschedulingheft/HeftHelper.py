@@ -1,5 +1,5 @@
 from functools import partial
-from environment.ResourceManager import Scheduler
+from environment.ResourceManager import Scheduler, ScheduleItem, Schedule
 
 
 class HeftHelper(Scheduler):
@@ -21,6 +21,19 @@ class HeftHelper(Scheduler):
                                      compcost=compcost, commcost=commcost,
                                      task_rank_cache=task_rank_cache)
             jobs = set(wf_dag.keys()) | set(x for xx in wf_dag.values() for x in xx)
+
+            ## TODO: sometimes sort gives different results
+            ## TODO: it's normal because of only elements with the same rank change their place
+            ## TODO: relatively each other with the same rank
+            ## TODO: need to get deeper understanding of this situation
+            #jbs = [(job, rank(job))for job in jobs]
+            #jbs = sorted(jbs, key=lambda x: x[1])
+            #jbs = list(reversed(jbs))
+            #print("===========JBS=================")
+            #for job, rk in jbs:
+            #    print("J: " + str(job) + " " + str(rk))
+            #print("===========END_JBS=================")
+
             jobs = sorted(jobs, key=rank)
             return list(reversed(jobs))
 
@@ -81,5 +94,35 @@ class HeftHelper(Scheduler):
                 mapp(parent.children, map)
         mapp(head.children, map)
         return map
+
+    @staticmethod
+    def get_all_tasks(wf):
+        map = HeftHelper.convert_to_parent_children_map(wf)
+        tasks = [task for task in map.keys()]
+        return tasks
+
+    @staticmethod
+    def clean_unfinished(schedule):
+        def clean(items):
+            return [item for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING]
+        new_mapping = {node: clean(items) for (node, items) in schedule.mapping.items()}
+        return Schedule(new_mapping)
+
+    @staticmethod
+    def get_tasks_for_planning(wf, schedule):
+        ## TODO: remove duplicate code later
+        def clean(items):
+            return [item for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING]
+        def get_not_for_planning_tasks(schedule):
+            result = set()
+            for (node, items) in schedule.mapping.items():
+                unfin = clean(items)
+                result.update(unfin)
+            return result
+        all_tasks = HeftHelper.get_all_tasks(wf)
+        not_for_planning = get_not_for_planning_tasks(schedule)
+        for_planning = set(all_tasks) - set(not_for_planning)
+        return for_planning
+
 
     pass

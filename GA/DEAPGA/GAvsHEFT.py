@@ -7,6 +7,7 @@ from deap import tools
 from environment.Utility import Utility, SaveBundle, SaveBundleEncoder
 from environment.Resource import ResourceGenerator, Node
 from environment.ResourceManager import Schedule, ScheduleItem
+from reschedulingheft.DSimpleHeft import DynamicHeft
 from reschedulingheft.HeftHelper import HeftHelper
 from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 from reschedulingheft.simple_heft import StaticHeftPlanner
@@ -110,14 +111,21 @@ class GAFunctions:
 
 def build():
     ##Preparing
-    wf_name = 'CyberShake_30'
-    dax1 = '..\\..\\resources\\CyberShake_30.xml'
+    ##wf_name = 'CyberShake_30'
+    ##wf_name = 'Montage_25'
+    ##wf_name = 'Epigenomics_24'
+
+    ##wf_name = 'CyberShake_50'
+    wf_name = 'Montage_50'
+
+    dax1 = '..\\..\\resources\\' + wf_name + '.xml'
     ##dax1 = '..\\..\\resources\\Montage_50.xml'
 
     wf_start_id_1 = "00"
     task_postfix_id_1 = "00"
     deadline_1 = 1000
     ideal_flops = 20
+    population = 300
 
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
     rgen = ResourceGenerator(min_res_count=1,
@@ -129,6 +137,7 @@ def build():
     resources = rgen.generate()
     transferMx = rgen.generateTransferMatrix(resources)
     estimator = ExperimentEstimator(transferMx, ideal_flops)
+    resource_manager = ExperimentResourceManager(resources)
 
     nodes = list(HeftHelper.to_nodes(resources))
 
@@ -141,7 +150,7 @@ def build():
     ranking = HeftHelper.build_ranking_func(nodes, compcost, commcost)
     sorted_tasks = ranking(wf)
 
-    ga_functions = GAFunctions(wf, nodes, sorted_tasks, estimator, 300)
+    ga_functions = GAFunctions(wf, nodes, sorted_tasks, estimator, population)
 
 
     ##================================
@@ -165,8 +174,8 @@ def build():
     toolbox.register("select", tools.selTournament, tournsize=3)
 
     def main():
-        CXPB, MUTPB, NGEN = 0.5, 0.2, 1
-        pop = toolbox.population(n=300)
+        CXPB, MUTPB, NGEN = 0.5, 0.2, 10
+        pop = toolbox.population(n=population)
         # Evaluate the entire population
         fitnesses = list(map(toolbox.evaluate, pop))
         for ind, fit in zip(pop, fitnesses):
@@ -235,17 +244,38 @@ def build():
     ##================================
     planner = StaticHeftPlanner()
     planner.estimator = estimator
-    planner.resource_manager = ExperimentResourceManager(resources)
+    planner.resource_manager = resource_manager
     planner.workflows = [wf]
 
     schedule_heft = planner.schedule()
     heft_makespan = Utility.get_the_last_time(schedule_heft)
+    seq_time_validaty = Utility.validateNodesSeq(schedule_heft)
+    dependency_validaty = Utility.validateParentsAndChildren(schedule_heft, wf)
     print("heft_makespan: " + str(heft_makespan))
+    print("=============HEFT Results====================")
+    print("              Makespan %s" % str(heft_makespan))
+    print("          Seq validaty %s" % str(seq_time_validaty))
+    print("   Dependancy validaty %s" % str(dependency_validaty))
 
+    ##assert(Utility.validateNodesSeq(schedule) is True)
+        ##assert(Utility.validateParentsAndChildren(schedule, wf) is True
 
+    ##================================
+    ##Dynamic Heft Run
+    ##================================
+    dynamic_planner = DynamicHeft( wf, resource_manager, estimator)
 
-
-
+    nodes = HeftHelper.to_nodes(resource_manager.resources)
+    current_cleaned_schedule = Schedule({node: [] for node in nodes})
+    schedule_dynamic_heft = dynamic_planner.run(current_cleaned_schedule)
+    dynamic_heft_makespan = Utility.get_the_last_time(schedule_dynamic_heft)
+    dynamic_seq_time_validaty = Utility.validateNodesSeq(schedule_dynamic_heft)
+    dynamic_dependency_validaty = Utility.validateParentsAndChildren(schedule_dynamic_heft, wf)
+    print("heft_makespan: " + str(heft_makespan))
+    print("=============Dynamic HEFT Results====================")
+    print("              Makespan %s" % str(dynamic_heft_makespan))
+    print("          Seq validaty %s" % str(dynamic_seq_time_validaty))
+    print("   Dependancy validaty %s" % str(dynamic_dependency_validaty))
 
 
     ##================================

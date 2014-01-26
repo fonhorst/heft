@@ -41,6 +41,7 @@ class ScheduleItem:
     UNSTARTED = "unstarted"
     FINISHED = "finished"
     EXECUTING = "executing"
+    FAILED = "failed"
     def __init__(self, job, start_time, end_time):
         self.job = job ## either task or service operation like vm up
         self.start_time = start_time
@@ -55,6 +56,14 @@ class Schedule:
         ##   ...
         ## }
         self.mapping = mapping##dict()
+
+    def change_state(self, task, state):
+        for (node, items) in self.mapping.items():
+            for item in items:
+                if item.job.id == task.id:
+                    item.state = state
+                    return True
+        return False
 
     def get_items_in_time(self, time):
         pass
