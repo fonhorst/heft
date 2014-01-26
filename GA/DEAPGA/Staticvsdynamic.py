@@ -1,5 +1,8 @@
+from GA.DEAPGA.GAExecutor import GAExecutor, TaskFinished
+from environment.EventAutomata import EventAutomata
 from environment.Utility import Utility
 from reschedulingheft.HeftHelper import HeftHelper
+from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 
 
 def main():
@@ -34,6 +37,34 @@ def main():
     ##======================
     ## create ga_executor
     ##======================
+    estimator = ExperimentEstimator(bundle.transferMx, bundle.ideal_flops, realibility_map)
+    resource_manager = ExperimentResourceManager(bundle.dedicated_resources)
+    ga_executor = GAExecutor(initial_schedule=bundle.ga_schedule,
+                             estimator=estimator,
+                             resource_manager=resource_manager,
+                             base_fail_duration=30,
+                             base_fail_dispersion=10)
+
+    automata = EventAutomata(ga_executor)
+
+    event = TaskFinished()
+    event.time_posted = 0
+    event.time_happened = 0
+    event.job = wf.head_task
+    event.node = None
+    automata.post_event(event)
+
+    automata.run()
+
+    dynamic_ga_makespan = Utility.get_the_last_time(ga_executor.schedule)
+    seq_time_validaty = Utility.validateNodesSeq(ga_executor.schedule)
+    dependency_validaty = Utility.validateParentsAndChildren(ga_executor.schedule, wf)
+    ##Utility.validateUnavailabilityPeriods()
+    print("heft_makespan: " + str(dynamic_ga_makespan))
+    print("=============HEFT Results====================")
+    print("              Makespan %s" % str(dynamic_ga_makespan))
+    print("          Seq validaty %s" % str(seq_time_validaty))
+    print("   Dependancy validaty %s" % str(dependency_validaty))
 
     ## 1. obtain ga_schedule
     ## 2. create ga_executor and run experiment there

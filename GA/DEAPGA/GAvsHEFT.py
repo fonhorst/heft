@@ -109,6 +109,11 @@ class GAFunctions:
         return mutated
     pass
 
+def mark_finished(schedule):
+    for (node, items) in schedule.mapping.items():
+        for item in items:
+            item.state = ScheduleItem.FINISHED
+
 def build():
     ##Preparing
     ##wf_name = 'CyberShake_30'
@@ -136,7 +141,7 @@ def build():
                                 ## max_flops=20)
     resources = rgen.generate()
     transferMx = rgen.generateTransferMatrix(resources)
-    estimator = ExperimentEstimator(transferMx, ideal_flops)
+    estimator = ExperimentEstimator(transferMx, ideal_flops, dict())
     resource_manager = ExperimentResourceManager(resources)
 
     nodes = list(HeftHelper.to_nodes(resources))
@@ -222,6 +227,7 @@ def build():
         result = max(resulted_pop, key=lambda x: x[1])
         schedule = ga_functions.build_schedule(result[0])
         seq_time_validaty = Utility.validateNodesSeq(schedule)
+        mark_finished(schedule)
         dependency_validaty = Utility.validateParentsAndChildren(schedule, wf)
         print("=============Results====================")
         print("              Makespan %s" % str(1/result[1]))
@@ -248,6 +254,7 @@ def build():
     schedule_heft = planner.schedule()
     heft_makespan = Utility.get_the_last_time(schedule_heft)
     seq_time_validaty = Utility.validateNodesSeq(schedule_heft)
+    mark_finished(schedule_heft)
     dependency_validaty = Utility.validateParentsAndChildren(schedule_heft, wf)
     print("heft_makespan: " + str(heft_makespan))
     print("=============HEFT Results====================")
@@ -268,6 +275,7 @@ def build():
     schedule_dynamic_heft = dynamic_planner.run(current_cleaned_schedule)
     dynamic_heft_makespan = Utility.get_the_last_time(schedule_dynamic_heft)
     dynamic_seq_time_validaty = Utility.validateNodesSeq(schedule_dynamic_heft)
+    mark_finished(schedule_dynamic_heft)
     dynamic_dependency_validaty = Utility.validateParentsAndChildren(schedule_dynamic_heft, wf)
     print("heft_makespan: " + str(heft_makespan))
     print("=============Dynamic HEFT Results====================")

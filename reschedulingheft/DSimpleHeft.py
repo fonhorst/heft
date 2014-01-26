@@ -1,5 +1,5 @@
 from functools import partial
-from environment.EventAutomata import TaskFinished, NodePerformanceChanged, TaskFailed
+
 from environment.Resource import Node, SoftItem
 from environment.ResourceManager import Algorithm, Schedule, ScheduleItem
 from environment.Utility import reverse_dict

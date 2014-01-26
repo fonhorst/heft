@@ -144,8 +144,8 @@ class Utility:
 
         def check(task):
             for child in task.children:
-                p_end_time = task_to_node[task.id][2]
-                c_start_time = task_to_node[child.id][1]
+                p_end_time = task_to_node[task.id][-1].end_time
+                c_start_time = task_to_node[child.id][-1].start_time
                 if c_start_time < p_end_time:
                     return False
                 res = check(child)
@@ -202,13 +202,6 @@ class Utility:
         if reslt is True:
             return False
         return True
-
-
-
-
-
-
-
 
     @staticmethod
     def get_the_last_time( schedule):

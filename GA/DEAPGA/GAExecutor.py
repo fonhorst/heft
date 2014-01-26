@@ -55,7 +55,7 @@ class GAExecutor(Executor):
             node = event.node
             # get next task to run on this node
             nt = self.initial_schedule.get_next_item(task)
-            if self.check_run(nt, node, current_time):
+            if nt is not None and  self.check_run(nt, node, current_time):
                 to_run.append(nt)
 
             for child in task.children:
@@ -63,9 +63,9 @@ class GAExecutor(Executor):
                     to_run.append(child)
 
             for tk in to_run:
-                (node, scitem) = self.initial_schedule.place(tk)
-                self.schedule.mapping[node].append(scitem)
-                self.run(node,scitem,current_time)
+                (nd, scitem) = self.initial_schedule.place(tk)
+                self.schedule.mapping[nd].append(scitem)
+                self.run(nd,scitem,current_time)
 
             ## 1. obtain ready tasks
             ## 2. for every task check if it can be started
@@ -96,12 +96,17 @@ class GAExecutor(Executor):
                 to_run.append(nt)
 
             for tk in to_run:
-                (node, scitem) = self.initial_schedule.place(tk)
-                self.schedule.mapping[node].append(scitem)
-                self.run(node,scitem,current_time)
+                (nd, scitem) = self.initial_schedule.place(tk)
+                self.schedule.mapping[nd].append(scitem)
+                self.run(nd,scitem,current_time)
             return None
 
     def check_run(self, nt, node, current_time):
+
+        ## TODO: remake it later.
+        if len(nt.job.parents) == 1 and len(list(nt.job.parents)[0].parents) == 0:
+            return True
+
         def check(p):
             result = self.schedule.place(p)
             if result is None:

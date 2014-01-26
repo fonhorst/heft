@@ -97,47 +97,47 @@ class Schedule:
         pass
 
 ##interface Executor
-class Executor:
-    def __init__(self):
-        ##self.schedule = None
-        self.algorithm = None
-        self.resource_manager = None
-        self.estimator = None
-
-        self.posting_entity = None
-
-
-    ## check if possible to interrupt execution of the current executing task on the node
-    def can_interrupt_execution(self, task, node):
-        pass
-
-    def event_arrived(self, event):
-        # if self.need_to_reschedule(event):
-        #     self.schedule = self.get_scheduler()
-        #
-        # self.clean_queue()
-        # self.generate_events()
-        schedule = self.algorithm.run(event)
-        if schedule is not None:
-            ##TODO: generate appropriate events
-            # select for executing and generate appropriate events
-            self.post_event(new_event)
-
-
-    def post_event(self, event):
-        self.posting_entity.post(event)
-
-    def need_to_reschedule(self, event):
-        pass
-
-    def get_scheduler(self):
-        pass
-
-    def clean_queue(self):
-        pass
-
-    def generate_events(self):
-        pass
+#class Executor:
+#    def __init__(self):
+#        ##self.schedule = None
+#        self.algorithm = None
+#        self.resource_manager = None
+#        self.estimator = None
+#
+#        self.posting_entity = None
+#
+#
+#    ## check if possible to interrupt execution of the current executing task on the node
+#    def can_interrupt_execution(self, task, node):
+#        pass
+#
+#    def event_arrived(self, event):
+#        # if self.need_to_reschedule(event):
+#        #     self.schedule = self.get_scheduler()
+#        #
+#        # self.clean_queue()
+#        # self.generate_events()
+#        schedule = self.algorithm.run(event)
+#        if schedule is not None:
+#            ##TODO: generate appropriate events
+#            # select for executing and generate appropriate events
+#            self.post_event(new_event)
+#
+#
+#    def post_event(self, event):
+#        self.posting_entity.post(event)
+#
+#    def need_to_reschedule(self, event):
+#        pass
+#
+#    def get_scheduler(self):
+#        pass
+#
+#    def clean_queue(self):
+#        pass
+#
+#    def generate_events(self):
+#        pass
 
 ##interface Scheduler
 class Scheduler:
