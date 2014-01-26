@@ -228,12 +228,10 @@ def build():
         print("          Seq validaty %s" % str(seq_time_validaty))
         print("   Dependancy validaty %s" % str(dependency_validaty))
 
-        decoder = Utility.build_bundle_decoder(wf.head_task)
         name = wf_name +"_bundle"
-        bundle = SaveBundle(name, resources, transferMx, ideal_flops, schedule, wf_name)
-        f = open('..\\..\\resources\\saved_schedules\\' + name + '.json', 'w')
-        json.dump(bundle, f, cls=SaveBundleEncoder)
-        f.close()
+        path = '..\\..\\resources\\saved_schedules\\' + name + '.json'
+        Utility.save_schedule(path, wf_name, resources, transferMx, ideal_flops, schedule)
+
         #f = open('..\\..\\resources\\saved_schedules\\' + name + '.json', 'r')
         #deser = json.load(f, object_hook=decoder)
         #f.close()

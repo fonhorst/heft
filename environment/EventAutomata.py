@@ -8,23 +8,6 @@ class BaseEvent:
         self.time_posted = time_posted
         self.time_happened = time_happened
 
-
-class TaskFinished(BaseEvent):
-    def __init__(self):
-        self.task = None
-
-
-class TaskFailed(BaseEvent):
-    def __init__(self):
-        self.task = None
-        self.reason = None
-
-class NodePerformanceChanged(BaseEvent):
-    def __init__(self):
-        self.node = None
-        self.new_performance = None
-
-
 class PostingEntity:
     def post(self, event):
         pass

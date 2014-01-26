@@ -144,6 +144,26 @@ class Utility:
             return dct
 
         return as_schedule
+
+    @staticmethod
+    def save_schedule(path, wf_name, resources, transferMx, ideal_flops, schedule):
+
+        name = wf_name +"_bundle"
+        bundle = SaveBundle(name, resources, transferMx, ideal_flops, schedule, wf_name)
+
+        ##'..\\..\\resources\\saved_schedules\\' + name + '.json'
+        f = open(path, 'w')
+        json.dump(bundle, f, cls=SaveBundleEncoder)
+        f.close()
+        pass
+
+    @staticmethod
+    def load_schedule(path, wf):
+        decoder = Utility.build_bundle_decoder(wf.head_task)
+        f = open(path, 'r')
+        bundle = json.load(f, object_hook=decoder)
+        f.close()
+        return bundle
     pass
 
 class SaveBundleEncoder(json.JSONEncoder):
