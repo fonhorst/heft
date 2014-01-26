@@ -28,7 +28,7 @@ class NodeUp(BaseEvent):
         self.node = node
 
 class EventMachine:
-    def __init__(self, executor):
+    def __init__(self):
         self.queue = deque()
         self.current_time = 0
 
@@ -36,12 +36,14 @@ class EventMachine:
         #count = 0
         while len(self.queue) > 0:
             event = self.queue.popleft()
+            self.current_time = event.time_happened
             #print(str(count) + " Event: " + str(event.time_happened) + ' ' + str(event.task.id))
             #count += 1
             self.event_arrived(event)
 
     def post(self, event):
         event.time_posted = self.current_time
+        ## TODO: raise exception if event.time_happened < self.current_time
         self.queue.append(event)
         self.queue = deque(sorted(self.queue, key=lambda x: x.time_happened))
         #st = ''
@@ -55,10 +57,17 @@ class EventMachine:
 
 class HeftExecutor(EventMachine):
 
-    def __init__(self, heft_planner, ):
+    def __init__(self, heft_planner):
+        ## TODO: remake it later
+        self.queue = deque()
+        self.current_time = 0
         # DynamicHeft
         self.heft_planner = heft_planner
         self.current_schedule = Schedule({node:[] for node in heft_planner.get_nodes()})
+
+    def init(self):
+        self.current_schedule = self.heft_planner.run(self.current_schedule)
+        self.post_new_events()
 
     def event_arrived(self, event):
 
@@ -68,7 +77,7 @@ class HeftExecutor(EventMachine):
             self.post_new_events()
 
         def check_fail(task, node):
-            reliability = self.estimator.estimate_reliability(task, node)
+            reliability = self.heft_planner.estimator.estimate_reliability(task, node)
             res = random.random()
             if res > reliability:
                 return True
