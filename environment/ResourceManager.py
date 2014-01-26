@@ -57,13 +57,34 @@ class Schedule:
         ## }
         self.mapping = mapping##dict()
 
-    def change_state(self, task, state):
+    def is_finished(self, task):
+        (node, item) = self.place(task)
+        if item is None:
+            return False
+        return item.state == ScheduleItem.FINISHED
+
+    def get_next_item(self, task):
+        for (node, items) in self.mapping.items():
+            l = len(items)
+            for i in range(l):
+                if items[i].job.id == task.id:
+                    if l > i + 1:
+                        return items[i + 1]
+                    else:
+                        return None
+        return None
+
+    def place(self, task):
         for (node, items) in self.mapping.items():
             for item in items:
                 if item.job.id == task.id:
-                    item.state = state
-                    return True
-        return False
+                    return (node,item)
+        return None
+
+
+    def change_state(self, task, state):
+        (node,item) = self.place(task)
+        item.state = state
 
     def get_items_in_time(self, time):
         pass

@@ -2,10 +2,11 @@ from environment.ResourceManager import ResourceManager
 from environment.ResourceManager import Estimator
 
 class ExperimentEstimator(Estimator):
-    def __init__(self, transferMx, ideal_flops):
+    def __init__(self, transferMx, ideal_flops, reliability):
         self.transfer_matrix = transferMx
         self.cache = dict()
         self.ideal_flops = ideal_flops
+        self.reliability = reliability
 
     ##get estimated time of running the task on the node
     def estimate_runtime(self, task, node):
@@ -42,11 +43,18 @@ class ExperimentEstimator(Estimator):
 
     ## estimate probability of successful ending of the task on the node
     def estimate_reliability(self, task, node):
-        pass
+        return self.reliability[node]
 
 class ExperimentResourceManager(ResourceManager):
     def __init__(self, resources):
         self.resources = resources
+
+    ## TODO: fix problem with id
+    def node(self, node):
+        result = [nd for nd in self.resources[node.resource.name].nodes if nd.name == node.name]
+        if len(result) == 0:
+            return None
+        return result[0]
 
     ##get all resources in the system
     def get_resources(self):
