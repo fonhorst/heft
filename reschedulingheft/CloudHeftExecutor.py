@@ -2,80 +2,13 @@ from collections import deque
 import random
 from environment.Resource import Node
 from environment.ResourceManager import Schedule, ScheduleItem
+from reschedulingheft.HeftExecutor import EventMachine, TaskStart, NodeFailed, NodeUp, TaskFinished
 
 
-class BaseEvent:
-    def __init__(self, id, time_posted, time_happened):
-        self.id = id
-        self.time_posted = time_posted
-        self.time_happened = time_happened
-
-class TaskStart(BaseEvent):
-    def __init__(self, task):
-        self.task = task
-
-    def __str__(self):
-        return "TaskStart"
-
-class TaskFinished(BaseEvent):
-    def __init__(self, task):
-        self.task = task
-
-    def __str__(self):
-        return "TaskFinished"
-
-class NodeFailed(BaseEvent):
-    def __init__(self, node, task):
-        self.node = node
-        self.task = task
-
-    def __str__(self):
-        return "NodeFailed"
-
-class NodeUp(BaseEvent):
-    def __init__(self, node):
-        self.node = node
-
-    def __str__(self):
-        return "NodeUp"
-
-class EventMachine:
-    def __init__(self):
-        self.queue = deque()
-        self.current_time = 0
-
-    def run(self):
-        count = 0
-        while len(self.queue) > 0:
-            event = self.queue.popleft()
-            self.current_time = event.time_happened
-            if isinstance(event, NodeUp):
-                print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened))
-            else:
-                print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
-            count += 1
-            self.event_arrived(event)
-
-    def post(self, event):
-        event.time_posted = self.current_time
-        ## TODO: raise exception if event.time_happened < self.current_time
-        if event.time_happened < self.current_time:
-            k = 0
-            pass
-        self.queue.append(event)
-        self.queue = deque(sorted(self.queue, key=lambda x: x.time_happened))
-        #st = ''
-        #for el in self.queue:
-        #    st = st + str(el.time_happened) + ' '
-        #print(' Queue: ' + st)
-
-    def event_arrived(self, event):
-        pass
+class CloudHeftExecutor(EventMachine):
 
 
-class HeftExecutor(EventMachine):
-
-    def __init__(self, heft_planner, base_fail_duration, base_fail_dispersion):
+    def __init__(self, heft_planner, base_fail_duration, base_fail_dispersion, desired_reliability):
         ## TODO: remake it later
         self.queue = deque()
         self.current_time = 0
@@ -83,6 +16,7 @@ class HeftExecutor(EventMachine):
         self.heft_planner = heft_planner
         self.base_fail_duration = base_fail_duration
         self.base_fail_dispersion = base_fail_dispersion
+        self.desired_reliability = desired_reliability
         self.current_schedule = Schedule({node:[] for node in heft_planner.get_nodes()})
 
     def init(self):
@@ -108,7 +42,32 @@ class HeftExecutor(EventMachine):
             # check task as executing
             # self.current_schedule.change_state(event.task, ScheduleItem.EXECUTING)
 
+            # public_resources_manager:
+            #   determine nodes of proper soft type
+            #   check and determine free nodes
+            #   determine reliability of every nodes
+            #   determine time_of_execution probability for (task,node) pair
+
             # try to find nodes in cloud
+            proper_nodes = public_resources_manager.get_nodes_by_type()
+            proper_nodes = get_free_nodes(proper_nodes)
+            sorted_proper_nodes = sorted(proper_nodes, key=lambda x: x reliability)
+            current_set = [event.node]
+            for pnode in sorted_proper_nodes:
+                current_set.append(pnode)
+                common_reliability = calculate_set_reliability(current_set)
+                if common_reliability >= desired_reliability:
+                    break
+            current_set.remove(event.node)
+            for nd in current_set:
+                generate_fail_or_success
+                    True: generate_time_of_fail
+                    False: generate_time_of_execution
+                post_events ## TaskStart + TaskFinished or TaskStart + NodeFailed
+            register_task ## register for multiple start
+
+
+
 
 
             # check if failed and post
@@ -135,10 +94,22 @@ class HeftExecutor(EventMachine):
                 pass
             return None
         if isinstance(event, TaskFinished):
+
+            # check if it cloud task
+            # if task cloud and first: register as finished, check node in dedicated as finish, remove appropriate event of failure or task finished, free cloud node
+            # if task cloud and not first: free cloud node, end_of_function
+            # if task not cloud and first: register as finished, check node in dedicated as finish
+
             # check task finished
             self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
             return None
         if isinstance(event, NodeFailed):
+
+            # check if cloud node
+            # if cloud node: check as down, end_of_function
+            # if not cloud node: check as down, reschedule, register new node in dedicated resource for task if changed, end_of_function
+
+
             # check node down
             self.heft_planner.resource_manager.node(event.node).state = Node.Down
             # check failed event in schedule
@@ -155,6 +126,11 @@ class HeftExecutor(EventMachine):
             reschedule(event)
             return None
         if isinstance(event, NodeUp):
+
+            # check if cloud
+            # if cloud: check node up, end_of_function
+            # if not cloud: check as up, reschedule, register new node in dedicated resource for task if changed, end_of_function
+
             # check node up
             self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
             reschedule(event)
@@ -206,6 +182,7 @@ class HeftExecutor(EventMachine):
             return True
         self.queue = deque([event for event in self.queue if check(event)])
         return clean_schedule
+
 
 
 
