@@ -23,6 +23,7 @@ class GAFunctions:
                      sorted_tasks,
                      estimator,
                      size):
+
             self.counter = 0
             self.workflow = workflow
             self.nodes = nodes
@@ -36,9 +37,24 @@ class GAFunctions:
 
             self.task_map = {task.id: task for task in sorted_tasks}
             self.node_map = {node.name: node for node in nodes}
+
+            self.initial_chromosome = None##GAFunctions.schedule_to_chromosome(initial_schedule)
             pass
 
+    @staticmethod
+    def schedule_to_chromosome(schedule, sorted_tasks):
+        chrome = []
+        for task in sorted_tasks:
+            (node, item) = schedule.place(task)
+            chrome.append((task.id, node.name))
+        return chrome
+
     def initial(self):
+        ## TODO: remove it later.
+        # res = random.random()
+        # # TODO:
+        # if res >0.8:
+        #     return self.initial_chromosome
         ##return [self.random_chromo() for j in range(self.size)]
         return self.random_chromo()
 
@@ -60,23 +76,30 @@ class GAFunctions:
         task_to_node = dict()
         estimate = self.estimator.estimate_transfer_time
 
-        def max_parent_finish(task):
-            ##TODO: remake this stub later
-            ##TODO: (self.workflow.head_task == list(task.parents)[0]) - False. It's a bug.
-            ## fix it later.
-            if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
-                return 0
-            return max([task_to_node[p.id][2] for p in task.parents])
+        # TODO: remove it later
+        # def max_parent_finish(task):
+        #     ##TODO: remake this stub later
+        #     ##TODO: (self.workflow.head_task == list(task.parents)[0]) - False. It's a bug.
+        #     ## fix it later.
+        #     if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
+        #         return 0
+        #     return max([task_to_node[p.id][2] for p in task.parents])
+        #
+        # def transfer(task, node):
+        #     ## find all parent nodes mapping
+        #     ## estimate with estimator transfer time for it
+        #     ##TODO: remake this stub later.
+        #     if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
+        #         return 0
+        #     lst = [estimate(node, chrmo_mapping[parent.id], task, parent) for parent in task.parents]
+        #     transfer_time = max(lst)
+        #     return transfer_time
 
-        def transfer(task, node):
-            ## find all parent nodes mapping
-            ## estimate with estimator transfer time for it
+        def comm_ready_func(task, node):
             ##TODO: remake this stub later.
             if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
                 return 0
-            lst = [estimate(node, chrmo_mapping[parent.id], task, parent) for parent in task.parents]
-            transfer_time = max(lst)
-            return transfer_time
+            return max([task_to_node[p.id][2]+ estimate(node, chrmo_mapping[p.id], task, p) for p in task.parents])
 
 
         def get_possible_execution_time(task, node):
@@ -84,7 +107,10 @@ class GAFunctions:
             free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
             ##data_transfer_time added here
 
-            st_time = max(free_time, max_parent_finish(task)) + transfer(task, node)
+            comm_ready = comm_ready_func(task, node)
+
+            ##st_time = max(free_time, max_parent_finish(task)) + transfer(task, node)
+            st_time = max(free_time, comm_ready)
             ed_time = st_time + self.estimator.estimate_runtime(task, node)
             return st_time, ed_time
 
@@ -110,12 +136,24 @@ class GAFunctions:
 
     def mutation(self, chromosome):
         # simply change one node of task mapping
-        index = random.randint(0, self.workflow_size - 1)
-        node_index = random.randint(0, len(self.nodes) - 1)
-        (task_id, node_name) = chromosome[index]
         mutated = list(chromosome)
-        mutated[index] = (task_id, self.nodes[node_index].name)
+        for i in range(3):
+            index = random.randint(0, self.workflow_size - 1)
+            node_index = random.randint(0, len(self.nodes) - 1)
+            (task_id, node_name) = chromosome[index]
+
+            mutated[index] = (task_id, self.nodes[node_index].name)
+
+
+        # index1 = random.randint(0, self.workflow_size - 1)
+        # index2 = random.randint(0, self.workflow_size - 1)
+        #
+        # buf = mutated[index1]
+        # mutated[index1] = mutated[index2]
+        # mutated[index2] = buf
+
         return mutated
+
     pass
 
 def mark_finished(schedule):
@@ -126,11 +164,13 @@ def mark_finished(schedule):
 def build():
     ##Preparing
     wf_name = 'CyberShake_30'
-    ##wf_name = 'Montage_25'
+    #wf_name = 'Montage_25'
     ##wf_name = 'Epigenomics_24'
 
     ##wf_name = 'CyberShake_50'
     ##wf_name = 'Montage_50'
+
+    ##wf_name = 'CyberShake_1000'
 
     dax1 = '..\\..\\resources\\' + wf_name + '.xml'
     ##dax1 = '..\\..\\resources\\Montage_50.xml'
@@ -139,13 +179,13 @@ def build():
     task_postfix_id_1 = "00"
     deadline_1 = 1000
     ideal_flops = 20
-    population = 300
+    population = 100
 
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
     rgen = ResourceGenerator(min_res_count=1,
                                  max_res_count=1,
-                                 min_node_count=4,
-                                 max_node_count=4)
+                                 min_node_count=10,
+                                 max_node_count=10)
                                  ##min_flops=20,
                                 ## max_flops=20)
     resources = rgen.generate()
@@ -188,8 +228,9 @@ def build():
     toolbox.register("select", tools.selTournament, tournsize=3)
     #toolbox.register("select", tools.selRoulette)
 
-    def main():
-        CXPB, MUTPB, NGEN = 0.8, 0.2, 100
+    def main(initial_schedule):
+        ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
+        CXPB, MUTPB, NGEN = 0.8, 0.8, 100
         pop = toolbox.population(n=population)
         # Evaluate the entire population
         fitnesses = list(map(toolbox.evaluate, pop))
@@ -276,13 +317,16 @@ def build():
     print("          Seq validaty %s" % str(seq_time_validaty))
     print("   Dependancy validaty %s" % str(dependency_validaty))
 
+    chromo = GAFunctions.schedule_to_chromosome(schedule_heft, sorted_tasks)
+    sched = ga_functions.build_schedule(chromo)
+    k = 0
     ##assert(Utility.validateNodesSeq(schedule) is True)
         ##assert(Utility.validateParentsAndChildren(schedule, wf) is True
 
     ##================================
     ##Dynamic Heft Run
     ##================================
-    dynamic_planner = DynamicHeft( wf, resource_manager, estimator)
+    dynamic_planner = DynamicHeft(wf, resource_manager, estimator)
 
     nodes = HeftHelper.to_nodes(resource_manager.resources)
     current_cleaned_schedule = Schedule({node: [] for node in nodes})
@@ -303,7 +347,7 @@ def build():
     ##================================
     pr = cProfile.Profile()
     pr.enable()
-    main()
+    main(schedule_heft)
     pr.disable()
     s = io.StringIO()
     sortby = 'cumulative'
