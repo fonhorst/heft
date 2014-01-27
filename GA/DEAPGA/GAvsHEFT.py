@@ -58,6 +58,30 @@ class GAFunctions:
         ##return [self.random_chromo() for j in range(self.size)]
         return self.random_chromo()
 
+    def crossover(self, child1, child2):
+        i1 = random.randint(0, self.workflow_size - 1)
+        i2 = random.randint(0, self.workflow_size - 1)
+        index1 = min(i1, i2)
+        index2 = max(i1, i2)
+
+        for_choosing = [i for i in range(self.workflow_size)]
+        swap_map = []
+        for i in range(index1, index2):
+            rd = random.randint(0, len(for_choosing) - 1)
+            choosed = for_choosing[rd]
+            swap_map.append((i, choosed))
+            for_choosing.remove(choosed)
+
+        new_1 = child1[0:index1] + [child2[choosed] for (i, choosed) in swap_map] + child1[index2:]##([] if index2 + 1 == len(for_choosing) else child1[index2+1:])
+        new_2 = list(child2)
+        for (i, choosed) in swap_map:
+            new_2[choosed] = child1[i]
+
+        return (new_1, new_2)
+
+
+
+
     def fitness(self, chromo):
         ## value of fitness function is the last time point in the schedule
         ## built from the chromo
@@ -137,12 +161,11 @@ class GAFunctions:
     def mutation(self, chromosome):
         # simply change one node of task mapping
         mutated = list(chromosome)
-        for i in range(3):
-            index = random.randint(0, self.workflow_size - 1)
-            node_index = random.randint(0, len(self.nodes) - 1)
-            (task_id, node_name) = chromosome[index]
-
-            mutated[index] = (task_id, self.nodes[node_index].name)
+        #for i in range(3):
+        index = random.randint(0, self.workflow_size - 1)
+        node_index = random.randint(0, len(self.nodes) - 1)
+        (task_id, node_name) = chromosome[index]
+        mutated[index] = (task_id, self.nodes[node_index].name)
 
 
         # index1 = random.randint(0, self.workflow_size - 1)
@@ -223,7 +246,8 @@ def build():
 
 
     toolbox.register("evaluate", ga_functions.fitness)
-    toolbox.register("mate", tools.cxTwoPoints)
+    # toolbox.register("mate", tools.cxTwoPoints)
+    toolbox.register("mate", ga_functions.crossover)
     toolbox.register("mutate", ga_functions.mutation)
     toolbox.register("select", tools.selTournament, tournsize=3)
     #toolbox.register("select", tools.selRoulette)
