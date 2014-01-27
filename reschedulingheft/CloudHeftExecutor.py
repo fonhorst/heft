@@ -164,6 +164,10 @@ class CloudHeftExecutor(EventMachine):
             if from_cloud and self.register[event.task] == CloudHeftExecutor.STATUS_RUNNING:
                 self.register[event.task] = CloudHeftExecutor.STATUS_FINISHED
                 ## TODO: correct it
+                ## if event.task failed and went through rescheduling,
+                ## it would be possible that currently ScheduleItem of event.task on dedicated resource
+                ## has UNSTARTED state.
+                ## TODO: add additional functional to schedule to record such situations and validate it after
                 self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
                 def check(ev):
                     if isinstance(ev, TaskFinished) or isinstance(ev, NodeFailed) or isinstance(ev, NodeUp):
