@@ -96,9 +96,9 @@ class CloudHeftExecutor(EventMachine):
         if isinstance(event, TaskFinished):
 
             # check if it cloud task
-            # if task cloud and first: register as finished, check node in dedicated as finish, remove appropriate event of failure or task finished, free cloud node
+            # if task cloud and first: register as finished, check node in dedicated as finish, remove appropriate event of failure or task finished for dedicated, free cloud node, reschedule, end_of_function
             # if task cloud and not first: free cloud node, end_of_function
-            # if task not cloud and first: register as finished, check node in dedicated as finish
+            # if task not cloud and first: register as finished, check node in dedicated as finish, end_of_function
 
             # check task finished
             self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
