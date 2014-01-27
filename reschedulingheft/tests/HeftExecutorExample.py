@@ -45,8 +45,8 @@ def main():
 
     dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
     heft_machine = HeftExecutor(heft_planner=dynamic_heft,
-                                base_fail_duration=20,
-                                base_fail_dispersion=10)
+                                base_fail_duration=40,
+                                base_fail_dispersion=1)
     heft_machine.init()
     heft_machine.run()
 

@@ -12,6 +12,7 @@ class StaticHeftPlanner(Scheduler):
     global_count = 0
     def __init__(self):
         self.task_rank_cache = dict()
+        self.current_time = 0
         pass
 
     def compcost(self, job, agent):
@@ -66,7 +67,13 @@ class StaticHeftPlanner(Scheduler):
         Operates in place
         """
 
+
+        ## TODO: add finished tasks
         jobson = dict()
+        for (node, items) in existing_plan.items():
+            for item in items:
+                if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING:
+                    jobson[item.job] = node
 
 
         new_plan = existing_plan
@@ -109,7 +116,7 @@ class StaticHeftPlanner(Scheduler):
                                       + commcost(p, task, node, jobson[p]) for p in task.parents])
                 ##else:
                 ##    comm_ready = 0
-                return max(agent_ready, comm_ready)
+                return max(agent_ready, comm_ready, self.current_time)
             else:
                 return 1000000
         else:

@@ -81,6 +81,20 @@ class Schedule:
                     return (node,item)
         return None
 
+    def change_state_executed(self, task, state):
+        for (node, items) in self.mapping.items():
+            for item in items:
+                if item.job.id == task.id and item.state == ScheduleItem.EXECUTING:
+                    item.state = state
+        return None
+
+    def place_by_time(self, task, start_time):
+        for (node, items) in self.mapping.items():
+            for item in items:
+                if item.job.id == task.id and item.start_time == start_time:
+                    return (node,item)
+        return None
+
 
     def change_state(self, task, state):
         (node,item) = self.place(task)

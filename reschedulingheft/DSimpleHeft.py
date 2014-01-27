@@ -21,6 +21,7 @@ class DynamicHeft(StaticHeftPlanner):
         self.resource_manager = resource_manager
         self.estimator = estimator
 
+        self.current_time = 0
 
         nodes = self.get_nodes()
 
@@ -46,6 +47,12 @@ class DynamicHeft(StaticHeftPlanner):
         sorted_tasks = [ task for task in self.wf_jobs if  task.id  in for_planning]
         new_sched = self.mapping([(self.workflow, sorted_tasks)],current_cleaned_schedule.mapping, nodes, self.commcost, self.compcost)
         return new_sched
+
+    def endtime(self, job, events):
+        """ Endtime of job in list of events """
+        for e in events:
+            if e.job == job and (e.state == ScheduleItem.FINISHED or e.state == ScheduleItem.EXECUTING or e.state == ScheduleItem.UNSTARTED):
+                return e.end_time
 
 
 
