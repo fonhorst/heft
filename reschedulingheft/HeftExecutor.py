@@ -13,6 +13,7 @@ class BaseEvent:
 class TaskStart(BaseEvent):
     def __init__(self, task):
         self.task = task
+        self.node = None
 
     def __str__(self):
         return "TaskStart"
@@ -20,7 +21,7 @@ class TaskStart(BaseEvent):
 class TaskFinished(BaseEvent):
     def __init__(self, task):
         self.task = task
-
+        self.node = None
     def __str__(self):
         return "TaskFinished"
 

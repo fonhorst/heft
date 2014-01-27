@@ -19,7 +19,7 @@ class CloudHeftExecutor(EventMachine):
         self.base_fail_duration = base_fail_duration
         self.base_fail_dispersion = base_fail_dispersion
         self.desired_reliability = desired_reliability
-        self.public_resource_manager = public_resource_manager
+        self.public_resources_manager = public_resource_manager
         self.current_schedule = Schedule({node: [] for node in heft_planner.get_nodes()})
 
         self.register = dict()
@@ -121,9 +121,11 @@ class CloudHeftExecutor(EventMachine):
                     else:
                         event_start = TaskStart(event.task)
                         event_start.time_happened = self.current_time
+                        event_start.node = nd
 
                         event_finish = TaskFinished(event.task)
                         event_finish.time_happened = self.current_time + generated_comp_time
+                        event_finish.node = nd
 
                         self.post(event_start)
                         self.post(event_finish)
@@ -238,15 +240,17 @@ class CloudHeftExecutor(EventMachine):
         for (node, items) in self.current_schedule.mapping.items():
             for item in items:
                 if item.state == ScheduleItem.UNSTARTED:
-                    unstarted_items.add(item)
+                    unstarted_items.add((node, item))
 
         events_to_post = []
-        for item in unstarted_items:
+        for (node, item) in unstarted_items:
             event_start = TaskStart(item.job)
             event_start.time_happened = item.start_time
+            event_start.node = node
 
             event_finish = TaskFinished(item.job)
             event_finish.time_happened = item.end_time
+            event_finish.node = node
 
             events_to_post
             self.post(event_start)
