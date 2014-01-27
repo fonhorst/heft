@@ -7,8 +7,10 @@ from reschedulingheft.HeftExecutor import EventMachine, TaskStart, NodeFailed, N
 
 class CloudHeftExecutor(EventMachine):
 
+    STATUS_RUNNING = 'running'
+    STATUS_FINISHED = 'finished'
 
-    def __init__(self, heft_planner, base_fail_duration, base_fail_dispersion, desired_reliability):
+    def __init__(self, heft_planner, base_fail_duration, base_fail_dispersion, desired_reliability, public_resource_manager):
         ## TODO: remake it later
         self.queue = deque()
         self.current_time = 0
@@ -17,7 +19,10 @@ class CloudHeftExecutor(EventMachine):
         self.base_fail_duration = base_fail_duration
         self.base_fail_dispersion = base_fail_dispersion
         self.desired_reliability = desired_reliability
-        self.current_schedule = Schedule({node:[] for node in heft_planner.get_nodes()})
+        self.public_resource_manager = public_resource_manager
+        self.current_schedule = Schedule({node: [] for node in heft_planner.get_nodes()})
+
+        self.register = dict()
 
     def init(self):
         self.current_schedule = self.heft_planner.run(self.current_schedule)
@@ -31,14 +36,24 @@ class CloudHeftExecutor(EventMachine):
             self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
             self.post_new_events()
 
-        def check_fail(task, node):
-            reliability = self.heft_planner.estimator.estimate_reliability(task, node)
+        def check_fail(reliability):
             res = random.random()
             if res > reliability:
                 return True
             return False
 
+
         if isinstance(event, TaskStart):
+
+            # TODO: if node is cloud node, do nothing
+            prm = self.public_resources_manager
+            if prm.isCloudNode(event.node):
+                return None
+
+            # check if failed and post
+            (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
+            item.state = ScheduleItem.EXECUTING
+
             # check task as executing
             # self.current_schedule.change_state(event.task, ScheduleItem.EXECUTING)
 
@@ -49,32 +64,77 @@ class CloudHeftExecutor(EventMachine):
             #   determine time_of_execution probability for (task,node) pair
 
             # try to find nodes in cloud
-            proper_nodes = public_resources_manager.get_nodes_by_type()
-            proper_nodes = get_free_nodes(proper_nodes)
-            sorted_proper_nodes = sorted(proper_nodes, key=lambda x: x reliability)
-            current_set = [event.node]
-            for pnode in sorted_proper_nodes:
-                current_set.append(pnode)
-                common_reliability = calculate_set_reliability(current_set)
-                if common_reliability >= desired_reliability:
-                    break
-            current_set.remove(event.node)
-            for nd in current_set:
-                generate_fail_or_success
-                    True: generate_time_of_fail
-                    False: generate_time_of_execution
-                post_events ## TaskStart + TaskFinished or TaskStart + NodeFailed
-            register_task ## register for multiple start
 
+            if event.task not in self.register:
+                proper_nodes = prm.get_by_softreq(event.task.soft_reqs)
+                proper_nodes = [node for node in proper_nodes if not prm.isBusy(node)]
+                sorted_proper_nodes = sorted(proper_nodes, key=lambda x: prm.get_reliability(x.name))
+                current_set = []
 
+                base_reliability = self.heft_planner.estimator.estimate_reliability(event.task, event.node)
+                obtained_reliability = base_reliability
+                dt = item.end_time - item.start_time
+                def calc(node, dt):
+                        #(dt, task, node, transfer_estimation)
+                        # TODO: add proper transfer time here
+                        fp = prm.get_reliability(node.name)
+                        comp_time = self.heft_planner.estimator.estimate_runtime(event.task, nd)
+                        cp = prm.probability_estimator(dt, comp_time, 0)
+                        return (node, fp, cp )
 
+                for pnode in sorted_proper_nodes:
+                    current_set.append(calc(pnode, dt))
+                    #TODO: add dencity law of probability for dedicated resource
+                    common_reliability = 1 - base_reliability
+                    for (nd, fp, cp) in current_set:
+                        common_reliability *= (1 - fp*cp)
+                    common_reliability = 1 - common_reliability
 
+                    if common_reliability >= self.desired_reliability:
+                        break
+                print(" Obtained reliability " + str(obtained_reliability) + " for task: " + str(event.task))
 
-            # check if failed and post
-            (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
-            item.state = ScheduleItem.EXECUTING
+                for (nd, fp, cp) in current_set:
+                    comp_time = self.heft_planner.estimator.estimate_runtime(event.task, nd)
+                    comp_time = comp_time + 0.6*comp_time
+                    ints = [(i, calc(nd, i))for i in range(0, comp_time, 0.05*comp_time)]
+                    rd = random.random()
+                    generated_comp_time = comp_time
+                    for (i, p) in ints:
+                        if p > rd:
+                            generated_comp_time = i
+                            break
 
-            if check_fail(event.task, node):
+                    if check_fail(fp):
+                        duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
+                        time_of_fail = generated_comp_time*random.random()
+                        time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
+
+                        event_failed = NodeFailed(nd, event.task)
+                        event_failed.time_happened = time_of_fail
+
+                        event_nodeup = NodeUp(nd)
+                        event_nodeup.time_happened = time_of_fail + duration
+
+                        self.post(event_failed)
+                        self.post(event_nodeup)
+                    else:
+                        event_start = TaskStart(event.task)
+                        event_start.time_happened = self.current_time
+
+                        event_finish = TaskFinished(event.task)
+                        event_finish.time_happened = self.current_time + generated_comp_time
+
+                        self.post(event_start)
+                        self.post(event_finish)
+
+                    prm.checkBusy(event.node, True)
+
+                self.register[event.task] = CloudHeftExecutor.STATUS_RUNNING
+                pass
+
+            reliability = self.heft_planner.estimator.estimate_reliability(event.task, node)
+            if check_fail(reliability):
                 # generate fail time, post it
                 duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
                 time_of_fail = (item.end_time - self.current_time)*random.random()
@@ -99,15 +159,41 @@ class CloudHeftExecutor(EventMachine):
             # if task cloud and first: register as finished, check node in dedicated as finish, remove appropriate event of failure or task finished for dedicated, free cloud node, reschedule, end_of_function
             # if task cloud and not first: free cloud node, end_of_function
             # if task not cloud and first: register as finished, check node in dedicated as finish, end_of_function
+            prm = self.public_resources_manager
+            from_cloud = prm.isCloudNode(event.node)
+            if from_cloud and self.register[event.task] == CloudHeftExecutor.STATUS_RUNNING:
+                self.register[event.task] = CloudHeftExecutor.STATUS_FINISHED
+                ## TODO: correct it
+                self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
+                def check(ev):
+                    if isinstance(ev, TaskFinished) or isinstance(ev, NodeFailed) or isinstance(ev, NodeUp):
+                        if ev.task.id == event.task.id:
+                            return False
+                    return True
+                self.queue = [ev for ev in self.queue if check(ev)]
+                prm.checkBusy(event.node, False)
+                reschedule(event)
+                return None
+            if from_cloud and self.register[event.task] == CloudHeftExecutor.STATUS_FINISHED:
+                prm.checkBusy(event.node, False)
+                return None
 
             # check task finished
+            self.register[event.task] = CloudHeftExecutor.STATUS_FINISHED
             self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
             return None
         if isinstance(event, NodeFailed):
 
             # check if cloud node
-            # if cloud node: check as down, end_of_function
-            # if not cloud node: check as down, reschedule, register new node in dedicated resource for task if changed, end_of_function
+            # if cloud node: check as down, free node, end_of_function
+            # if not cloud node: check as down, reschedule, end_of_function
+            prm = self.public_resources_manager
+            from_cloud = prm.isCloudNode(event.node)
+
+            if from_cloud:
+                prm.checkDown(event.node.name, True)
+                prm.checkBusy(event.node, False)
+                return None
 
 
             # check node down
@@ -129,7 +215,13 @@ class CloudHeftExecutor(EventMachine):
 
             # check if cloud
             # if cloud: check node up, end_of_function
-            # if not cloud: check as up, reschedule, register new node in dedicated resource for task if changed, end_of_function
+            # if not cloud: check as up, reschedule end_of_function
+            prm = self.public_resources_manager
+            from_cloud = prm.isCloudNode(event.node)
+            if from_cloud:
+                prm.checkDown(event.node.name, False)
+                return None
+
 
             # check node up
             self.heft_planner.resource_manager.node(event.node).state = Node.Unknown

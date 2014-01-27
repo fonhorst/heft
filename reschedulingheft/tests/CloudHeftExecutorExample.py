@@ -1,10 +1,12 @@
 from GA.DEAPGA.GAExecutor import GAExecutor
 from environment.EventAutomata import EventAutomata
+from environment.Resource import ResourceGenerator
 from environment.Utility import Utility
 from reschedulingheft.CloudHeftExecutor import CloudHeftExecutor
 from reschedulingheft.DSimpleHeft import DynamicHeft
 from reschedulingheft.HeftExecutor import HeftExecutor
 from reschedulingheft.HeftHelper import HeftHelper
+from reschedulingheft.PublicResourceManager import PublicResourceManager
 from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 
 
@@ -43,15 +45,22 @@ def main():
     estimator = ExperimentEstimator(bundle.transfer_mx, bundle.ideal_flops, realibility_map)
     resource_manager = ExperimentResourceManager(bundle.dedicated_resources)
 
-    # (public_resources, generate_reliability, generate_probability_law_for_(task,pair)_node) = generate public_resource
-    #
-    # public_resource_manager = PublicResourceManager((public_resources, generate_reliability, generate_probability_law_for_(task,pair)_node))
+    rgen = ResourceGenerator(min_res_count=1,
+                             max_res_count=1,
+                             min_node_count=4,
+                             max_node_count=4)
+                                 ##min_flops=20,
+                                ## max_flops=20)
+    (public_resources, reliability_map, probability_estimator) = rgen.generate_public_resources()
+
+    public_resource_manager = PublicResourceManager(public_resources, reliability_map, probability_estimator)
 
     dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
     cloud_heft_machine = CloudHeftExecutor(heft_planner=dynamic_heft,
-                                     base_fail_duration=40,
-                                     base_fail_dispersion=1,
-                                     # public_resource_manager)
+                                           base_fail_duration=40,
+                                           base_fail_dispersion=1,
+                                           desired_reliability=0.9,
+                                           public_resource_manager=public_resource_manager)
     cloud_heft_machine.init()
     cloud_heft_machine.run()
 

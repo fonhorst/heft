@@ -1,6 +1,10 @@
 from random import Random
 
 ##just an enum
+import math
+from reschedulingheft.HeftHelper import HeftHelper
+
+
 class SoftItem:
     windows = "windows"
     unix = "unix"
@@ -88,6 +92,45 @@ class ResourceGenerator:
 
                  res.nodes.add(node)
          return resources
+
+     def generate_public_resources(self):
+        ## TODO: remake it later
+        #(public_resources, generate_reliability, generate_probability_law_for_(task,node)_pair) = generate public_resource
+        resCount = 3
+        resources = list()
+        for i in range(0, resCount):
+            res = Resource("public_res_" + str(i))
+            resources.append(res)
+            nodeCount = None
+            if i == 0:
+                nodeCount = 5
+            elif i == 1:
+                nodeCount = 4
+            elif i == 2:
+                nodeCount = 3
+
+            for j in range(0, nodeCount):
+                node = Node(res.name + "_node_" + str(j), res, [SoftItem.ANY_SOFT])
+                if j == 0:
+                     node.flops = 10
+                if j == 1:
+                     node.flops = 10
+                if j == 2:
+                     node.flops = 25
+                if j == 3:
+                     node.flops = 25
+                if j == 4:
+                     node.flops = 30
+
+        nodes = HeftHelper.to_nodes(resources)
+        reliability_map = {node.name: 0.75 for node in nodes}
+
+        def probability_estimator(dt, comp_estimation, transfer_estimation):
+            M = comp_estimation + transfer_estimation
+            sigma = 0.1 * M
+            return math.erf((dt - M)/sigma)
+        return (resources, reliability_map, probability_estimator)
+
 
      @staticmethod
      def rand(random, min, max):

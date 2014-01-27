@@ -281,8 +281,8 @@ class Utility:
         bundle = json.load(f, object_hook=decoder)
         f.close()
         return bundle
-    pass
 
+    pass
 class SaveBundleEncoder(json.JSONEncoder):
         def default(self, obj):
             if isinstance(obj, SaveBundle):
