@@ -34,8 +34,7 @@ def main():
     realibility_map = { node.name: 1 for node in nodes}
     ## choose one node and give 75% to it
     selected_node = list(nodes)[1]
-
-    ##realibility_map[selected_node.name] = 0.75
+    realibility_map[selected_node.name] = 0.75
 
     ##======================
     ## create heft_executor
@@ -45,7 +44,9 @@ def main():
 
 
     dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
-    heft_machine = HeftExecutor(dynamic_heft)
+    heft_machine = HeftExecutor(heft_planner=dynamic_heft,
+                                base_fail_duration=20,
+                                base_fail_dispersion=10)
     heft_machine.init()
     heft_machine.run()
 

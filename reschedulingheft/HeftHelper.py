@@ -112,7 +112,7 @@ class HeftHelper(Scheduler):
     def get_tasks_for_planning(wf, schedule):
         ## TODO: remove duplicate code later
         def clean(items):
-            return [item for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING]
+            return [item.job for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING]
         def get_not_for_planning_tasks(schedule):
             result = set()
             for (node, items) in schedule.mapping.items():
