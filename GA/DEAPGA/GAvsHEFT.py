@@ -231,6 +231,11 @@ class GAFunctions2:
         return self.random_chromo()
 
     def random_chromo(self):
+        #res = random.random()
+        # # TODO:
+        #if res >0.0:
+            # return self.initial_chromosome
+        ##return [self.random_chromo() for j in range(self.size)]
         sched = self.initializing_alg.schedule()
         #TODO: remove it later
         mark_finished(sched)
@@ -298,10 +303,16 @@ class GAFunctions2:
             for node in self.nodes:
                 if len(chromo_copy[node.name]) == 0:
                     continue
-                tsk_id = chromo_copy[node.name][0]
-                task = self.task_map[tsk_id]
-                if tsk_id in ready_tasks:
-                    del chromo_copy[node.name][0]
+                #tsk_id = chromo_copy[node.name][0]
+                tsk_id = None
+                for i in range(len(chromo_copy[node.name])):
+                    if chromo_copy[node.name][i] in ready_tasks:
+                        tsk_id = chromo_copy[node.name][i]
+
+                if tsk_id is not None:
+                    task = self.task_map[tsk_id]
+                    #del chromo_copy[node.name][0]
+                    chromo_copy[node.name].remove(tsk_id)
                     ready_tasks.remove(tsk_id)
 
                     time_slots, runtime = get_possible_execution_times(task, node)
@@ -333,6 +344,7 @@ class GAFunctions2:
         return (1/time,)
 
     def crossover(self, child1, child2):
+        #return None
         i1 = random.randint(0, self.workflow_size - 1)
         i2 = random.randint(0, self.workflow_size - 1)
         index1 = min(i1, i2)
@@ -377,7 +389,35 @@ class GAFunctions2:
     #     while True:
 
     def mutation(self, chromosome):
+         # simply change one node of task mapping
+        node1 = self.nodes[random.randint(0, len(self.nodes) - 1)]
+        node2 = self.nodes[random.randint(0, len(self.nodes) - 1)]
+
+        ch = chromosome[node1.name]
+        if len(chromosome[node1.name]) > 0:
+            length = len(chromosome[node1.name])
+            ind = random.randint(0,length - 1)
+            dna = chromosome[node1.name][ind]
+            del chromosome[node1.name][ind]
+            chromosome[node2.name].append(dna)
         return chromosome
+
+    def sweep_mutation(self, chromosome):
+        node = self.nodes[random.randint(0, len(self.nodes) - 1)]
+        ch = chromosome[node.name]
+        if len(chromosome[node.name]) > 0:
+            length = len(chromosome[node.name])
+            ind = random.randint(0,length - 1)
+            dna = chromosome[node.name][ind]
+
+            ind1 = random.randint(0,length - 1)
+            chromosome[node.name][ind] = chromosome[node.name][ind1]
+            chromosome[node.name][ind1] = dna
+
+        return chromosome
+
+
+
 
     pass
 
@@ -404,7 +444,7 @@ def build():
     task_postfix_id_1 = "00"
     deadline_1 = 1000
     ideal_flops = 20
-    population = 10
+    population = 300
 
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
     rgen = ResourceGenerator(min_res_count=1,
@@ -455,12 +495,13 @@ def build():
 
     toolbox.register("mate", ga_functions.crossover)
     toolbox.register("mutate", ga_functions.mutation)
-    toolbox.register("select", tools.selTournament, tournsize=3)
+    toolbox.register("select", tools.selTournament, tournsize=10)
     #toolbox.register("select", tools.selRoulette)
 
     def main(initial_schedule):
-        ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
-        CXPB, MUTPB, NGEN = 0.8, 0.8, 1
+        #ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
+        ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
+        CXPB, MUTPB, NGEN = 0.8, 0.5, 100
         pop = toolbox.population(n=population)
         # Evaluate the entire population
         fitnesses = list(map(toolbox.evaluate, pop))
@@ -577,15 +618,15 @@ def build():
     ##================================
     ##GA Run
     ##================================
-    pr = cProfile.Profile()
-    pr.enable()
+    #pr = cProfile.Profile()
+    #pr.enable()
     main(schedule_heft)
-    pr.disable()
-    s = io.StringIO()
-    sortby = 'cumulative'
-    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-    ps.print_stats()
-    print(s.getvalue())
+    #pr.disable()
+    #s = io.StringIO()
+    #sortby = 'cumulative'
+    #ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    #ps.print_stats()
+    #print(s.getvalue())
 
 
 
