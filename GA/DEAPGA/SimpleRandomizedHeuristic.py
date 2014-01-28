@@ -1,6 +1,6 @@
 import random
 from environment.ResourceManager import Scheduler, ScheduleItem, Schedule
-from reschedulingheft import HeftHelper
+from reschedulingheft.HeftHelper import HeftHelper
 
 
 class SimpleRandomizedHeuristic(Scheduler):
@@ -24,22 +24,24 @@ class SimpleRandomizedHeuristic(Scheduler):
          ready_tasks = [child.id for child in self.workflow.head_task.children]
          schedule_mapping = {node: [] for node in self.nodes}
 
-         chrmo_mapping = {task_id: self.node_map[node_name] for (task_id, node_name) in chromo}
+         ##chrmo_mapping = {task_id: self.node_map[node_name] for (task_id, node_name) in chromo}
          task_to_node = dict()
          estimate = self.estimator.estimate_transfer_time
 
          finished_tasks = set()
 
          def is_child_ready(child):
-            ids = [p.id for p in child.parents]
-            return ids in finished_tasks
+            ids = set([p.id for p in child.parents])
+            result = False in [id in finished_tasks for id in ids]
+            return not result
 
 
          def find_slots(node, comm_ready, runtime):
              node_schedule = schedule_mapping.get(node, list())
              free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
              ## TODO: refactor it later
-             base_variant = [(free_time, free_time + runtime)]
+             f_time = max(free_time, comm_ready)
+             base_variant = [(f_time, f_time + runtime + 1)]
              zero_interval = [] if len(node_schedule) == 0 else [(0, node_schedule[0].start_time)]
              middle_intervals = [(node_schedule[i].end_time, node_schedule[i + 1].start_time) for i in range(len(node_schedule) - 1)]
              intervals = zero_interval + middle_intervals + base_variant
@@ -51,7 +53,7 @@ class SimpleRandomizedHeuristic(Scheduler):
                 ##TODO: remake this stub later.
                 if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
                     return 0
-                return max([task_to_node[p.id][2]+ estimate(node, chrmo_mapping[p.id], task, p) for p in task.parents])
+                return max([task_to_node[p.id][2]+ estimate(node, task_to_node[p.id][0], task, p) for p in task.parents])
 
 
 
@@ -73,16 +75,18 @@ class SimpleRandomizedHeuristic(Scheduler):
             node = self.nodes[choosed_node_index]
 
             time_slots, runtime = get_possible_execution_times(task, node)
-            choosed_time_index = random.randint(0, len(time_slots) - 1)
+            choosed_time_index = 0 if len(time_slots) == 1 else random.randint(0, len(time_slots) - 1)
             time_slot = time_slots[choosed_time_index]
 
             start_time = time_slot[0]
             end_time = start_time + runtime
 
             item = ScheduleItem(task, start_time, end_time)
-            schedule_mapping[node].append(item)
+            ##schedule_mapping[node].append(item)
+            Schedule.insert_item(schedule_mapping, node, item)
             task_to_node[task.id] = (node, start_time, end_time)
 
+            print('I am here')
             ready_tasks.remove(task.id)
             finished_tasks.add(task.id)
 
@@ -92,5 +96,12 @@ class SimpleRandomizedHeuristic(Scheduler):
 
          schedule = Schedule(schedule_mapping)
          return schedule
+
+
+
+
+
+
+
 
 

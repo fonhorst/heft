@@ -97,8 +97,20 @@ class Schedule:
 
 
     def change_state(self, task, state):
-        (node,item) = self.place(task)
+        (node, item) = self.place(task)
         item.state = state
+
+    @staticmethod
+    def insert_item(mapping, node, item):
+        result = []
+        i = 0
+        while i < len(mapping[node]):
+            ## TODO: potential problem with double comparing
+            if mapping[node][i].start_time >= item.end_time:
+                break
+            i += 1
+        mapping[node].insert(i, item)
+
 
     def get_items_in_time(self, time):
         pass

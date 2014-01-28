@@ -232,14 +232,88 @@ class GAFunctions2:
 
     def random_chromo(self):
         sched = self.initializing_alg.schedule()
+        mark_finished(sched)
+        seq_time_validaty = Utility.validateNodesSeq(sched)
+        dependency_validaty = Utility.validateParentsAndChildren(sched, self.workflow)
         chromo = GAFunctions2.schedule_to_chromosome(sched)
         return chromo
 
+    def build_schedule(self, chromo):
+        ready_tasks = [child.id for child in self.workflow.head_task.children]
+        finished_tasks = set()
 
+        def is_child_ready(child):
+            ids = set([p.id for p in child.parents])
+            result = False in [id in finished_tasks for id in ids]
+            return not result
 
+        schedule_mapping = {node: [] for node in self.nodes}
 
+        chrmo_mapping = dict()
+        for (node_name, tasks) in chromo.items():
+            for tsk_id in tasks:
+                chrmo_mapping[tsk_id] = self.node_map[node_name]
+        #chrmo_mapping = {task_id: self.node_map[node_name] for (task_id, node_name) in chromo.items()}
+        task_to_node = dict()
+        estimate = self.estimator.estimate_transfer_time
 
+        def find_slots(node, comm_ready, runtime):
+            node_schedule = schedule_mapping.get(node, list())
+            free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
+            ## TODO: refactor it later
+            f_time = max(free_time, comm_ready)
+            base_variant = [(f_time, f_time + runtime + 1)]
+            zero_interval = [] if len(node_schedule) == 0 else [(0, node_schedule[0].start_time)]
+            middle_intervals = [(node_schedule[i].end_time, node_schedule[i + 1].start_time) for i in range(len(node_schedule) - 1)]
+            intervals = zero_interval + middle_intervals + base_variant
 
+            result = [(st, end) for (st, end) in intervals if st >= comm_ready and end - st >= runtime]
+            return result
+
+        def comm_ready_func(task, node):
+            ##TODO: remake this stub later.
+            if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
+                return 0
+            return max([task_to_node[p.id][2]+estimate(node, chrmo_mapping[p.id], task, p) for p in task.parents])
+
+        def get_possible_execution_times(task, node):
+            ## pay attention to the last element in the resulted seq
+            ## it represents all available time of node after it completes all its work
+            ## (if such interval can exist)
+            ## time_slots = [(st1, end1),(st2, end2,...,(st_last, st_last + runtime)]
+            runtime = self.estimator.estimate_runtime(task, node)
+            comm_ready = comm_ready_func(task, node)
+            time_slots = find_slots(node, comm_ready, runtime)
+            return time_slots, runtime
+
+        while len(ready_tasks) > 0:
+            for node in self.nodes:
+                if len(chromo[node.name]) == 0:
+                    continue
+                tsk_id = chromo[node.name][0]
+                task = self.task_map[tsk_id]
+                if tsk_id in ready_tasks:
+                    ready_tasks.remove(tsk_id)
+
+                    time_slots, runtime = get_possible_execution_times(task, node)
+
+                    time_slot = time_slots[0]
+                    start_time = time_slot[0]
+                    end_time = start_time + runtime
+
+                    item = ScheduleItem(task, start_time, end_time)
+                    ##schedule_mapping[node].append(item)
+                    Schedule.insert_item(schedule_mapping, node, item)
+                    task_to_node[task.id] = (node, start_time, end_time)
+
+                    finished_tasks.add(task.id)
+
+                    ready_children = [child for child in task.children if is_child_ready(child)]
+                    for child in ready_children:
+                        ready_tasks.append(child.id)
+
+        schedule = Schedule(schedule_mapping)
+        return schedule
 
     def fitness(self, chromo):
         ## value of fitness function is the last time point in the schedule
@@ -249,78 +323,52 @@ class GAFunctions2:
         time = Utility.get_the_last_time(schedule)
         return (1/time,)
 
-    def build_schedule(self, chromo):
-        ## {
-        ##   res1: (task1,start_time1, end_time1),(task2,start_time2, end_time2), ...
-        ##   ...
-        ## }
-        schedule_mapping = dict()
-        chrmo_mapping = {task_id: self.node_map[node_name] for (task_id, node_name) in chromo}
-        task_to_node = dict()
-        estimate = self.estimator.estimate_transfer_time
+    def crossover(self, child1, child2):
+        i1 = random.randint(0, self.workflow_size - 1)
+        i2 = random.randint(0, self.workflow_size - 1)
+        index1 = min(i1, i2)
+        index2 = max(i1, i2)
 
-        # TODO: remove it later
-        # def max_parent_finish(task):
-        #     ##TODO: remake this stub later
-        #     ##TODO: (self.workflow.head_task == list(task.parents)[0]) - False. It's a bug.
-        #     ## fix it later.
-        #     if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
-        #         return 0
-        #     return max([task_to_node[p.id][2] for p in task.parents])
-        #
-        # def transfer(task, node):
-        #     ## find all parent nodes mapping
-        #     ## estimate with estimator transfer time for it
-        #     ##TODO: remake this stub later.
-        #     if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
-        #         return 0
-        #     lst = [estimate(node, chrmo_mapping[parent.id], task, parent) for parent in task.parents]
-        #     transfer_time = max(lst)
-        #     return transfer_time
+        def chromo_to_seq(chromo):
+            result = []
+            for (nd_name, items) in chromo.items():
+                result += [(nd_name, item) for item in items]
+            return result
 
-        def comm_ready_func(task, node):
-            ##TODO: remake this stub later.
-            if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
-                return 0
-            return max([task_to_node[p.id][2]+ estimate(node, chrmo_mapping[p.id], task, p) for p in task.parents])
+        def fill_chromo(chromo, seq):
+            chromo.clear()
+            for node in self.nodes:
+                chromo[node.name] = []
+            for (nd_name, tsk_id) in seq:
+                chromo[nd_name].append(tsk_id)
 
+        ch1 = chromo_to_seq(child1)
+        ch2 = chromo_to_seq(child2)
 
-        def get_possible_execution_time(task, node):
-            node_schedule = schedule_mapping.get(node, list())
-            free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
-            ##data_transfer_time added here
+        window = dict()
+        for i in range(index1, index2):
+            tsk_id = ch1[i][1]
+            window[ch1[i][1]] = i
 
-            comm_ready = comm_ready_func(task, node)
+        for i in range(self.workflow_size):
+            tsk_id = ch2[i][1]
+            if tsk_id in window:
+                buf = ch1[window[tsk_id]]
+                ch1[window[tsk_id]] = ch2[i]
+                ch2[i] = buf
 
-            ##st_time = max(free_time, max_parent_finish(task)) + transfer(task, node)
-            st_time = max(free_time, comm_ready)
-            ed_time = st_time + self.estimator.estimate_runtime(task, node)
-            return st_time, ed_time
+        fill_chromo(child1, ch1)
+        fill_chromo(child2, ch2)
+        pass
 
-        for (task_id, node_name) in chromo:
-            task = self.task_map[task_id]
-            node = self.node_map[node_name]
-            (start_time, end_time) = get_possible_execution_time(task, node)
-            item = ScheduleItem(task, start_time, end_time)
-            lst = schedule_mapping.get(node, list())
-            lst.append(item)
-            schedule_mapping[node] = lst
-            task_to_node[task.id] = (node, start_time, end_time)
+    # def swap_mutation(self, chromo):
+    #     node_index = random.randint(0, len(self.nodes) - 1)
+    #     node_seq = chromo[self.nodes[node_index].name]
+    #
+    #     while True:
 
-        schedule = Schedule(schedule_mapping)
-        return schedule
-
-    def build_schedule(self, chromo):
-        nodes_with_tasks = {node.name: deque() for node in self.nodes}
-        for (task_id, node_name) in chromo:
-            nodes_with_tasks[node_name].append(task_id)
-        # get initial ready tasks
-        ready = set([child.id for child in self.workflow.head_task.children])
-        while len(ready) > 0:
-            for nd_name in nodes_with_tasks.keys():
-                if tsk_id in ready:
-                    tsk_id = nodes_with_tasks[nd_name].popleft()
-            pass
+    def mutation(self, chromosome):
+        return chromosome
 
     pass
 
@@ -347,7 +395,7 @@ def build():
     task_postfix_id_1 = "00"
     deadline_1 = 1000
     ideal_flops = 20
-    population = 100
+    population = 10
 
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
     rgen = ResourceGenerator(min_res_count=1,
@@ -372,14 +420,15 @@ def build():
     ranking = HeftHelper.build_ranking_func(nodes, compcost, commcost)
     sorted_tasks = ranking(wf)
 
-    ga_functions = GAFunctions(wf, nodes, sorted_tasks, estimator, population)
+    #ga_functions = GAFunctions(wf, nodes, sorted_tasks, estimator, population)
+    ga_functions = GAFunctions2(wf, nodes, sorted_tasks, estimator, population)
 
 
     ##================================
     ##Create genetic algorithm here
     ##================================
     creator.create("FitnessMax", base.Fitness, weights=(1.0,))
-    creator.create("Individual", list, fitness=creator.FitnessMax)
+    creator.create("Individual", dict, fitness=creator.FitnessMax)
 
     toolbox = base.Toolbox()
     # Attribute generator
@@ -402,7 +451,7 @@ def build():
 
     def main(initial_schedule):
         ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
-        CXPB, MUTPB, NGEN = 0.8, 0.8, 30
+        CXPB, MUTPB, NGEN = 0.8, 0.8, 1
         pop = toolbox.population(n=population)
         # Evaluate the entire population
         fitnesses = list(map(toolbox.evaluate, pop))
@@ -442,10 +491,10 @@ def build():
             std = abs(sum2 / length - mean**2)**0.5
 
             print("-- Generation %i --" % g)
-            # print("  Worst %s" % str(1/min(fits)))
-            # print("   Best %s" % str(1/max(fits)))
-            # print("    Avg %s" % str(1/mean))
-            # print("    Std %s" % str(1/std))
+            print("  Worst %s" % str(1/min(fits)))
+            print("   Best %s" % str(1/max(fits)))
+            print("    Avg %s" % str(1/mean))
+            print("    Std %s" % str(1/std))
         pass
 
         ##TODO: remove it later
@@ -491,8 +540,8 @@ def build():
     print("          Seq validaty %s" % str(seq_time_validaty))
     print("   Dependancy validaty %s" % str(dependency_validaty))
 
-    chromo = GAFunctions.schedule_to_chromosome(schedule_heft, sorted_tasks)
-    sched = ga_functions.build_schedule(chromo)
+    ##chromo = GAFunctions.schedule_to_chromosome(schedule_heft, sorted_tasks)
+    ##sched = ga_functions.build_schedule(chromo)
     k = 0
     ##assert(Utility.validateNodesSeq(schedule) is True)
         ##assert(Utility.validateParentsAndChildren(schedule, wf) is True
@@ -519,15 +568,15 @@ def build():
     ##================================
     ##GA Run
     ##================================
-    # pr = cProfile.Profile()
-    # pr.enable()
+    pr = cProfile.Profile()
+    pr.enable()
     main(schedule_heft)
-    # pr.disable()
-    # s = io.StringIO()
-    # sortby = 'cumulative'
-    # ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-    # ps.print_stats()
-    # print(s.getvalue())
+    pr.disable()
+    s = io.StringIO()
+    sortby = 'cumulative'
+    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    ps.print_stats()
+    print(s.getvalue())
 
 
 
