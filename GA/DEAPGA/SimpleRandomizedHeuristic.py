@@ -86,7 +86,7 @@ class SimpleRandomizedHeuristic(Scheduler):
             Schedule.insert_item(schedule_mapping, node, item)
             task_to_node[task.id] = (node, start_time, end_time)
 
-            print('I am here')
+            ##print('I am here')
             ready_tasks.remove(task.id)
             finished_tasks.add(task.id)
 

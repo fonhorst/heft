@@ -232,6 +232,7 @@ class GAFunctions2:
 
     def random_chromo(self):
         sched = self.initializing_alg.schedule()
+        #TODO: remove it later
         mark_finished(sched)
         seq_time_validaty = Utility.validateNodesSeq(sched)
         dependency_validaty = Utility.validateParentsAndChildren(sched, self.workflow)
@@ -286,13 +287,21 @@ class GAFunctions2:
             time_slots = find_slots(node, comm_ready, runtime)
             return time_slots, runtime
 
+        chromo_copy = dict()
+        for (nd_name, items) in chromo.items():
+            chromo_copy[nd_name] = []
+            for item in items:
+                chromo_copy[nd_name].append(item)
+
+
         while len(ready_tasks) > 0:
             for node in self.nodes:
-                if len(chromo[node.name]) == 0:
+                if len(chromo_copy[node.name]) == 0:
                     continue
-                tsk_id = chromo[node.name][0]
+                tsk_id = chromo_copy[node.name][0]
                 task = self.task_map[tsk_id]
                 if tsk_id in ready_tasks:
+                    del chromo_copy[node.name][0]
                     ready_tasks.remove(tsk_id)
 
                     time_slots, runtime = get_possible_execution_times(task, node)
