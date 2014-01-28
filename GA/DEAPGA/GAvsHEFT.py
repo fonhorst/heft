@@ -502,6 +502,7 @@ def build():
         #ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
         ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
         CXPB, MUTPB, NGEN = 0.8, 0.5, 100
+        SWEEPMUTPB = 0.2
         pop = toolbox.population(n=population)
         # Evaluate the entire population
         fitnesses = list(map(toolbox.evaluate, pop))
@@ -523,6 +524,9 @@ def build():
                     del child2.fitness.values
 
             for mutant in offspring:
+                if random.random() < SWEEPMUTPB:
+                    ga_functions.sweep_mutation(mutant)
+                    del mutant.fitness.values
                 if random.random() < MUTPB:
                     toolbox.mutate(mutant)
                     del mutant.fitness.values
