@@ -7,34 +7,46 @@ from reschedulingheft.HeftExecutor import EventMachine, TaskStart, TaskFinished,
 
 class GAExecutor(EventMachine):
 
-    def __init__(self, resource_manager, initial_schedule, base_fail_duration, base_fail_dispersion):
+    def __init__(self, workflow, resource_manager, estimator, initial_schedule, base_fail_duration, base_fail_dispersion):
         ## TODO: remake it later
         self.queue = deque()
         self.current_time = 0
+        self.workflow = workflow
         # DynamicHeft
         #self.heft_planner = heft_planner
         self.resource_manager = resource_manager
+        self.estimator = estimator
         self.base_fail_duration = base_fail_duration
         self.base_fail_dispersion = base_fail_dispersion
         ##self.current_schedule = Schedule({node:[] for node in heft_planner.get_nodes()})
+        self.initial_schedule = initial_schedule
         self.current_schedule = initial_schedule
+
+        #self.ready_tasks = []
+        self.finished_tasks = [self.workflow.head_task.id]
+
 
     def init(self):
         #self.current_schedule = self.heft_planner.run(self.current_schedule)
 
+        to_run = [child for child in self.workflow.head_task.children if self.is_next_to_run(child)]
+        self.get_ready_tasks(self.workflow.head_task, None)
         #run ready tasks
         self.post_new_events()
 
+    def is_ready(self, task):
+        nope = False in [(p.id in self.finished_tasks) for p in task.parents]
+        return not nope
+
+    def is_next_to_run(self, task):
+        (node, item) = self.initial_schedule.place(task)
+        its = [it for it in self.initial_schedule.mapping[node] if it.start_time < item.start_time]
+        not_next = False in [(it.job.id in self.finished_tasks) for it in its]
+        return not not_next
+
     def event_arrived(self, event):
-
-        def reschedule(event):
-            self.heft_planner.current_time = self.current_time
-            current_cleaned_schedule = self.clean_events(event)
-            self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
-            self.post_new_events()
-
         def check_fail(task, node):
-            reliability = self.heft_planner.estimator.estimate_reliability(task, node)
+            reliability = self.estimator.estimate_reliability(task, node)
             res = random.random()
             if res > reliability:
                 return True
@@ -68,17 +80,11 @@ class GAExecutor(EventMachine):
 
             self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
 
-            unstarted_items = []
-            for child in [tsk for tsk in task.children if is_ready(tsk)]:
-                transf = get_transfer_time(node1, node2)
-                item = get_schedule_item(child)
-                runtime = item.end_time - item.start_time
-                item.start_time = self.current_time + transf
-                item.end_time = item.start_time + runtime
-                unstarted_items.append(item)
-            self.post_new_events(unstarted_items)
+            self.finished_tasks.append(event.task.id)
 
+            unstarted_items = self.get_ready_tasks(event.task, event.node)
             #generate new task start events
+            self.post_new_events(unstarted_items)
             return None
         if isinstance(event, NodeFailed):
             # check node down
@@ -94,16 +100,42 @@ class GAExecutor(EventMachine):
             it[0].state = ScheduleItem.FAILED
             it[0].end_time = self.current_time
 
-            # add to ready set
-            add_to_ready(event.task)
             return None
         if isinstance(event, NodeUp):
             # check node up
             self.resource_manager.node(event.node).state = Node.Unknown
             #get next task for this node
+            next_sched_item = []
+            for item in self.initial_schedule.mapping[event.node]:
+                if item.job.id not in self.finished_tasks:
+                    next_sched_item = item
+                    break
+
+            runtime = next_sched_item.end_time - next_sched_item.start_time
+            start_time = self.current_time
+            end_time = start_time + runtime
+
+            actual_sched_item = ScheduleItem(next_sched_item.job, start_time, end_time)
+            self.post_new_events([actual_sched_item])
 
             return None
         return None
+
+    def get_ready_tasks(self, ptask, pnode):
+        unstarted_items = []
+        for child in [tsk for tsk in ptask.children if self.is_ready(tsk) and self.is_next_to_run(tsk)]:
+            (node, item) = self.initial_schedule.place(child)
+
+            ## TODO: remake it later
+            transf = 0 if pnode is None else self.estimator.estimate_transfer_time(pnode, node, ptask, child)
+
+            runtime = item.end_time - item.start_time
+            start_time = self.current_time + transf
+            end_time = item.start_time + runtime
+
+            actual_sched_item = ScheduleItem(item.job, start_time, end_time)
+            unstarted_items.append(actual_sched_item)
+        return unstarted_items
 
     def post_new_events(self, unstarted_items):
         for item in unstarted_items:
@@ -117,31 +149,6 @@ class GAExecutor(EventMachine):
             self.post(event_finish)
         pass
 
-    def clean_events(self, event):
-
-        # remove all unstarted tasks
-        cleaned_task = set()
-        if isinstance(event, NodeFailed):
-            cleaned_task = set([event.task])
-
-        new_mapping = dict()
-        for (node, items) in self.current_schedule.mapping.items():
-            new_mapping[node] = []
-            for item in items:
-                if item.state != ScheduleItem.UNSTARTED:
-                    new_mapping[node].append(item)
-                else:
-                    cleaned_task.add(item.job)
-        clean_schedule = Schedule(new_mapping)
-        # remove all events associated with these tasks
-        def check(event):
-            if isinstance(event, TaskStart) and event.task in cleaned_task:
-                return False
-            if isinstance(event, TaskFinished) and event.task in cleaned_task:
-                return False
-            return True
-        self.queue = deque([event for event in self.queue if check(event)])
-        return clean_schedule
 
 
 
