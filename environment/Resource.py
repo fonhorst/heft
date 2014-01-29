@@ -79,16 +79,16 @@ class ResourceGenerator:
              for j in range(0, nodeCount):
                  node = Node(res.name + "_node_" + str(j), res, [SoftItem.ANY_SOFT])
                  ##TODO: repair it later
-                 ##node.flops = self.rand(random, self.min_flops, self.max_flops)
+                 node.flops = self.rand(random, self.min_flops, self.max_flops)
 
-                 if j == 0:
-                      node.flops = 10
-                 if j == 1:
-                      node.flops = 15
-                 if j == 2:
-                      node.flops = 25
-                 if j == 3:
-                      node.flops = 30
+                 #if j == 0:
+                 #     node.flops = 10
+                 #if j == 1:
+                 #     node.flops = 15
+                 #if j == 2:
+                 #     node.flops = 25
+                 #if j == 3:
+                 #     node.flops = 30
 
                  res.nodes.add(node)
          return resources
