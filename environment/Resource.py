@@ -114,16 +114,18 @@ class ResourceGenerator:
                 if j == 0:
                      node.flops = 10
                 if j == 1:
-                     node.flops = 10
+                     node.flops = 10*3
                 if j == 2:
-                     node.flops = 25
+                     node.flops = 25*3
                 if j == 3:
-                     node.flops = 25
+                     node.flops = 25*3
                 if j == 4:
-                     node.flops = 30
+                     node.flops = 30*3
+
+                res.nodes.add(node)
 
         nodes = HeftHelper.to_nodes(resources)
-        reliability_map = {node.name: 0.75 for node in nodes}
+        reliability_map = {node.name: 0.9 for node in nodes}
 
         def probability_estimator(dt, comp_estimation, transfer_estimation):
             M = comp_estimation + transfer_estimation

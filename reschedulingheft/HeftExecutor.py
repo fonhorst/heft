@@ -50,10 +50,10 @@ class EventMachine:
         while len(self.queue) > 0:
             event = self.queue.popleft()
             self.current_time = event.time_happened
-            if isinstance(event, NodeUp):
-                print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened))
-            else:
-                print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
+            #if isinstance(event, NodeUp):
+            #    print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened))
+            #else:
+            #    print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
             count += 1
             self.event_arrived(event)
 

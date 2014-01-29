@@ -1,3 +1,4 @@
+import math
 from GA.DEAPGA.GAExecutor import GAExecutor
 from environment.EventAutomata import EventAutomata
 from environment.Resource import ResourceGenerator
@@ -10,7 +11,7 @@ from reschedulingheft.PublicResourceManager import PublicResourceManager
 from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 
 
-def main():
+def main(is_silent):
     ## 0. create reliability
 
     ##======================
@@ -34,10 +35,10 @@ def main():
     ##======================
     nodes = HeftHelper.to_nodes(bundle.dedicated_resources)
     ## give 100% to all
-    realibility_map = { node.name: 1 for node in nodes}
+    realibility_map = { node.name: 0.5 for node in nodes}
     ## choose one node and give 75% to it
     selected_node = list(nodes)[1]
-    realibility_map[selected_node.name] = 0.75
+    realibility_map[selected_node.name] = 0.95
 
     ##======================
     ## create heft_executor
@@ -70,10 +71,11 @@ def main():
     dependency_validaty = Utility.validateParentsAndChildren(cloud_heft_schedule, wf)
     ##periods_validaty = Utility.validateUnavailabilityPeriods(ga_executor.schedule, unavailability_periods)
     ##print("heft_makespan: " + str(dynamic_heft_makespan))
-    print("=============Res Results====================")
-    print("              Makespan %s" % str(dynamic_heft_makespan))
-    print("          Seq validaty %s" % str(seq_time_validaty))
-    print("   Dependancy validaty %s" % str(dependency_validaty))
+    if not is_silent:
+        print("=============Res Results====================")
+        print("              Makespan %s" % str(dynamic_heft_makespan))
+        print("          Seq validaty %s" % str(seq_time_validaty))
+        print("   Dependancy validaty %s" % str(dependency_validaty))
     ##print("      Periods validaty %s" % str(periods_validaty))
 
     ## 1. obtain ga_schedule
@@ -84,7 +86,19 @@ def main():
     ## 4. run 5 times
 
     ## 5. compare static ga vs dynamic-ga vs dynamic-heft
+    return dynamic_heft_makespan
     pass
 
-main()
+n = 100
+result = [main(True) for i in range(n)]
+mx_time = max(result)
+min_time = min(result)
+avr_time = sum(result)/n
+avr_dispersion = math.sqrt(sum([math.pow(abs(res - avr_time), 2) for res in result]))
+print("==============common results================")
+print("           Max: " + str(mx_time))
+print("           Min: " + str(min_time))
+print("           Avr: " + str(avr_time))
+print("     Mean diff: " + str(avr_dispersion))
+
 

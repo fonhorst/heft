@@ -88,6 +88,14 @@ class Schedule:
                     item.state = state
         return None
 
+    def change_state_executed_with_end_time(self, task, state, time):
+        for (node, items) in self.mapping.items():
+            for item in items:
+                if item.job.id == task.id and item.state == ScheduleItem.EXECUTING:
+                    item.state = state
+                    item.end_time = time
+        return None
+
     def place_by_time(self, task, start_time):
         for (node, items) in self.mapping.items():
             for item in items:

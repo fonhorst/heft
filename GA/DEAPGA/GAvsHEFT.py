@@ -231,10 +231,10 @@ class GAFunctions2:
         return self.random_chromo()
 
     def random_chromo(self):
-        #res = random.random()
+        res = random.random()
         # # TODO:
         #if res >0.0:
-            # return self.initial_chromosome
+        #return self.initial_chromosome
         ##return [self.random_chromo() for j in range(self.size)]
         sched = self.initializing_alg.schedule()
         #TODO: remove it later
@@ -268,12 +268,12 @@ class GAFunctions2:
             free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
             ## TODO: refactor it later
             f_time = max(free_time, comm_ready)
-            base_variant = [(f_time, f_time + runtime + 1)]
+            base_variant = [(f_time, f_time + runtime)]
             zero_interval = [] if len(node_schedule) == 0 else [(0, node_schedule[0].start_time)]
             middle_intervals = [(node_schedule[i].end_time, node_schedule[i + 1].start_time) for i in range(len(node_schedule) - 1)]
             intervals = zero_interval + middle_intervals + base_variant
 
-            result = [(st, end) for (st, end) in intervals if st >= comm_ready and end - st >= runtime]
+            result = [(st, end) for (st, end) in intervals if st >= comm_ready and abs((end - st) - runtime) < 0.01]
             return result
 
         def comm_ready_func(task, node):
@@ -332,6 +332,43 @@ class GAFunctions2:
                     for child in ready_children:
                         ready_tasks.append(child.id)
 
+        #while len(ready_tasks) > 0:
+        #    for node in self.nodes:
+        #
+        #        while True:
+        #            if len(chromo_copy[node.name]) == 0:
+        #                break
+        #            #tsk_id = chromo_copy[node.name][0]
+        #            tsk_id = None
+        #            for i in range(len(chromo_copy[node.name])):
+        #                if chromo_copy[node.name][i] in ready_tasks:
+        #                    tsk_id = chromo_copy[node.name][i]
+        #
+        #            if tsk_id is not None:
+        #                task = self.task_map[tsk_id]
+        #                #del chromo_copy[node.name][0]
+        #                chromo_copy[node.name].remove(tsk_id)
+        #                ready_tasks.remove(tsk_id)
+        #
+        #                time_slots, runtime = get_possible_execution_times(task, node)
+        #
+        #                time_slot = time_slots[0]
+        #                start_time = time_slot[0]
+        #                end_time = start_time + runtime
+        #
+        #                item = ScheduleItem(task, start_time, end_time)
+        #                ##schedule_mapping[node].append(item)
+        #                Schedule.insert_item(schedule_mapping, node, item)
+        #                task_to_node[task.id] = (node, start_time, end_time)
+        #
+        #                finished_tasks.add(task.id)
+        #
+        #                ready_children = [child for child in task.children if is_child_ready(child)]
+        #                for child in ready_children:
+        #                    ready_tasks.append(child.id)
+        #            else:
+        #                break
+
         schedule = Schedule(schedule_mapping)
         return schedule
 
@@ -389,6 +426,7 @@ class GAFunctions2:
     #     while True:
 
     def mutation(self, chromosome):
+        #return chromosome
          # simply change one node of task mapping
         node1 = self.nodes[random.randint(0, len(self.nodes) - 1)]
         node2 = self.nodes[random.randint(0, len(self.nodes) - 1)]
@@ -403,16 +441,35 @@ class GAFunctions2:
         return chromosome
 
     def sweep_mutation(self, chromosome):
+
+        def is_dependent(tsk1, tsk2):
+            for p in tsk1.parents:
+                if tsk1.id == tsk2.id:
+                    return True
+                else:
+                    return is_dependent(p, tsk2)
+            return False
+
+        #return chromosome
         node = self.nodes[random.randint(0, len(self.nodes) - 1)]
         ch = chromosome[node.name]
         if len(chromosome[node.name]) > 0:
             length = len(chromosome[node.name])
             ind = random.randint(0,length - 1)
+            tsk1 = self.task_map[chromosome[node.name][ind]]
             dna = chromosome[node.name][ind]
 
-            ind1 = random.randint(0,length - 1)
-            chromosome[node.name][ind] = chromosome[node.name][ind1]
-            chromosome[node.name][ind1] = dna
+            count = 0
+            while count < 5:
+                ind1 = random.randint(0,length - 1)
+
+                tsk2 = self.task_map[chromosome[node.name][ind1]]
+                if (not is_dependent(tsk1, tsk2)) and (not is_dependent(tsk2, tsk1)):
+                    chromosome[node.name][ind] = chromosome[node.name][ind1]
+                    chromosome[node.name][ind1] = dna
+                    break
+                else:
+                    count += 1
 
         return chromosome
 
@@ -428,13 +485,15 @@ def mark_finished(schedule):
 
 def build():
     ##Preparing
-    #wf_name = 'CyberShake_30'
+    wf_name = 'CyberShake_30'
     #wf_name = 'Montage_25'
     ##wf_name = 'Epigenomics_24'
 
-    wf_name = 'CyberShake_50'
-    ##wf_name = 'Montage_50'
+    #wf_name = 'CyberShake_50'
+    #wf_name = 'Montage_50'
 
+    #wf_name = 'CyberShake_100'
+    #wf_name = 'Montage_100'
     ##wf_name = 'CyberShake_1000'
 
     dax1 = '..\\..\\resources\\' + wf_name + '.xml'
@@ -502,7 +561,7 @@ def build():
         #ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
         ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
         CXPB, MUTPB, NGEN = 0.8, 0.5, 100
-        SWEEPMUTPB = 0.2
+        SWEEPMUTPB = 0.0
         pop = toolbox.population(n=population)
         # Evaluate the entire population
         fitnesses = list(map(toolbox.evaluate, pop))

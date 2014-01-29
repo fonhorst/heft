@@ -78,7 +78,7 @@ class CloudHeftExecutor(EventMachine):
                         #(dt, task, node, transfer_estimation)
                         # TODO: add proper transfer time here
                         fp = prm.get_reliability(node.name)
-                        comp_time = self.heft_planner.estimator.estimate_runtime(event.task, nd)
+                        comp_time = self.heft_planner.estimator.estimate_runtime(event.task, node)
                         cp = prm.probability_estimator(dt, comp_time, 0)
                         return (node, fp, cp )
 
@@ -92,16 +92,21 @@ class CloudHeftExecutor(EventMachine):
 
                     if common_reliability >= self.desired_reliability:
                         break
-                print(" Obtained reliability " + str(obtained_reliability) + " for task: " + str(event.task))
+                #print(" Obtained reliability " + str(obtained_reliability) + " for task: " + str(event.task))
+
+                def frange(x, y, jump):
+                    while x < y:
+                        yield x
+                        x += jump
 
                 for (nd, fp, cp) in current_set:
                     comp_time = self.heft_planner.estimator.estimate_runtime(event.task, nd)
                     comp_time = comp_time + 0.6*comp_time
-                    ints = [(i, calc(nd, i))for i in range(0, comp_time, 0.05*comp_time)]
+                    ints = [(i, calc(nd, i))for i in frange(0, comp_time, 0.05*comp_time)]
                     rd = random.random()
                     generated_comp_time = comp_time
                     for (i, p) in ints:
-                        if p > rd:
+                        if p[2] > rd:
                             generated_comp_time = i
                             break
 
@@ -130,7 +135,7 @@ class CloudHeftExecutor(EventMachine):
                         self.post(event_start)
                         self.post(event_finish)
 
-                    prm.checkBusy(event.node, True)
+                    prm.checkBusy(nd, True)
 
                 self.register[event.task] = CloudHeftExecutor.STATUS_RUNNING
                 pass
@@ -170,11 +175,13 @@ class CloudHeftExecutor(EventMachine):
                 ## it would be possible that currently ScheduleItem of event.task on dedicated resource
                 ## has UNSTARTED state.
                 ## TODO: add additional functional to schedule to record such situations and validate it after
-                self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
+                self.current_schedule.change_state_executed_with_end_time(event.task, ScheduleItem.FINISHED, self.current_time)
                 def check(ev):
-                    if isinstance(ev, TaskFinished) or isinstance(ev, NodeFailed) or isinstance(ev, NodeUp):
+                    if isinstance(ev, TaskFinished) or isinstance(ev, NodeFailed):
                         if ev.task.id == event.task.id:
                             return False
+                    ## TODO: make it later
+                    ##if isinstance(ev, NodeUp):
                     return True
                 self.queue = [ev for ev in self.queue if check(ev)]
                 prm.checkBusy(event.node, False)
