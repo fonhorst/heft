@@ -78,7 +78,7 @@ def main(is_silent, wf_name):
     pass
 
 ## Single fire
-#main()
+# main(False, 'CyberShake_30')
 
 #==============================
 # uncomment it to use it later

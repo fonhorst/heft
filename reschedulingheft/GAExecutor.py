@@ -20,7 +20,7 @@ class GAExecutor(EventMachine):
         self.base_fail_dispersion = base_fail_dispersion
         ##self.current_schedule = Schedule({node:[] for node in heft_planner.get_nodes()})
         self.initial_schedule = initial_schedule
-        self.current_schedule = initial_schedule
+        self.current_schedule = Schedule({key:[] for key in initial_schedule.mapping.keys()})
 
         #self.ready_tasks = []
         self.finished_tasks = [self.workflow.head_task.id]
@@ -30,9 +30,9 @@ class GAExecutor(EventMachine):
         #self.current_schedule = self.heft_planner.run(self.current_schedule)
 
         to_run = [child for child in self.workflow.head_task.children if self.is_next_to_run(child)]
-        self.get_ready_tasks(self.workflow.head_task, None)
+        unstarted_tasks = self.get_ready_tasks(self.workflow.head_task, None)
         #run ready tasks
-        self.post_new_events()
+        self.post_new_events(unstarted_tasks)
 
     def is_ready(self, task):
         nope = False in [(p.id in self.finished_tasks) for p in task.parents]
@@ -46,6 +46,8 @@ class GAExecutor(EventMachine):
 
     def event_arrived(self, event):
         def check_fail(task, node):
+            ## TODO: remove it later
+            return False
             reliability = self.estimator.estimate_reliability(task, node)
             res = random.random()
             if res > reliability:
@@ -139,14 +141,20 @@ class GAExecutor(EventMachine):
 
     def post_new_events(self, unstarted_items):
         for item in unstarted_items:
+            (node, it) = self.initial_schedule.place(item.job)
+
             event_start = TaskStart(item.job)
             event_start.time_happened = item.start_time
+            event_start.node = node
 
             event_finish = TaskFinished(item.job)
             event_finish.time_happened = item.end_time
+            event_finish.node = node
 
             self.post(event_start)
             self.post(event_finish)
+
+            self.current_schedule.mapping[node].append(item)
         pass
 
 

@@ -1,8 +1,8 @@
 import math
-from GA.DEAPGA.GAExecutor import GAExecutor
 from environment.EventAutomata import EventAutomata
 from environment.Utility import Utility
 from reschedulingheft.DSimpleHeft import DynamicHeft
+from reschedulingheft.GAExecutor import GAExecutor
 from reschedulingheft.HeftExecutor import HeftExecutor
 from reschedulingheft.HeftHelper import HeftHelper
 from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
@@ -17,22 +17,30 @@ def main(is_silent, wf_name):
     ##wf_name = "CyberShake_50"
 
     dax1 = '..\\..\\resources\\' + wf_name + '.xml'
-    dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
+    # dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
     ##dax1 = '..\\..\\resources\\Montage_50.xml'
     wf_start_id_1 = "00"
     task_postfix_id_1 = "00"
     deadline_1 = 1000
 
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
-    name = wf_name + "_bundle"
-    ## dedicated resource are the same for all bundles
+
+    ##TODO: remove it later
+    dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
     path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle' + '.json'
     bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+    resources = bundle.dedicated_resources
+    transferMx = bundle.transfer_mx
+    ideal_flops = bundle.ideal_flops
+    ga_initial_schedule = bundle.ga_schedule
+    initial_ga_makespan = Utility.get_the_last_time(ga_initial_schedule)
+    print("Initial GA makespan: " + str(initial_ga_makespan))
+    ## TODO: end
 
     ##======================
     ## create realibility
     ##======================
-    nodes = HeftHelper.to_nodes(bundle.dedicated_resources)
+    nodes = HeftHelper.to_nodes(resources)
     ## give 100% to all
     realibility_map = { node.name: 0.5 for node in nodes}
     ## choose one node and give 75% to it
@@ -42,10 +50,10 @@ def main(is_silent, wf_name):
     ##======================
     ## create heft_executor
     ##======================
-    estimator = ExperimentEstimator(bundle.transfer_mx, bundle.ideal_flops, realibility_map)
-    resource_manager = ExperimentResourceManager(bundle.dedicated_resources)
+    estimator = ExperimentEstimator(transferMx, ideal_flops, realibility_map)
+    resource_manager = ExperimentResourceManager(resources)
 
-    ga_initial_schedule =
+
     ga_machine = GAExecutor(wf,
                             resource_manager,
                             estimator,
@@ -60,15 +68,15 @@ def main(is_silent, wf_name):
     ga_machine.init()
     ga_machine.run()
 
-
-    dynamic_heft_makespan = Utility.get_the_last_time(ga_machine.current_schedule)
-    seq_time_validaty = Utility.validateNodesSeq(ga_machine.current_schedule)
-    dependency_validaty = Utility.validateParentsAndChildren(ga_machine.current_schedule, wf)
+    resulted_schedule = ga_machine.current_schedule
+    makespan = Utility.get_the_last_time(resulted_schedule)
+    seq_time_validaty = Utility.validateNodesSeq(resulted_schedule)
+    dependency_validaty = Utility.validateParentsAndChildren(resulted_schedule, wf)
     ##periods_validaty = Utility.validateUnavailabilityPeriods(ga_executor.schedule, unavailability_periods)
     ##print("heft_makespan: " + str(dynamic_heft_makespan))
     if not is_silent:
         print("=============Res Results====================")
-        print("              Makespan %s" % str(dynamic_heft_makespan))
+        print("              Makespan %s" % str(makespan))
         print("          Seq validaty %s" % str(seq_time_validaty))
         print("   Dependancy validaty %s" % str(dependency_validaty))
     ##print("      Periods validaty %s" % str(periods_validaty))
@@ -81,11 +89,11 @@ def main(is_silent, wf_name):
     ## 4. run 5 times
 
     ## 5. compare static ga vs dynamic-ga vs dynamic-heft
-    return dynamic_heft_makespan
+    return makespan
     pass
 
 ## Single fire
-#main()
+main(False, "CyberShake_30")
 
 #==============================
 # uncomment it to use it later
