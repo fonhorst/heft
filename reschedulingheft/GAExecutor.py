@@ -68,6 +68,16 @@ class GAExecutor(EventMachine):
 
             self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
 
+            unstarted_items = []
+            for child in [tsk for tsk in task.children if is_ready(tsk)]:
+                transf = get_transfer_time(node1, node2)
+                item = get_schedule_item(child)
+                runtime = item.end_time - item.start_time
+                item.start_time = self.current_time + transf
+                item.end_time = item.start_time + runtime
+                unstarted_items.append(item)
+            self.post_new_events(unstarted_items)
+
             #generate new task start events
             return None
         if isinstance(event, NodeFailed):
@@ -84,23 +94,18 @@ class GAExecutor(EventMachine):
             it[0].state = ScheduleItem.FAILED
             it[0].end_time = self.current_time
 
-            reschedule(event)
+            # add to ready set
+            add_to_ready(event.task)
             return None
         if isinstance(event, NodeUp):
             # check node up
-            self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
-            reschedule(event)
+            self.resource_manager.node(event.node).state = Node.Unknown
+            #get next task for this node
+
             return None
         return None
 
-    def post_new_events(self):
-        unstarted_items = set()
-        for (node, items) in self.current_schedule.mapping.items():
-            for item in items:
-                if item.state == ScheduleItem.UNSTARTED:
-                    unstarted_items.add(item)
-
-        events_to_post = []
+    def post_new_events(self, unstarted_items):
         for item in unstarted_items:
             event_start = TaskStart(item.job)
             event_start.time_happened = item.start_time
@@ -108,7 +113,6 @@ class GAExecutor(EventMachine):
             event_finish = TaskFinished(item.job)
             event_finish.time_happened = item.end_time
 
-            events_to_post
             self.post(event_start)
             self.post(event_finish)
         pass
