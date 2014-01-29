@@ -517,6 +517,12 @@ def build():
                                  max_flops=10)
     resources = rgen.generate()
     transferMx = rgen.generateTransferMatrix(resources)
+
+    dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
+    path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle' + '.json'
+    bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+
+
     estimator = ExperimentEstimator(transferMx, ideal_flops, dict())
     resource_manager = ExperimentResourceManager(resources)
 
