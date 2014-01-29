@@ -20,6 +20,7 @@ def main(is_silent, wf_name):
     ##wf_name = "CyberShake_30"
 
     dax1 = '..\\..\\resources\\' + wf_name + '.xml'
+    dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
     ##dax1 = '..\\..\\resources\\Montage_50.xml'
     wf_start_id_1 = "00"
     task_postfix_id_1 = "00"
@@ -27,8 +28,10 @@ def main(is_silent, wf_name):
 
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
     name = wf_name + "_bundle"
-    path = '..\\..\\resources\\saved_schedules\\' + name + '.json'
-    bundle = Utility.load_schedule(path, wf)
+    ## dedicated resource are the same for all bundles
+    path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle' + '.json'
+    bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+
 
     ##======================
     ## create realibility
