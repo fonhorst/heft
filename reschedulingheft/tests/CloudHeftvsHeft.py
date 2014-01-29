@@ -52,7 +52,8 @@ def get_dict(result):
 # wf_names = ["CyberShake_100"]
 #wf_names = ["CyberShake_50"]
 # wf_names = ["Montage_100"]
-wf_names = ["Inspiral_50"]
+# wf_names = ["Inspiral_50"]
+wf_names = ["Epigenomics_46"]
 
 #wf_name = "CyberShake_50"
 #wf_name = "CyberShake_100"
