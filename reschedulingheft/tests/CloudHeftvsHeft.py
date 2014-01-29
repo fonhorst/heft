@@ -33,10 +33,12 @@ def get_dict(result):
 #             "Epigenomics_24", "Epigenomics_46", "Epigenomics_100",
 #             "Inspiral_30", "Inspiral_50", "Inspiral_100",
 #             "Sipht_30", "Sipht_60", "Sipht_100"]
-wf_names = [
-            "Epigenomics_24", "Epigenomics_46", "Epigenomics_100",
-            "Inspiral_30", "Inspiral_50", "Inspiral_100",
-            "Sipht_30", "Sipht_60", "Sipht_100"]
+# wf_names = [
+#             "Epigenomics_24", "Epigenomics_46", "Epigenomics_100",
+#             "Inspiral_30", "Inspiral_50", "Inspiral_100",
+#             "Sipht_30", "Sipht_60", "Sipht_100"]
+
+wf_names = ['Montage_100']
 #wf_name = "CyberShake_50"
 #wf_name = "CyberShake_100"
 

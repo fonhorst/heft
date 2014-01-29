@@ -21,6 +21,8 @@ class GAExecutor(EventMachine):
 
     def init(self):
         #self.current_schedule = self.heft_planner.run(self.current_schedule)
+
+        #run ready tasks
         self.post_new_events()
 
     def event_arrived(self, event):
@@ -39,9 +41,6 @@ class GAExecutor(EventMachine):
             return False
 
         if isinstance(event, TaskStart):
-            # check task as executing
-            # self.current_schedule.change_state(event.task, ScheduleItem.EXECUTING)
-            # check if failed and post
             (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
             item.state = ScheduleItem.EXECUTING
 
@@ -66,7 +65,10 @@ class GAExecutor(EventMachine):
             return None
         if isinstance(event, TaskFinished):
             # check task finished
+
             self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
+
+            #generate new task start events
             return None
         if isinstance(event, NodeFailed):
             # check node down
