@@ -47,7 +47,7 @@ class GAExecutor(EventMachine):
     def event_arrived(self, event):
         def check_fail(task, node):
             ## TODO: remove it later
-            return False
+            #return False
             reliability = self.estimator.estimate_reliability(task, node)
             res = random.random()
             if res > reliability:

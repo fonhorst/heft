@@ -114,33 +114,33 @@ class ResourceGenerator:
                 if j == 0:
                      node.flops = 10
                 if j == 1:
-                     node.flops = 10*3
+                     node.flops = 15#10*3
                 if j == 2:
-                     node.flops = 25*3
+                     node.flops = 25#25*3
                 if j == 3:
-                     node.flops = 25*3
+                     node.flops = 25#25*3
                 if j == 4:
-                     node.flops = 30*3
+                     node.flops = 30#30*3
                 if j == 5:
                      node.flops = 10
                 if j == 6:
-                     node.flops = 10*3
+                     node.flops = 15#10*3
                 if j == 7:
-                     node.flops = 25*3
+                     node.flops = 25#25*3
                 if j == 8:
-                     node.flops = 25*3
+                     node.flops = 25#25*3
                 if j == 9:
-                     node.flops = 30*3
+                     node.flops = 30#30*3
                 if j == 10:
                      node.flops = 10
                 if j == 11:
-                     node.flops = 10*3
+                     node.flops = 15#10*3
                 if j == 12:
-                     node.flops = 25*3
+                     node.flops = 25#25*3
                 if j == 13:
-                     node.flops = 25*3
+                     node.flops = 25#25*3
                 if j == 14:
-                     node.flops = 30*3
+                     node.flops = 30#30*3
 
                 res.nodes.add(node)
 

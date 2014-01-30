@@ -38,7 +38,7 @@ def main(is_silent, wf_name):
     ##======================
     nodes = HeftHelper.to_nodes(bundle.dedicated_resources)
     ## give 100% to all
-    realibility_map = { node.name: 0.5 for node in nodes}
+    realibility_map = { node.name: 0.95 for node in nodes}
     ## choose one node and give 75% to it
     selected_node = list(nodes)[1]
     realibility_map[selected_node.name] = 0.95
@@ -55,15 +55,15 @@ def main(is_silent, wf_name):
                              max_node_count=4)
                                  ##min_flops=20,
                                 ## max_flops=20)
-    (public_resources, reliability_map, probability_estimator) = rgen.generate_public_resources()
+    (public_resources, reliability_map_cloud, probability_estimator) = rgen.generate_public_resources()
 
-    public_resource_manager = PublicResourceManager(public_resources, reliability_map, probability_estimator)
+    public_resource_manager = PublicResourceManager(public_resources, reliability_map_cloud, probability_estimator)
 
     dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
     cloud_heft_machine = CloudHeftExecutor(heft_planner=dynamic_heft,
                                            base_fail_duration=40,
                                            base_fail_dispersion=1,
-                                           desired_reliability=0.9,
+                                           desired_reliability=0.98,
                                            public_resource_manager=public_resource_manager)
     cloud_heft_machine.init()
     cloud_heft_machine.run()

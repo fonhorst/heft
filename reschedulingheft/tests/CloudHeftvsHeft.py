@@ -38,7 +38,7 @@ def get_dict(result):
 #             "Inspiral_30", "Inspiral_50", "Inspiral_100",
 #             "Sipht_30", "Sipht_60", "Sipht_100"]
 
-#wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_100"]
+wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_100"]
 #wf_names = ["Montage_25", "Montage_50", "Montage_100"]
 # wf_names = ["Montage_25", "Montage_50"]
 # wf_names = ["Epigenomics_24", "Epigenomics_46"]
@@ -49,11 +49,11 @@ def get_dict(result):
 # wf_names = ["Sipht_100"]
 # wf_names = ["Inspiral_100"] #bad
 # wf_names = ["Montage_100"] #bad
-# wf_names = ["CyberShake_100"]
+#wf_names = ["CyberShake_100"]
 #wf_names = ["CyberShake_50"]
 # wf_names = ["Montage_100"]
 # wf_names = ["Inspiral_50"]
-wf_names = ["Epigenomics_46"]
+#wf_names = ["Epigenomics_46"]
 
 #wf_name = "CyberShake_50"
 #wf_name = "CyberShake_100"
