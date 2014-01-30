@@ -2,110 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 11_50_53.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 11_52_01.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 11_56_49.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_00_48.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_01_23.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_04_19.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_10_21.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_11_42.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_16_43.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_17_52.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_18_28.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_23_53.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_24_22.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_26_23.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_30_23.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_31_05.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_35_39.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_52_22.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 12_53_47.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_30_01_14 13_02_22.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_04_05.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_04_05.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_09.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_09.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_14.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_14.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_18.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_18.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_29.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_29.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_33.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_33.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_36.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_05_36.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_10_20.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_10_20.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_13_59.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_13_59.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_03.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_03.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_06.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_06.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_09.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_09.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_12.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_12.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_14.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_14.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_17.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_17.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_20.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_20.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_22.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_22.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_26.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 17_14_26.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_01_30.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_01_30.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_19_13.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_19_13.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_20_00.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_20_00.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_20_54.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_20_54.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_21_45.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_21_45.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_39_36.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_39_36.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_47_07.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_47_07.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_49_59.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_49_59.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_52_09.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_52_09.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_52_41.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_52_41.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_52_54.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_52_54.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_53_28.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 18_53_28.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_08_09.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_08_09.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_09_11.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_09_11.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_09_36.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_09_36.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_10_08.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_10_08.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_11_05.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_11_05.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_13_53.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_13_53.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_14_34.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_14_34.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_15_21.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_15_21.txt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/CloudHeftExecutor.py" afterPath="$PROJECT_DIR$/reschedulingheft/CloudHeftExecutor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/tests/CloudHeftExecutorExample.py" afterPath="$PROJECT_DIR$/reschedulingheft/tests/CloudHeftExecutorExample.py" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_52_18.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_52_18.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_53_26.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_53_26.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_54_12.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_54_12.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_56_08.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_56_08.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_57_51.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 19_57_51.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_09_08.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_09_08.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_12_18.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_12_18.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_13_11.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_13_11.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_14_33.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_14_33.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_16_20.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_16_20.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_17_12.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_17_12.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_24_55.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_24_55.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_25_49.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_25_49.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_26_46.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 20_26_46.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 23_00_15.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 23_00_15.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 23_01_39.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 23_01_39.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 23_02_07.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 23_02_07.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\Result.txt" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/tests/CloudHeftvsHeft.py" afterPath="$PROJECT_DIR$/reschedulingheft/tests/CloudHeftvsHeft.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py" afterPath="$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/HeftExecutor.py" afterPath="$PROJECT_DIR$/reschedulingheft/HeftExecutor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py" afterPath="$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/environment/Resource.py" afterPath="$PROJECT_DIR$/environment/Resource.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/environment/ResourceManager.py" afterPath="$PROJECT_DIR$/environment/ResourceManager.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -131,7 +64,7 @@
       <file leaf-file-name="CloudHeftExecutorExample.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/CloudHeftExecutorExample.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="1" selection-start="990" selection-end="990" vertical-scroll-proportion="-15.0" vertical-offset="0" max-vertical-offset="2750">
+            <state line="47" column="27" selection-start="1856" selection-end="1856" vertical-scroll-proportion="-16.0" vertical-offset="525" max-vertical-offset="2750">
               <folding />
             </state>
           </provider>
@@ -166,10 +99,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GAvsHeftGA.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="GAvsHeftGA.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="0" selection-start="1027" selection-end="1319" vertical-scroll-proportion="0.37313432" vertical-offset="450" max-vertical-offset="3450">
+            <state line="64" column="0" selection-start="2295" selection-end="2295" vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="3450">
               <folding />
             </state>
           </provider>
@@ -178,16 +111,16 @@
       <file leaf-file-name="HeftExecutorExample.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="38" selection-start="1672" selection-end="1672" vertical-scroll-proportion="0.0" vertical-offset="825" max-vertical-offset="2875">
+            <state line="42" column="7" selection-start="1444" selection-end="1444" vertical-scroll-proportion="0.0" vertical-offset="750" max-vertical-offset="2875">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CloudHeftvsHeft.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CloudHeftvsHeft.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/CloudHeftvsHeft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="21" selection-start="1748" selection-end="1748" vertical-scroll-proportion="0.0" vertical-offset="825" max-vertical-offset="2325">
+            <state line="34" column="48" selection-start="1263" selection-end="1263" vertical-scroll-proportion="3.1914895" vertical-offset="300" max-vertical-offset="2325">
               <folding />
             </state>
           </provider>
@@ -247,20 +180,20 @@
         <option value="$PROJECT_DIR$/reschedulingheft/tests/GAExecutorExample.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
         <option value="$PROJECT_DIR$/environment/Resource.py" />
-        <option value="$PROJECT_DIR$/reschedulingheft/tests/CloudHeftvsHeft.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/HeftExecutor.py" />
         <option value="$PROJECT_DIR$/environment/ResourceManager.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/CloudHeftExecutor.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/CloudHeftExecutorExample.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py" />
+        <option value="$PROJECT_DIR$/reschedulingheft/tests/CloudHeftvsHeft.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-3" />
-    <option name="width" value="1692" />
-    <option name="height" value="1026" />
+    <option name="x" value="1" />
+    <option name="width" value="1362" />
+    <option name="height" value="728" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -733,7 +666,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-3" y="0" width="1692" height="1026" extended-state="0" />
+    <frame x="1" y="0" width="1362" height="728" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -741,11 +674,11 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37428242" sideWeight="0.49909255" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.169389" sideWeight="0.66934556" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21164021" sideWeight="0.39441535" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3857635" sideWeight="0.7834241" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3306544" sideWeight="0.3030853" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3306544" sideWeight="0.6969147" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.6055846" sideWeight="0.303099" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.6055846" sideWeight="0.69690096" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -941,13 +874,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/CloudHeftvsHeft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="21" selection-start="1748" selection-end="1748" vertical-scroll-proportion="0.0" vertical-offset="825" max-vertical-offset="2325">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/reschedulingheft/HeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="75" column="62" selection-start="2421" selection-end="2610" vertical-scroll-proportion="1.36" vertical-offset="1834" max-vertical-offset="6475">
@@ -971,23 +897,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="0" selection-start="2295" selection-end="2295" vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="3450">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="38" selection-start="1672" selection-end="1672" vertical-scroll-proportion="0.0" vertical-offset="825" max-vertical-offset="2875">
+        <state line="42" column="7" selection-start="1444" selection-end="1444" vertical-scroll-proportion="0.0" vertical-offset="750" max-vertical-offset="2875">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/CloudHeftExecutorExample.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="1" selection-start="990" selection-end="990" vertical-scroll-proportion="-15.0" vertical-offset="0" max-vertical-offset="2750">
+        <state line="47" column="27" selection-start="1856" selection-end="1856" vertical-scroll-proportion="-16.0" vertical-offset="525" max-vertical-offset="2750">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py">
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/CloudHeftvsHeft.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="0" selection-start="1027" selection-end="1319" vertical-scroll-proportion="0.37313432" vertical-offset="450" max-vertical-offset="3450">
+        <state line="34" column="48" selection-start="1263" selection-end="1263" vertical-scroll-proportion="3.1914895" vertical-offset="300" max-vertical-offset="2325">
           <folding />
         </state>
       </provider>

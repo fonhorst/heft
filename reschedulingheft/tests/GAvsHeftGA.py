@@ -62,7 +62,7 @@ wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_100",
 # wf_names = ["Inspiral_50"]
 #wf_names = ["Epigenomics_46"]
 
-wf_names = ["CyberShake_30"]
+
 # wf_names = ["CyberShake_50"]
 # wf_names = ["CyberShake_100"]
 
