@@ -7,7 +7,7 @@ from reschedulingheft.HeftExecutor import HeftExecutor
 from reschedulingheft.HeftHelper import HeftHelper
 from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 
-def main(is_silent, wf_name):
+def main(is_silent, wf_name, bundle):
     ## 0. create reliability
 
     ##======================
@@ -26,9 +26,9 @@ def main(is_silent, wf_name):
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
 
     ##TODO: remove it later
-    dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
-    path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle' + '.json'
-    bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+    # dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
+    # path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle' + '.json'
+    # bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
     resources = bundle.dedicated_resources
     transferMx = bundle.transfer_mx
     ideal_flops = bundle.ideal_flops

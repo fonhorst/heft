@@ -62,7 +62,16 @@ def get_dict(result):
 # wf_names = ["Inspiral_50"]
 #wf_names = ["Epigenomics_46"]
 
-wf_names = ["CyberShake_30"]
+# wf_names = ["CyberShake_50"]
+# wf_names = ["CyberShake_100"]
+# wf_names = ["Montage_25"]
+# wf_names = ["Montage_50"]
+# wf_names = ["Montage_100"]
+wf_names = ["Epigenomics_24"]
+# wf_names = ["Epigenomics_46"]
+# wf_names = ["Epigenomics_100"]
+
+# wf_names = ["Inspiral_30"]
 
 #wf_name = "CyberShake_50"
 #wf_name = "CyberShake_100"
@@ -84,10 +93,11 @@ def HeftVsCloudHeft(wf_name):
     bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
 
     mainHEFTwithGA = partial(mainHeft, with_ga_initial=True, the_bundle=bundle)
+    mainGAwithBundle = partial(mainGA, bundle=bundle)
 
     print("Calculating now - " + wf_name)
     resHeft = run("Heft + GA", mainHEFTwithGA, wf_name)
-    resGA = run("GA", mainGA, wf_name)
+    resGA = run("GA", mainGAwithBundle, wf_name)
     print("===========================")
     pc = (1 - resHeft[2]/resGA[2])*100
     print("heft + ga vs ga: " + str(pc))

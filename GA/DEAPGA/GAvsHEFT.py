@@ -486,8 +486,19 @@ def mark_finished(schedule):
 def build():
     ##Preparing
     #wf_name = 'CyberShake_30'
-    wf_name = 'CyberShake_50'
-    #wf_name = 'CyberShake_100'
+    # wf_name = 'CyberShake_50'
+    # wf_name = 'CyberShake_100'
+    # wf_name = 'Montage_25'
+    # wf_name = 'Montage_50'
+    # wf_name = 'Montage_100'
+
+    wf_name = 'Epigenomics_24'
+    # wf_name = 'Epigenomics_46'
+    # wf_name = 'Epigenomics_100'
+
+    # wf_name = "Inspiral_30"
+    # wf_name = "Inspiral_50"
+    # wf_name = "Inspiral_100"
 
 
     dax1 = '..\\..\\resources\\' + wf_name + '.xml'
@@ -564,7 +575,7 @@ def build():
     def main(initial_schedule):
         #ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
         ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
-        CXPB, MUTPB, NGEN = 0.8, 0.5, 2
+        CXPB, MUTPB, NGEN = 0.8, 0.5, 100
         SWEEPMUTPB = 0.0
         pop = toolbox.population(n=population)
         # Evaluate the entire population
