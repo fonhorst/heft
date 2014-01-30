@@ -61,10 +61,14 @@ class EventMachine:
             # if isinstance(event, TaskStart):
             #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id) + ' ' + str(event.node.name))
             # elif isinstance(event, NodeUp):
-            #    print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened))
-            # else:
+            #    print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened)+ ' ' + str(event.node.name))
+            # elif isinstance(event, NodeFailed):
+            #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
+            # elif isinstance(event, TaskFinished):
+            #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
+            # # else:
             #    print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
-            # count += 1
+            count += 1
             self.event_arrived(event)
 
         # print("===============EventMachine statistics==============")
@@ -75,10 +79,20 @@ class EventMachine:
 
     def post(self, event):
         event.time_posted = self.current_time
+
+        # if isinstance(event, TaskStart):
+        #         print("Post Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id) + ' ' + str(event.node.name))
+        # elif isinstance(event, NodeUp):
+        #        print("Post Event: " + str(event) + ' '+ str(event.time_happened)+ ' ' + str(event.node.name))
+        # elif isinstance(event, NodeFailed):
+        #         print( "Post Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
+        # elif isinstance(event, TaskFinished):
+        #         print("Post Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
+
+
         ## TODO: raise exception if event.time_happened < self.current_time
         if event.time_happened < self.current_time:
             k = 0
-            pass
         self.queue.append(event)
         self.queue = deque(sorted(self.queue, key=lambda x: x.time_happened))
         #st = ''

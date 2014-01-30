@@ -38,7 +38,7 @@ def main(is_silent, wf_name):
     ##======================
     nodes = HeftHelper.to_nodes(bundle.dedicated_resources)
     ## give 100% to all
-    realibility_map = { node.name: 0.9 for node in nodes}
+    realibility_map = {node.name: 0.6 for node in nodes}
     ## choose one node and give 75% to it
     selected_node = list(nodes)[1]
     ##TODO: uncomment it later
@@ -93,7 +93,7 @@ def main(is_silent, wf_name):
     return dynamic_heft_makespan
     pass
 
-main(False, 'CyberShake_30')
+#main(False, 'CyberShake_30')
 
 #==============================
 # uncomment it to use it later

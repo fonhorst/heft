@@ -24,6 +24,7 @@ class CloudHeftExecutor(EventMachine):
 
         self.register = dict()
 
+
     def init(self):
         self.current_schedule = self.heft_planner.run(self.current_schedule)
         self.post_new_events()
@@ -82,10 +83,11 @@ class CloudHeftExecutor(EventMachine):
                         comp_time = self.heft_planner.estimator.estimate_runtime(event.task, node)
                         cp = prm.probability_estimator(dt, comp_time, 0)
                         #TODO: remove it later
-                        cp = 0.95
+                        #cp = 0.95
                         #print("cp: " + str(cp))
                         return (node, fp, cp )
 
+                it_comm_buf = 0
                 for pnode in sorted_proper_nodes:
                     common_reliability = 1 - base_reliability
                     #TODO: refactor this later
@@ -99,9 +101,12 @@ class CloudHeftExecutor(EventMachine):
                         common_reliability *= (1 - fp*cp)
                     common_reliability = 1 - common_reliability
                     #print("common_reliability: " + str(common_reliability))
-
+                    it_comm_buf = common_reliability
                     if common_reliability >= self.desired_reliability:
+                        #print("Commmon: "+ str(common_reliability))
                         break
+
+                #print("Comm " + str(it_comm_buf) + " task: " + str(event.task.id))
                 #print(" Obtained reliability " + str(obtained_reliability) + " for task: " + str(event.task))
 
                 def frange(x, y, jump):
@@ -115,25 +120,24 @@ class CloudHeftExecutor(EventMachine):
 
 
                     #TODO: uncomment it later
-                    # comp_time = comp_time + 0.6*comp_time
-                    # ints = [(i, calc(nd, i))for i in frange(0, comp_time, 0.05*comp_time)]
-                    # rd = random.random()
-                    # generated_comp_time = comp_time
-                    # for (i, p) in ints:
-                    #     if p[2] > rd:
-                    #         generated_comp_time = i
-                    #         break
+
+                    ints = [(i, calc(nd, i))for i in frange(0, comp_time + 0.2*comp_time, 0.05*comp_time)]
+                    rd = random.random()
+                    generated_comp_time = comp_time
+                    for (i, p) in ints:
+                        if p[2] > rd:
+                            generated_comp_time = i
+                            break
 
                     #comp_time + 0.6*comp_time
                     # TODO: remove it later
                     #generated_comp_time = comp_time + (0.2 * comp_time * random.random() - 0.1 * comp_time)
-                    generated_comp_time = comp_time - (0.2 * comp_time * (random.random() - 0.95))
+                    #generated_comp_time = comp_time - (0.2 * comp_time * (random.random() - 0.95))
 
 
 
                     #print("cloud reliability: " + str(fp))
-                    ##if check_fail(fp):
-                    if False:
+                    if check_fail(fp):
 
                         event_start = TaskStart(event.task)
                         event_start.time_happened = self.current_time
@@ -186,7 +190,7 @@ class CloudHeftExecutor(EventMachine):
                 self.post(event_failed)
                 self.post(event_nodeup)
                 # remove TaskFinished event
-                self.queue = deque([ev for ev in self.queue if not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id)])
+                self.queue = deque([ev for ev in self.queue if not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id and not prm.isCloudNode(ev.node))])
 
                 pass
             return None
@@ -199,16 +203,24 @@ class CloudHeftExecutor(EventMachine):
             prm = self.public_resources_manager
             from_cloud = prm.isCloudNode(event.node)
             if from_cloud and self.register[event.task] == CloudHeftExecutor.STATUS_RUNNING:
+                # print("gotcha task: " + str(event.task))
                 self.register[event.task] = CloudHeftExecutor.STATUS_FINISHED
                 ## TODO: correct it
                 ## if event.task failed and went through rescheduling,
                 ## it would be possible that currently ScheduleItem of event.task on dedicated resource
                 ## has UNSTARTED state.
                 ## TODO: add additional functional to schedule to record such situations and validate it after
-                self.current_schedule.change_state_executed_with_end_time(event.task, ScheduleItem.FINISHED, self.current_time)
+                found = self.current_schedule.change_state_executed_with_end_time(event.task, ScheduleItem.FINISHED, self.current_time)
+                pair = self.current_schedule.place_single(event.task)
+                if pair is not None:
+                    (nd, item) = pair
+                    item.start_time = event.time_happened
+                    item.end_time = event.time_happened
+                    item.state = ScheduleItem.FINISHED
+                    self.queue = [ev for ev in self.queue if not (not isinstance(ev, NodeUp) and ev.task.id == event.task.id)]
                 def check(ev):
                     if isinstance(ev, TaskFinished) or isinstance(ev, NodeFailed):
-                        if ev.task.id == event.task.id:
+                        if ev.task.id == event.task.id and not prm.isCloudNode(ev.node):
                             return False
                     ## TODO: make it later
                     ##if isinstance(ev, NodeUp):
@@ -311,13 +323,16 @@ class CloudHeftExecutor(EventMachine):
                     cleaned_task.add(item.job)
         clean_schedule = Schedule(new_mapping)
         # remove all events associated with these tasks
+        prm = self.public_resources_manager
+
         def check(event):
-            if isinstance(event, TaskStart) and event.task in cleaned_task:
+            if isinstance(event, TaskStart) and event.task in cleaned_task and not prm.isCloudNode(event.node):
                 return False
-            if isinstance(event, TaskFinished) and event.task in cleaned_task:
+            if isinstance(event, TaskFinished) and event.task in cleaned_task and not prm.isCloudNode(event.node):
                 return False
             return True
-        self.queue = deque([event for event in self.queue if check(event)])
+        new_queue = deque([evnt for evnt in self.queue if check(evnt)])
+        self.queue = new_queue
         return clean_schedule
 
 

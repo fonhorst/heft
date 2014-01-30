@@ -84,8 +84,15 @@ class Schedule:
     def change_state_executed(self, task, state):
         for (node, items) in self.mapping.items():
             for item in items:
-                if item.job.id == task.id and item.state == ScheduleItem.EXECUTING:
+                if item.job.id == task.id and (item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.UNSTARTED):
                     item.state = state
+        return None
+
+    def place_single(self, task):
+        for (node, items) in self.mapping.items():
+            for item in items:
+                if item.job.id == task.id and (item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.UNSTARTED):
+                    return (node, item)
         return None
 
     def change_state_executed_with_end_time(self, task, state, time):
@@ -94,7 +101,9 @@ class Schedule:
                 if item.job.id == task.id and item.state == ScheduleItem.EXECUTING:
                     item.state = state
                     item.end_time = time
-        return None
+                    return True
+        #print("gotcha_failed_unstarted task: " + str(task))
+        return False
 
     def place_by_time(self, task, start_time):
         for (node, items) in self.mapping.items():
