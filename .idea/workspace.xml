@@ -2,19 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
+      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_schedules\text.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_100_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_100_bundle.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_30_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_30_bundle.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_50_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_50_bundle.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Epigenomics_100_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Epigenomics_100_bundle.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Epigenomics_24_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Epigenomics_24_bundle.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/tests/GAExecutorExample.py" afterPath="$PROJECT_DIR$/reschedulingheft/tests/GAExecutorExample.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Epigenomics_46_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Epigenomics_46_bundle.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py" afterPath="$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Inspiral_100_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Inspiral_100_bundle.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Inspiral_30_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Inspiral_30_bundle.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Inspiral_50_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Inspiral_50_bundle.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Montage_100_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Montage_100_bundle.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Montage_25_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Montage_25_bundle.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Montage_50_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Montage_50_bundle.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/heft.iml" afterPath="$PROJECT_DIR$/.idea/heft.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Sipht_30_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Sipht_30_bundle.json" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,8 +79,11 @@
       <file leaf-file-name="GAvsHEFT.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="489" column="32" selection-start="18435" selection-end="18435" vertical-scroll-proportion="0.3137255" vertical-offset="11640" max-vertical-offset="17575">
-              <folding />
+            <state line="506" column="0" selection-start="18800" selection-end="18800" vertical-scroll-proportion="0.9019608" vertical-offset="4490" max-vertical-offset="10425">
+              <folding>
+                <element signature="e#7085#18154#0" expanded="false" />
+                <element signature="e#18189#18309#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -85,7 +91,7 @@
       <file leaf-file-name="GAvsHeftGA.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="71" column="32" selection-start="2547" selection-end="2547" vertical-scroll-proportion="0.0" vertical-offset="1476" max-vertical-offset="3375">
+            <state line="78" column="29" selection-start="2671" selection-end="2671" vertical-scroll-proportion="0.0" vertical-offset="1751" max-vertical-offset="3600">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -163,8 +169,8 @@
         <option value="$PROJECT_DIR$/reschedulingheft/tests/GAvsHeft.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/GAExecutorExample.py" />
-        <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py" />
+        <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
       </list>
     </option>
   </component>
@@ -358,7 +364,7 @@
       <recent name="D:\wspace\heft" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.GAvsHEFT">
+  <component name="RunManager" selected="Python.GAvsHeftGA">
     <configuration default="false" name="GAvsHEFT" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -614,8 +620,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
-        <item index="1" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
+        <item index="0" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
+        <item index="1" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
         <item index="2" class="java.lang.String" itemvalue="Python.HeftExecutorExample" />
         <item index="3" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft" />
         <item index="4" class="java.lang.String" itemvalue="Python.GAExecutorExample" />
@@ -768,7 +774,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py</url>
-          <line>92</line>
+          <line>101</line>
           <option name="timeStamp" value="257" />
         </line-breakpoint>
         <breakpoint enabled="true" type="python-exception">
@@ -885,7 +891,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="32" selection-start="2547" selection-end="2547" vertical-scroll-proportion="0.0" vertical-offset="1476" max-vertical-offset="3375">
+        <state line="78" column="29" selection-start="2671" selection-end="2671" vertical-scroll-proportion="0.0" vertical-offset="1751" max-vertical-offset="3600">
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>
@@ -894,8 +900,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="489" column="32" selection-start="18435" selection-end="18435" vertical-scroll-proportion="0.3137255" vertical-offset="11640" max-vertical-offset="17575">
-          <folding />
+        <state line="506" column="0" selection-start="18800" selection-end="18800" vertical-scroll-proportion="0.9019608" vertical-offset="4490" max-vertical-offset="10425">
+          <folding>
+            <element signature="e#7085#18154#0" expanded="false" />
+            <element signature="e#18189#18309#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

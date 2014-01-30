@@ -485,20 +485,25 @@ def mark_finished(schedule):
 
 def build():
     ##Preparing
-    #wf_name = 'CyberShake_30'
+    # wf_name = 'CyberShake_30'
     # wf_name = 'CyberShake_50'
     # wf_name = 'CyberShake_100'
+
     # wf_name = 'Montage_25'
     # wf_name = 'Montage_50'
     # wf_name = 'Montage_100'
 
-    wf_name = 'Epigenomics_24'
+    # wf_name = 'Epigenomics_24'
     # wf_name = 'Epigenomics_46'
     # wf_name = 'Epigenomics_100'
 
     # wf_name = "Inspiral_30"
     # wf_name = "Inspiral_50"
     # wf_name = "Inspiral_100"
+
+    # wf_name = "Sipht_30"
+    # wf_name = "Sipht_60"
+    wf_name = "Sipht_100"
 
 
     dax1 = '..\\..\\resources\\' + wf_name + '.xml'
@@ -521,12 +526,12 @@ def build():
     transferMx = rgen.generateTransferMatrix(resources)
 
     ##TODO: remove it later
-    # dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
-    # path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle' + '.json'
-    # bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
-    # resources = bundle.dedicated_resources
-    # transferMx = bundle.transfer_mx
-    # ideal_flops = bundle.ideal_flops
+    dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
+    path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle_backup' + '.json'
+    bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+    resources = bundle.dedicated_resources
+    transferMx = bundle.transfer_mx
+    ideal_flops = bundle.ideal_flops
     ##TODO: end
 
     estimator = ExperimentEstimator(transferMx, ideal_flops, dict())
