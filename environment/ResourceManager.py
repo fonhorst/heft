@@ -103,6 +103,13 @@ class Schedule:
                     return (node,item)
         return None
 
+    def is_executing(self, task):
+        for (node, items) in self.mapping.items():
+            for item in items:
+                if item.job.id == task.id and item.state == ScheduleItem.EXECUTING:
+                    return True
+        return False
+
 
     def change_state(self, task, state):
         (node, item) = self.place(task)
