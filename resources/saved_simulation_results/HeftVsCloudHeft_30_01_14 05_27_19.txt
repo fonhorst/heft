@@ -1,0 +1,6 @@
+_heft 6281.101408255608 Epigenomics_24
+cheft 5928.878932577865 Epigenomics_24
+_heft 12462.15449871586 Epigenomics_46
+cheft 11056.406663808059 Epigenomics_46
+_heft 110839.50732890211 Epigenomics_100
+cheft 95977.6184474381 Epigenomics_100

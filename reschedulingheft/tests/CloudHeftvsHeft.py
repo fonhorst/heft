@@ -38,12 +38,14 @@ def get_dict(result):
 #             "Inspiral_30", "Inspiral_50", "Inspiral_100",
 #             "Sipht_30", "Sipht_60", "Sipht_100"]
 
-wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_100"]
+#wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_100"]
 #wf_names = ["Montage_25", "Montage_50", "Montage_100"]
 # wf_names = ["Montage_25", "Montage_50"]
 # wf_names = ["Epigenomics_24", "Epigenomics_46"]
 # wf_names = ["Inspiral_30", "Inspiral_50"]
 # wf_names = ["Sipht_30", "Sipht_60"]
+
+#wf_names = ["Epigenomics_24", "Epigenomics_46", "Epigenomics_100"]
 
 # wf_names = ["Epigenomics_100"]
 # wf_names = ["Sipht_100"]
