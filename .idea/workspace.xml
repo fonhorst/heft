@@ -73,7 +73,7 @@
       <file leaf-file-name="HeftExecutorExample.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="94" column="43" selection-start="3759" selection-end="3759" vertical-scroll-proportion="0.0" vertical-offset="127" max-vertical-offset="1632">
+            <state line="94" column="43" selection-start="3759" selection-end="3759" vertical-scroll-proportion="0.0" vertical-offset="382" max-vertical-offset="1632">
               <folding />
             </state>
           </provider>
@@ -82,7 +82,7 @@
       <file leaf-file-name="CloudHeftvsHeft.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/CloudHeftvsHeft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="48" column="0" selection-start="1834" selection-end="1834" vertical-scroll-proportion="0.47887325" vertical-offset="714" max-vertical-offset="1785">
+            <state line="48" column="12" selection-start="1846" selection-end="1846" vertical-scroll-proportion="0.40957448" vertical-offset="739" max-vertical-offset="1802">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -93,7 +93,7 @@
       <file leaf-file-name="CloudHeftExecutorExample.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/CloudHeftExecutorExample.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="77" column="61" selection-start="3559" selection-end="3559" vertical-scroll-proportion="0.0" vertical-offset="1039" max-vertical-offset="1989">
+            <state line="77" column="61" selection-start="3559" selection-end="3559" vertical-scroll-proportion="0.0" vertical-offset="478" max-vertical-offset="1989">
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -851,6 +851,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="94" column="43" selection-start="3759" selection-end="3759" vertical-scroll-proportion="0.0" vertical-offset="127" max-vertical-offset="1632">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/CloudHeftExecutorExample.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="77" column="61" selection-start="3559" selection-end="3559" vertical-scroll-proportion="0.0" vertical-offset="1039" max-vertical-offset="1989">
@@ -860,16 +867,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="43" selection-start="3759" selection-end="3759" vertical-scroll-proportion="0.0" vertical-offset="127" max-vertical-offset="1632">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/CloudHeftvsHeft.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="0" selection-start="1834" selection-end="1834" vertical-scroll-proportion="0.47887325" vertical-offset="714" max-vertical-offset="1785">
+        <state line="48" column="12" selection-start="1846" selection-end="1846" vertical-scroll-proportion="0.40957448" vertical-offset="739" max-vertical-offset="1802">
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>

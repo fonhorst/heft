@@ -46,6 +46,7 @@ def get_dict(result):
 # wf_names = ["Sipht_30", "Sipht_60"]
 
 #wf_names = ["Epigenomics_24", "Epigenomics_46", "Epigenomics_100"]
+wf_names = ["Inspiral_30", "Inspiral_50", "Inspiral_100"]
 
 # wf_names = ["Epigenomics_100"]
 # wf_names = ["Sipht_100"]
