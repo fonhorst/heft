@@ -29,7 +29,7 @@ def main(is_silent, wf_name):
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
     name = wf_name + "_bundle"
     ## dedicated resource are the same for all bundles
-    path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle' + '.json'
+    path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle_backup' + '.json'
     bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
 
 
@@ -38,10 +38,11 @@ def main(is_silent, wf_name):
     ##======================
     nodes = HeftHelper.to_nodes(bundle.dedicated_resources)
     ## give 100% to all
-    realibility_map = { node.name: 0.95 for node in nodes}
+    realibility_map = { node.name: 0.9 for node in nodes}
     ## choose one node and give 75% to it
     selected_node = list(nodes)[1]
-    realibility_map[selected_node.name] = 0.95
+    ##TODO: uncomment it later
+    #realibility_map[selected_node.name] = 0.95
 
     ##======================
     ## create heft_executor
@@ -91,6 +92,8 @@ def main(is_silent, wf_name):
     ## 5. compare static ga vs dynamic-ga vs dynamic-heft
     return dynamic_heft_makespan
     pass
+
+main(False, 'CyberShake_30')
 
 #==============================
 # uncomment it to use it later

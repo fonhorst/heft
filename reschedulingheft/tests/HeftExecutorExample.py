@@ -30,7 +30,7 @@ def main(is_silent, wf_name, with_ga_initial=False, the_bundle=None):
         dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
         name = wf_name + "_bundle"
         ## dedicated resource are the same for all bundles
-        path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle' + '.json'
+        path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle_backup' + '.json'
         bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
     else:
         bundle = the_bundle
@@ -47,7 +47,7 @@ def main(is_silent, wf_name, with_ga_initial=False, the_bundle=None):
     realibility_map = { node.name: 0.5 for node in nodes}
     ## choose one node and give 75% to it
     selected_node = list(nodes)[1]
-    realibility_map[selected_node.name] = 0.95
+    ##realibility_map[selected_node.name] = 1
 
     initial_schedule = None
     if with_ga_initial is True:
@@ -97,7 +97,7 @@ def main(is_silent, wf_name, with_ga_initial=False, the_bundle=None):
     pass
 
 ## Single fire
-#main(False, 'CyberShake_30', True)
+main(False, 'CyberShake_30')
 
 #==============================
 # uncomment it to use it later

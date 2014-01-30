@@ -66,6 +66,7 @@ class CloudHeftExecutor(EventMachine):
             # try to find nodes in cloud
 
             if event.task not in self.register:
+
                 proper_nodes = prm.get_by_softreq(event.task.soft_reqs)
                 proper_nodes = [node for node in proper_nodes if not prm.isBusy(node)]
                 sorted_proper_nodes = sorted(proper_nodes, key=lambda x: prm.get_reliability(x.name))
@@ -80,15 +81,24 @@ class CloudHeftExecutor(EventMachine):
                         fp = prm.get_reliability(node.name)
                         comp_time = self.heft_planner.estimator.estimate_runtime(event.task, node)
                         cp = prm.probability_estimator(dt, comp_time, 0)
+                        #TODO: remove it later
+                        cp = 0.95
+                        #print("cp: " + str(cp))
                         return (node, fp, cp )
 
                 for pnode in sorted_proper_nodes:
-                    current_set.append(calc(pnode, dt))
-                    #TODO: add dencity law of probability for dedicated resource
                     common_reliability = 1 - base_reliability
+                    #TODO: refactor this later
+                    if 1 - common_reliability >= self.desired_reliability:
+                        break
+                    res = calc(pnode, dt)
+                    current_set.append(res)
+                    #TODO: add dencity law of probability for dedicated resource
+
                     for (nd, fp, cp) in current_set:
                         common_reliability *= (1 - fp*cp)
                     common_reliability = 1 - common_reliability
+                    #print("common_reliability: " + str(common_reliability))
 
                     if common_reliability >= self.desired_reliability:
                         break
@@ -101,16 +111,36 @@ class CloudHeftExecutor(EventMachine):
 
                 for (nd, fp, cp) in current_set:
                     comp_time = self.heft_planner.estimator.estimate_runtime(event.task, nd)
-                    comp_time = comp_time + 0.6*comp_time
-                    ints = [(i, calc(nd, i))for i in frange(0, comp_time, 0.05*comp_time)]
-                    rd = random.random()
-                    generated_comp_time = comp_time
-                    for (i, p) in ints:
-                        if p[2] > rd:
-                            generated_comp_time = i
-                            break
+                    #sigma 0.1*M lets take 0.6*M
 
-                    if check_fail(fp):
+
+                    #TODO: uncomment it later
+                    # comp_time = comp_time + 0.6*comp_time
+                    # ints = [(i, calc(nd, i))for i in frange(0, comp_time, 0.05*comp_time)]
+                    # rd = random.random()
+                    # generated_comp_time = comp_time
+                    # for (i, p) in ints:
+                    #     if p[2] > rd:
+                    #         generated_comp_time = i
+                    #         break
+
+                    #comp_time + 0.6*comp_time
+                    # TODO: remove it later
+                    #generated_comp_time = comp_time + (0.2 * comp_time * random.random() - 0.1 * comp_time)
+                    generated_comp_time = comp_time - (0.2 * comp_time * (random.random() - 0.95))
+
+
+
+                    #print("cloud reliability: " + str(fp))
+                    ##if check_fail(fp):
+                    if False:
+
+                        event_start = TaskStart(event.task)
+                        event_start.time_happened = self.current_time
+                        event_start.node = nd
+                        self.post(event_start)
+
+
                         duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
                         time_of_fail = generated_comp_time*random.random()
                         time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01

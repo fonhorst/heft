@@ -47,15 +47,31 @@ class EventMachine:
 
     def run(self):
         count = 0
+
+        taskStartCount = 0
+        nodeFailedCount = 0
         while len(self.queue) > 0:
             event = self.queue.popleft()
             self.current_time = event.time_happened
-            #if isinstance(event, NodeUp):
+
+            # if isinstance(event, TaskStart):
+            #     taskStartCount += 1
+            # elif isinstance(event, NodeFailed):
+            #     nodeFailedCount += 1
+            # if isinstance(event, TaskStart):
+            #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id) + ' ' + str(event.node.name))
+            # elif isinstance(event, NodeUp):
             #    print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened))
-            #else:
+            # else:
             #    print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
-            count += 1
+            # count += 1
             self.event_arrived(event)
+
+        # print("===============EventMachine statistics==============")
+        # print("  TaskStart events: " + str(taskStartCount))
+        # print(" NodeFailed events: " + str(nodeFailedCount))
+
+        pass
 
     def post(self, event):
         event.time_posted = self.current_time

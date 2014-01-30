@@ -48,20 +48,9 @@ def get_dict(result):
 #wf_names = ["Epigenomics_24", "Epigenomics_46", "Epigenomics_100"]
 #wf_names = ["Inspiral_30", "Inspiral_50", "Inspiral_100"]
 #wf_names = ["Sipht_30", "Sipht_60", "Sipht_100"]
-wf_names = ["Sipht_30"]
+# wf_names = ["Sipht_30"]
 
-# wf_names = ["Epigenomics_100"]
-# wf_names = ["Sipht_100"]
-# wf_names = ["Inspiral_100"] #bad
-# wf_names = ["Montage_100"] #bad
-#wf_names = ["CyberShake_100"]
-#wf_names = ["CyberShake_50"]
-# wf_names = ["Montage_100"]
-# wf_names = ["Inspiral_50"]
-#wf_names = ["Epigenomics_46"]
-
-#wf_name = "CyberShake_50"
-#wf_name = "CyberShake_100"
+wf_names = ['CyberShake_30']
 
 common_time = datetime.now().strftime("%d_%m_%y %H_%M_%S")
 path = '..\\..\\resources\\saved_simulation_results\\' + 'HeftVsCloudHeft_' + common_time + '.json'
