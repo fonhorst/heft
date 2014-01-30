@@ -7,7 +7,7 @@ from reschedulingheft.HeftExecutor import HeftExecutor
 from reschedulingheft.HeftHelper import HeftHelper
 from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 
-def main(is_silent, wf_name):
+def main(is_silent, wf_name, with_ga_initial=False, the_bundle=None):
     ## 0. create reliability
 
     ##======================
@@ -17,39 +17,58 @@ def main(is_silent, wf_name):
     ##wf_name = "CyberShake_50"
 
     dax1 = '..\\..\\resources\\' + wf_name + '.xml'
-    dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
+
     ##dax1 = '..\\..\\resources\\Montage_50.xml'
     wf_start_id_1 = "00"
     task_postfix_id_1 = "00"
     deadline_1 = 1000
 
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
-    name = wf_name + "_bundle"
-    ## dedicated resource are the same for all bundles
-    path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle' + '.json'
-    bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+
+    bundle = None
+    if the_bundle is None:
+        dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
+        name = wf_name + "_bundle"
+        ## dedicated resource are the same for all bundles
+        path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle' + '.json'
+        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+    else:
+        bundle = the_bundle
+
+
+
+
 
     ##======================
     ## create realibility
     ##======================
     nodes = HeftHelper.to_nodes(bundle.dedicated_resources)
     ## give 100% to all
-    realibility_map = { node.name: 0.95 for node in nodes}
+    realibility_map = { node.name: 0.5 for node in nodes}
     ## choose one node and give 75% to it
     selected_node = list(nodes)[1]
     realibility_map[selected_node.name] = 0.95
 
+    initial_schedule = None
+    if with_ga_initial is True:
+        initial_schedule  = bundle.ga_schedule
+        initial_ga_makespan = Utility.get_the_last_time(initial_schedule )
+       # print("Initial GA makespan: " + str(initial_ga_makespan))
+        ## TODO: end
+
     ##======================
     ## create heft_executor
     ##======================
-    estimator = ExperimentEstimator(bundle.transfer_mx, bundle.ideal_flops, realibility_map)
+    estimator = ExperimentEstimator(bundle.transfer_mx, bundle.ideal_flops, realibility_map )
     resource_manager = ExperimentResourceManager(bundle.dedicated_resources)
 
 
     dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
     heft_machine = HeftExecutor(heft_planner=dynamic_heft,
                                 base_fail_duration=40,
-                                base_fail_dispersion=1)
+                                base_fail_dispersion=1,
+                                #initial_schedule=None)
+                                initial_schedule=initial_schedule)
     heft_machine.init()
     heft_machine.run()
 
@@ -78,7 +97,7 @@ def main(is_silent, wf_name):
     pass
 
 ## Single fire
-# main(False, 'CyberShake_30')
+#main(False, 'CyberShake_30', True)
 
 #==============================
 # uncomment it to use it later

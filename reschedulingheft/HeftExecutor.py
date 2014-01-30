@@ -76,7 +76,8 @@ class EventMachine:
 
 class HeftExecutor(EventMachine):
 
-    def __init__(self, heft_planner, base_fail_duration, base_fail_dispersion):
+    def __init__(self, heft_planner, base_fail_duration, base_fail_dispersion ,
+                 initial_schedule = None):
         ## TODO: remake it later
         self.queue = deque()
         self.current_time = 0
@@ -84,10 +85,16 @@ class HeftExecutor(EventMachine):
         self.heft_planner = heft_planner
         self.base_fail_duration = base_fail_duration
         self.base_fail_dispersion = base_fail_dispersion
-        self.current_schedule = Schedule({node:[] for node in heft_planner.get_nodes()})
+        self.initial_schedule = initial_schedule
+        self.current_schedule = initial_schedule
 
     def init(self):
-        self.current_schedule = self.heft_planner.run(self.current_schedule)
+        if self.initial_schedule is None:
+            self.current_schedule  = Schedule({node:[] for node in self.heft_planner.get_nodes()})
+            self.current_schedule = self.heft_planner.run(self.current_schedule)
+        else:
+            mapping = {node: [ScheduleItem(item.job, item.start_time, item.end_time) for item in items] for (node, items) in self.initial_schedule.mapping.items()}
+            self.current_schedule = Schedule(mapping)
         self.post_new_events()
 
     def event_arrived(self, event):

@@ -34,7 +34,7 @@ def main(is_silent, wf_name):
     ideal_flops = bundle.ideal_flops
     ga_initial_schedule = bundle.ga_schedule
     initial_ga_makespan = Utility.get_the_last_time(ga_initial_schedule)
-    print("Initial GA makespan: " + str(initial_ga_makespan))
+    #print("Initial GA makespan: " + str(initial_ga_makespan))
     ## TODO: end
 
     ##======================
@@ -93,7 +93,7 @@ def main(is_silent, wf_name):
     pass
 
 ## Single fire
-main(False, "CyberShake_30")
+#main(False, "CyberShake_30")
 
 #==============================
 # uncomment it to use it later

@@ -87,11 +87,11 @@ class GAExecutor(EventMachine):
             unstarted_items = self.get_ready_tasks(event.task, event.node)
 
             ##TODO: remove it later
-            print("==============================")
-            print("Task " + str(event.task) + " finished")
-            for item in unstarted_items:
-                print("Start task: " + str(item.job) + " On node: " + str(self.initial_schedule.place(item.job)[0]))
-            print("==============================")
+            #print("==============================")
+            #print("Task " + str(event.task) + " finished")
+            #for item in unstarted_items:
+            #    print("Start task: " + str(item.job) + " On node: " + str(self.initial_schedule.place(item.job)[0]))
+            #print("==============================")
             #generate new task start events
             self.post_new_events(unstarted_items)
             return None
