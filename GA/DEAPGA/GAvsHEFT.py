@@ -564,7 +564,7 @@ def build():
     def main(initial_schedule):
         #ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
         ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
-        CXPB, MUTPB, NGEN = 0.8, 0.5, 100
+        CXPB, MUTPB, NGEN = 0.8, 0.5, 2
         SWEEPMUTPB = 0.0
         pop = toolbox.population(n=population)
         # Evaluate the entire population
@@ -632,6 +632,8 @@ def build():
         name = wf_name +"_bundle"
         path = '..\\..\\resources\\saved_schedules\\' + name + '.json'
         Utility.save_schedule(path, wf_name, resources, transferMx, ideal_flops, schedule)
+
+        res = Utility.load_schedule(path, wf)
 
         #f = open('..\\..\\resources\\saved_schedules\\' + name + '.json', 'r')
         #deser = json.load(f, object_hook=decoder)
