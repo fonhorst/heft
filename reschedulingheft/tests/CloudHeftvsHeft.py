@@ -28,8 +28,9 @@ def get_dict(result):
     res['Avr'] = result[2]
     return res
 
-print("reliability 0.6")
-wf_names = ['CyberShake_75', 'Montage_75', 'Epigenomics_72', 'Inspiral_72', 'Sipht_73']
+print("reliability 0.95")
+wf_names = ['Sipht_79']
+# wf_names = ['CyberShake_75', 'Montage_75', 'Epigenomics_72', 'Inspiral_72', 'Sipht_73']
 
 # wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_75", "CyberShake_100",
 #             "Montage_25", "Montage_50", "Montage_75", "Montage_100",

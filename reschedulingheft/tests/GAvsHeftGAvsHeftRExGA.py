@@ -30,9 +30,10 @@ def get_dict(result):
     res['Min'] = result[1]
     res['Avr'] = result[2]
     return res
-print("reliability 0.95")
+print("reliability 0.75")
 
-wf_names = ['Sipht_73']
+# wf_names = ['Inspiral_72']
+wf_names = ['Sipht_79']
 
 # wf_names = ['CyberShake_75', 'Montage_75', 'Epigenomics_72', 'Inspiral_72', 'Sipht_73']
 

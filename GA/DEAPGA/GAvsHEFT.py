@@ -715,7 +715,8 @@ def build(wf_name , is_silent=False):
     #ps.print_stats()
     #print(s.getvalue())
 
-wf_names = ['CyberShake_75', 'Montage_75', 'Epigenomics_72', 'Inspiral_72', 'Sipht_73']
+wf_names = ['Sipht_79']
+# wf_names = ['CyberShake_75', 'Montage_75', 'Epigenomics_72', 'Inspiral_72', 'Sipht_73']
 
 # wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_75", "CyberShake_100",
 #             "Montage_25", "Montage_50", "Montage_75", "Montage_100",
