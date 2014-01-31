@@ -32,8 +32,8 @@ def get_dict(result):
     return res
 print("reliability 0.75")
 
-# wf_names = ['Inspiral_72']
-wf_names = ['Sipht_79']
+wf_names = ['Inspiral_72']
+# wf_names = ['Sipht_79']
 
 # wf_names = ['CyberShake_75', 'Montage_75', 'Epigenomics_72', 'Inspiral_72', 'Sipht_73']
 

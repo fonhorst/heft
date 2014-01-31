@@ -44,7 +44,7 @@ def main(is_silent, wf_name, with_ga_initial=False, the_bundle=None):
     ##======================
     nodes = HeftHelper.to_nodes(bundle.dedicated_resources)
     ## give 100% to all
-    realibility_map = { node.name: 0.95 for node in nodes}
+    realibility_map = { node.name: 0.75 for node in nodes}
     ## choose one node and give 75% to it
     selected_node = list(nodes)[1]
     ##realibility_map[selected_node.name] = 1
