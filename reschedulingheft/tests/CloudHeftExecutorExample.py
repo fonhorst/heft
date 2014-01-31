@@ -11,7 +11,7 @@ from reschedulingheft.PublicResourceManager import PublicResourceManager
 from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 
 
-def main(is_silent, wf_name):
+def main(is_silent, wf_name, with_ga_initial=False, the_bundle=None):
     ## 0. create reliability
 
     ##======================
@@ -27,11 +27,16 @@ def main(is_silent, wf_name):
     deadline_1 = 1000
 
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
-    name = wf_name + "_bundle"
-    ## dedicated resource are the same for all bundles
-    path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle_backup' + '.json'
-    bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
 
+    bundle = None
+    if the_bundle is None:
+        dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
+        name = wf_name + "_bundle"
+        ## dedicated resource are the same for all bundles
+        path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle_backup' + '.json'
+        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+    else:
+        bundle = the_bundle
 
     ##======================
     ## create realibility
@@ -43,6 +48,13 @@ def main(is_silent, wf_name):
     selected_node = list(nodes)[1]
     ##TODO: uncomment it later
     #realibility_map[selected_node.name] = 0.95
+
+    initial_schedule = None
+    if with_ga_initial is True:
+        initial_schedule  = bundle.ga_schedule
+        initial_ga_makespan = Utility.get_the_last_time(initial_schedule )
+       # print("Initial GA makespan: " + str(initial_ga_makespan))
+        ## TODO: end
 
     ##======================
     ## create heft_executor
@@ -65,7 +77,9 @@ def main(is_silent, wf_name):
                                            base_fail_duration=40,
                                            base_fail_dispersion=1,
                                            desired_reliability=0.98,
-                                           public_resource_manager=public_resource_manager)
+                                           public_resource_manager=public_resource_manager,
+                                           #initial_schedule=None)
+                                           initial_schedule=initial_schedule)
     cloud_heft_machine.init()
     cloud_heft_machine.run()
 
@@ -93,7 +107,16 @@ def main(is_silent, wf_name):
     return dynamic_heft_makespan
     pass
 
-#main(False, 'CyberShake_30')
+# wf_name = 'CyberShake_30'
+# wf_start_id_1 = "00"
+# task_postfix_id_1 = "00"
+# deadline_1 = 1000
+# dax2 = '..\\..\\resources\\' + wf_name + '.xml'
+# ## dedicated resource are the same for all bundles
+# path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
+# bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+# main(False, wf_name, True, bundle)
+#main(False, wf_name)
 
 #==============================
 # uncomment it to use it later

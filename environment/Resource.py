@@ -245,6 +245,12 @@ class Workflow:
             result = len(unique_tasks)
         return result
 
+    ## TODO: for one-time use. Remove it later.
+    def avr_runtime(self, package_name):
+        tsks = [tsk for tsk in HeftHelper.get_all_tasks(self) if package_name in tsk.soft_reqs]
+        common_sum = sum([tsk.runtime for tsk in tsks])
+        return common_sum/len(tsks)
+
 
 class Task:
     def __init__(self, id, internal_wf_id):

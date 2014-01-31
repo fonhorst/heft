@@ -3,6 +3,7 @@ import random
 from environment.Resource import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 from reschedulingheft.HeftExecutor import EventMachine, TaskStart, NodeFailed, NodeUp, TaskFinished
+from reschedulingheft.HeftHelper import HeftHelper
 
 
 class CloudHeftExecutor(EventMachine):
@@ -10,7 +11,7 @@ class CloudHeftExecutor(EventMachine):
     STATUS_RUNNING = 'running'
     STATUS_FINISHED = 'finished'
 
-    def __init__(self, heft_planner, base_fail_duration, base_fail_dispersion, desired_reliability, public_resource_manager):
+    def __init__(self, heft_planner, base_fail_duration, base_fail_dispersion, desired_reliability, public_resource_manager, initial_schedule = None):
         ## TODO: remake it later
         self.queue = deque()
         self.current_time = 0
@@ -20,13 +21,22 @@ class CloudHeftExecutor(EventMachine):
         self.base_fail_dispersion = base_fail_dispersion
         self.desired_reliability = desired_reliability
         self.public_resources_manager = public_resource_manager
-        self.current_schedule = Schedule({node: [] for node in heft_planner.get_nodes()})
+        #self.current_schedule = Schedule({node: [] for node in heft_planner.get_nodes()})
+        self.initial_schedule = initial_schedule
+        self.current_schedule = initial_schedule
 
         self.register = dict()
 
 
     def init(self):
-        self.current_schedule = self.heft_planner.run(self.current_schedule)
+        #self.current_schedule = self.heft_planner.run(self.current_schedule)
+        if self.initial_schedule is None:
+            self.current_schedule  = Schedule({node:[] for node in self.heft_planner.get_nodes()})
+            self.current_schedule = self.heft_planner.run(self.current_schedule)
+        else:
+            id_to_task = {tsk.id: tsk for tsk in HeftHelper.get_all_tasks(self.heft_planner.workflow)}
+            mapping = {node: [ScheduleItem(id_to_task[item.job.id], item.start_time, item.end_time) for item in items] for (node, items) in self.initial_schedule.mapping.items()}
+            self.current_schedule = Schedule(mapping)
         self.post_new_events()
 
     def event_arrived(self, event):
