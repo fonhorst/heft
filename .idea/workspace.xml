@@ -2,58 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 10_50_08.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_01_07.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_03_17.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_03_17.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_03_27.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_03_27.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_04_20.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_04_20.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_04_30.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_04_30.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_20_33.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_20_33.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_21_11.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_21_11.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_21_47.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_21_47.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_22_07.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_22_07.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_22_23.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_22_23.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_22_36.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_22_36.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_22_53.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_22_53.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_23_29.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_23_29.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_24_22.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_24_22.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_24_35.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 11_24_35.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 12_14_04.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 12_14_04.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 12_14_35.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 12_14_35.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 12_15_24.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 12_15_24.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 12_16_20.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 12_16_20.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 12_17_34.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftGAVsGA_31_01_14 12_17_34.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 23_07_56.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_30_01_14 23_07_56.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_31_01_14 00_34_24.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_31_01_14 00_34_24.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_31_01_14 01_30_25.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_31_01_14 01_30_25.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_31_01_14 02_23_05.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\resources\saved_simulation_results\HeftVsCloudHeft_31_01_14 02_23_05.txt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/tests/GAExecutorExample.py" afterPath="$PROJECT_DIR$/reschedulingheft/tests/GAExecutorExample.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py" afterPath="$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py" afterPath="$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_simulation_results/HeftGAVsGA_31_01_14 12_46_09.json" afterPath="$PROJECT_DIR$/resources/saved_simulation_results/HeftGAVsGA_31_01_14 12_46_09.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_simulation_results/HeftGAVsGA_31_01_14 12_46_09.txt" afterPath="$PROJECT_DIR$/resources/saved_simulation_results/HeftGAVsGA_31_01_14 12_46_09.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/simple_heft.py" afterPath="$PROJECT_DIR$/reschedulingheft/simple_heft.py" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,11 +27,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="simple_heft.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="simple_heft.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/simple_heft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="114" column="2" selection-start="4045" selection-end="4045" vertical-scroll-proportion="0.0" vertical-offset="2400" max-vertical-offset="3350">
+            <state line="125" column="0" selection-start="4767" selection-end="4767" vertical-scroll-proportion="0.3347548" vertical-offset="2793" max-vertical-offset="3975">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GAvsHEFT.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="282" column="114" selection-start="9682" selection-end="10786" vertical-scroll-proportion="0.0" vertical-offset="2100" max-vertical-offset="13675">
+              <folding>
+                <element signature="e#717#7045#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -88,7 +50,7 @@
       <file leaf-file-name="GAExecutorExample.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/GAExecutorExample.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="38" selection-start="1781" selection-end="1781" vertical-scroll-proportion="0.0" vertical-offset="750" max-vertical-offset="3025">
+            <state line="44" column="38" selection-start="1781" selection-end="1781" vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="3025">
               <folding />
             </state>
           </provider>
@@ -126,7 +88,7 @@
       <file leaf-file-name="DSimpleHeft.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/DSimpleHeft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="28" selection-start="338" selection-end="338" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1450">
+            <state line="9" column="29" selection-start="339" selection-end="339" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1450">
               <folding />
             </state>
           </provider>
@@ -139,15 +101,6 @@
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAvsHEFT.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="190" column="6" selection-start="7067" selection-end="7067" vertical-scroll-proportion="-0.6268657" vertical-offset="4619" max-vertical-offset="17850">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -190,13 +143,13 @@
         <option value="$PROJECT_DIR$/reschedulingheft/tests/CloudHeftvsHeft.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/CloudHeftExecutorExample.py" />
         <option value="$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py" />
-        <option value="$PROJECT_DIR$/reschedulingheft/simple_heft.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/HeftHelper.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/HeftExecutor.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/GAExecutorExample.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGA.py" />
+        <option value="$PROJECT_DIR$/reschedulingheft/simple_heft.py" />
       </list>
     </option>
   </component>
@@ -921,13 +874,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/GAExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="38" selection-start="1781" selection-end="1781" vertical-scroll-proportion="0.0" vertical-offset="750" max-vertical-offset="3025">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/reschedulingheft/HeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="107" column="6" selection-start="3975" selection-end="3975" vertical-scroll-proportion="0.0" vertical-offset="3169" max-vertical-offset="6500">
@@ -937,21 +883,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/reschedulingheft/DSimpleHeft.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="28" selection-start="338" selection-end="338" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1450">
+        <state line="9" column="29" selection-start="339" selection-end="339" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1450">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/simple_heft.py">
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/tests/GAExecutorExample.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="114" column="2" selection-start="4045" selection-end="4045" vertical-scroll-proportion="0.0" vertical-offset="2400" max-vertical-offset="3350">
+        <state line="44" column="38" selection-start="1781" selection-end="1781" vertical-scroll-proportion="0.0" vertical-offset="750" max-vertical-offset="3025">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="190" column="6" selection-start="7067" selection-end="7067" vertical-scroll-proportion="-0.6268657" vertical-offset="4619" max-vertical-offset="17850">
+        <state line="282" column="114" selection-start="9682" selection-end="10786" vertical-scroll-proportion="0.0" vertical-offset="2100" max-vertical-offset="13675">
+          <folding>
+            <element signature="e#717#7045#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/simple_heft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="125" column="0" selection-start="4767" selection-end="4767" vertical-scroll-proportion="0.3347548" vertical-offset="2793" max-vertical-offset="3975">
           <folding />
         </state>
       </provider>

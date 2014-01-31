@@ -105,10 +105,35 @@ class StaticHeftPlanner(Scheduler):
 
     def start_time(self, wf, task, orders, jobson, prec, commcost, node):
 
+        def find_slots(node, comm_ready, runtime):
+            node_schedule = schedule_mapping.get(node, list())
+            free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
+            ## TODO: refactor it later
+            f_time = max(free_time, comm_ready)
+            base_variant = [(f_time, f_time + runtime)]
+            zero_interval = [] if len(node_schedule) == 0 else [(0, node_schedule[0].start_time)]
+            middle_intervals = [(node_schedule[i].end_time, node_schedule[i + 1].start_time) for i in range(len(node_schedule) - 1)]
+            intervals = zero_interval + middle_intervals + base_variant
+
+            result = [(st, end) for (st, end) in intervals if st >= comm_ready and abs((end - st) - runtime) < 0.01]
+            return result
+
+        def comm_ready_func(task, node):
+            ##TODO: remake this stub later.
+            if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
+                return 0
+            return max([task_to_node[p.id][2]+estimate(node, chrmo_mapping[p.id], task, p) for p in task.parents])
+
         ## check if soft satisfy requirements
         if self.can_be_executed(node, task):
             ## static or running virtual machine
             if node.state is not Node.Down:
+
+                time_slots, runtime = get_possible_execution_times(task, node)
+                time_slot = time_slots[0]
+                start_time = time_slot[0]
+                end_time = start_time + runtime
+
                 agent_ready = orders[node][-1].end_time if orders[node] else 0
                 if len(task.parents) == 1 and wf.head_task.id == list(task.parents)[0].id:
                     comm_ready = 0
