@@ -2,6 +2,7 @@ from collections import deque
 import random
 from environment.Resource import Node
 from environment.ResourceManager import Schedule, ScheduleItem
+from reschedulingheft.HeftHelper import HeftHelper
 
 
 class BaseEvent:
@@ -59,15 +60,15 @@ class EventMachine:
             # elif isinstance(event, NodeFailed):
             #     nodeFailedCount += 1
             # if isinstance(event, TaskStart):
-            #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id) + ' ' + str(event.node.name))
+            #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id) + ' ' + str(None if event.node is None else event.node.name))
             # elif isinstance(event, NodeUp):
             #    print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened)+ ' ' + str(event.node.name))
             # elif isinstance(event, NodeFailed):
             #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
             # elif isinstance(event, TaskFinished):
-            #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
+            #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(None if event.node is None else event.node.name)+ ' ' + str(event.task.id))
             # # else:
-            #    print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
+               #print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
             count += 1
             self.event_arrived(event)
 
@@ -123,7 +124,8 @@ class HeftExecutor(EventMachine):
             self.current_schedule  = Schedule({node:[] for node in self.heft_planner.get_nodes()})
             self.current_schedule = self.heft_planner.run(self.current_schedule)
         else:
-            mapping = {node: [ScheduleItem(item.job, item.start_time, item.end_time) for item in items] for (node, items) in self.initial_schedule.mapping.items()}
+            id_to_task = {tsk.id: tsk for tsk in HeftHelper.get_all_tasks(self.heft_planner.workflow)}
+            mapping = {node: [ScheduleItem(id_to_task[item.job.id], item.start_time, item.end_time) for item in items] for (node, items) in self.initial_schedule.mapping.items()}
             self.current_schedule = Schedule(mapping)
         self.post_new_events()
 

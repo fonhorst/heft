@@ -79,6 +79,8 @@ class StaticHeftPlanner(Scheduler):
         new_plan = existing_plan
 
 
+
+
         def ft(machine):
             cost = st(machine) + compcost(task, machine)
             ##print("machine: %s job:%s cost: %s" % (machine.name, task.id, cost))

@@ -233,8 +233,8 @@ class GAFunctions2:
     def random_chromo(self):
         res = random.random()
         # # TODO:
-        #if res >0.0:
-        #return self.initial_chromosome
+        if res >0.8:
+            return self.initial_chromosome
         ##return [self.random_chromo() for j in range(self.size)]
         sched = self.initializing_alg.schedule()
         #TODO: remove it later
@@ -483,9 +483,10 @@ def mark_finished(schedule):
         for item in items:
             item.state = ScheduleItem.FINISHED
 
-def build():
+def build(wf_name , is_silent=False):
+    print("Proccessing " + str(wf_name))
     ##Preparing
-    wf_name = 'CyberShake_30'
+    #wf_name = 'CyberShake_30'
     # wf_name = 'CyberShake_50'
     # wf_name = 'CyberShake_100'
 
@@ -623,11 +624,12 @@ def build():
             sum2 = sum(x*x for x in fits)
             std = abs(sum2 / length - mean**2)**0.5
 
-            print("-- Generation %i --" % g)
-            print("  Worst %s" % str(1/min(fits)))
-            print("   Best %s" % str(1/max(fits)))
-            print("    Avg %s" % str(1/mean))
-            print("    Std %s" % str(1/std))
+            if not is_silent:
+                print("-- Generation %i --" % g)
+                print("  Worst %s" % str(1/min(fits)))
+                print("   Best %s" % str(1/max(fits)))
+                print("    Avg %s" % str(1/mean))
+                print("    Std %s" % str(1/std))
         pass
 
         ##TODO: remove it later
@@ -715,5 +717,9 @@ def build():
 
 
 
-
-build()
+wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_100",
+            "Montage_25", "Montage_50", "Montage_100",
+            "Epigenomics_24", "Epigenomics_46", "Epigenomics_100",
+            "Inspiral_30", "Inspiral_50", "Inspiral_100",
+            "Sipht_30", "Sipht_60", "Sipht_100"]
+[build(wf_name, True) for wf_name in wf_names]

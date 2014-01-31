@@ -42,7 +42,7 @@ def main(is_silent, wf_name, bundle):
     ##======================
     nodes = HeftHelper.to_nodes(resources)
     ## give 100% to all
-    realibility_map = {node.name: 0.5 for node in nodes}
+    realibility_map = {node.name: 0.6 for node in nodes}
     ## choose one node and give 75% to it
     selected_node = list(nodes)[1]
     #realibility_map[selected_node.name] = 0.95
@@ -94,15 +94,15 @@ def main(is_silent, wf_name, bundle):
 
 ## Single fire
 
-wf_start_id_1 = "00"
-task_postfix_id_1 = "00"
-deadline_1 = 1000
-wf_name = 'CyberShake_30'
-dax2 = '..\\..\\resources\\' + wf_name + '.xml'
-path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
-bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
-
-main(False, wf_name, bundle)
+# wf_start_id_1 = "00"
+# task_postfix_id_1 = "00"
+# deadline_1 = 1000
+# wf_name = 'CyberShake_30'
+# dax2 = '..\\..\\resources\\' + wf_name + '.xml'
+# path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
+# bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+#
+# main(False, wf_name, bundle)
 
 #==============================
 # uncomment it to use it later

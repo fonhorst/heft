@@ -121,6 +121,12 @@ class HeftHelper(Scheduler):
             return result
         all_tasks = HeftHelper.get_all_tasks(wf)
         not_for_planning = get_not_for_planning_tasks(schedule)
+        # def check_in_not_for_planning(tsk):
+        #     for t in not_for_planning:
+        #         if t.id == tsk.id:
+        #             return True
+        #     return False
+        # for_planning = [tsk for tsk in all_tasks if not(check_in_not_for_planning(tsk))]
         for_planning = set(all_tasks) - set(not_for_planning)
         return for_planning
 

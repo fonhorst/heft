@@ -44,7 +44,7 @@ def main(is_silent, wf_name, with_ga_initial=False, the_bundle=None):
     ##======================
     nodes = HeftHelper.to_nodes(bundle.dedicated_resources)
     ## give 100% to all
-    realibility_map = { node.name: 0.5 for node in nodes}
+    realibility_map = { node.name: 0.6 for node in nodes}
     ## choose one node and give 75% to it
     selected_node = list(nodes)[1]
     ##realibility_map[selected_node.name] = 1
@@ -63,12 +63,13 @@ def main(is_silent, wf_name, with_ga_initial=False, the_bundle=None):
     resource_manager = ExperimentResourceManager(bundle.dedicated_resources)
 
 
+    ##TODO: look here ! I'm an idiot tasks of wf != tasks of initial_schedule
     dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
     heft_machine = HeftExecutor(heft_planner=dynamic_heft,
                                 base_fail_duration=40,
                                 base_fail_dispersion=1,
-                                initial_schedule=None)
-                                #initial_schedule=initial_schedule)
+                                #initial_schedule=None)
+                                initial_schedule=initial_schedule)
     heft_machine.init()
     heft_machine.run()
 
@@ -97,15 +98,15 @@ def main(is_silent, wf_name, with_ga_initial=False, the_bundle=None):
     pass
 
 ## Single fire
-wf_name = 'CyberShake_30'
-wf_start_id_1 = "00"
-task_postfix_id_1 = "00"
-deadline_1 = 1000
-dax2 = '..\\..\\resources\\' + wf_name + '.xml'
-## dedicated resource are the same for all bundles
-path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
-bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
-main(False, wf_name, bundle)
+# wf_name = 'CyberShake_30'
+# wf_start_id_1 = "00"
+# task_postfix_id_1 = "00"
+# deadline_1 = 1000
+# dax2 = '..\\..\\resources\\' + wf_name + '.xml'
+# ## dedicated resource are the same for all bundles
+# path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
+# bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+# main(False, wf_name, True, bundle)
 
 #==============================
 # uncomment it to use it later
