@@ -30,11 +30,11 @@ def get_dict(result):
     res['Avr'] = result[2]
     return res
 
-wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_100",
-            "Montage_25", "Montage_50", "Montage_100",
-            "Epigenomics_24", "Epigenomics_46", "Epigenomics_100",
-            "Inspiral_30", "Inspiral_50", "Inspiral_100",
-            "Sipht_30", "Sipht_60", "Sipht_100"]
+# wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_100",
+#             "Montage_25", "Montage_50", "Montage_100",
+#             "Epigenomics_24", "Epigenomics_46", "Epigenomics_100",
+#             "Inspiral_30", "Inspiral_50", "Inspiral_100",
+#             "Sipht_30", "Sipht_60", "Sipht_100"]
 # wf_names = [
 #             "Epigenomics_24", "Epigenomics_46", "Epigenomics_100",
 #             "Inspiral_30", "Inspiral_50", "Inspiral_100",
@@ -63,6 +63,7 @@ wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_100",
 #wf_names = ["Epigenomics_46"]
 
 
+wf_names = ["CyberShake_30"]
 # wf_names = ["CyberShake_50"]
 # wf_names = ["CyberShake_100"]
 
@@ -86,7 +87,7 @@ wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_100",
 #wf_name = "CyberShake_100"
 
 common_time = datetime.now().strftime("%d_%m_%y %H_%M_%S")
-path = '..\\..\\resources\\saved_simulation_results\\' + 'HeftGAVsGA_' + common_time + '.json'
+save_path = '..\\..\\resources\\saved_simulation_results\\' + 'HeftGAVsGA_' + common_time + '.json'
 path_for_gnuplot = '..\\..\\resources\\saved_simulation_results\\' + 'HeftGAVsGA_' + common_time + '.txt'
 ##================Run Heft than CloudHeft
 
@@ -118,7 +119,7 @@ def HeftVsCloudHeft(wf_name):
     result['ga'] = get_dict(resGA)
     result['profit_by_avr'] = pc
 
-    f = open(path, 'a')
+    f = open(save_path, 'a')
     json.dump(result, f)
     f.close()
 

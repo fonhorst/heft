@@ -650,10 +650,10 @@ def build():
         Utility.save_schedule(path, wf_name, resources, transferMx, ideal_flops, schedule)
 
         res = Utility.load_schedule(path, wf)
+        res1 = Utility.load_schedule(path, wf)
+        pass
 
-        #f = open('..\\..\\resources\\saved_schedules\\' + name + '.json', 'r')
-        #deser = json.load(f, object_hook=decoder)
-        #f.close()
+
 
 
     ##================================
