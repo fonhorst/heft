@@ -116,6 +116,11 @@ def main(is_silent, wf_name, with_ga_initial=False, the_bundle=None):
 # path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
 # bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
 # main(False, wf_name, True, bundle)
+
+#==============================
+# single run
+#==============================
+#wf_name = 'CyberShake_75'
 #main(False, wf_name)
 
 #==============================
