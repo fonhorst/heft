@@ -4,7 +4,7 @@
 <adag xmlns="http://pegasus.isi.edu/schema/DAX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pegasus.isi.edu/schema/DAX http://pegasus.isi.edu/schema/dax-2.1.xsd" version="2.1" count="1" index="0" name="test" jobCount="72" fileCount="0" childCount="71">
 <!-- part 1: list of all referenced files (may be empty) -->
 <!-- part 2: definition of all jobs (at least one) -->
-  <job id="ID00000" namespace="Genome" name="fastqSplit_chr21" version="1.0" runtime="42,57">
+  <job id="ID00000" namespace="Genome" name="fastqSplit_chr21" version="1.0" runtime="42.57">
     <uses file="chr210.sfq" link="input" register="true" transfer="true" optional="false" type="data" size="475153094"/>
     <uses file="chr21.0.0.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="28525734"/>
     <uses file="chr21.0.1.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="28134403"/>
@@ -24,313 +24,313 @@
     <uses file="chr21.0.15.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="28847686"/>
     <uses file="chr21.0.16.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="27730394"/>
   </job>
-  <job id="ID00001" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2,30">
+  <job id="ID00001" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2.30">
     <uses file="chr21.0.0.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="28525734"/>
     <uses file="chr21.0.0.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="14697986"/>
     <uses file="chr21.0.0.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="13827748"/>
   </job>
-  <job id="ID00002" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2,63">
+  <job id="ID00002" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2.63">
     <uses file="chr21.0.1.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="28134403"/>
     <uses file="chr21.0.1.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="14155978"/>
     <uses file="chr21.0.1.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="13978425"/>
   </job>
-  <job id="ID00003" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="5,78">
+  <job id="ID00003" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="5.78">
     <uses file="chr21.0.2.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="27552422"/>
     <uses file="chr21.0.2.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="13438070"/>
     <uses file="chr21.0.2.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="14114352"/>
   </job>
-  <job id="ID00004" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="4,89">
+  <job id="ID00004" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="4.89">
     <uses file="chr21.0.3.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="28194613"/>
     <uses file="chr21.0.3.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="13876342"/>
     <uses file="chr21.0.3.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="14318271"/>
   </job>
-  <job id="ID00005" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2,35">
+  <job id="ID00005" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2.35">
     <uses file="chr21.0.4.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="28039438"/>
     <uses file="chr21.0.4.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="14145422"/>
     <uses file="chr21.0.4.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="13894016"/>
   </job>
-  <job id="ID00006" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2,35">
+  <job id="ID00006" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2.35">
     <uses file="chr21.0.5.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="26993662"/>
     <uses file="chr21.0.5.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="13234465"/>
     <uses file="chr21.0.5.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="13759197"/>
   </job>
-  <job id="ID00007" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2,68">
+  <job id="ID00007" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2.68">
     <uses file="chr21.0.6.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="28085674"/>
     <uses file="chr21.0.6.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="13594774"/>
     <uses file="chr21.0.6.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="14490900"/>
   </job>
-  <job id="ID00008" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2,77">
+  <job id="ID00008" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2.77">
     <uses file="chr21.0.7.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="29325706"/>
     <uses file="chr21.0.7.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="15252892"/>
     <uses file="chr21.0.7.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="14072814"/>
   </job>
-  <job id="ID00009" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="3,13">
+  <job id="ID00009" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="3.13">
     <uses file="chr21.0.8.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="25510049"/>
     <uses file="chr21.0.8.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="12891025"/>
     <uses file="chr21.0.8.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="12619024"/>
   </job>
-  <job id="ID00010" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="5,51">
+  <job id="ID00010" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="5.51">
     <uses file="chr21.0.9.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="29087384"/>
     <uses file="chr21.0.9.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="13832530"/>
     <uses file="chr21.0.9.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="15254854"/>
   </job>
-  <job id="ID00011" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2,53">
+  <job id="ID00011" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2.53">
     <uses file="chr21.0.10.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="27664526"/>
     <uses file="chr21.0.10.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="13754098"/>
     <uses file="chr21.0.10.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="13910428"/>
   </job>
-  <job id="ID00012" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="3,17">
+  <job id="ID00012" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="3.17">
     <uses file="chr21.0.11.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="28521508"/>
     <uses file="chr21.0.11.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="14294421"/>
     <uses file="chr21.0.11.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="14227087"/>
   </job>
-  <job id="ID00013" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="3,13">
+  <job id="ID00013" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="3.13">
     <uses file="chr21.0.12.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="28369660"/>
     <uses file="chr21.0.12.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="14505650"/>
     <uses file="chr21.0.12.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="13864010"/>
   </job>
-  <job id="ID00014" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="4,94">
+  <job id="ID00014" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="4.94">
     <uses file="chr21.0.13.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="27207909"/>
     <uses file="chr21.0.13.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="14070073"/>
     <uses file="chr21.0.13.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="13137836"/>
   </job>
-  <job id="ID00015" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="5,46">
+  <job id="ID00015" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="5.46">
     <uses file="chr21.0.14.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="27362326"/>
     <uses file="chr21.0.14.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="13734814"/>
     <uses file="chr21.0.14.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="13627512"/>
   </job>
-  <job id="ID00016" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="4,32">
+  <job id="ID00016" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="4.32">
     <uses file="chr21.0.15.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="28847686"/>
     <uses file="chr21.0.15.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="13740444"/>
     <uses file="chr21.0.15.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="15107242"/>
   </job>
-  <job id="ID00017" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2,30">
+  <job id="ID00017" namespace="Genome" name="filterContams_chr21" version="1.0" runtime="2.30">
     <uses file="chr21.0.16.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="27730394"/>
     <uses file="chr21.0.16.nocontam.sfq" link="output" register="false" transfer="false" optional="false" type="data" size="13505255"/>
     <uses file="chr21.0.16.contam.sfq" link="output" register="true" transfer="true" optional="false" type="data" size="14225139"/>
   </job>
-  <job id="ID00018" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0,81">
+  <job id="ID00018" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0.81">
     <uses file="chr21.0.0.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="14697986"/>
     <uses file="chr21.0.0.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="12763323"/>
   </job>
-  <job id="ID00019" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0,89">
+  <job id="ID00019" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0.89">
     <uses file="chr21.0.1.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="14155978"/>
     <uses file="chr21.0.1.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="11151718"/>
   </job>
-  <job id="ID00020" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0,62">
+  <job id="ID00020" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0.62">
     <uses file="chr21.0.2.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="13438070"/>
     <uses file="chr21.0.2.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="10826582"/>
   </job>
-  <job id="ID00021" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1,03">
+  <job id="ID00021" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1.03">
     <uses file="chr21.0.3.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="13876342"/>
     <uses file="chr21.0.3.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="10574175"/>
   </job>
-  <job id="ID00022" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1,00">
+  <job id="ID00022" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1.00">
     <uses file="chr21.0.4.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="14145422"/>
     <uses file="chr21.0.4.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="7433383"/>
   </job>
-  <job id="ID00023" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1,01">
+  <job id="ID00023" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1.01">
     <uses file="chr21.0.5.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="13234465"/>
     <uses file="chr21.0.5.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="8553320"/>
   </job>
-  <job id="ID00024" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1,21">
+  <job id="ID00024" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1.21">
     <uses file="chr21.0.6.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="13594774"/>
     <uses file="chr21.0.6.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="9408062"/>
   </job>
-  <job id="ID00025" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1,04">
+  <job id="ID00025" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1.04">
     <uses file="chr21.0.7.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="15252892"/>
     <uses file="chr21.0.7.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="8231297"/>
   </job>
-  <job id="ID00026" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0,97">
+  <job id="ID00026" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0.97">
     <uses file="chr21.0.8.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="12891025"/>
     <uses file="chr21.0.8.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="11801544"/>
   </job>
-  <job id="ID00027" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1,72">
+  <job id="ID00027" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1.72">
     <uses file="chr21.0.9.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="13832530"/>
     <uses file="chr21.0.9.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="17550814"/>
   </job>
-  <job id="ID00028" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1,17">
+  <job id="ID00028" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1.17">
     <uses file="chr21.0.10.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="13754098"/>
     <uses file="chr21.0.10.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="8458071"/>
   </job>
-  <job id="ID00029" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0,91">
+  <job id="ID00029" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0.91">
     <uses file="chr21.0.11.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="14294421"/>
     <uses file="chr21.0.11.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="11510339"/>
   </job>
-  <job id="ID00030" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0,84">
+  <job id="ID00030" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0.84">
     <uses file="chr21.0.12.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="14505650"/>
     <uses file="chr21.0.12.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="9168055"/>
   </job>
-  <job id="ID00031" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1,25">
+  <job id="ID00031" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="1.25">
     <uses file="chr21.0.13.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="14070073"/>
     <uses file="chr21.0.13.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="14411751"/>
   </job>
-  <job id="ID00032" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0,95">
+  <job id="ID00032" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0.95">
     <uses file="chr21.0.14.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="13734814"/>
     <uses file="chr21.0.14.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="9534014"/>
   </job>
-  <job id="ID00033" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0,96">
+  <job id="ID00033" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0.96">
     <uses file="chr21.0.15.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="13740444"/>
     <uses file="chr21.0.15.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="6973422"/>
   </job>
-  <job id="ID00034" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0,86">
+  <job id="ID00034" namespace="Genome" name="sol2sanger_chr21" version="1.0" runtime="0.86">
     <uses file="chr21.0.16.nocontam.sfq" link="input" register="false" transfer="false" optional="false" type="data" size="13505255"/>
     <uses file="chr21.0.16.nocontam.fq" link="output" register="false" transfer="false" optional="false" type="data" size="11952034"/>
   </job>
-  <job id="ID00035" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,67">
+  <job id="ID00035" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.67">
     <uses file="chr21.0.0.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="12763323"/>
     <uses file="chr21.0.0.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2690616"/>
   </job>
-  <job id="ID00036" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="2,13">
+  <job id="ID00036" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="2.13">
     <uses file="chr21.0.1.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="11151718"/>
     <uses file="chr21.0.1.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2625529"/>
   </job>
-  <job id="ID00037" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,36">
+  <job id="ID00037" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.36">
     <uses file="chr21.0.2.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="10826582"/>
     <uses file="chr21.0.2.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2566134"/>
   </job>
-  <job id="ID00038" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,74">
+  <job id="ID00038" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.74">
     <uses file="chr21.0.3.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="10574175"/>
     <uses file="chr21.0.3.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2702062"/>
   </job>
-  <job id="ID00039" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,05">
+  <job id="ID00039" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.05">
     <uses file="chr21.0.4.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="7433383"/>
     <uses file="chr21.0.4.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="1745763"/>
   </job>
-  <job id="ID00040" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,20">
+  <job id="ID00040" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.20">
     <uses file="chr21.0.5.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="8553320"/>
     <uses file="chr21.0.5.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2007872"/>
   </job>
-  <job id="ID00041" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,08">
+  <job id="ID00041" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.08">
     <uses file="chr21.0.6.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="9408062"/>
     <uses file="chr21.0.6.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2111167"/>
   </job>
-  <job id="ID00042" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,39">
+  <job id="ID00042" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.39">
     <uses file="chr21.0.7.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="8231297"/>
     <uses file="chr21.0.7.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="1811631"/>
   </job>
-  <job id="ID00043" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,41">
+  <job id="ID00043" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.41">
     <uses file="chr21.0.8.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="11801544"/>
     <uses file="chr21.0.8.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2395719"/>
   </job>
-  <job id="ID00044" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="2,61">
+  <job id="ID00044" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="2.61">
     <uses file="chr21.0.9.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="17550814"/>
     <uses file="chr21.0.9.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="3849765"/>
   </job>
-  <job id="ID00045" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,51">
+  <job id="ID00045" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.51">
     <uses file="chr21.0.10.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="8458071"/>
     <uses file="chr21.0.10.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2441542"/>
   </job>
-  <job id="ID00046" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,40">
+  <job id="ID00046" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.40">
     <uses file="chr21.0.11.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="11510339"/>
     <uses file="chr21.0.11.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2905527"/>
   </job>
-  <job id="ID00047" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,68">
+  <job id="ID00047" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.68">
     <uses file="chr21.0.12.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="9168055"/>
     <uses file="chr21.0.12.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2095208"/>
   </job>
-  <job id="ID00048" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="2,81">
+  <job id="ID00048" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="2.81">
     <uses file="chr21.0.13.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="14411751"/>
     <uses file="chr21.0.13.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="3200096"/>
   </job>
-  <job id="ID00049" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,28">
+  <job id="ID00049" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.28">
     <uses file="chr21.0.14.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="9534014"/>
     <uses file="chr21.0.14.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2289106"/>
   </job>
-  <job id="ID00050" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1,03">
+  <job id="ID00050" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="1.03">
     <uses file="chr21.0.15.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="6973422"/>
     <uses file="chr21.0.15.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="1990945"/>
   </job>
-  <job id="ID00051" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="2,18">
+  <job id="ID00051" namespace="Genome" name="fastq2bfq_chr21" version="1.0" runtime="2.18">
     <uses file="chr21.0.16.nocontam.fq" link="input" register="false" transfer="false" optional="false" type="data" size="11952034"/>
     <uses file="chr21.0.16.nocontam.bfq" link="output" register="false" transfer="false" optional="false" type="data" size="2949939"/>
   </job>
-  <job id="ID00052" namespace="Genome" name="map_chr21" version="1.0" runtime="13872,81">
+  <job id="ID00052" namespace="Genome" name="map_chr21" version="1.0" runtime="13872.81">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.0.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2690616"/>
     <uses file="chr21.0.0.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="2924582"/>
   </job>
-  <job id="ID00053" namespace="Genome" name="map_chr21" version="1.0" runtime="26048,42">
+  <job id="ID00053" namespace="Genome" name="map_chr21" version="1.0" runtime="26048.42">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.1.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2625529"/>
     <uses file="chr21.0.1.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="2853835"/>
   </job>
-  <job id="ID00054" namespace="Genome" name="map_chr21" version="1.0" runtime="10445,74">
+  <job id="ID00054" namespace="Genome" name="map_chr21" version="1.0" runtime="10445.74">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.2.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2566134"/>
     <uses file="chr21.0.2.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="2789276"/>
   </job>
-  <job id="ID00055" namespace="Genome" name="map_chr21" version="1.0" runtime="9855,30">
+  <job id="ID00055" namespace="Genome" name="map_chr21" version="1.0" runtime="9855.30">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.3.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2702062"/>
     <uses file="chr21.0.3.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="2937023"/>
   </job>
-  <job id="ID00056" namespace="Genome" name="map_chr21" version="1.0" runtime="10729,71">
+  <job id="ID00056" namespace="Genome" name="map_chr21" version="1.0" runtime="10729.71">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.4.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="1745763"/>
     <uses file="chr21.0.4.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="1897568"/>
   </job>
-  <job id="ID00057" namespace="Genome" name="map_chr21" version="1.0" runtime="16505,70">
+  <job id="ID00057" namespace="Genome" name="map_chr21" version="1.0" runtime="16505.70">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.5.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2007872"/>
     <uses file="chr21.0.5.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="2182469"/>
   </job>
-  <job id="ID00058" namespace="Genome" name="map_chr21" version="1.0" runtime="18606,12">
+  <job id="ID00058" namespace="Genome" name="map_chr21" version="1.0" runtime="18606.12">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.6.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2111167"/>
     <uses file="chr21.0.6.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="2294746"/>
   </job>
-  <job id="ID00059" namespace="Genome" name="map_chr21" version="1.0" runtime="16917,37">
+  <job id="ID00059" namespace="Genome" name="map_chr21" version="1.0" runtime="16917.37">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.7.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="1811631"/>
     <uses file="chr21.0.7.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="1969164"/>
   </job>
-  <job id="ID00060" namespace="Genome" name="map_chr21" version="1.0" runtime="16731,12">
+  <job id="ID00060" namespace="Genome" name="map_chr21" version="1.0" runtime="16731.12">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.8.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2395719"/>
     <uses file="chr21.0.8.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="2604042"/>
   </job>
-  <job id="ID00061" namespace="Genome" name="map_chr21" version="1.0" runtime="13960,69">
+  <job id="ID00061" namespace="Genome" name="map_chr21" version="1.0" runtime="13960.69">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.9.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="3849765"/>
     <uses file="chr21.0.9.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="4184527"/>
   </job>
-  <job id="ID00062" namespace="Genome" name="map_chr21" version="1.0" runtime="13507,73">
+  <job id="ID00062" namespace="Genome" name="map_chr21" version="1.0" runtime="13507.73">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.10.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2441542"/>
     <uses file="chr21.0.10.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="2653850"/>
   </job>
-  <job id="ID00063" namespace="Genome" name="map_chr21" version="1.0" runtime="10162,44">
+  <job id="ID00063" namespace="Genome" name="map_chr21" version="1.0" runtime="10162.44">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.11.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2905527"/>
     <uses file="chr21.0.11.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="3158181"/>
   </job>
-  <job id="ID00064" namespace="Genome" name="map_chr21" version="1.0" runtime="16561,77">
+  <job id="ID00064" namespace="Genome" name="map_chr21" version="1.0" runtime="16561.77">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.12.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2095208"/>
     <uses file="chr21.0.12.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="2277400"/>
   </job>
-  <job id="ID00065" namespace="Genome" name="map_chr21" version="1.0" runtime="14389,29">
+  <job id="ID00065" namespace="Genome" name="map_chr21" version="1.0" runtime="14389.29">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.13.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="3200096"/>
     <uses file="chr21.0.13.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="3478365"/>
   </job>
-  <job id="ID00066" namespace="Genome" name="map_chr21" version="1.0" runtime="14290,18">
+  <job id="ID00066" namespace="Genome" name="map_chr21" version="1.0" runtime="14290.18">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.14.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2289106"/>
     <uses file="chr21.0.14.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="2488158"/>
   </job>
-  <job id="ID00067" namespace="Genome" name="map_chr21" version="1.0" runtime="14453,29">
+  <job id="ID00067" namespace="Genome" name="map_chr21" version="1.0" runtime="14453.29">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.15.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="1990945"/>
     <uses file="chr21.0.15.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="2164070"/>
   </job>
-  <job id="ID00068" namespace="Genome" name="map_chr21" version="1.0" runtime="9975,44">
+  <job id="ID00068" namespace="Genome" name="map_chr21" version="1.0" runtime="9975.44">
     <uses file="chr21.BS.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.0.16.nocontam.bfq" link="input" register="false" transfer="false" optional="false" type="data" size="2949939"/>
     <uses file="chr21.0.16.nocontam.map" link="output" register="false" transfer="false" optional="false" type="data" size="3206455"/>
   </job>
-  <job id="ID00069" namespace="Genome" name="mapMerge_chr21" version="1.0" runtime="19,16">
+  <job id="ID00069" namespace="Genome" name="mapMerge_chr21" version="1.0" runtime="19.16">
     <uses file="chr21.0.0.nocontam.map" link="input" register="false" transfer="false" optional="false" type="data" size="2924582"/>
     <uses file="chr21.0.1.nocontam.map" link="input" register="false" transfer="false" optional="false" type="data" size="2853835"/>
     <uses file="chr21.0.2.nocontam.map" link="input" register="false" transfer="false" optional="false" type="data" size="2789276"/>
@@ -352,11 +352,11 @@
     <uses file="chr21.nocontam.map.zr" link="output" register="true" transfer="true" optional="false" type="data" size="1528483"/>
     <uses file="chr21.nocontam.map.vm" link="output" register="true" transfer="true" optional="false" type="data" size="157609"/>
   </job>
-  <job id="ID00070" namespace="Genome" name="maqindex_chr21" version="1.0" runtime="0,06">
+  <job id="ID00070" namespace="Genome" name="maqindex_chr21" version="1.0" runtime="0.06">
     <uses file="chr21.nocontam.map" link="input" register="false" transfer="false" optional="false" type="data" size="43456331"/>
     <uses file="chr21.nocontam.chr.map" link="output" register="false" transfer="false" optional="false" type="data" size="612090"/>
   </job>
-  <job id="ID00071" namespace="Genome" name="pileup_chr21" version="1.0" runtime="6584,22">
+  <job id="ID00071" namespace="Genome" name="pileup_chr21" version="1.0" runtime="6584.22">
     <uses file="chr21.BSnull.bfa" link="input" register="true" transfer="true" optional="false" type="data" size="5301465935"/>
     <uses file="chr21.nocontam.chr.map" link="input" register="false" transfer="false" optional="false" type="data" size="612090"/>
     <uses file="chr21.nocontam.chr.pileup" link="output" register="true" transfer="true" optional="false" type="data" size="1008824"/>
