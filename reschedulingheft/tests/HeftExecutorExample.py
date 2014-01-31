@@ -98,15 +98,15 @@ def main(is_silent, wf_name, with_ga_initial=False, the_bundle=None):
     pass
 
 ## Single fire
-# wf_name = 'CyberShake_30'
-# wf_start_id_1 = "00"
-# task_postfix_id_1 = "00"
-# deadline_1 = 1000
-# dax2 = '..\\..\\resources\\' + wf_name + '.xml'
-# ## dedicated resource are the same for all bundles
-# path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
-# bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
-# main(False, wf_name, True, bundle)
+wf_name = 'CyberShake_30'
+wf_start_id_1 = "00"
+task_postfix_id_1 = "00"
+deadline_1 = 1000
+dax2 = '..\\..\\resources\\' + wf_name + '.xml'
+## dedicated resource are the same for all bundles
+path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
+bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+main(False, wf_name, True, bundle)
 
 #==============================
 # uncomment it to use it later

@@ -1,3 +1,4 @@
+from audioop import reverse
 from functools import partial
 from environment.ResourceManager import Scheduler
 from environment.Resource import Node
@@ -82,6 +83,7 @@ class StaticHeftPlanner(Scheduler):
 
 
         def ft(machine):
+            #cost = st(machine)
             cost = st(machine) + compcost(task, machine)
             ##print("machine: %s job:%s cost: %s" % (machine.name, task.id, cost))
             return cost
@@ -93,8 +95,13 @@ class StaticHeftPlanner(Scheduler):
             for task in tasks:
                 st = partial(self.start_time, wf, task, new_plan, jobson, prec, commcost)
 
-                agent = min(new_plan.keys(), key=ft)
+                # ress = [(key, ft(key)) for key in new_plan.keys()]
+                # agent_pair = min(ress, key=lambda x: x[1][0])
+                # agent = agent_pair[0]
+                # start = agent_pair[1][0]
+                # end = agent_pair[1][1]
 
+                agent = min(new_plan.keys(), key=ft)
                 start = st(agent)
                 end = ft(agent)
 
@@ -105,8 +112,9 @@ class StaticHeftPlanner(Scheduler):
 
     def start_time(self, wf, task, orders, jobson, prec, commcost, node):
 
+
         def find_slots(node, comm_ready, runtime):
-            node_schedule = schedule_mapping.get(node, list())
+            node_schedule = orders.get(node, list())
             free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
             ## TODO: refactor it later
             f_time = max(free_time, comm_ready)
@@ -122,7 +130,17 @@ class StaticHeftPlanner(Scheduler):
             ##TODO: remake this stub later.
             if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
                 return 0
-            return max([task_to_node[p.id][2]+estimate(node, chrmo_mapping[p.id], task, p) for p in task.parents])
+            return max([self.endtime(p, orders[jobson[p]]) + commcost(p, task, node, jobson[p]) for p in task.parents])
+
+        def get_possible_execution_times(task, node):
+            ## pay attention to the last element in the resulted seq
+            ## it represents all available time of node after it completes all its work
+            ## (if such interval can exist)
+            ## time_slots = [(st1, end1),(st2, end2,...,(st_last, st_last + runtime)]
+            runtime = self.estimator.estimate_runtime(task, node)
+            comm_ready = comm_ready_func(task, node)
+            time_slots = find_slots(node, comm_ready, runtime)
+            return time_slots, runtime
 
         ## check if soft satisfy requirements
         if self.can_be_executed(node, task):
@@ -143,11 +161,14 @@ class StaticHeftPlanner(Scheduler):
                                       + commcost(p, task, node, jobson[p]) for p in task.parents])
                 ##else:
                 ##    comm_ready = 0
+                #return (start_time, end_time)
                 return max(agent_ready, comm_ready, self.current_time)
             else:
                 return 1000000
+                #return (1000000, -1)
         else:
             return 1000000
+            #return (1000000, -1)
 
     def can_be_executed(self, node, job):
         ## check it
@@ -155,6 +176,10 @@ class StaticHeftPlanner(Scheduler):
 
     def endtime(self, job, events):
         """ Endtime of job in list of events """
+        # for e in reverse(events):
+        #     if e.job.id == job.id:
+        #         return e.end_time
+
         for e in events:
             if e.job == job:
                 return e.end_time
