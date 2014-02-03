@@ -2,296 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\INSTALL.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\LICENSE.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\PKG-INFO" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\README.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\algorithms.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\base.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\benchmarks\__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\benchmarks\binary.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\benchmarks\movingpeaks.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\benchmarks\tools.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\cTools.cpp" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\cma.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\creator.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\dtm\__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\dtm\abstractCommManager.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\dtm\commManagerMpi4py.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\dtm\commManagerTCP.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\dtm\dtmLogCheckState.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\dtm\dtmTypes.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\dtm\dtmViewer.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\dtm\loadBalancerPDB.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\dtm\manager.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\gp.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\tests\__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\tests\dtmTestSuite.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\tests\test_pickle.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\deap\tools.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\Makefile" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_images\genealogy.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_images\gptree.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_images\gptypederrtree.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_images\gptypedinvtree.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_images\gptypedtree.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_images\gptypedtrees.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_images\more.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_images\one_averages.pdf" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_images\one_averages.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_static\copybutton.js" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_static\deap_icon-39x55.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_static\deap_long.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_static\sidebar.js" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_templates\indexcontent.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_templates\indexsidebar.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_templates\layout.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_themes\pydoctheme\static\pydoctheme.css" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\_themes\pydoctheme\theme.conf" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\api\algo.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\api\benchmarks.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\api\core.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\api\dtm.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\api\gp.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\api\index.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\api\tools.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\bugs.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\ackley.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\bohachevsky.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\griewank.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\h1.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\himmelblau.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\kursawe.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\movingsc1.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\rastrigin.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\rosenbrock.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\schaffer.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\schwefel.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\benchmarks\shekel.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\bbob.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\coev\coev_coop_adapt.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\coev\coev_coop_base.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\coev\coev_coop_evol.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\coev\coev_coop_gen.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\coev\coev_coop_niche.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\coev\coev_hillis.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\coev\coev_symbreg.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\de\de_basic.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\de\de_dynamic.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\de\de_sphere.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\dtm\dtm_Sssched.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\dtm\dtm_ga_onemax.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\dtm\dtm_piCalc.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\dtm\dtm_primes.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\dtm\dtm_recurse.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\eda\eda_fctmin.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\eda\eda_pbil.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\es\cmaes1pl_minfct.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\es\cmaes_bipop.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\es\cmaes_minfct.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\es\cmaes_plotting.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\es\es_fctmin.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\es\es_onefifth.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_evosn.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_knapsack.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_knn.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_knn_jmlr.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_kursawefct.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_nqueens.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_nsga2.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_onemax.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_onemax_island.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_onemax_mp.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_onemax_multidemic.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_onemax_numpy.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_onemax_short.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\ga_tsp.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\heart_scale.csv" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\knn.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\pareto_front\dtlz1_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\pareto_front\dtlz2_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\pareto_front\dtlz3_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\pareto_front\dtlz4_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\pareto_front\zdt1_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\pareto_front\zdt2_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\pareto_front\zdt3_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\pareto_front\zdt4_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\pareto_front\zdt6_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\sortingnetwork.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\tsp\gr120.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\tsp\gr17.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\ga\tsp\gr24.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\ant\AntSimulatorFast.cpp" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\ant\AntSimulatorFast.hpp" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\ant\buildAntSimFast.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\ant\santafe_trail.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\gp_adf_symbreg.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\gp_ant.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\gp_multiplexer.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\gp_parity.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\gp_spambase.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\gp_symbreg.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\gp_symbreg_numpy.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\gp\spambase.csv" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\pso\pso_basic.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\pso\pso_multiswarm.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\examples\pso\pso_speciation.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_1\1_where_to_start.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_1_fitness.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_2_1_list_of_floats.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_2_2_permutation.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_2_3_arithmetic_expression.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_2_4_evolution_strategy.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_2_5_particle.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_2_6_funky_one.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_3_1_bag.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_3_2_grid.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_3_3_swarm.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_3_4_demes.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\2_3_5_seeding_a_population.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_2\my_guess.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_3\3_6_2_tool_decoration.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_3\3_6_using_the_toolbox.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_3\3_7_variations.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_3\3_8_algorithms.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_3\3_next_step.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_4\4_4_Using_Cpp_NSGA.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_4\4_5_home_made_eval_func.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_4\SNC.cpp" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_4\installSN.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\code\tutorials\part_4\sortingnetwork.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\conf.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\contents.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\contributing.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\bipop_cmaes.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\cmaes.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\cmaes_plotting.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\coev_comp.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\coev_coop.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\dtm_ga_onemax.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\dtm_pi.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\eda.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\es_fctmin.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\es_onefifth.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\ga_knapsack.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\ga_onemax.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\ga_onemax_short.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\gp_ant.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\gp_multiplexer.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\gp_parity.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\gp_spambase.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\gp_symbreg.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\index.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\examples\pso_basic.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\pip_req.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\tutorials\benchmarking.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\tutorials\distribution.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\tutorials\gp.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\tutorials\index.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\tutorials\next_step.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\tutorials\speedup.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\tutorials\start.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\tutorials\types.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\doc\whatsnew.rst" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\bbob.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\coev\coev_coop_adapt.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\coev\coev_coop_base.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\coev\coev_coop_evol.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\coev\coev_coop_gen.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\coev\coev_coop_niche.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\coev\coev_hillis.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\coev\coev_symbreg.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\de\de_basic.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\de\de_dynamic.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\de\de_sphere.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\dtm\dtm_Sssched.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\dtm\dtm_ga_onemax.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\dtm\dtm_piCalc.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\dtm\dtm_primes.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\dtm\dtm_recurse.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\eda\eda_fctmin.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\eda\eda_pbil.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\es\cmaes1pl_minfct.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\es\cmaes_bipop.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\es\cmaes_minfct.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\es\cmaes_plotting.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\es\es_fctmin.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\es\es_onefifth.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_evosn.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_knapsack.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_knn.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_knn_jmlr.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_kursawefct.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_nqueens.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_nsga2.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_onemax.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_onemax_island.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_onemax_mp.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_onemax_multidemic.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_onemax_numpy.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_onemax_short.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\ga_tsp.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\heart_scale.csv" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\knn.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\pareto_front\dtlz1_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\pareto_front\dtlz2_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\pareto_front\dtlz3_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\pareto_front\dtlz4_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\pareto_front\zdt1_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\pareto_front\zdt2_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\pareto_front\zdt3_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\pareto_front\zdt4_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\pareto_front\zdt6_front.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\sortingnetwork.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\tsp\gr120.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\tsp\gr17.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\ga\tsp\gr24.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\gp\ant\buildAntSimFast.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\gp\gp_adf_symbreg.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\gp\gp_ant.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\gp\gp_multiplexer.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\gp\gp_parity.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\gp\gp_spambase.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\gp\gp_symbreg.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\gp\gp_symbreg_numpy.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\gp\spambase.csv" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\pso\pso_basic.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\pso\pso_multiswarm.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\examples\pso\pso_speciation.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1\setup.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\CloudHeftExecutor.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\DSimpleHeft.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\DynamicHeft" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\GAExecutor.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\HeftExecutor.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\HeftHelper.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\PublicResourceManager.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\comparisons\CloudHeftvsHeft.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\comparisons\ComparisonBase.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\comparisons\GAvsHeftGA.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\comparisons\GAvsHeftGAvsHeftRExGA.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\comparisons\__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\concrete_realization.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\examples\BaseExecutorExample.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\examples\CloudHeftExecutorExample.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\examples\GAExecutorExample.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\examples\HeftExecutorExample.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\examples\__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\heft-scheduler.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\simple_heft.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\tests\__init__.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/GATest.py" afterPath="$PROJECT_DIR$/tests/GATest.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/GAvsHEFT.py" afterPath="$PROJECT_DIR$/tests/GAvsHEFT.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/GAvsHEFTinStatic.py" afterPath="$PROJECT_DIR$/tests/GAvsHEFTinStatic.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/GenetisScheduler.py" afterPath="$PROJECT_DIR$/GA/GenetisScheduler.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/QuantExperiment.py" afterPath="$PROJECT_DIR$/tests/QuantExperiment.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/environment/Resource.py" afterPath="$PROJECT_DIR$/environment/Resource.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/SimpleRandomizedHeuristic.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/SimpleRandomizedHeuristic.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/Staticvsdynamic.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/Staticvsdynamic.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GA/DEAPGA/examples/__init__.py" />
+      <change type="DELETED" beforePath="D:\wspace\heft\GA\DEAPGA\GAExecutor.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\GA\DEAPGA\Run  result" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\GA\DEAPGA\Staticvsdynamic.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\GA\GA.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\GA\GenetisScheduler.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\core\DynamicHeft" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\deap-0.9.1.tar.gz" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\tests\GATest.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\tests\GAvsHEFT.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\tests\GAvsHEFTinStatic.py" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/heft-scheduler.py" afterPath="$PROJECT_DIR$/core/heft-scheduler.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/simple_heft.py" afterPath="$PROJECT_DIR$/core/simple_heft.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="D:\wspace\heft\GA\DEAPGA\DEAP_GA_example.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/examples/DEAP_GA_example.py" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -314,48 +39,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Utility.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/environment/Utility.py">
+      <file leaf-file-name="simple_heft.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/simple_heft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="147" column="0" selection-start="5170" selection-end="5170" vertical-scroll-proportion="0.0" vertical-offset="3571" max-vertical-offset="8700">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BaseExecutorExample.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/examples/BaseExecutorExample.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="0" selection-start="2030" selection-end="2030" vertical-scroll-proportion="0.0" vertical-offset="1067" max-vertical-offset="1550">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAExecutorExample.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/examples/GAExecutorExample.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="0" selection-start="882" selection-end="882" vertical-scroll-proportion="0.0" vertical-offset="442" max-vertical-offset="1000">
-              <folding>
-                <element signature="e#0#65#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/GAExecutor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="26" selection-start="327" selection-end="327" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5125">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ComparisonBase.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="0" selection-start="141" selection-end="141" vertical-scroll-proportion="0.0" vertical-offset="42" max-vertical-offset="975">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4750">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -363,34 +50,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GAvsHeftGA.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py">
+      <file leaf-file-name="PublicResourceManager.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/PublicResourceManager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="49" column="37" selection-start="1680" selection-end="1680" vertical-scroll-proportion="0.0" vertical-offset="600" max-vertical-offset="1600">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1600">
               <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAvsHeftGAvsHeftRExGA.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGAvsHeftRExGA.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="31" selection-start="1749" selection-end="1749" vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="1825">
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DynamicHeft" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/DynamicHeft">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="13" selection-start="354" selection-end="354" vertical-scroll-proportion="-0.10526316" vertical-offset="250" max-vertical-offset="3825">
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
+                <element signature="e#0#47#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -399,7 +64,7 @@
       <file leaf-file-name="CloudHeftExecutor.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/executors/CloudHeftExecutor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="8" selection-start="397" selection-end="397" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="9075">
+            <state line="17" column="10" selection-start="642" selection-end="642" vertical-scroll-proportion="0.0" vertical-offset="264" max-vertical-offset="9075">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -407,10 +72,76 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HeftExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/HeftExecutor.py">
+      <file leaf-file-name="heft-scheduler.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/heft-scheduler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="24" selection-start="308" selection-end="308" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3850">
+            <state line="8" column="41" selection-start="388" selection-end="388" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6325">
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GAvsHEFT.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="187" column="8" selection-start="6997" selection-end="6997" vertical-scroll-proportion="0.0" vertical-offset="372" max-vertical-offset="6925">
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#669#6997#0" expanded="false" />
+                <element signature="e#7037#18108#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="setup.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/setup.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="498">
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProfilingTestCase.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/ProfilingTestCase.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="177" max-vertical-offset="675">
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="QuantExperiment.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/QuantExperiment.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="1775">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DEAP_GA_example.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/examples/DEAP_GA_example.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="577" max-vertical-offset="1900">
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HeftHelper.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/HeftHelper.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3500">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -436,9 +167,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGA.py" />
-        <option value="$PROJECT_DIR$/reschedulingheft/examples/BaseExecutorExample.py" />
-        <option value="$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGAvsHeftRExGA.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/executors.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/executors/HeftExecutor.py" />
@@ -452,6 +180,9 @@
         <option value="$PROJECT_DIR$/core/examples/GAExecutorExample.py" />
         <option value="$PROJECT_DIR$/core/executors/GAExecutor.py" />
         <option value="$PROJECT_DIR$/core/comparisons/GAvsHeftGAvsHeftRExGA.py" />
+        <option value="$PROJECT_DIR$/core/DynamicHeft" />
+        <option value="$PROJECT_DIR$/core/simple_heft.py" />
+        <option value="$PROJECT_DIR$/core/heft-scheduler.py" />
       </list>
     </option>
   </component>
@@ -534,7 +265,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="tests" />
+              <option name="myItemId" value="core" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -548,7 +279,25 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
+              <option name="myItemId" value="GA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DEAPGA" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -575,11 +324,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\wspace\heft\GA\DEAPGA\examples" />
       <recent name="D:\wspace\heft\reschedulingheft\executors" />
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
       <recent name="D:\wspace\heft\reschedulingheft\examples" />
       <recent name="D:\wspace\heft\reschedulingheft\tests" />
-      <recent name="D:\wspace\heft\online-dvm-heft\tests" />
     </key>
   </component>
   <component name="RunManager" selected="Python.GAvsHeftGAvsHeftRExGA">
@@ -864,18 +613,18 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37428242" sideWeight="0.49849126" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37428242" sideWeight="0.49849126" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16777308" sideWeight="0.5993111" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16777308" sideWeight="0.6257176" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41905856" sideWeight="0.7833434" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40068886" sideWeight="0.30416414" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40068886" sideWeight="0.6958358" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37428242" sideWeight="0.5015088" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40068886" sideWeight="0.6958358" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -896,11 +645,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/tests/GAvsHEFT.py</url>
-          <line>43</line>
-          <option name="timeStamp" value="107" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/environment/Utility.py</url>
           <line>65</line>
@@ -945,18 +689,6 @@
           <url>file://$PROJECT_DIR$/environment/Utility.py</url>
           <line>49</line>
           <option name="timeStamp" value="152" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <condition>nt.job.id == 'ID00001_000'</condition>
-          <url>file://$PROJECT_DIR$/GA/DEAPGA/GAExecutor.py</url>
-          <line>142</line>
-          <option name="timeStamp" value="167" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <condition>nt.job.id == 'ID00001_000'</condition>
-          <url>file://$PROJECT_DIR$/GA/DEAPGA/GAExecutor.py</url>
-          <line>139</line>
-          <option name="timeStamp" value="168" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <condition>len(result) == 0</condition>
@@ -1007,84 +739,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/concrete_realization.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="22" selection-start="1590" selection-end="1590" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1450">
-          <folding>
-            <element signature="e#0#55#0" expanded="true" />
-            <element signature="e#1879#2497#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/heft-scheduler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="19" selection-start="537" selection-end="537" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="6325">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/PublicResourceManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1600">
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/examples/HeftExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="12" selection-start="286" selection-end="286" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1025">
-          <folding>
-            <element signature="e#0#40#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/examples/CloudHeftExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="45" selection-start="264" selection-end="264" vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="1425">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="25" selection-start="949" selection-end="949" vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="1550">
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/CloudHeftExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="8" selection-start="397" selection-end="397" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9075">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/HeftExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="24" selection-start="308" selection-end="308" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="350">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/GAExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="26" selection-start="327" selection-end="327" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5125">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="49" column="37" selection-start="1680" selection-end="1680" vertical-scroll-proportion="0.0" vertical-offset="600" max-vertical-offset="1600">
@@ -1135,11 +789,92 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/DynamicHeft">
+    <entry file="file://$PROJECT_DIR$/core/executors/CloudHeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="13" selection-start="354" selection-end="354" vertical-scroll-proportion="-0.10526316" vertical-offset="250" max-vertical-offset="3825">
+        <state line="17" column="10" selection-start="642" selection-end="642" vertical-scroll-proportion="0.0" vertical-offset="264" max-vertical-offset="9075">
           <folding>
             <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/HeftHelper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3500">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/PublicResourceManager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1600">
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/simple_heft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4775">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/heft-scheduler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="41" selection-start="388" selection-end="388" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6325">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/ProfilingTestCase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/QuantExperiment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1775">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/examples/DEAP_GA_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1900">
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="187" column="8" selection-start="6997" selection-end="6997" vertical-scroll-proportion="0.0" vertical-offset="372" max-vertical-offset="6925">
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#669#6997#0" expanded="false" />
+            <element signature="e#7037#18108#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="498">
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>

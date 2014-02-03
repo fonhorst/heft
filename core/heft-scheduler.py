@@ -7,12 +7,12 @@ from environment.ResourceManager import ScheduleItem
 from environment.ResourceManager import Schedule
 from environment.Resource import UP_JOB
 from environment.Resource import DOWN_JOB
-import math
 
 ##HEFT with management of virtual machine and full rescheduling in dynamic
 from core.HeftHelper import HeftHelper
 
-
+##Deprecated. You shouldn't use it.
+##It have been left here only for potential possibility to use something from here in the future
 class ReschedulingHeftPlanner(Scheduler):
     def __init__(self, up_time, down_time, generate_new_ghost_machine):
         ##self.task_rank_cache = dict()
