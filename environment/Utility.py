@@ -36,7 +36,7 @@ class Utility:
         return wfs
 
     @staticmethod
-    def readWorkflow(dax_filepath, wf_start_id, task_postfix_id, deadline):
+    def readWorkflow(dax_filepath, wf_start_id="00", task_postfix_id="00", deadline=1000):
         parser = DAXParser()
         wf = parser.parseXml(dax_filepath, wf_start_id + "0", task_postfix_id + "0")
         wf.deadline = deadline

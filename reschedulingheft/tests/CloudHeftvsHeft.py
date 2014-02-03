@@ -1,17 +1,18 @@
 from datetime import datetime
 import json
 import math
-from reschedulingheft.tests.HeftExecutorExample import main as mainHeft
-from reschedulingheft.tests.CloudHeftExecutorExample import main as mainCloudHeft
+from reschedulingheft.examples.HeftExecutorExample import main as mainHeft
+from reschedulingheft.examples.CloudHeftExecutorExample import main as mainCloudHeft
 ## Single fire
 #main()
 
-def run(run_name, mainFunc, wf_name):
+def run(run_name, mainFunc, wf_name, reliability):
     n = 100
-    result = [mainFunc(True, wf_name) for i in range(n)]
+    result = [mainFunc(reliability, True, wf_name) for i in range(n)]
     mx_time = max(result)
     min_time = min(result)
     avr_time = sum(result)/n
+    ## TODO: fix dispersion calculation
     avr_dispersion = math.sqrt(sum([math.pow(abs(res - avr_time), 2) for res in result]))
     print("==============common results: " + run_name + " " + wf_name + "================")
     print("           Max: " + str(mx_time))
@@ -28,7 +29,8 @@ def get_dict(result):
     res['Avr'] = result[2]
     return res
 
-print("reliability 0.6")
+reliability = 0.6
+print("reliability %s" % reliability)
 #wf_names = ['CyberShake_75']
 #wf_names = ['CyberShake_75','CyberShake_100_2']
 wf_names = ['new_generated\\CyberShake_30','new_generated\\CyberShake_50','new_generated\\CyberShake_75','new_generated\\CyberShake_100']
@@ -63,9 +65,9 @@ common_time = datetime.now().strftime("%d_%m_%y %H_%M_%S")
 path = '..\\..\\resources\\saved_simulation_results\\' + 'HeftVsCloudHeft_' + common_time + '.json'
 path_for_gnuplot = '..\\..\\resources\\saved_simulation_results\\' + 'HeftVsCloudHeft_' + common_time + '.txt'
 ##================Run Heft than CloudHeft
-def HeftVsCloudHeft(wf_name):
+def HeftVsCloudHeft(wf_name,reliability):
     print("Calculating now - " + wf_name)
-    resHeft = run("Heft", mainHeft, wf_name)
+    resHeft = run("Heft", mainHeft, wf_name, reliability)
     resCloudHeft = run("CloudHeft", mainCloudHeft, wf_name)
     print("===========================")
     pc = (1 - resCloudHeft[2]/resHeft[2])*100

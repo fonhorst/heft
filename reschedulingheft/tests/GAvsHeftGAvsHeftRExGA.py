@@ -3,9 +3,9 @@ from functools import partial
 import json
 import math
 from environment.Utility import Utility
-from reschedulingheft.tests.CloudHeftExecutorExample import main as mainCloudHeft
-from reschedulingheft.tests.HeftExecutorExample import main as mainHeft
-from reschedulingheft.tests.GAExecutorExample import main as mainGA
+from reschedulingheft.examples.CloudHeftExecutorExample import main as mainCloudHeft
+from reschedulingheft.examples.HeftExecutorExample import main as mainHeft
+from reschedulingheft.examples.GAExecutorExample import main as mainGA
 ## Single fire
 #main()
 
