@@ -2,7 +2,7 @@ from random import Random
 
 ##just an enum
 import math
-from reschedulingheft.HeftHelper import HeftHelper
+from core.HeftHelper import HeftHelper
 
 
 class SoftItem:

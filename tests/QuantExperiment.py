@@ -3,10 +3,10 @@ __author__ = 'Николай'
 import unittest
 from unittest import TestCase
 from environment.Utility import Utility
-from reschedulingheft.simple_heft import StaticHeftPlanner
+from core.simple_heft import StaticHeftPlanner
 from environment.Resource import ResourceGenerator
-from reschedulingheft.concrete_realization import ExperimentEstimator
-from reschedulingheft.concrete_realization import ExperimentResourceManager
+from core.concrete_realization import ExperimentEstimator
+from core.concrete_realization import ExperimentResourceManager
 import cProfile, pstats, io
 
 

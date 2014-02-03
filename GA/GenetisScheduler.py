@@ -3,7 +3,7 @@ from GA.GA import GeneticFunctions, GeneticAlgorithm
 import random
 from environment.ResourceManager import ScheduleItem, Schedule, Scheduler
 from environment.Utility import Utility
-from reschedulingheft.HeftHelper import HeftHelper
+from core.HeftHelper import HeftHelper
 
 
 class SchedluerGeneticFunctions(GeneticFunctions):

@@ -12,10 +12,10 @@ from deap import tools
 from environment.Utility import Utility, SaveBundle, SaveBundleEncoder
 from environment.Resource import ResourceGenerator, Node
 from environment.ResourceManager import Schedule, ScheduleItem
-from reschedulingheft.DSimpleHeft import DynamicHeft
-from reschedulingheft.HeftHelper import HeftHelper
-from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
-from reschedulingheft.simple_heft import StaticHeftPlanner
+from core.DSimpleHeft import DynamicHeft
+from core.HeftHelper import HeftHelper
+from core.concrete_realization import ExperimentEstimator, ExperimentResourceManager
+from core.simple_heft import StaticHeftPlanner
 
 
 class GAFunctions:

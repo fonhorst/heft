@@ -1,6 +1,6 @@
 import random
 from environment.ResourceManager import Scheduler, ScheduleItem, Schedule
-from reschedulingheft.HeftHelper import HeftHelper
+from core.HeftHelper import HeftHelper
 
 
 class SimpleRandomizedHeuristic(Scheduler):

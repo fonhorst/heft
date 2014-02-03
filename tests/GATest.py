@@ -2,7 +2,7 @@ import unittest
 from GA.GenetisScheduler import StaticGeneticScheduler
 from environment.Resource import ResourceGenerator
 from environment.Utility import Utility
-from reschedulingheft.concrete_realization import ExperimentEstimator
+from core.concrete_realization import ExperimentEstimator
 from tests.ProfilingTestCase import ProfilingTestCase
 
 

@@ -1,8 +1,8 @@
 from GA.DEAPGA.GAExecutor import GAExecutor, TaskFinished
 from environment.EventAutomata import EventAutomata
 from environment.Utility import Utility
-from reschedulingheft.HeftHelper import HeftHelper
-from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
+from core.HeftHelper import HeftHelper
+from core.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 
 
 def main():
