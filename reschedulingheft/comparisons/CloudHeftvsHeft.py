@@ -1,21 +1,19 @@
-from datetime import datetime
 import json
-import math
-from reschedulingheft.CloudHeftExecutor import CloudHeftExecutor
 from reschedulingheft.comparisons.ComparisonBase import run, get_dict, save_path, path_for_gnuplot
-from reschedulingheft.examples.HeftExecutorExample import main as mainHeft, HeftExecutorExample
-from reschedulingheft.examples.CloudHeftExecutorExample import main as mainCloudHeft
+from reschedulingheft.examples.CloudHeftExecutorExample import CloudHeftExecutorExample
+from reschedulingheft.examples.HeftExecutorExample import HeftExecutorExample
+
 ## Single fire
 #main()
 
 mainHeft = HeftExecutorExample().main
-mainCloudHeft = CloudHeftExecutor().main
+mainCloudHeft = CloudHeftExecutorExample().main
 
 ##================Run Heft than CloudHeft
 def HeftVsCloudHeft(wf_name, reliability):
     print("Calculating now - " + wf_name)
     resHeft = run("Heft", mainHeft, wf_name, reliability)
-    resCloudHeft = run("CloudHeft", mainCloudHeft, wf_name)
+    resCloudHeft = run("CloudHeft", mainCloudHeft, wf_name, reliability)
     print("===========================")
     pc = (1 - resCloudHeft[2]/resHeft[2])*100
     print("cloudheft vs heft: " + str(pc))
@@ -39,9 +37,10 @@ def HeftVsCloudHeft(wf_name, reliability):
     pass
 
 
-reliability = 0.6
+reliability = 0.95
 print("reliability %s" % reliability)
-wf_names = ['new_generated\\CyberShake_30','new_generated\\CyberShake_50','new_generated\\CyberShake_75','new_generated\\CyberShake_100']
+wf_names = ["CyberShake_50"]
+#wf_names = ['new_generated\\CyberShake_30','new_generated\\CyberShake_50','new_generated\\CyberShake_75','new_generated\\CyberShake_100']
 # wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_75", "CyberShake_100",
 #             "Montage_25", "Montage_50", "Montage_75", "Montage_100",
 #             "Epigenomics_24", "Epigenomics_46", "Epigenomics_72", "Epigenomics_100",
@@ -49,7 +48,7 @@ wf_names = ['new_generated\\CyberShake_30','new_generated\\CyberShake_50','new_g
 #             "Sipht_30", "Sipht_60", "Sipht_73", "Sipht_100"]
 
 
-[HeftVsCloudHeft(wf_name) for wf_name in wf_names]
+[HeftVsCloudHeft(wf_name, reliability) for wf_name in wf_names]
 
 
 

@@ -2,11 +2,10 @@ from environment.Resource import ResourceGenerator
 from reschedulingheft.CloudHeftExecutor import CloudHeftExecutor
 from reschedulingheft.DSimpleHeft import DynamicHeft
 from reschedulingheft.PublicResourceManager import PublicResourceManager
-from reschedulingheft.examples import BaseExecutorExample
+from reschedulingheft.examples.BaseExecutorExample import BaseExecutorExample
 
 
 class CloudHeftExecutorExample(BaseExecutorExample):
-
     def __init__(self):
         pass
 

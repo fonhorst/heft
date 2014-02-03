@@ -1,5 +1,5 @@
-from environment import Utility
-from reschedulingheft import HeftHelper
+from environment.Utility import Utility
+from reschedulingheft.HeftHelper import HeftHelper
 from reschedulingheft.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 
 

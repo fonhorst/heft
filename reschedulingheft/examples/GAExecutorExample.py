@@ -1,5 +1,5 @@
 from reschedulingheft.GAExecutor import GAExecutor
-from reschedulingheft.examples import BaseExecutorExample
+from reschedulingheft.examples.BaseExecutorExample import BaseExecutorExample
 
 
 class GAExecutorExample(BaseExecutorExample):

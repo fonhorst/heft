@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/reschedulingheft/comparisons/ComparisonBase.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/reschedulingheft/comparisons/__init__.py" />
-      <change type="DELETED" beforePath="D:\wspace\heft\reschedulingheft\tests\WorkflowAnalyzingExample.py" afterPath="" />
-      <change type="MOVED" beforePath="D:\wspace\heft\reschedulingheft\tests\CloudHeftvsHeft.py" afterPath="$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py" />
-      <change type="MOVED" beforePath="D:\wspace\heft\reschedulingheft\tests\GAvsHeftGA.py" afterPath="$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGA.py" />
-      <change type="MOVED" beforePath="D:\wspace\heft\reschedulingheft\tests\GAvsHeftGAvsHeftRExGA.py" afterPath="$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGAvsHeftRExGA.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/examples/BaseExecutorExample.py" afterPath="$PROJECT_DIR$/reschedulingheft/examples/BaseExecutorExample.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/examples/CloudHeftExecutorExample.py" afterPath="$PROJECT_DIR$/reschedulingheft/examples/CloudHeftExecutorExample.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py" afterPath="$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/examples/GAExecutorExample.py" afterPath="$PROJECT_DIR$/reschedulingheft/examples/GAExecutorExample.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGA.py" afterPath="$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGA.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGAvsHeftRExGA.py" afterPath="$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGAvsHeftRExGA.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reschedulingheft/examples/HeftExecutorExample.py" afterPath="$PROJECT_DIR$/reschedulingheft/examples/HeftExecutorExample.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,7 +35,7 @@
       <file leaf-file-name="HeftExecutorExample.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/HeftExecutorExample.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="0" selection-start="253" selection-end="253" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1000">
+            <state line="2" column="77" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1000">
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
               </folding>
@@ -41,10 +43,19 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Utility.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/environment/Utility.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="38" column="51" selection-start="1159" selection-end="1159" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8700">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="CloudHeftExecutorExample.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/CloudHeftExecutorExample.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="48" column="45" selection-start="2072" selection-end="2255" vertical-scroll-proportion="0.0" vertical-offset="825" max-vertical-offset="1450">
+            <state line="6" column="0" selection-start="321" selection-end="321" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1425">
               <folding>
                 <element signature="e#0#50#0" expanded="true" />
               </folding>
@@ -52,23 +63,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CloudHeftvsHeft.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py">
+      <file leaf-file-name="GAExecutorExample.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/GAExecutorExample.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="20" selection-start="1115" selection-end="1115" vertical-scroll-proportion="0.0" vertical-offset="265" max-vertical-offset="1575">
+            <state line="1" column="77" selection-start="128" selection-end="128" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="975">
               <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ComparisonBase.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/ComparisonBase.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="0" selection-start="941" selection-end="941" vertical-scroll-proportion="0.0" vertical-offset="477" max-vertical-offset="975">
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
+                <element signature="e#0#50#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -77,9 +77,27 @@
       <file leaf-file-name="BaseExecutorExample.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/BaseExecutorExample.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="62" selection-start="329" selection-end="329" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1600">
+            <state line="1" column="32" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1600">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="175">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CloudHeftvsHeft.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="42" column="34" selection-start="1424" selection-end="1424" vertical-scroll-proportion="0.27489176" vertical-offset="923" max-vertical-offset="1550">
               <folding>
-                <element signature="e#0#31#0" expanded="true" />
+                <element signature="e#0#11#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -88,20 +106,10 @@
       <file leaf-file-name="GAvsHeftGA.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="0" selection-start="863" selection-end="863" vertical-scroll-proportion="0.0" vertical-offset="559" max-vertical-offset="1600">
+            <state line="52" column="32" selection-start="1775" selection-end="1775" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="800">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CloudHeftExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reschedulingheft/CloudHeftExecutor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="8" selection-start="411" selection-end="411" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9075">
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
+                <element signature="e#474#1653#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -116,21 +124,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GAExecutorExample.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/GAExecutorExample.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="50" selection-start="50" selection-end="50" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="975">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAvsHeftGAvsHeftRExGA.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="GAvsHeftGAvsHeftRExGA.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGAvsHeftRExGA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="61" selection-start="1013" selection-end="1013" vertical-scroll-proportion="1.1044177" vertical-offset="0" max-vertical-offset="1775">
+            <state line="65" column="0" selection-start="2431" selection-end="2431" vertical-scroll-proportion="0.0" vertical-offset="181" max-vertical-offset="800">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
+                <element signature="e#620#2270#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -154,10 +154,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/reschedulingheft/tests/WorkflowAnalyzingExample.py" />
-        <option value="$PROJECT_DIR$/reschedulingheft/simple_heft.py" />
-        <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
-        <option value="$PROJECT_DIR$/reschedulingheft/tests/GAvsHeftGAvsHeftRExGA.py" />
         <option value="$PROJECT_DIR$/environment/Utility.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/ExampleUtility.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/tst.py" />
@@ -166,10 +162,14 @@
         <option value="$PROJECT_DIR$/reschedulingheft/tests/HeftExecutorExample.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/GAExecutorExample.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/tests/CloudHeftvsHeft.py" />
-        <option value="$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/comparisons/ComparisonBase.py" />
+        <option value="$PROJECT_DIR$/reschedulingheft/examples/CloudHeftExecutorExample.py" />
+        <option value="$PROJECT_DIR$/reschedulingheft/examples/HeftExecutorExample.py" />
+        <option value="$PROJECT_DIR$/reschedulingheft/examples/GAExecutorExample.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGA.py" />
+        <option value="$PROJECT_DIR$/reschedulingheft/examples/BaseExecutorExample.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGAvsHeftRExGA.py" />
+        <option value="$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py" />
       </list>
     </option>
   </component>
@@ -302,6 +302,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="examples" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reschedulingheft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="comparisons" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -382,7 +400,7 @@
       <recent name="D:\wspace\heft\online-dvm-heft" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.tst">
+  <component name="RunManager" selected="Python.CloudHeftvsHeft (1)">
     <configuration default="false" name="GAvsHeftGAvsHeftRExGA" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -419,24 +437,6 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="simple_heft" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/reschedulingheft" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/reschedulingheft/simple_heft.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
     <configuration default="false" name="CloudHeftvsHeft" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -468,6 +468,24 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/reschedulingheft/tests/tst.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="CloudHeftvsHeft (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/reschedulingheft/comparisons" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -622,17 +640,17 @@
       <item index="0" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
       <item index="1" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
       <item index="2" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
-      <item index="3" class="java.lang.String" itemvalue="Python.simple_heft" />
-      <item index="4" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft" />
-      <item index="5" class="java.lang.String" itemvalue="Python.tst" />
+      <item index="3" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft" />
+      <item index="4" class="java.lang.String" itemvalue="Python.tst" />
+      <item index="5" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft (1)" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.tst" />
-        <item index="1" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft" />
-        <item index="2" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
-        <item index="3" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
-        <item index="4" class="java.lang.String" itemvalue="Python.simple_heft" />
+        <item index="0" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft (1)" />
+        <item index="1" class="java.lang.String" itemvalue="Python.tst" />
+        <item index="2" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft" />
+        <item index="3" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
+        <item index="4" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
       </list>
     </recent_temporary>
   </component>
@@ -664,18 +682,18 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37428242" sideWeight="0.49849126" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16777308" sideWeight="0.6257176" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16777308" sideWeight="0.5993111" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41905856" sideWeight="0.7833434" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37428242" sideWeight="0.5015088" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27324915" sideWeight="0.6958358" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40068886" sideWeight="0.30416414" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40068886" sideWeight="0.6958358" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -807,11 +825,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/simple_heft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="39" selection-start="1328" selection-end="1328" vertical-scroll-proportion="0.0" vertical-offset="804" max-vertical-offset="4775" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="726" column="0" selection-start="28021" selection-end="28021" vertical-scroll-proportion="0.0" vertical-offset="12342" max-vertical-offset="12444">
@@ -822,13 +835,6 @@
     <entry file="file://$PROJECT_DIR$/reschedulingheft/GAExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="6" selection-start="253" selection-end="253" vertical-scroll-proportion="0.11971831" vertical-offset="0" max-vertical-offset="3383">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/environment/Utility.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="51" selection-start="1159" selection-end="1159" vertical-scroll-proportion="0.0" vertical-offset="474" max-vertical-offset="8700">
           <folding />
         </state>
       </provider>
@@ -846,47 +852,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="137" column="34" selection-start="5428" selection-end="5428" vertical-scroll-proportion="0.0" vertical-offset="5159" max-vertical-offset="6500">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/BaseExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="62" selection-start="329" selection-end="329" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1600">
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/CloudHeftExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="45" selection-start="2072" selection-end="2255" vertical-scroll-proportion="0.0" vertical-offset="825" max-vertical-offset="1450">
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/GAExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="50" selection-start="50" selection-end="50" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="975">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="586">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/HeftExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="0" selection-start="253" selection-end="253" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1000">
-          <folding>
-            <element signature="e#0#52#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -908,29 +873,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py">
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="20" selection-start="1115" selection-end="1115" vertical-scroll-proportion="0.0" vertical-offset="490" max-vertical-offset="1575">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="394">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="586">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/CloudHeftExecutorExample.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="0" selection-start="321" selection-end="321" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1425">
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/HeftExecutorExample.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="77" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1000">
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/GAExecutorExample.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="77" selection-start="128" selection-end="128" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="975">
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/environment/Utility.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="51" selection-start="1159" selection-end="1159" vertical-scroll-proportion="0.0" vertical-offset="474" max-vertical-offset="8700">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/examples/BaseExecutorExample.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="32" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1600">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGAvsHeftRExGA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="0" selection-start="2431" selection-end="2431" vertical-scroll-proportion="0.0" vertical-offset="181" max-vertical-offset="800">
           <folding>
             <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#620#2270#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="0" selection-start="863" selection-end="863" vertical-scroll-proportion="0.0" vertical-offset="784" max-vertical-offset="1600">
+        <state line="52" column="32" selection-start="1775" selection-end="1775" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="800">
           <folding>
             <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#474#1653#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/GAvsHeftGAvsHeftRExGA.py">
+    <entry file="file://$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="61" selection-start="1013" selection-end="1013" vertical-scroll-proportion="1.1044177" vertical-offset="0" max-vertical-offset="1775">
+        <state line="42" column="34" selection-start="1424" selection-end="1424" vertical-scroll-proportion="0.27489176" vertical-offset="923" max-vertical-offset="1550">
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>

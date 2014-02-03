@@ -50,7 +50,7 @@ reliability = 0.6
 print("reliability %s" % reliability)
 wf_names = ["Epigenomics_24"]
 
-[GaVsHeftGa(wf_name) for wf_name in wf_names]
+[GaVsHeftGa(wf_name, reliability) for wf_name in wf_names]
 
 
 

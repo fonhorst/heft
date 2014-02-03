@@ -1,6 +1,6 @@
 from reschedulingheft.DSimpleHeft import DynamicHeft
 from reschedulingheft.HeftExecutor import HeftExecutor
-from reschedulingheft.examples import BaseExecutorExample
+from reschedulingheft.examples.BaseExecutorExample import BaseExecutorExample
 
 
 class HeftExecutorExample(BaseExecutorExample):

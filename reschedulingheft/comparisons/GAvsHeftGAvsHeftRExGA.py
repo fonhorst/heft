@@ -12,7 +12,7 @@ mainCloudHeft = CloudHeftExecutorExample().main
 mainHeft = HeftExecutorExample().main
 mainGA = GAExecutorExample().main
 
-def GAvsHeftGAvsHeftReXGA(wf_name):
+def GAvsHeftGAvsHeftReXGA(wf_name, reliability):
 
     dax2 = '..\\..\\resources\\' + wf_name + '.xml'
     ## dedicated resource are the same for all bundles
@@ -24,9 +24,9 @@ def GAvsHeftGAvsHeftReXGA(wf_name):
     mainGAwithBundle = partial(mainGA, bundle=bundle)
 
     print("Calculating now - " + wf_name)
-    resGA = run("GA", mainGAwithBundle, wf_name)
-    resHeft = run("Heft + GA", mainHEFTwithGA, wf_name)
-    resCloudHeft = run("HeftREx + GA", mainCloudHEFTwithGA, wf_name)
+    resGA = run("GA", mainGAwithBundle, wf_name, reliability)
+    resHeft = run("Heft + GA", mainHEFTwithGA, wf_name, reliability)
+    resCloudHeft = run("HeftREx + GA", mainCloudHEFTwithGA, wf_name, reliability)
     print("===========================")
     pc_hg = (1 - resHeft[2]/resGA[2])*100
     pc_chg = (1 - resCloudHeft[2]/resGA[2])*100
@@ -57,7 +57,7 @@ reliability = 0.6
 print("reliability %s" % reliability)
 wf_names = ['Inspiral_72']
 
-[GAvsHeftGAvsHeftReXGA(wf_name) for wf_name in wf_names]
+[GAvsHeftGAvsHeftReXGA(wf_name, reliability) for wf_name in wf_names]
 
 
 
