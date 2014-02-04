@@ -5,7 +5,7 @@ import math
 #main()
 
 def run(run_name, mainFunc, wf_name, reliability):
-    n = 100
+    n = 2000
     result = [mainFunc(reliability, True, wf_name) for i in range(n)]
     mx_time = max(result)
     min_time = min(result)

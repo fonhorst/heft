@@ -2,8 +2,120 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utilities/CyberShakeCreator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utilities/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utilities/examples/Matplotlib.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utilities/examples/__init__.py" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\EGG-INFO\PKG-INFO" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\EGG-INFO\SOURCES.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\EGG-INFO\dependency_links.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\EGG-INFO\entry_points.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\EGG-INFO\not-zip-safe" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\EGG-INFO\requires.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\EGG-INFO\top_level.txt" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\__main__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\backwardcompat\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\backwardcompat\ssl_match_hostname.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\basecommand.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\baseparser.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\cacert.pem" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\cmdoptions.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\bundle.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\completion.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\freeze.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\help.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\install.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\list.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\search.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\show.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\uninstall.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\unzip.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\wheel.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\commands\zip.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\download.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\exceptions.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\index.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\locations.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\log.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\pep425tags.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\req.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\runner.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\status_codes.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\util.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vcs\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vcs\bazaar.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vcs\git.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vcs\mercurial.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vcs\subversion.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\_backport\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\_backport\misc.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\_backport\shutil.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\_backport\sysconfig.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\_backport\tarfile.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\compat.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\database.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\index.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\locators.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\manifest.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\markers.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\metadata.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\resources.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\scripts.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\util.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\version.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\distlib\wheel.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\constants.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\filters\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\filters\_base.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\filters\alphabeticalattributes.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\filters\inject_meta_charset.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\filters\lint.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\filters\optionaltags.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\filters\sanitizer.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\filters\whitespace.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\html5parser.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\ihatexml.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\inputstream.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\sanitizer.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\serializer\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\serializer\htmlserializer.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\tokenizer.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treebuilders\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treebuilders\_base.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treebuilders\dom.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treebuilders\etree.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treebuilders\etree_lxml.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treewalkers\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treewalkers\_base.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treewalkers\dom.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treewalkers\etree.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treewalkers\genshistream.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treewalkers\lxmletree.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\treewalkers\pulldom.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\trie\__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\trie\_base.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\trie\datrie.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\trie\py.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\html5lib\utils.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\vendor\six.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\pip-1.4.1-py3.3.egg\pip\wheel.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Lib\site-packages\setuptools-1.1.5-py3.3.egg" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Scripts\easy_install-3.3-script.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Scripts\easy_install-3.3.exe.manifest" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Scripts\easy_install-script.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Scripts\easy_install.exe.manifest" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Scripts\pip-3.3-script.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Scripts\pip-3.3.exe" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\penv\Scripts\pip-3.3.exe.manifest" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Scripts/easy_install-3.3.exe" afterPath="$PROJECT_DIR$/penv/Scripts/easy_install-3.3.exe" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Scripts/easy_install.exe" afterPath="$PROJECT_DIR$/penv/Scripts/easy_install.exe" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py" afterPath="$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" afterPath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/easy-install.pth" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/easy-install.pth" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Scripts/pip-script.py" afterPath="$PROJECT_DIR$/penv/Scripts/pip-script.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
@@ -51,10 +163,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CloudHeftvsHeft.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CloudHeftvsHeft.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="40" selection-start="1354" selection-end="1871" vertical-scroll-proportion="0.3084886" vertical-offset="301" max-vertical-offset="950">
+            <state line="40" column="37" selection-start="1323" selection-end="1323" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1300">
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
                 <element signature="e#442#1265#0" expanded="false" />
@@ -63,13 +175,42 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="ComparisonBase.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="9" selection-start="138" selection-end="138" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="975">
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="CyberShakeCreator.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utilities/CyberShakeCreator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="32" selection-start="288" selection-end="288" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
+            <state line="13" column="0" selection-start="315" selection-end="315" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Matplotlib.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/utilities/examples/Matplotlib.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="0" selection-start="90" selection-end="90" vertical-scroll-proportion="0.16778524" vertical-offset="0" max-vertical-offset="596">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/site-packages/matplotlib/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="111" column="42" selection-start="3465" selection-end="3473" vertical-scroll-proportion="-4.96" vertical-offset="2601" max-vertical-offset="32925">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -80,6 +221,7 @@
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="1600">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
+                <marker date="1391430528346" expanded="true" signature="432:1621" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -103,37 +245,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProfilingTestCase.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/ProfilingTestCase.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="177" max-vertical-offset="675">
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="QuantExperiment.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/QuantExperiment.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="1775">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DEAP_GA_example.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/examples/DEAP_GA_example.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="577" max-vertical-offset="1900">
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindManager">
@@ -152,11 +263,8 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/reschedulingheft/executors/HeftExecutor.py" />
-        <option value="$PROJECT_DIR$/reschedulingheft/executors/EventMachine.py" />
         <option value="$PROJECT_DIR$/reschedulingheft/concrete_realization.py" />
         <option value="$PROJECT_DIR$/core/PublicResourceManager.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py" />
         <option value="$PROJECT_DIR$/core/examples/HeftExecutorExample.py" />
         <option value="$PROJECT_DIR$/core/examples/CloudHeftExecutorExample.py" />
         <option value="$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py" />
@@ -167,7 +275,10 @@
         <option value="$PROJECT_DIR$/core/simple_heft.py" />
         <option value="$PROJECT_DIR$/core/heft-scheduler.py" />
         <option value="$PROJECT_DIR$/utilities.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py" />
         <option value="$PROJECT_DIR$/utilities/CyberShakeCreator.py" />
+        <option value="$PROJECT_DIR$/utilities/examples/Matplotlib.py" />
       </list>
     </option>
   </component>
@@ -264,7 +375,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
+              <option name="myItemId" value="utilities" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="examples" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -278,11 +393,21 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
+              <option name="myItemId" value="penv" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="comparisons" />
+              <option name="myItemId" value="environment" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -296,7 +421,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/penv-home" />
+    <property name="last_opened_file_path" value="C:/Pro/Python33/Lib/site-packages" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -316,25 +441,7 @@
       <recent name="D:\wspace\heft\reschedulingheft\tests" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.CyberShakeCreator">
-    <configuration default="false" name="CloudHeftvsHeft (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/reschedulingheft/comparisons" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/reschedulingheft/comparisons/CloudHeftvsHeft.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.Matplotlib">
     <configuration default="false" name="CloudHeftvsHeft (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -406,6 +513,24 @@
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Matplotlib" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utilities/examples" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utilities/examples/Matplotlib.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -556,19 +681,19 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="1" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft (1)" />
-      <item index="2" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft (2)" />
-      <item index="3" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
-      <item index="4" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
-      <item index="5" class="java.lang.String" itemvalue="Python.CyberShakeCreator" />
+      <item index="1" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft (2)" />
+      <item index="2" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
+      <item index="3" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
+      <item index="4" class="java.lang.String" itemvalue="Python.CyberShakeCreator" />
+      <item index="5" class="java.lang.String" itemvalue="Python.Matplotlib" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.CyberShakeCreator" />
-        <item index="1" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
-        <item index="2" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
-        <item index="3" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft (2)" />
-        <item index="4" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft (1)" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Matplotlib" />
+        <item index="1" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft (2)" />
+        <item index="2" class="java.lang.String" itemvalue="Python.CyberShakeCreator" />
+        <item index="3" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
+        <item index="4" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
       </list>
     </recent_temporary>
   </component>
@@ -598,20 +723,40 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22502871" sideWeight="0.49849126" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16777308" sideWeight="0.5993111" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16777308" sideWeight="0.7141217" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41905856" sideWeight="0.7833434" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40068886" sideWeight="0.30416414" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40068886" sideWeight="0.6958358" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2858783" sideWeight="0.45141822" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2858783" sideWeight="0.5485818" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -726,38 +871,11 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGAvsHeftRExGA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="31" selection-start="1749" selection-end="1749" vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="1825">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/CloudHeftExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="10" selection-start="642" selection-end="642" vertical-scroll-proportion="0.0" vertical-offset="264" max-vertical-offset="9075">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/HeftHelper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3500">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/PublicResourceManager.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1600">
           <folding>
-            <element signature="e#0#47#0" expanded="true" />
+            <element signature="e#0#47#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -775,7 +893,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="41" selection-start="388" selection-end="388" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6325">
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -784,7 +902,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -839,18 +957,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utilities/CyberShakeCreator.py">
+    <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="32" selection-start="288" selection-end="288" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1600">
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1391430528346" expanded="true" signature="432:1621" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py">
+    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1600">
+        <state line="7" column="9" selection-start="138" selection-end="138" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="975">
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>
@@ -859,11 +978,34 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="40" selection-start="1354" selection-end="1871" vertical-scroll-proportion="0.3084886" vertical-offset="301" max-vertical-offset="950">
+        <state line="40" column="37" selection-start="1323" selection-end="1323" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1300">
           <folding>
             <element signature="e#0#11#0" expanded="true" />
             <element signature="e#442#1265#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utilities/CyberShakeCreator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="0" selection-start="315" selection-end="315" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/matplotlib/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="42" selection-start="3465" selection-end="3473" vertical-scroll-proportion="-4.96" vertical-offset="2601" max-vertical-offset="32925">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utilities/examples/Matplotlib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="0" selection-start="90" selection-end="90" vertical-scroll-proportion="0.16778524" vertical-offset="0" max-vertical-offset="596">
+          <folding />
         </state>
       </provider>
     </entry>
