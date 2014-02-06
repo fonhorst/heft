@@ -2,11 +2,39 @@
 # TODO: try to do here proper implementation
 #===============================================
 from functools import partial
+import json
+import os
 from core.comparisons.ComparisonBase import run, get_dict
 from core.examples.CloudHeftExecutorExample import CloudHeftExecutorExample
 from core.examples.GAExecutorExample import GAExecutorExample
 from core.examples.HeftExecutorExample import HeftExecutorExample
 from environment.Utility import Utility
+
+class save_result:
+    def __init__(self, path):
+        # path to save result of function
+        self.path = path
+
+    def __call__(self, f):
+        def wrapped_f(*args, **kwargs):
+            result = f(*args, **kwargs)
+            self.save(result)
+            return result
+        return wrapped_f
+
+    def save(self, result):
+        result_arrays = []
+        if os.path.exists(self.path):
+            a_save = open(self.path, 'r')
+            result_arrays = json.load(a_save)
+            a_save.close()
+
+        a_save = open(self.path, 'r')
+        result_arrays.add(result)
+        json.dump(result_arrays, a_save)
+        a_save.close()
+        pass
+    pass
 
 def profit_print(f):
     def inner_func(*args, **kwargs):
@@ -31,6 +59,7 @@ class CloudHeftVsHeft(VersusFunctor):
         self.mainHeft = HeftExecutorExample().main
         self.mainCloudHeft = CloudHeftExecutorExample().main
 
+    #@save_result
     @profit_print
     def __call__(self, wf_name):
         resHeft = run(self.HEFT, self.mainHeft, wf_name, self.reliability)
@@ -56,6 +85,7 @@ class GAvsHeftGA(VersusFunctor):
         self.mainHeft = HeftExecutorExample().main
         self.mainGA = GAExecutorExample().main
 
+    #@save_result
     @profit_print
     def __call__(self, wf_name):
         dax2 = '..\\..\\resources\\' + wf_name + '.xml'
@@ -92,6 +122,7 @@ class GAvsHeftGAvsHeftReXGA(VersusFunctor):
         self.mainHeft = HeftExecutorExample().main
         self.mainGA = GAExecutorExample().main
 
+    #@save_result
     @profit_print
     def __call__(self, wf_name):
         dax2 = '..\\..\\resources\\' + wf_name + '.xml'

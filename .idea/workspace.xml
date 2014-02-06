@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py" afterPath="$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" afterPath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py" afterPath="$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/GAvsHeftGAvsHeftRExGA.py" afterPath="$PROJECT_DIR$/core/comparisons/GAvsHeftGAvsHeftRExGA.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" afterPath="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,7 +28,7 @@
       <file leaf-file-name="ComparisonBase.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="19" selection-start="467" selection-end="467" vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="1050">
+            <state line="32" column="0" selection-start="1051" selection-end="1110" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1050">
               <folding />
             </state>
           </provider>
@@ -42,7 +37,7 @@
       <file leaf-file-name="CloudHeftvsHeft.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="0" selection-start="183" selection-end="183" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1275">
+            <state line="4" column="16" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1275">
               <folding />
             </state>
           </provider>
@@ -51,7 +46,7 @@
       <file leaf-file-name="VersusFunctors.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="94" column="17" selection-start="3277" selection-end="3277" vertical-scroll-proportion="3.76" vertical-offset="0" max-vertical-offset="3300">
+            <state line="56" column="8" selection-start="1687" selection-end="1687" vertical-scroll-proportion="-2.0672" vertical-offset="2692" max-vertical-offset="4075">
               <folding>
                 <element signature="e#143#172#0" expanded="true" />
               </folding>
@@ -828,20 +823,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="19" selection-start="467" selection-end="467" vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="1050">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="0" selection-start="183" selection-end="183" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1275">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGAvsHeftRExGA.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="0" selection-start="368" selection-end="368" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
@@ -856,9 +837,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="0" selection-start="1051" selection-end="1110" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1050">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="16" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1275">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="17" selection-start="3277" selection-end="3277" vertical-scroll-proportion="3.76" vertical-offset="0" max-vertical-offset="3300">
+        <state line="56" column="8" selection-start="1687" selection-end="1687" vertical-scroll-proportion="-2.0672" vertical-offset="2692" max-vertical-offset="4075">
           <folding>
             <element signature="e#143#172#0" expanded="true" />
           </folding>
