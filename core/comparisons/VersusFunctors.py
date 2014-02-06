@@ -18,6 +18,10 @@ class save_result:
     def __call__(self, f):
         def wrapped_f(*args, **kwargs):
             result = f(*args, **kwargs)
+            ## TODO: args[0] contains self. use it to obtain proper time for saving
+            ## I think It is not correct use of decorator, but it should works.
+            ## Find the right answer later
+            ## and consider to use something like I/O monad here
             self.save(result)
             return result
         return wrapped_f
@@ -59,7 +63,7 @@ class CloudHeftVsHeft(VersusFunctor):
         self.mainHeft = HeftExecutorExample().main
         self.mainCloudHeft = CloudHeftExecutorExample().main
 
-    #@save_result
+    #@save_result("empty")
     @profit_print
     def __call__(self, wf_name):
         resHeft = run(self.HEFT, self.mainHeft, wf_name, self.reliability)

@@ -223,11 +223,17 @@ class CloudHeftExecutor(EventMachine):
                 found = self.current_schedule.change_state_executed_with_end_time(event.task, ScheduleItem.FINISHED, self.current_time)
                 pair = self.current_schedule.place_single(event.task)
                 if pair is not None:
+                    ## TODO: The bug is here. Fix it later.
+                    ## the unstarted case must be taken into account in schedule and in the validity check procedure too
                     (nd, item) = pair
-                    item.start_time = event.time_happened
-                    item.end_time = event.time_happened
-                    item.state = ScheduleItem.FINISHED
-                    self.queue = [ev for ev in self.queue if not (not isinstance(ev, NodeUp) and ev.task.id == event.task.id)]
+                    if item.state == ScheduleItem.EXECUTING:
+                        item.start_time = event.time_happened
+                        item.end_time = event.time_happened
+                        item.state = ScheduleItem.FINISHED
+                        self.queue = [ev for ev in self.queue if not (not isinstance(ev, NodeUp) and ev.task.id == event.task.id)]
+                    else:
+                        prm.checkBusy(event.node, False)
+                        return None
                 def check(ev):
                     if isinstance(ev, TaskFinished) or isinstance(ev, NodeFailed):
                         if ev.task.id == event.task.id and not prm.isCloudNode(ev.node):
