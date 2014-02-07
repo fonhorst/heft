@@ -1,58 +1,10 @@
-#===============================================
-# TODO: try to do here proper implementation
-#===============================================
 from functools import partial
-import json
-import os
-from core.comparisons.ComparisonBase import run, get_dict
+from core.comparisons.ComparisonBase import VersusFunctor, profit_print, ComparisonUtility, run
 from core.examples.CloudHeftExecutorExample import CloudHeftExecutorExample
 from core.examples.GAExecutorExample import GAExecutorExample
 from core.examples.HeftExecutorExample import HeftExecutorExample
 from environment.Utility import Utility
 
-class save_result:
-    def __init__(self, path):
-        # path to save result of function
-        self.path = path
-
-    def __call__(self, f):
-        def wrapped_f(*args, **kwargs):
-            result = f(*args, **kwargs)
-            ## TODO: args[0] contains self. use it to obtain proper time for saving
-            ## I think It is not correct use of decorator, but it should works.
-            ## Find the right answer later
-            ## and consider to use something like I/O monad here
-            self.save(result)
-            return result
-        return wrapped_f
-
-    def save(self, result):
-        result_arrays = []
-        if os.path.exists(self.path):
-            a_save = open(self.path, 'r')
-            result_arrays = json.load(a_save)
-            a_save.close()
-
-        a_save = open(self.path, 'r')
-        result_arrays.add(result)
-        json.dump(result_arrays, a_save)
-        a_save.close()
-        pass
-    pass
-
-def profit_print(f):
-    def inner_func(*args, **kwargs):
-        result = f(*args, **kwargs)
-        print("==================================")
-        for (key, value) in result['profit_by_avr'].items():
-            print("{0}: {1}".format(key, value))
-        print("==================================")
-        return result
-    return inner_func
-
-class VersusFunctor:
-    def __call__(self, wf_name):
-        pass
 
 class CloudHeftVsHeft(VersusFunctor):
     HEFT = "Heft"
@@ -63,7 +15,6 @@ class CloudHeftVsHeft(VersusFunctor):
         self.mainHeft = HeftExecutorExample().main
         self.mainCloudHeft = CloudHeftExecutorExample().main
 
-    #@save_result("empty")
     @profit_print
     def __call__(self, wf_name):
         resHeft = run(self.HEFT, self.mainHeft, wf_name, self.reliability)
@@ -73,8 +24,8 @@ class CloudHeftVsHeft(VersusFunctor):
         result = dict()
         result['wf_name'] = wf_name
         result['algorithms'] = {
-            self.HEFT: get_dict(resHeft),
-            self.CLOUD_HEFT: get_dict(resCloudHeft)
+            self.HEFT: ComparisonUtility.get_dict(resHeft),
+            self.CLOUD_HEFT: ComparisonUtility.get_dict(resCloudHeft)
         }
         result['profit_by_avr'] = {"heft_ReX vs Heft": pc}
         return result
@@ -108,8 +59,8 @@ class GAvsHeftGA(VersusFunctor):
         result = dict()
         result['wf_name'] = wf_name
         result['algorithms'] = {
-            self.GA_HEFT: get_dict(resHeft),
-            self.GA: get_dict(resGA)
+            self.GA_HEFT: ComparisonUtility.get_dict(resHeft),
+            self.GA: ComparisonUtility.get_dict(resGA)
         }
         result['profit_by_avr'] = {"ga_Heft vs ga": pc}
         return result
@@ -149,9 +100,9 @@ class GAvsHeftGAvsHeftReXGA(VersusFunctor):
         result = dict()
         result['wf_name'] = wf_name
         result['algorithms'] = {
-            self.HEFT_REX_GA: get_dict(resCloudHeft),
-            self.GA_HEFT: get_dict(resHeft),
-            self.GA: get_dict(resGA)
+            self.HEFT_REX_GA: ComparisonUtility.get_dict(resCloudHeft),
+            self.GA_HEFT: ComparisonUtility.get_dict(resHeft),
+            self.GA: ComparisonUtility.get_dict(resGA)
         }
         result['profit_by_avr'] = {
             "ga_heft vs ga": pc_hg,
