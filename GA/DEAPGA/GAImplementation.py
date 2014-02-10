@@ -1,3 +1,4 @@
+from collections import namedtuple
 import random
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from core.DSimpleHeft import DynamicHeft
@@ -10,6 +11,13 @@ from deap import base
 from environment.Resource import ResourceGenerator
 from environment.ResourceManager import Schedule, ScheduleItem
 from environment.Utility import Utility
+
+Params = namedtuple('Params', ['ideal_flops',
+                               'population',
+                               'crossover_probability',
+                               'replacing_mutation_probability',
+                               'sweep_mutation_probability',
+                               'generations'])
 
 
 class GAFunctions:
@@ -477,7 +485,9 @@ def mark_finished(schedule):
         for item in items:
             item.state = ScheduleItem.FINISHED
 
-def build(wf_name , is_silent=False):
+
+
+def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
     print("Proccessing " + str(wf_name))
     ##Preparing
     #wf_name = 'CyberShake_30'
@@ -507,8 +517,8 @@ def build(wf_name , is_silent=False):
     wf_start_id_1 = "00"
     task_postfix_id_1 = "00"
     deadline_1 = 1000
-    ideal_flops = 20
-    population = 300
+    ideal_flops = params.ideal_flops
+    population = params.population
 
     wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
     rgen = ResourceGenerator(min_res_count=1,
@@ -575,8 +585,8 @@ def build(wf_name , is_silent=False):
     def main(initial_schedule):
         #ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
         ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
-        CXPB, MUTPB, NGEN = 0.8, 0.5, 50
-        SWEEPMUTPB = 0.0
+        CXPB, MUTPB, NGEN = params.crossover_probability, params.replacing_mutation_probability, params.generations
+        SWEEPMUTPB = params.sweep_mutation_probability
         pop = toolbox.population(n=population)
         # Evaluate the entire population
         fitnesses = list(map(toolbox.evaluate, pop))
