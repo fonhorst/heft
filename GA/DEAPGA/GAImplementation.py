@@ -655,21 +655,21 @@ def build(wf_name , is_silent=False):
     ##================================
     ##Heft Run
     ##================================
-    planner = StaticHeftPlanner()
-    planner.estimator = estimator
-    planner.resource_manager = resource_manager
-    planner.workflows = [wf]
-
-    schedule_heft = planner.schedule()
-    heft_makespan = Utility.get_the_last_time(schedule_heft)
-    seq_time_validaty = Utility.validateNodesSeq(schedule_heft)
-    mark_finished(schedule_heft)
-    dependency_validaty = Utility.validateParentsAndChildren(schedule_heft, wf)
-    print("heft_makespan: " + str(heft_makespan))
-    print("=============HEFT Results====================")
-    print("              Makespan %s" % str(heft_makespan))
-    print("          Seq validaty %s" % str(seq_time_validaty))
-    print("   Dependancy validaty %s" % str(dependency_validaty))
+    # planner = StaticHeftPlanner()
+    # planner.estimator = estimator
+    # planner.resource_manager = resource_manager
+    # planner.workflows = [wf]
+    #
+    # schedule_heft = planner.schedule()
+    # heft_makespan = Utility.get_the_last_time(schedule_heft)
+    # seq_time_validaty = Utility.validateNodesSeq(schedule_heft)
+    # mark_finished(schedule_heft)
+    # dependency_validaty = Utility.validateParentsAndChildren(schedule_heft, wf)
+    # print("heft_makespan: " + str(heft_makespan))
+    # print("=============HEFT Results====================")
+    # print("              Makespan %s" % str(heft_makespan))
+    # print("          Seq validaty %s" % str(seq_time_validaty))
+    # print("   Dependancy validaty %s" % str(dependency_validaty))
 
     ##chromo = GAFunctions.schedule_to_chromosome(schedule_heft, sorted_tasks)
     ##sched = ga_functions.build_schedule(chromo)
@@ -689,7 +689,7 @@ def build(wf_name , is_silent=False):
     dynamic_seq_time_validaty = Utility.validateNodesSeq(schedule_dynamic_heft)
     mark_finished(schedule_dynamic_heft)
     dynamic_dependency_validaty = Utility.validateParentsAndChildren(schedule_dynamic_heft, wf)
-    print("heft_makespan: " + str(heft_makespan))
+    print("heft_makespan: " + str(dynamic_heft_makespan))
     print("=============Dynamic HEFT Results====================")
     print("              Makespan %s" % str(dynamic_heft_makespan))
     print("          Seq validaty %s" % str(dynamic_seq_time_validaty))
@@ -701,7 +701,7 @@ def build(wf_name , is_silent=False):
     ##================================
     #pr = cProfile.Profile()
     #pr.enable()
-    main(schedule_heft)
+    main(schedule_dynamic_heft)
     #pr.disable()
     #s = io.StringIO()
     #sortby = 'cumulative'

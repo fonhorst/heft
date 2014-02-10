@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_100_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_100_bundle.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_30_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_30_bundle.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,54 +27,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="VersusFunctors.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="11" selection-start="658" selection-end="658" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="2950">
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ComparisonBase.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="36" selection-start="178" selection-end="178" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2375">
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAvsHeftGA.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="54" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="700">
-              <folding>
-                <element signature="e#0#74#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAvsHeftGAvsHeftRExGA.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGAvsHeftRExGA.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="27" selection-start="572" selection-end="572" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
-              <folding>
-                <element signature="e#0#74#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="GAvsHEFT.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="0" selection-start="593" selection-end="593" vertical-scroll-proportion="0.5965293" vertical-offset="0" max-vertical-offset="461">
+            <state line="11" column="0" selection-start="592" selection-end="592" vertical-scroll-proportion="0.5965293" vertical-offset="0" max-vertical-offset="461">
               <folding />
             </state>
           </provider>
@@ -85,30 +39,12 @@
       <file leaf-file-name="GAImplementation.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="13" selection-start="13" selection-end="13" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="8000">
+            <state line="702" column="16" selection-start="27156" selection-end="27156" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6475">
               <folding>
+                <element signature="e#0#13#0" expanded="true" />
                 <element signature="e#549#6877#0" expanded="false" />
-                <element signature="e#18187#27310#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="base.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/email/mime/base.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="800">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CloudHeftvsHeft.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="36" selection-start="192" selection-end="192" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1450">
-              <folding>
-                <element signature="e#0#74#0" expanded="true" />
+                <element signature="e#6917#17988#0" expanded="false" />
+                <element signature="e#18023#18143#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -745,13 +681,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/matplotlib/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="111" column="42" selection-start="3465" selection-end="3473" vertical-scroll-proportion="-4.96" vertical-offset="2601" max-vertical-offset="32925">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utilities/examples/Matplotlib.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="0" selection-start="93" selection-end="93" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="250">
@@ -843,6 +772,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://C:/Pro/Python33/Lib/email/mime/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="800">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/DSimpleHeft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="8" selection-start="512" selection-end="512" vertical-scroll-proportion="0.0" vertical-offset="927" max-vertical-offset="1600">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="54" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0" vertical-offset="2" max-vertical-offset="700">
@@ -852,26 +797,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Pro/Python33/Lib/email/mime/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="800">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="13" selection-start="13" selection-end="13" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8000">
+        <state line="702" column="16" selection-start="27156" selection-end="27156" vertical-scroll-proportion="0.0" vertical-offset="5264" max-vertical-offset="6475">
           <folding>
+            <element signature="e#0#13#0" expanded="true" />
             <element signature="e#549#6877#0" expanded="false" />
-            <element signature="e#18187#27310#0" expanded="false" />
+            <element signature="e#6917#17988#0" expanded="false" />
+            <element signature="e#18023#18143#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="593" selection-end="593" vertical-scroll-proportion="0.5965293" vertical-offset="0" max-vertical-offset="461">
+        <state line="11" column="0" selection-start="592" selection-end="592" vertical-scroll-proportion="0.5965293" vertical-offset="0" max-vertical-offset="461">
           <folding />
         </state>
       </provider>
