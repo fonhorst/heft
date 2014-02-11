@@ -1,5 +1,8 @@
 from collections import deque
-from core.executors.EventMachine import EventMachine
+import random
+from core.executors.EventMachine import EventMachine, TaskStart, TaskFinished, NodeFailed, NodeUp
+from environment.Resource import Node
+from environment.ResourceManager import ScheduleItem, Schedule
 
 
 class GaHeftExecutor(EventMachine):
@@ -16,12 +19,16 @@ class GaHeftExecutor(EventMachine):
         self.ga_planner = ga_planner
         self.base_fail_duration = base_fail_duration
         self.base_fail_dispersion = base_fail_dispersion
+        self.current_schedule = None
 
     def init(self):
-        self.current_schedule = None
-        #TODO: run ga here
-        # initial_schedule = self.ga_planner.run()
-        # self.current_schedule = initial_schedule
+
+        ##TODO: get_nodes must be either common for both planners or does not be used in this executor at all
+        ## create initial schedule with ga
+        self.current_schedule = Schedule({node: [] for node in self.ga_planner.get_nodes()})
+        initial_schedule = self.ga_planner.run()
+        self.current_schedule = initial_schedule
+
         self.post_new_events()
 
     def event_arrived(self, event):
@@ -56,11 +63,35 @@ class GaHeftExecutor(EventMachine):
         # case 5: non-critical event (task started, task finished)
         #   - continue execution
 
-        def reschedule(event):
-            self.heft_planner.current_time = self.current_time
-            current_cleaned_schedule = self.clean_events(event)
-            self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
-            self.post_new_events()
+        if isinstance(event, TaskStart):
+            self._task_start_handler(event)
+            return
+        if isinstance(event, TaskFinished):
+            self._task_finished_handler(event)
+            return
+        if isinstance(event, NodeFailed):
+            self._node_failed_handler(event)
+            return
+        if isinstance(event, NodeUp):
+            self._node_up_handler(event)
+            return
+        pass
+
+
+
+    def _task_start_handler(self, event):
+
+        if _is_registered_point_of_ga:
+             resulted_schedule = get_result_and_stop_timer()
+             t1 = get_last_time(resulted_schedule)
+             t2 = get_last_time(self.current_schedule)
+             if t1 < t2:
+                 self.current_schedule = resulted_schedule
+             else:
+                ## TODO: run_ga_yet_another_with_old_genome
+                self._reschedule_by_GA()
+
+
 
         def check_fail(task, node):
             reliability = self.heft_planner.estimator.estimate_reliability(task, node)
@@ -68,65 +99,85 @@ class GaHeftExecutor(EventMachine):
             if res > reliability:
                 return True
             return False
+        # check task as executing
+        # self.current_schedule.change_state(event.task, ScheduleItem.EXECUTING)
+        # try to find nodes in cloud
+        # check if failed and post
+        (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
+        item.state = ScheduleItem.EXECUTING
 
-        if isinstance(event, TaskStart):
-            # check task as executing
-            # self.current_schedule.change_state(event.task, ScheduleItem.EXECUTING)
+        if check_fail(event.task, node):
+            # generate fail time, post it
+            duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
+            time_of_fail = (item.end_time - self.current_time)*random.random()
+            time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
 
-            # try to find nodes in cloud
+            event_failed = NodeFailed(node, event.task)
+            event_failed.time_happened = time_of_fail
 
+            event_nodeup = NodeUp(node)
+            event_nodeup.time_happened = time_of_fail + duration
 
-            # check if failed and post
-            (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
-            item.state = ScheduleItem.EXECUTING
+            self.post(event_failed)
+            self.post(event_nodeup)
+            # remove TaskFinished event
+            ##TODO: make a function for this purpose in the base class
+            self.queue = deque([ev for ev in self.queue if not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id)])
+        pass
 
-            if check_fail(event.task, node):
-                # generate fail time, post it
-                duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
-                time_of_fail = (item.end_time - self.current_time)*random.random()
-                time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
+    def _task_finished_handler(self, event):
+        # check task finished
+        self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
+        pass
 
-                event_failed = NodeFailed(node, event.task)
-                event_failed.time_happened = time_of_fail
+    def _node_failed_handler(self, event):
 
-                event_nodeup = NodeUp(node)
-                event_nodeup.time_happened = time_of_fail + duration
+        ##TODO: correct it
+        if _is_ga_running:
+             self._reschedule_by_GA()
 
-                self.post(event_failed)
-                self.post(event_nodeup)
-                # remove TaskFinished event
-                self.queue = deque([ev for ev in self.queue if not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id)])
+        # check node down
+        self.heft_planner.resource_manager.node(event.node).state = Node.Down
+        # check failed event in schedule
+        ## TODO: ambigious choice
+        ##self.current_schedule.change_state(event.task, ScheduleItem.FAILED)
+        it = [item for item in self.current_schedule.mapping[event.node] if item.job.id == event.task.id and item.state == ScheduleItem.EXECUTING]
+        if len(it) != 1:
+            ## TODO: raise exception here
+            pass
 
-                pass
-            return None
-        if isinstance(event, TaskFinished):
-            # check task finished
-            self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
-            return None
-        if isinstance(event, NodeFailed):
-            # check node down
-            self.heft_planner.resource_manager.node(event.node).state = Node.Down
-            # check failed event in schedule
-            ## TODO: ambigious choice
-            ##self.current_schedule.change_state(event.task, ScheduleItem.FAILED)
-            it = [item for item in self.current_schedule.mapping[event.node] if item.job.id == event.task.id and item.state == ScheduleItem.EXECUTING]
-            if len(it) != 1:
-                ## TODO: raise exception here
-                pass
+        it[0].state = ScheduleItem.FAILED
+        it[0].end_time = self.current_time
 
-            it[0].state = ScheduleItem.FAILED
-            it[0].end_time = self.current_time
+        # run HEFT
+        self._reschedule(event)
 
-            reschedule(event)
-            return None
-        if isinstance(event, NodeUp):
-            # check node up
-            self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
-            reschedule(event)
-            return None
-        return None
+        #run GA
+        self._reschedule_by_GA()
 
-    def post_new_events(self):
+        pass
+
+    def _node_up_handler(self, event):
+
+        ##TODO: correct it
+        if _is_ga_running:
+             self._reschedule_by_GA()
+
+        # check node up
+        self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
+        self._reschedule(event)
+
+        #run GA
+        self._reschedule_by_GA()
+        pass
+
+    def _reschedule(self, event):
+        self.heft_planner.current_time = self.current_time
+        current_cleaned_schedule = self._clean_events(event)
+        self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
+        self.post_new_events()
+
+    def _post_new_events(self):
         unstarted_items = set()
         for (node, items) in self.current_schedule.mapping.items():
             for item in items:
@@ -146,7 +197,7 @@ class GaHeftExecutor(EventMachine):
             self.post(event_finish)
         pass
 
-    def clean_events(self, event):
+    def _clean_events(self, event):
 
         # remove all unstarted tasks
         cleaned_task = set()
@@ -169,7 +220,23 @@ class GaHeftExecutor(EventMachine):
             if isinstance(event, TaskFinished) and event.task in cleaned_task:
                 return False
             return True
+        ##TODO: refactor it later
         self.queue = deque([event for event in self.queue if check(event)])
         return clean_schedule
+
+    def _reschedule_by_GA(self):
+        def run_ga():
+            fixed_interval = _get_fixed_interval()
+            front_line = _get_front_line(self.current_schedule, fixed_interval)
+            fixed_schedule = _get_fixed_schedule(self.current_schedule,front_line)
+            _register_line_events(front_line)
+            _run_in_parallel_with_timer(self.ga_planner.run(fixed_schedule))
+
+        if ga_not_running:
+            run_ga()
+        else:
+            interrupt_ga_timer()
+            run_ga()
+        pass
 
     pass
