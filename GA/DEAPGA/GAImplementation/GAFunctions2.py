@@ -2,7 +2,7 @@
 import random
 from GA.DEAPGA.GAImplementation.ScheduleBuilder import ScheduleBuilder
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
-from environment.ResourceManager import ScheduleItem
+from environment.ResourceManager import ScheduleItem, Schedule
 from environment.Utility import Utility
 
 def mark_finished(schedule):
@@ -70,7 +70,8 @@ class GAFunctions2:
 
     def build_fitness(self):
 
-        builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map)
+        fixed_schedule_part = Schedule({node: [] for (node_name, node) in self.node_map.items()})
+        builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
 
         def fitness(chromo):
             ## value of fitness function is the last time point in the schedule
@@ -83,7 +84,8 @@ class GAFunctions2:
         return fitness
 
     def build_schedule(self, chromo):
-        builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map)
+        fixed_schedule_part = Schedule({node: [] for (node_name, node) in self.node_map.items()})
+        builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
         schedule = builder(chromo)
         return schedule
 

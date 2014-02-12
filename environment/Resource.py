@@ -233,16 +233,21 @@ class Workflow:
         self.priority = None ## priority of wf
 
     def get_task_count(self):
+        unique_tasks =self.get_all_unique_tasks()
+        result = len(unique_tasks)
+        return result
+
+    def get_all_unique_tasks(self):
         def add_tasks(unique_tasks, task):
             unique_tasks.update(task.children)
             for child in task.children:
                 add_tasks(unique_tasks, child)
         unique_tasks = set()
         if self.head_task is None:
-            result = 0
+            result = []
         else:
             add_tasks(unique_tasks, self.head_task)
-            result = len(unique_tasks)
+            result = unique_tasks
         return result
 
     ## TODO: for one-time use. Remove it later.

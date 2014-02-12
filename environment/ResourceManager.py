@@ -124,6 +124,10 @@ class Schedule:
         (node, item) = self.place(task)
         item.state = state
 
+    def get_all_unique_tasks_id(self):
+        ids = set(item.job.id for (node, items) in self.mapping.items() for item in items)
+        return ids
+
     @staticmethod
     def insert_item(mapping, node, item):
         result = []
