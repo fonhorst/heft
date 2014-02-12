@@ -18,6 +18,142 @@ Params = namedtuple('Params', ['ideal_flops',
                                'replacing_mutation_probability',
                                'sweep_mutation_probability',
                                'generations'])
+class ScheduleBuilder:
+
+    def __init__(self,
+                 workflow,
+                 resource_manager,
+                 estimator,
+                 task_map,
+                 node_map):
+        self.workflow = workflow
+        self.nodes = HeftHelper.to_nodes(resource_manager.get_resources())
+        self.estimator = estimator
+        ##TODO: Build it
+        self.task_map = task_map
+        ##TODO: Build it
+        self.node_map = node_map
+        pass
+
+
+    def __call__(self, chromo):
+        ready_tasks = [child.id for child in self.workflow.head_task.children]
+
+        finished_tasks = set()
+        schedule_mapping = {node: [] for node in self.nodes}
+        chrmo_mapping = dict()
+        task_to_node = dict()
+
+        for (node_name, tasks) in chromo.items():
+            for tsk_id in tasks:
+                chrmo_mapping[tsk_id] = self.node_map[node_name]
+
+
+        chromo_copy = dict()
+        for (nd_name, items) in chromo.items():
+            chromo_copy[nd_name] = []
+            for item in items:
+                chromo_copy[nd_name].append(item)
+
+
+        while len(ready_tasks) > 0:
+            for node in self.nodes:
+                if len(chromo_copy[node.name]) == 0:
+                    continue
+
+                tsk_id = None
+                for i in range(len(chromo_copy[node.name])):
+                    if chromo_copy[node.name][i] in ready_tasks:
+                        tsk_id = chromo_copy[node.name][i]
+
+                if tsk_id is not None:
+                    task = self.task_map[tsk_id]
+                    #del chromo_copy[node.name][0]
+                    chromo_copy[node.name].remove(tsk_id)
+                    ready_tasks.remove(tsk_id)
+
+                    time_slots, runtime = self._get_possible_execution_times(
+                                                schedule_mapping,
+                                                task_to_node,
+                                                chrmo_mapping,
+                                                task,
+                                                node)
+
+                    time_slot = time_slots[0]
+                    start_time = time_slot[0]
+                    end_time = start_time + runtime
+
+                    item = ScheduleItem(task, start_time, end_time)
+
+                    Schedule.insert_item(schedule_mapping, node, item)
+                    task_to_node[task.id] = (node, start_time, end_time)
+
+                    finished_tasks.add(task.id)
+
+                    ready_children = [child for child in task.children if self._is_child_ready(finished_tasks, child)]
+                    for child in ready_children:
+                        ready_tasks.append(child.id)
+
+        schedule = Schedule(schedule_mapping)
+        return schedule
+
+    ##TODO: redesign all these functions later
+
+    def _is_child_ready(self, finished_tasks, child):
+        ids = set([p.id for p in child.parents])
+        result = False in [id in finished_tasks for id in ids]
+        return not result
+
+    def _find_slots(self,
+                    schedule_mapping,
+                    node,
+                    comm_ready,
+                    runtime):
+        node_schedule = schedule_mapping.get(node, list())
+        free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
+        ## TODO: refactor it later
+        f_time = max(free_time, comm_ready)
+        base_variant = [(f_time, f_time + runtime)]
+        zero_interval = [] if len(node_schedule) == 0 else [(0, node_schedule[0].start_time)]
+        middle_intervals = [(node_schedule[i].end_time, node_schedule[i + 1].start_time) for i in range(len(node_schedule) - 1)]
+        intervals = zero_interval + middle_intervals + base_variant
+
+        result = [(st, end) for (st, end) in intervals if st >= comm_ready and abs((end - st) - runtime) < 0.01]
+        return result
+
+    def _comm_ready_func(self,
+                         task_to_node,
+                         chrmo_mapping,
+                         task,
+                         node):
+        estimate = self.estimator.estimate_transfer_time
+        ##TODO: remake this stub later.
+        if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
+            return 0
+        return max([task_to_node[p.id][2] + estimate(node, chrmo_mapping[p.id], task, p) for p in task.parents])
+
+    def _get_possible_execution_times(self,
+                                      schedule_mapping,
+                                      task_to_node,
+                                      chrmo_mapping,
+                                      task,
+                                      node):
+        ## pay attention to the last element in the resulted seq
+        ## it represents all available time of node after it completes all its work
+        ## (if such interval can exist)
+        ## time_slots = [(st1, end1),(st2, end2,...,(st_last, st_last + runtime)]
+        runtime = self.estimator.estimate_runtime(task, node)
+        comm_ready = self._comm_ready_func(task_to_node,
+                                           chrmo_mapping,
+                                           task,
+                                           node)
+        time_slots = self._find_slots(schedule_mapping,
+                                      node,
+                                      comm_ready,
+                                      runtime)
+        return time_slots, runtime
+
+        pass
 
 
 class GAFunctions:
@@ -200,6 +336,7 @@ class GAFunctions2:
                      workflow,
                      nodes,
                      sorted_tasks,
+                     resource_manager,
                      estimator,
                      size):
 
@@ -212,6 +349,7 @@ class GAFunctions2:
             ##interface Estimator
 
             self.estimator = estimator
+            self.resource_manager = resource_manager
             self.size = size
 
             self.task_map = {task.id: task for task in sorted_tasks}
@@ -246,141 +384,25 @@ class GAFunctions2:
         chromo = GAFunctions2.schedule_to_chromosome(sched)
         return chromo
 
+    def build_fitness(self):
+
+        builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map)
+
+        def fitness(chromo):
+            ## value of fitness function is the last time point in the schedule
+            ## built from the chromo
+            ## chromo is {Task:Node},{Task:Node},... - fixed length
+            schedule = builder(chromo)
+            time = Utility.get_the_last_time(schedule)
+            return (1/time,)
+        ## TODO: redesign it later
+        return fitness
+
     def build_schedule(self, chromo):
-        ready_tasks = [child.id for child in self.workflow.head_task.children]
-        finished_tasks = set()
-
-        def is_child_ready(child):
-            ids = set([p.id for p in child.parents])
-            result = False in [id in finished_tasks for id in ids]
-            return not result
-
-        schedule_mapping = {node: [] for node in self.nodes}
-
-        chrmo_mapping = dict()
-        for (node_name, tasks) in chromo.items():
-            for tsk_id in tasks:
-                chrmo_mapping[tsk_id] = self.node_map[node_name]
-        #chrmo_mapping = {task_id: self.node_map[node_name] for (task_id, node_name) in chromo.items()}
-        task_to_node = dict()
-        estimate = self.estimator.estimate_transfer_time
-
-        def find_slots(node, comm_ready, runtime):
-            node_schedule = schedule_mapping.get(node, list())
-            free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
-            ## TODO: refactor it later
-            f_time = max(free_time, comm_ready)
-            base_variant = [(f_time, f_time + runtime)]
-            zero_interval = [] if len(node_schedule) == 0 else [(0, node_schedule[0].start_time)]
-            middle_intervals = [(node_schedule[i].end_time, node_schedule[i + 1].start_time) for i in range(len(node_schedule) - 1)]
-            intervals = zero_interval + middle_intervals + base_variant
-
-            result = [(st, end) for (st, end) in intervals if st >= comm_ready and abs((end - st) - runtime) < 0.01]
-            return result
-
-        def comm_ready_func(task, node):
-            ##TODO: remake this stub later.
-            if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
-                return 0
-            return max([task_to_node[p.id][2]+estimate(node, chrmo_mapping[p.id], task, p) for p in task.parents])
-
-        def get_possible_execution_times(task, node):
-            ## pay attention to the last element in the resulted seq
-            ## it represents all available time of node after it completes all its work
-            ## (if such interval can exist)
-            ## time_slots = [(st1, end1),(st2, end2,...,(st_last, st_last + runtime)]
-            runtime = self.estimator.estimate_runtime(task, node)
-            comm_ready = comm_ready_func(task, node)
-            time_slots = find_slots(node, comm_ready, runtime)
-            return time_slots, runtime
-
-        chromo_copy = dict()
-        for (nd_name, items) in chromo.items():
-            chromo_copy[nd_name] = []
-            for item in items:
-                chromo_copy[nd_name].append(item)
-
-
-        while len(ready_tasks) > 0:
-            for node in self.nodes:
-                if len(chromo_copy[node.name]) == 0:
-                    continue
-                #tsk_id = chromo_copy[node.name][0]
-                tsk_id = None
-                for i in range(len(chromo_copy[node.name])):
-                    if chromo_copy[node.name][i] in ready_tasks:
-                        tsk_id = chromo_copy[node.name][i]
-
-                if tsk_id is not None:
-                    task = self.task_map[tsk_id]
-                    #del chromo_copy[node.name][0]
-                    chromo_copy[node.name].remove(tsk_id)
-                    ready_tasks.remove(tsk_id)
-
-                    time_slots, runtime = get_possible_execution_times(task, node)
-
-                    time_slot = time_slots[0]
-                    start_time = time_slot[0]
-                    end_time = start_time + runtime
-
-                    item = ScheduleItem(task, start_time, end_time)
-                    ##schedule_mapping[node].append(item)
-                    Schedule.insert_item(schedule_mapping, node, item)
-                    task_to_node[task.id] = (node, start_time, end_time)
-
-                    finished_tasks.add(task.id)
-
-                    ready_children = [child for child in task.children if is_child_ready(child)]
-                    for child in ready_children:
-                        ready_tasks.append(child.id)
-
-        #while len(ready_tasks) > 0:
-        #    for node in self.nodes:
-        #
-        #        while True:
-        #            if len(chromo_copy[node.name]) == 0:
-        #                break
-        #            #tsk_id = chromo_copy[node.name][0]
-        #            tsk_id = None
-        #            for i in range(len(chromo_copy[node.name])):
-        #                if chromo_copy[node.name][i] in ready_tasks:
-        #                    tsk_id = chromo_copy[node.name][i]
-        #
-        #            if tsk_id is not None:
-        #                task = self.task_map[tsk_id]
-        #                #del chromo_copy[node.name][0]
-        #                chromo_copy[node.name].remove(tsk_id)
-        #                ready_tasks.remove(tsk_id)
-        #
-        #                time_slots, runtime = get_possible_execution_times(task, node)
-        #
-        #                time_slot = time_slots[0]
-        #                start_time = time_slot[0]
-        #                end_time = start_time + runtime
-        #
-        #                item = ScheduleItem(task, start_time, end_time)
-        #                ##schedule_mapping[node].append(item)
-        #                Schedule.insert_item(schedule_mapping, node, item)
-        #                task_to_node[task.id] = (node, start_time, end_time)
-        #
-        #                finished_tasks.add(task.id)
-        #
-        #                ready_children = [child for child in task.children if is_child_ready(child)]
-        #                for child in ready_children:
-        #                    ready_tasks.append(child.id)
-        #            else:
-        #                break
-
-        schedule = Schedule(schedule_mapping)
+        builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map)
+        schedule = builder(chromo)
         return schedule
 
-    def fitness(self, chromo):
-        ## value of fitness function is the last time point in the schedule
-        ## built from the chromo
-        ## chromo is {Task:Node},{Task:Node},... - fixed length
-        schedule = self.build_schedule(chromo)
-        time = Utility.get_the_last_time(schedule)
-        return (1/time,)
 
     def crossover(self, child1, child2):
         #return None
@@ -500,7 +522,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
     sorted_tasks = ranking(wf)
 
     #ga_functions = GAFunctions(wf, nodes, sorted_tasks, estimator, population)
-    ga_functions = GAFunctions2(wf, nodes, sorted_tasks, estimator, population)
+    ga_functions = GAFunctions2(wf, nodes, sorted_tasks, resource_manager, estimator, population)
 
 
     ##================================
@@ -518,7 +540,8 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
 
 
 
-    toolbox.register("evaluate", ga_functions.fitness)
+
+    toolbox.register("evaluate", ga_functions.build_fitness())
     # toolbox.register("mate", tools.cxOnePoint)
     # toolbox.register("mate", tools.cxTwoPoints)
     # toolbox.register("mate", tools.cxUniform, indpb=0.2)
@@ -538,6 +561,10 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
     ## TODO:  - ability to include for fitness fixed part of schedule
     ## TODO:     (genome's construction stays the same, but we need to account fixed part of schedule)
     ## TODO:  - ability to save results per generation turn
+
+    def main1(fixed_schedule_part, initial_schedule_part):
+        ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule_part)
+        pass
 
     def main(initial_schedule):
         #ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
@@ -641,6 +668,7 @@ def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
         ##return None
     def main(initial_schedule):
         (the_best_individual, pop, schedule) = alg_func(initial_schedule)
+
         max_makespan = Utility.get_the_last_time(schedule)
         seq_time_validaty = Utility.validateNodesSeq(schedule)
         mark_finished(schedule)
