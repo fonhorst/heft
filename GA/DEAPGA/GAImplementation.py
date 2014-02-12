@@ -485,64 +485,10 @@ def mark_finished(schedule):
         for item in items:
             item.state = ScheduleItem.FINISHED
 
+def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
 
-
-def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
-    print("Proccessing " + str(wf_name))
-    ##Preparing
-    #wf_name = 'CyberShake_30'
-    # wf_name = 'CyberShake_50'
-    # wf_name = 'CyberShake_100'
-
-    # wf_name = 'Montage_25'
-    # wf_name = 'Montage_50'
-    # wf_name = 'Montage_100'
-
-    # wf_name = 'Epigenomics_24'
-    # wf_name = 'Epigenomics_46'
-    # wf_name = 'Epigenomics_100'
-
-    # wf_name = "Inspiral_30"
-    # wf_name = "Inspiral_50"
-    # wf_name = "Inspiral_100"
-
-    # wf_name = "Sipht_30"
-    # wf_name = "Sipht_60"
-    # wf_name = "Sipht_100"
-
-
-    dax1 = '..\\..\\resources\\' + wf_name + '.xml'
-    ##dax1 = '..\\..\\resources\\Montage_50.xml'
-
-    wf_start_id_1 = "00"
-    task_postfix_id_1 = "00"
-    deadline_1 = 1000
-    ideal_flops = params.ideal_flops
     population = params.population
-
-    wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
-    rgen = ResourceGenerator(min_res_count=1,
-                                 max_res_count=1,
-                                 min_node_count=4,
-                                 max_node_count=4,
-                                 min_flops=5,
-                                 max_flops=10)
-    resources = rgen.generate()
-    transferMx = rgen.generateTransferMatrix(resources)
-
-    ##TODO: remove it later
-    dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
-    path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle_backup' + '.json'
-    bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
-    resources = bundle.dedicated_resources
-    transferMx = bundle.transfer_mx
-    ideal_flops = bundle.ideal_flops
-    ##TODO: end
-
-    estimator = ExperimentEstimator(transferMx, ideal_flops, dict())
-    resource_manager = ExperimentResourceManager(resources)
-
-    nodes = list(HeftHelper.to_nodes(resources))
+    nodes = list(HeftHelper.to_nodes(resource_manager.get_resources()))
 
     def compcost(job, agent):
         return estimator.estimate_runtime(job, agent)
@@ -634,29 +580,68 @@ def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
                 print("   Best %s" % str(1/max(fits)))
                 print("    Avg %s" % str(1/mean))
                 print("    Std %s" % str(1/std))
-        pass
+            pass
+
+        resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
+        result = max(resulted_pop, key=lambda x: x[1])
+        ## return the best fitted individual and resulted population
+        return (result[0], pop, ga_functions.build_schedule(result[0]))
+
+    return main
+
+
+def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
+    print("Proccessing " + str(wf_name))
+
+    dax1 = '..\\..\\resources\\' + wf_name + '.xml'
+
+    wf_start_id_1 = "00"
+    task_postfix_id_1 = "00"
+    deadline_1 = 1000
+    ideal_flops = params.ideal_flops
+    population = params.population
+
+    wf = Utility.readWorkflow(dax1, wf_start_id_1, task_postfix_id_1, deadline_1)
+    rgen = ResourceGenerator(min_res_count=1,
+                                 max_res_count=1,
+                                 min_node_count=4,
+                                 max_node_count=4,
+                                 min_flops=5,
+                                 max_flops=10)
+    resources = rgen.generate()
+    transferMx = rgen.generateTransferMatrix(resources)
+
+    ##TODO: remove it later
+    dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
+    path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle_backup' + '.json'
+    bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+    resources = bundle.dedicated_resources
+    transferMx = bundle.transfer_mx
+    ideal_flops = bundle.ideal_flops
+    ##TODO: end
+
+    estimator = ExperimentEstimator(transferMx, ideal_flops, dict())
+    resource_manager = ExperimentResourceManager(resources)
+    alg_func = construct_ga_alg(is_silent, wf, resource_manager, estimator, params)
+
 
         ##TODO: remove it later
        ##print("======END-END======")
         ##return None
-
-        resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
-        result = max(resulted_pop, key=lambda x: x[1])
-        schedule = ga_functions.build_schedule(result[0])
+    def main(initial_schedule):
+        (the_best_individual, pop, schedule) = alg_func(initial_schedule)
+        max_makespan = Utility.get_the_last_time(schedule)
         seq_time_validaty = Utility.validateNodesSeq(schedule)
         mark_finished(schedule)
         dependency_validaty = Utility.validateParentsAndChildren(schedule, wf)
         print("=============Results====================")
-        print("              Makespan %s" % str(1/result[1]))
+        print("              Makespan %s" % str(max_makespan))
         print("          Seq validaty %s" % str(seq_time_validaty))
         print("   Dependancy validaty %s" % str(dependency_validaty))
 
         name = wf_name +"_bundle"
         path = '..\\..\\resources\\saved_schedules\\' + name + '.json'
         Utility.save_schedule(path, wf_name, resources, transferMx, ideal_flops, schedule)
-
-        res = Utility.load_schedule(path, wf)
-        res1 = Utility.load_schedule(path, wf)
         pass
 
 
