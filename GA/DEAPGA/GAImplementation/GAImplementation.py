@@ -19,7 +19,9 @@ Params = namedtuple('Params', ['ideal_flops',
                                'replacing_mutation_probability',
                                'sweep_mutation_probability',
                                'generations'])
-
+def default_fixed_schedule_part(resource_manager):
+    fix_schedule_part = Schedule({node: [] for node in HeftHelper.to_nodes(resource_manager.get_resources())})
+    return fix_schedule_part
 
 def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
 
@@ -53,9 +55,9 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 
-
-
-    toolbox.register("evaluate", ga_functions.build_fitness())
+    ## default case
+    fix_schedule_part = default_fixed_schedule_part(resource_manager)
+    toolbox.register("evaluate", ga_functions.build_fitness(fix_schedule_part))
     # toolbox.register("mate", tools.cxOnePoint)
     # toolbox.register("mate", tools.cxTwoPoints)
     # toolbox.register("mate", tools.cxUniform, indpb=0.2)
@@ -76,12 +78,9 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
     ## TODO:     (genome's construction stays the same, but we need to account fixed part of schedule)
     ## TODO:  - ability to save results per generation turn
 
-    def main1(fixed_schedule_part, initial_schedule_part):
-        ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule_part)
-        pass
+    def main(fixed_schedule_part, initial_schedule):
 
-    def main(initial_schedule):
-        #ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
+        toolbox.register("evaluate", ga_functions.build_fitness(fixed_schedule_part))
         ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
         CXPB, MUTPB, NGEN = params.crossover_probability, params.replacing_mutation_probability, params.generations
         SWEEPMUTPB = params.sweep_mutation_probability
@@ -137,7 +136,67 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
         resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
         result = max(resulted_pop, key=lambda x: x[1])
         ## return the best fitted individual and resulted population
-        return (result[0], pop, ga_functions.build_schedule(result[0]))
+        return (result[0], pop, ga_functions.build_schedule(result[0], fixed_schedule_part))
+        pass
+
+    # def main(initial_schedule):
+    #     #ga_functions.initial_chromosome = GAFunctions.schedule_to_chromosome(initial_schedule, sorted_tasks)
+    #     ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
+    #     CXPB, MUTPB, NGEN = params.crossover_probability, params.replacing_mutation_probability, params.generations
+    #     SWEEPMUTPB = params.sweep_mutation_probability
+    #     pop = toolbox.population(n=population)
+    #     # Evaluate the entire population
+    #     fitnesses = list(map(toolbox.evaluate, pop))
+    #     for ind, fit in zip(pop, fitnesses):
+    #         ind.fitness.values = fit
+    #     # Begin the evolution
+    #     print("Evaluating...")
+    #     for g in range(NGEN):
+    #         # print("-- Generation %i --" % g)
+    #         # Select the next generation individuals
+    #         offspring = toolbox.select(pop, len(pop))
+    #         # Clone the selected individuals
+    #         offspring = list(map(toolbox.clone, offspring))
+    #         # Apply crossover and mutation on the offspring
+    #         for child1, child2 in zip(offspring[::2], offspring[1::2]):
+    #             if random.random() < CXPB:
+    #                 toolbox.mate(child1, child2)
+    #                 del child1.fitness.values
+    #                 del child2.fitness.values
+    #
+    #         for mutant in offspring:
+    #             if random.random() < SWEEPMUTPB:
+    #                 ga_functions.sweep_mutation(mutant)
+    #                 del mutant.fitness.values
+    #             if random.random() < MUTPB:
+    #                 toolbox.mutate(mutant)
+    #                 del mutant.fitness.values
+    #         # Evaluate the individuals with an invalid fitness
+    #         invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+    #         fitnesses = map(toolbox.evaluate, invalid_ind)
+    #         for ind, fit in zip(invalid_ind, fitnesses):
+    #             ind.fitness.values = fit
+    #         pop[:] = offspring
+    #         # Gather all the fitnesses in one list and print the stats
+    #         fits = [ind.fitness.values[0] for ind in pop]
+    #
+    #         length = len(pop)
+    #         mean = sum(fits) / length
+    #         sum2 = sum(x*x for x in fits)
+    #         std = abs(sum2 / length - mean**2)**0.5
+    #
+    #         if not is_silent:
+    #             print("-- Generation %i --" % g)
+    #             print("  Worst %s" % str(1/min(fits)))
+    #             print("   Best %s" % str(1/max(fits)))
+    #             print("    Avg %s" % str(1/mean))
+    #             print("    Std %s" % str(1/std))
+    #         pass
+    #
+    #     resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
+    #     result = max(resulted_pop, key=lambda x: x[1])
+    #     ## return the best fitted individual and resulted population
+    #     return (result[0], pop, ga_functions.build_schedule(result[0], fix_schedule_part))
 
     return main
 
@@ -180,8 +239,10 @@ def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
         ##TODO: remove it later
        ##print("======END-END======")
         ##return None
+    ## TODO: initial schedule must be the second part of fixed_schedule
     def main(initial_schedule):
-        (the_best_individual, pop, schedule) = alg_func(initial_schedule)
+        fix_schedule_part = default_fixed_schedule_part(resource_manager)
+        (the_best_individual, pop, schedule) = alg_func(fix_schedule_part, initial_schedule)
 
         max_makespan = Utility.get_the_last_time(schedule)
         seq_time_validaty = Utility.validateNodesSeq(schedule)

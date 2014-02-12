@@ -46,6 +46,8 @@ class GAFunctions2:
 
     @staticmethod
     def schedule_to_chromosome(schedule):
+        if schedule is None:
+            return None
         def ids(items):
             return [item.job.id for item in items]
         chromosome = {node.name: ids(items) for (node, items) in schedule.mapping.items()}
@@ -57,7 +59,7 @@ class GAFunctions2:
     def random_chromo(self):
         res = random.random()
         # # TODO:
-        if res >0.8:
+        if res >0.8 and self.initial_chromosome is not None:
             return self.initial_chromosome
         ##return [self.random_chromo() for j in range(self.size)]
         sched = self.initializing_alg.schedule()
@@ -68,9 +70,7 @@ class GAFunctions2:
         chromo = GAFunctions2.schedule_to_chromosome(sched)
         return chromo
 
-    def build_fitness(self):
-
-        fixed_schedule_part = Schedule({node: [] for (node_name, node) in self.node_map.items()})
+    def build_fitness(self, fixed_schedule_part):
         builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
 
         def fitness(chromo):
@@ -83,8 +83,7 @@ class GAFunctions2:
         ## TODO: redesign it later
         return fitness
 
-    def build_schedule(self, chromo):
-        fixed_schedule_part = Schedule({node: [] for (node_name, node) in self.node_map.items()})
+    def build_schedule(self, chromo, fixed_schedule_part):
         builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
         schedule = builder(chromo)
         return schedule
