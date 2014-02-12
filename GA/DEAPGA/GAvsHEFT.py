@@ -1,4 +1,4 @@
-from GA.DEAPGA.GAImplementation import build
+from GA.DEAPGA.GAImplementation.GAImplementation import build
 
 wf_names = ['CyberShake_30']
 # wf_names = ['CyberShake_75', 'Montage_75', 'Epigenomics_72', 'Inspiral_72', 'Sipht_73']
