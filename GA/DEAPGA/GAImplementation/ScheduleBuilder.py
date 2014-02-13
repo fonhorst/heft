@@ -28,16 +28,20 @@ class ScheduleBuilder:
 
     def _create_helping_structures(self, chromo):
         # copy fixed schedule
+        # TODO: make common utility function with SimpleRandomizedHeuristic
+        def is_last_version_of_task_executing(item):
+            return item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.UNSTARTED
+
         schedule_mapping = {node: [item for item in items] for (node, items) in self.fixed_schedule_part.mapping.items()}
 
-        finished_tasks = set([self.workflow.head_task.id] + list(self.fixed_schedule_part.get_all_unique_tasks_id()))
+        finished_tasks = [item.job.id for (node, items) in self.fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)]
+        finished_tasks = set([self.workflow.head_task.id] + finished_tasks)
 
         unfinished = [task for task in self.workflow.get_all_unique_tasks() if not task.id in finished_tasks]
 
         ready_tasks = [task.id for task in self._get_ready_tasks(unfinished, finished_tasks)]
 
-        def is_last_version_of_task_executing(item):
-            return item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.UNSTARTED
+
 
         chrmo_mapping = {item.job.id: self.node_map[node.name] for (node, items) in self.fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)}
 
@@ -144,7 +148,11 @@ class ScheduleBuilder:
         ## TODO: replace it with commented string below later
         res_list = []
         for p in task.parents:
-            c1 = task_to_node[p.id][2]
+            try:
+                c1 = task_to_node[p.id][2]
+            except KeyError:
+                k = 0
+                raise
             c2 = estimate(node, chrmo_mapping[p.id], task, p)
             res_list.append(c1 + c2)
 

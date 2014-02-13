@@ -53,18 +53,18 @@ class GAFunctions2:
         chromosome = {node.name: ids(items) for (node, items) in schedule.mapping.items()}
         return chromosome
 
-    def build_initial(self, fixed_schedule_mapping):
+    def build_initial(self, fixed_schedule_part):
         def initial():
-            return self.random_chromo(fixed_schedule_mapping)
+            return self.random_chromo(fixed_schedule_part)
         return initial
 
-    def random_chromo(self, fixed_schedule_mapping):
+    def random_chromo(self, fixed_schedule_part):
         res = random.random()
         # # TODO:
         if res > 0.8 and self.initial_chromosome is not None:
             return self.initial_chromosome
         ##return [self.random_chromo() for j in range(self.size)]
-        sched = self.initializing_alg.schedule(fixed_schedule_mapping)
+        sched = self.initializing_alg.schedule(fixed_schedule_part)
         #TODO: remove it later
         # mark_finished(sched)
         # seq_time_validaty = Utility.validateNodesSeq(sched)

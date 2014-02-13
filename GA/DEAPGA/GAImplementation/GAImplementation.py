@@ -95,7 +95,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
         def __call__(self, fixed_schedule_part, initial_schedule):
             print("Evaluating...")
             toolbox.register("evaluate", ga_functions.build_fitness(fixed_schedule_part))
-            toolbox.register("attr_bool", ga_functions.build_initial(None))
+            toolbox.register("attr_bool", ga_functions.build_initial(fixed_schedule_part))
             ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
             CXPB, MUTPB, NGEN = params.crossover_probability, params.replacing_mutation_probability, params.generations
             SWEEPMUTPB = params.sweep_mutation_probability

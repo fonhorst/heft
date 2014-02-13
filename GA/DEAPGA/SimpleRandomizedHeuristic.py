@@ -20,19 +20,25 @@ class SimpleRandomizedHeuristic(Scheduler):
             self.initial_chromosome = None
             pass
 
-     def schedule(self, fixed_schedule_mapping):
-         ready_tasks = [child.id for child in self.workflow.head_task.children]
+     def schedule(self, fixed_schedule_part):
 
-         if fixed_schedule_mapping is None:
-            schedule_mapping = {node: [] for node in self.nodes}
-         else:
-            schedule_mapping = {node: [] for node in self.nodes}
-
-         ##chrmo_mapping = {task_id: self.node_map[node_name] for (task_id, node_name) in chromo}
-         task_to_node = dict()
          estimate = self.estimator.estimate_transfer_time
+         # TODO: make common utility function with ScheduleBuilder
+         def is_last_version_of_task_executing(item):
+            return item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.UNSTARTED
 
-         finished_tasks = set()
+         if fixed_schedule_part is None:
+            schedule_mapping = {node: [] for node in self.nodes}
+            ready_tasks = [child.id for child in self.workflow.head_task.children]
+            task_to_node = dict()
+            finished_tasks = set()
+         else:
+            schedule_mapping = {node: [item for item in items] for (node, items) in self.fixed_schedule_part.mapping.items()}
+            finished_tasks = [item.job.id for (node, items) in self.fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)]
+            finished_tasks = set([self.workflow.head_task.id] + finished_tasks)
+            unfinished = [task for task in self.workflow.get_all_unique_tasks() if not task.id in finished_tasks]
+            ready_tasks = [task.id for task in self._get_ready_tasks(unfinished, finished_tasks)]
+
 
          def is_child_ready(child):
             ids = set([p.id for p in child.parents])
