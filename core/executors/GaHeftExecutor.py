@@ -408,22 +408,33 @@ class GAComputationWrapper:
         pass
 
     def run(self, time_interval, current_time):
+
+
+
+        event = Event()
+
+        def go():
+            event.set()
+            self.ga.stop()
+            pass
+
+        timer = threading.Timer(time_interval, go)
+
         def run_func():
             t_ident = str(threading.current_thread().ident)
             t_name = str(threading.current_thread().name)
             print("Time: " + str(current_time) + " Running ga in isolated thread " + t_name + " " + t_ident)
             self.ga(self.fixed_schedule_part,
                     self.initial_schedule)
-
-        event = Event()
-        t = Thread(target=run_func)
-        t.start()
-        def go():
             event.set()
-            self.ga.stop()
+            timer.cancel()
             pass
 
-        threading.Timer(time_interval, go).start()
+        t = Thread(target=run_func)
+        t.start()
+
+
+        timer.start()
         print("Time: " + str(current_time) + " waiting for thread " + str(t.name) + " " + str(t.ident))
         event.wait()
         print("Time: " + str(current_time) + " thread finished " + str(t.name) + " " + str(t.ident))
