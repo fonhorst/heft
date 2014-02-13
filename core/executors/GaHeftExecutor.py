@@ -141,7 +141,8 @@ class GaHeftExecutor(EventMachine):
             resulted_schedule = result
             t1 = Utility.get_the_last_time(resulted_schedule)
             t2 = Utility.get_the_last_time(self.current_schedule)
-            if t1 < t2:
+            ## TODO: uncomment it later.
+            if True:#t1 < t2:
                 ## generate new events
                 self._replace_current_schedule(event, resulted_schedule)
             else:
