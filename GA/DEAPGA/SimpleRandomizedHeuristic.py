@@ -17,12 +17,16 @@ class SimpleRandomizedHeuristic(Scheduler):
             self.task_map = {task.id: task for task in HeftHelper.get_all_tasks(self.workflow)}
             self.node_map = {node.name: node for node in nodes}
 
-            self.initial_chromosome = None##GAFunctions.schedule_to_chromosome(initial_schedule)
+            self.initial_chromosome = None
             pass
 
-     def schedule(self):
+     def schedule(self, fixed_schedule_mapping):
          ready_tasks = [child.id for child in self.workflow.head_task.children]
-         schedule_mapping = {node: [] for node in self.nodes}
+
+         if fixed_schedule_mapping is None:
+            schedule_mapping = {node: [] for node in self.nodes}
+         else:
+            schedule_mapping = {node: [] for node in self.nodes}
 
          ##chrmo_mapping = {task_id: self.node_map[node_name] for (task_id, node_name) in chromo}
          task_to_node = dict()
