@@ -1,5 +1,6 @@
 from functools import partial
 from core.comparisons.ComparisonBase import VersusFunctor, profit_print, ComparisonUtility, run
+from core.examples.GaHeftExecutorExample import GaHeftExecutorExample
 from core.examples.CloudHeftExecutorExample import CloudHeftExecutorExample
 from core.examples.GAExecutorExample import GAExecutorExample
 from core.examples.HeftExecutorExample import HeftExecutorExample
@@ -111,3 +112,28 @@ class GAvsHeftGAvsHeftReXGA(VersusFunctor):
         }
         return result
 
+class GaHeftvsHeft(VersusFunctor):
+
+    GA_HEFT = "gaHeft"
+    HEFT = "heft"
+
+    def __init__(self, reliability):
+        self.reliability = reliability
+        self.mainHeft = HeftExecutorExample().main
+        self.mainGaHeft = GaHeftExecutorExample().main
+
+    #@save_result
+    @profit_print
+    def __call__(self, wf_name):
+        resHeft = run(self.HEFT, self.mainHeft, wf_name, self.reliability)
+        resGaHeft = run(self.GA_HEFT, self.mainGaHeft, wf_name, self.reliability)
+
+        pc = (1 - resGaHeft[2]/resHeft[2])*100
+        result = dict()
+        result['wf_name'] = wf_name
+        result['algorithms'] = {
+            self.HEFT: ComparisonUtility.get_dict(resHeft),
+            self.GA_HEFT: ComparisonUtility.get_dict(resGaHeft)
+        }
+        result['profit_by_avr'] = {"heft_ReX vs Heft": pc}
+        return result

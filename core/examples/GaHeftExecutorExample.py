@@ -32,6 +32,6 @@ class GaHeftExecutorExample(BaseExecutorExample):
     def single_run():
         obj = GaHeftExecutorExample()
         wf_name = 'CyberShake_30'
-        reliability = 0.6
+        reliability = 0.95
         obj.main(reliability, False, wf_name)
 

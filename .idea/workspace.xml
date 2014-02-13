@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/comparisons/GaHeftExecutorExampleRun.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_30_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_30_bundle.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/examples/GAExecutorExample.py" afterPath="$PROJECT_DIR$/core/examples/GAExecutorExample.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAPlanner.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAPlanner.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" afterPath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py" afterPath="$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/GaHeftExecutorExampleRun.py" afterPath="$PROJECT_DIR$/core/comparisons/GaHeftExecutorExampleRun.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" afterPath="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -33,52 +29,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GaHeftExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
+      <file leaf-file-name="GaHeftvsHeft.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="294" column="23" selection-start="11247" selection-end="11247" vertical-scroll-proportion="0.0" vertical-offset="7122" max-vertical-offset="10400">
+            <state line="12" column="0" selection-start="388" selection-end="388" vertical-scroll-proportion="0.42922375" vertical-offset="112" max-vertical-offset="550">
+              <folding>
+                <element signature="e#0#74#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="VersusFunctors.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="135" column="24" selection-start="5085" selection-end="5085" vertical-scroll-proportion="0.0" vertical-offset="237" max-vertical-offset="1125">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-                <element signature="e#15125#15242#0" expanded="false" />
+                <element signature="e#484#1298#0" expanded="false" />
+                <element signature="e#1338#2544#0" expanded="false" />
+                <element signature="e#2595#4371#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GaHeftExecutorExample.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py">
+      <file leaf-file-name="ComparisonBase.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="0" selection-start="988" selection-end="988" vertical-scroll-proportion="0.0" vertical-offset="393" max-vertical-offset="1000">
+            <state line="29" column="4" selection-start="895" selection-end="895" vertical-scroll-proportion="0.0" vertical-offset="304" max-vertical-offset="2325">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GaHeftExecutorExampleRun.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftExecutorExampleRun.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="18" selection-start="145" selection-end="145" vertical-scroll-proportion="0.39370078" vertical-offset="0" max-vertical-offset="275">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FAQ.txt" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/penv/Lib/site-packages/numpy/f2py/docs/FAQ.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="52" selection-start="1508" selection-end="1508" vertical-scroll-proportion="0.0" vertical-offset="1082" max-vertical-offset="15525">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAImplementation.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="181" column="36" selection-start="7896" selection-end="7896" vertical-scroll-proportion="0.0" vertical-offset="3791" max-vertical-offset="7150">
-              <folding>
-                <element signature="e#0#34#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -101,7 +81,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/core/concrete_realization.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
@@ -111,12 +90,13 @@
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/ScheduleBuilder.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py" />
         <option value="$PROJECT_DIR$/core/examples/GAExecutorExample.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAPlanner.py" />
-        <option value="$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
         <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
         <option value="$PROJECT_DIR$/core/comparisons/GaHeftExecutorExampleRun.py" />
+        <option value="$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
       </list>
     </option>
   </component>
@@ -405,7 +385,7 @@
       <recent name="D:\wspace\heft\reschedulingheft\examples" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.GaHeftExecutorExampleRun">
+  <component name="RunManager" selected="Python.GaHeftvsHeft">
     <configuration default="false" name="CloudHeftvsHeft (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -444,24 +424,6 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Matplotlib" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utilities/examples" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utilities/examples/Matplotlib.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
     <configuration default="false" name="GAvsHEFT" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -495,6 +457,24 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/comparisons/GaHeftExecutorExampleRun.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="GaHeftvsHeft" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/comparisons" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -649,17 +629,17 @@
       <item index="0" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
       <item index="1" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft (2)" />
       <item index="2" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
-      <item index="3" class="java.lang.String" itemvalue="Python.Matplotlib" />
-      <item index="4" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
-      <item index="5" class="java.lang.String" itemvalue="Python.GaHeftExecutorExampleRun" />
+      <item index="3" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
+      <item index="4" class="java.lang.String" itemvalue="Python.GaHeftExecutorExampleRun" />
+      <item index="5" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.GaHeftExecutorExampleRun" />
-        <item index="1" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
-        <item index="2" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft (2)" />
-        <item index="3" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
-        <item index="4" class="java.lang.String" itemvalue="Python.Matplotlib" />
+        <item index="0" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
+        <item index="1" class="java.lang.String" itemvalue="Python.GaHeftExecutorExampleRun" />
+        <item index="2" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
+        <item index="3" class="java.lang.String" itemvalue="Python.CloudHeftvsHeft (2)" />
+        <item index="4" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
       </list>
     </recent_temporary>
   </component>
@@ -718,11 +698,11 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2050401" sideWeight="0.49849126" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16777308" sideWeight="0.3207331" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16777308" sideWeight="0.5315006" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.49599084" sideWeight="0.7833434" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.67926687" sideWeight="0.45141822" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.67926687" sideWeight="0.5485818" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.46849942" sideWeight="0.45141822" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.46849942" sideWeight="0.5485818" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -847,27 +827,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/examples/GAExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="0" selection-start="1100" selection-end="1100" vertical-scroll-proportion="1.1227545" vertical-offset="0" max-vertical-offset="975">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/threading.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="30" selection-start="1209" selection-end="1209" vertical-scroll-proportion="0.0" vertical-offset="428" max-vertical-offset="23950">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/simple_heft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="6" selection-start="354" selection-end="354" vertical-scroll-proportion="0.114503816" vertical-offset="0" max-vertical-offset="4575">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/DSimpleHeft.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="6" selection-start="292" selection-end="292" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="1450">
@@ -878,22 +837,6 @@
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="5" selection-start="567" selection-end="567" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="18" selection-start="287" selection-end="287" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1450">
-          <folding>
-            <element signature="e#0#74#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="8" selection-start="2902" selection-end="3167" vertical-scroll-proportion="0.0" vertical-offset="1732" max-vertical-offset="2850">
           <folding />
         </state>
       </provider>
@@ -946,13 +889,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="0" selection-start="988" selection-end="988" vertical-scroll-proportion="0.0" vertical-offset="381" max-vertical-offset="1000">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="294" column="23" selection-start="11247" selection-end="11247" vertical-scroll-proportion="0.0" vertical-offset="7122" max-vertical-offset="10400">
@@ -965,8 +901,61 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftExecutorExampleRun.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="18" selection-start="145" selection-end="145" vertical-scroll-proportion="0.39370078" vertical-offset="0" max-vertical-offset="275">
+        <state line="3" column="0" selection-start="106" selection-end="106" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="225">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="11" selection-start="275" selection-end="275" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="700">
+          <folding>
+            <element signature="e#0#74#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="1455" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1450">
+          <folding>
+            <element signature="e#0#74#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="26" selection-start="1359" selection-end="1359" vertical-scroll-proportion="0.0" vertical-offset="547" max-vertical-offset="1000">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="4" selection-start="895" selection-end="895" vertical-scroll-proportion="0.0" vertical-offset="304" max-vertical-offset="2325">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="135" column="24" selection-start="5085" selection-end="5085" vertical-scroll-proportion="0.0" vertical-offset="237" max-vertical-offset="1125">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#484#1298#0" expanded="false" />
+            <element signature="e#1338#2544#0" expanded="false" />
+            <element signature="e#2595#4371#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="0" selection-start="388" selection-end="388" vertical-scroll-proportion="0.42922375" vertical-offset="112" max-vertical-offset="550">
+          <folding>
+            <element signature="e#0#74#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
