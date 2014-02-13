@@ -100,20 +100,6 @@ class GaHeftExecutor(EventMachine):
 
     def _task_start_handler(self, event):
 
-        # check for time to get result from GA running background
-
-        result = self.ga_computation_manager.check_result(event, self.current_time)
-        if result is not None:
-            resulted_schedule = result.schedule
-            t1 = Utility.get_the_last_time(resulted_schedule)
-            t2 = Utility.get_the_last_time(self.current_schedule)
-            if t1 < t2:
-                ## generate new events
-                self._replace_current_schedule(event, resulted_schedule)
-            else:
-                ## TODO: run_ga_yet_another_with_old_genome
-                self.ga_computation_manager.run(self.current_schedule, self.current_time)
-
 
         def check_fail(task, node):
             reliability = self.heft_planner.estimator.estimate_reliability(task, node)
@@ -148,6 +134,20 @@ class GaHeftExecutor(EventMachine):
         pass
 
     def _task_finished_handler(self, event):
+
+        # check for time to get result from GA running background
+        result = self.ga_computation_manager.check_result(event, self.current_time)
+        if result is not None:
+            resulted_schedule = result
+            t1 = Utility.get_the_last_time(resulted_schedule)
+            t2 = Utility.get_the_last_time(self.current_schedule)
+            if t1 < t2:
+                ## generate new events
+                self._replace_current_schedule(event, resulted_schedule)
+            else:
+                ## TODO: run_ga_yet_another_with_old_genome
+                self.ga_computation_manager.run(self.current_schedule, self.current_time)
+
         # check task finished
         self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
         pass
@@ -285,17 +285,18 @@ class GAComputationManager:
         if self.current_computation is None:
             return None
 
-        if self.current_computation[0].job.id == event.task.id or self.current_computation[0].start_time == current_time:
+        if self.current_computation[0].job.id == event.task.id: #or self.current_computation[0].end_time == current_time:
              # we estimate the rest time of ga calculation and wait it
              result = self._get_result_until_current_time(current_time)
-             self._clean_current_computation()
-             return result
+             ## TODO: redesign this later
+             return result[2]
 
         return None
 
     def stop_and_get_result_now(self, current_time):
         if self.current_computation is None:
             return None
+        print("Time: " + str(current_time) + " run execution due to something ")
         result = self._get_result_until_current_time(current_time)
         return result
 
@@ -316,12 +317,12 @@ class GAComputationManager:
             min_item = ScheduleItem(None, 1000000, 1000000)
             for (node, items) in schedule.mapping.items():
                 for item in items:
-                    if item.start_time <= event_time < item.end_time and item.start_time < min_item.start_time:
+                    if item.start_time <= event_time < item.end_time and item.end_time < min_item.end_time:
                         min_item = item
 
             if min_item.job is None:
                 return None
-            print("Time: " + str(current_time) + " reschedule point have been founded " + str(min_item.start_time))
+            print("Time: " + str(current_time) + " reschedule point have been founded st:" + str(min_item.start_time) + " end:" + str(min_item.end_time))
             return min_item
 
         def _get_fixed_schedule(schedule, front_event):
