@@ -63,8 +63,8 @@ class EventMachine:
             #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
             # elif isinstance(event, TaskFinished):
             #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(None if event.node is None else event.node.name)+ ' ' + str(event.task.id))
-            # # else:
-               #print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
+            # else:
+              # print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
             count += 1
             self.event_arrived(event)
 

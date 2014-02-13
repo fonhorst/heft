@@ -42,7 +42,10 @@ class GaHeftExecutor(EventMachine):
         ##TODO: get_nodes must be either common for both planners or does not be used in this executor at all
         ## create initial schedule with ga
         self.current_schedule = Schedule({node: [] for node in self.heft_planner.get_nodes()})
-        result = self.ga_computation_manager.run(self.current_schedule, self.current_time, False)
+
+        #TODO: correct this hack later.
+        #result = self.ga_computation_manager.run(self.current_schedule, self.current_time, False)
+        result = self.ga_computation_manager._get_ga_alg()(self.current_schedule, None)
         self.current_schedule = result[2]
 
         self._post_new_events()
@@ -296,7 +299,7 @@ class GAComputationManager:
         result = self._get_result_until_current_time(current_time)
         return result
 
-    def run(self, current_schedule, current_time, async=False):
+    def run(self, current_schedule, current_time, async=True):
         self._reschedule_by_GA(current_schedule, current_time)
         if not async:
             result = self.current_computation[1].ga(self.current_computation[1].fixed_schedule_part, None)
@@ -305,7 +308,7 @@ class GAComputationManager:
         return None
 
     def _reschedule_by_GA(self, current_schedule, current_time):
-
+        print("Time: " + str(current_time) + " Creating reschedule point ")
         ## TODO: how about several events in one time?
         def _get_front_line(schedule, current_time, fixed_interval):
             event_time = current_time + fixed_interval
@@ -313,8 +316,12 @@ class GAComputationManager:
             min_item = ScheduleItem(None, 1000000, 1000000)
             for (node, items) in schedule.mapping.items():
                 for item in items:
-                    if item.start_time >= event_time and item.end_time <= event_time and item.start_time < min_item.start_time:
-                        min_item = item.start_time
+                    if item.start_time <= event_time < item.end_time and item.start_time < min_item.start_time:
+                        min_item = item
+
+            if min_item.job is None:
+                return None
+            print("Time: " + str(current_time) + " reschedule point have been founded " + str(min_item.start_time))
             return min_item
 
         def _get_fixed_schedule(schedule, front_event):
@@ -332,7 +339,7 @@ class GAComputationManager:
                 return item
             if front_event.job is None:
                 ##TODO: I don't for now what to do
-                print("GA's computation isn't able to meet the end of computation")
+                #print("GA's computation isn't able to meet the end of computation")
                 return schedule
             else:
                 fixed_mapping = {key: [set_proper_state(item) for item in items if is_before_event(item)] for (key, items) in schedule.mapping.items()}
@@ -342,19 +349,19 @@ class GAComputationManager:
         def run_ga(current_schedule):
             fixed_interval = self.fixed_interval_for_ga
             front_event = _get_front_line(current_schedule, current_time, fixed_interval)
+            # we can't meet the end of computation so we do nothing
+            if front_event is None:
+                print("GA's computation isn't able to meet the end of computation")
+                return
             fixed_schedule = _get_fixed_schedule(current_schedule, front_event)
 
             #_run_in_parallel_with_timer(fixed_schedule)
             #_register_line_events(front_event)
             ## TODO: replace it with modified GAComputation from GAImplementation
             ##ga_calc = GACalculation(self.fixed_interval_for_ga, fixed_schedule)...
-            ga = construct_ga_alg(True,
-                                       self.workflow,
-                                       self.resource_manager,
-                                       self.estimator,
-                                       params=Params(20, 300, 0.8, 0.5, 0.4, 2))
+            ga = self._get_ga_alg()
 
-            ga_calc = GAComputationWrapper(ga, fixed_schedule, None)
+            ga_calc = GAComputationWrapper(ga, fixed_schedule, None, current_time)
 
             self.current_computation = (front_event, ga_calc)
             pass
@@ -367,12 +374,20 @@ class GAComputationManager:
             run_ga(current_schedule)
         pass
 
+    def _get_ga_alg(self):
+        ga = construct_ga_alg(True,
+                                       self.workflow,
+                                       self.resource_manager,
+                                       self.estimator,
+                                       params=Params(20, 2, 0.8, 0.5, 0.4, 2))
+        return ga
+
     ## actual run happens here
     def _get_result_until_current_time(self, current_time):
         ga_calc = self.current_computation[1]
         ## TODO: blocking call with complete calculation
         time_interval = current_time - ga_calc.creation_time
-        result = ga_calc.run(time_interval)
+        result = ga_calc.run(time_interval, current_time)
         self._clean_current_computation()
         return result
 
@@ -384,26 +399,33 @@ class GAComputationManager:
 
 class GAComputationWrapper:
 
-    def __init__(self, ga, fixed_schedule_part, initial_schedule):
+    def __init__(self, ga, fixed_schedule_part, initial_schedule, creation_time):
         self.ga = ga
         self.fixed_schedule_part = fixed_schedule_part
         self.initial_schedule = initial_schedule
+        self.creation_time = creation_time
         pass
 
-    def run(self, time_interval):
+    def run(self, time_interval, current_time):
         def run_func():
+            t_ident = str(threading.current_thread().ident)
+            t_name = str(threading.current_thread().name)
+            print("Time: " + str(current_time) + " Running ga in isolated thread " + t_name + " " + t_ident)
             self.ga(self.fixed_schedule_part,
                     self.initial_schedule)
 
         event = Event()
-        t = Thread(target=run_func).start()
+        t = Thread(target=run_func)
+        t.start()
         def go():
             event.set()
             self.ga.stop()
             pass
 
         threading.Timer(time_interval, go).start()
+        print("Time: " + str(current_time) + " waiting for thread " + str(t.name) + " " + str(t.ident))
         event.wait()
+        print("Time: " + str(current_time) + " thread finished " + str(t.name) + " " + str(t.ident))
         return self.ga.get_result()
 
     def stop(self):

@@ -140,7 +140,16 @@ class ScheduleBuilder:
         ##TODO: remake this stub later.
         if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
             return 0
-        return max([task_to_node[p.id][2] + estimate(node, chrmo_mapping[p.id], task, p) for p in task.parents])
+
+        ## TODO: replace it with commented string below later
+        res_list = []
+        for p in task.parents:
+            c1 = task_to_node[p.id][2]
+            c2 = estimate(node, chrmo_mapping[p.id], task, p)
+            res_list.append(c1 + c2)
+
+        return max(res_list)
+        ##return max([task_to_node[p.id][2] + estimate(node, chrmo_mapping[p.id], task, p) for p in task.parents])
 
     def _get_possible_execution_times(self,
                                       schedule_mapping,

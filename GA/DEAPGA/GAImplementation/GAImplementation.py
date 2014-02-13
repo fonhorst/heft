@@ -93,6 +93,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             pass
 
         def __call__(self, fixed_schedule_part, initial_schedule):
+            print("Evaluating...")
             toolbox.register("evaluate", ga_functions.build_fitness(fixed_schedule_part))
             ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
             CXPB, MUTPB, NGEN = params.crossover_probability, params.replacing_mutation_probability, params.generations
@@ -103,7 +104,6 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             for ind, fit in zip(pop, fitnesses):
                 ind.fitness.values = fit
             # Begin the evolution
-            print("Evaluating...")
             for g in range(NGEN):
 
                 if self.is_stopped():
@@ -158,6 +158,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
 
 
             ## return the best fitted individual and resulted population
+            print("Ready")
             return self.current_result
 
         def _save_result(self, result):
