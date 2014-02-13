@@ -15,10 +15,8 @@ class GaHeftExecutorExample(BaseExecutorExample):
         (estimator, resource_manager, initial_schedule) = self.get_infrastructure(bundle, reliability, False)
 
         dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
-        ga_planner = GAPlanner(wf, resource_manager, estimator)
         ga_heft_machine = GaHeftExecutor(
                             heft_planner=dynamic_heft,
-                            ga_planner=ga_planner,
                             base_fail_duration=40,
                             base_fail_dispersion=1,
                             fixed_interval_for_ga=self.fixed_interval_for_ga)
@@ -33,6 +31,7 @@ class GaHeftExecutorExample(BaseExecutorExample):
     @staticmethod
     def single_run():
         obj = GaHeftExecutorExample()
-        wf_name = 'CyberShake_75'
+        wf_name = 'CyberShake_30'
         reliability = 0.6
         obj.main(reliability, False, wf_name)
+

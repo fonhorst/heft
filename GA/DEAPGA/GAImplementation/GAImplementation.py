@@ -1,5 +1,6 @@
 from collections import namedtuple
 import random
+from threading import Thread, Lock
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2, mark_finished
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from core.DSimpleHeft import DynamicHeft
@@ -80,11 +81,15 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
 
     ## TODO: perhaps it can be represent as dead point
 
-    ## TODO: redesign or make it only singlerun later
+    ## TODO: redesign it as a stoppable ga
     class GAComputation:
 
         def __init__(self):
             self.current_result = None
+            self.lock = Lock()
+
+            self._is_stopped = False
+            self.stop_lock = Lock()
             pass
 
         def __call__(self, fixed_schedule_part, initial_schedule):
@@ -100,6 +105,10 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             # Begin the evolution
             print("Evaluating...")
             for g in range(NGEN):
+
+                if self.is_stopped():
+                    break
+
                 # print("-- Generation %i --" % g)
                 # Select the next generation individuals
                 offspring = toolbox.select(pop, len(pop))
@@ -140,6 +149,8 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                     print("    Avg %s" % str(1/mean))
                     print("    Std %s" % str(1/std))
 
+
+                ## TODO: additional expenditures. Need to reduce it later.
                 resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
                 result = max(resulted_pop, key=lambda x: x[1])
                 self.current_result = (result[0], pop, ga_functions.build_schedule(result[0], fixed_schedule_part))
@@ -148,6 +159,31 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
 
             ## return the best fitted individual and resulted population
             return self.current_result
+
+        def _save_result(self, result):
+            self.lock.acquire()
+            self.current_result = result
+            self.lock.release()
+
+        def get_result(self):
+            self.lock.acquire()
+            result = self.current_result
+            self.lock.release()
+            return result
+
+        def stop(self):
+            self.stop_lock.acquire()
+            self._is_stopped = True
+            self.stop_lock.release()
+
+        def is_stopped(self):
+            self.stop_lock.acquire()
+            result = self._is_stopped
+            self.stop_lock.release()
+            return result
+
+
+
 
     return GAComputation()
 

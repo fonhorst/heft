@@ -1,4 +1,4 @@
-from GA.DEAPGA.GAImplementation import GAFunctions2, Params
+from GA.DEAPGA.GAImplementation.GAImplementation import GAFunctions2, Params
 from core.HeftHelper import HeftHelper
 from environment.ResourceManager import Scheduler
 

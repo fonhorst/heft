@@ -110,3 +110,4 @@ class GAvsHeftGAvsHeftReXGA(VersusFunctor):
             "ga_heft_ReX vs ga_heft": pc_chg
         }
         return result
+

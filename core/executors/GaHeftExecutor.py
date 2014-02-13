@@ -2,7 +2,9 @@ from collections import deque
 import random
 import sched
 from threading import Thread, Event
+import threading
 import time
+from GA.DEAPGA.GAImplementation.GAImplementation import construct_ga_alg, Params
 from core.executors.EventMachine import EventMachine, TaskStart, TaskFinished, NodeFailed, NodeUp
 from environment.Resource import Node
 from environment.ResourceManager import ScheduleItem, Schedule
@@ -12,7 +14,6 @@ from environment.Utility import Utility
 class GaHeftExecutor(EventMachine):
     def __init__(self,
                  heft_planner,
-                 ga_planner,
                  base_fail_duration,
                  base_fail_dispersion,
                  fixed_interval_for_ga):
@@ -21,25 +22,30 @@ class GaHeftExecutor(EventMachine):
         # DynamicHeft
         # both planners have acess to resource manager and estimator
         self.heft_planner = heft_planner
-        self.ga_planner = ga_planner
+        #self.ga_planner = ga_planner
         self.base_fail_duration = base_fail_duration
         self.base_fail_dispersion = base_fail_dispersion
         self.current_schedule = None
         self.fixed_interval_for_ga = fixed_interval_for_ga
 
         #pair (front_event, GACalculation)
-        self._ga_calculation = None
+        #self._ga_calculation = None
+        self.ga_computation_manager = GAComputationManager(self.fixed_interval_for_ga,
+                                                           heft_planner.workflow,
+                                                           heft_planner.resource_manager,
+                                                           heft_planner.estimator)
+
         pass
 
     def init(self):
 
         ##TODO: get_nodes must be either common for both planners or does not be used in this executor at all
         ## create initial schedule with ga
-        self.current_schedule = Schedule({node: [] for node in self.ga_planner.get_nodes()})
-        initial_schedule = self.ga_planner.run()
-        self.current_schedule = initial_schedule
+        self.current_schedule = Schedule({node: [] for node in self.heft_planner.get_nodes()})
+        result = self.ga_computation_manager.run(self.current_schedule, self.current_time, False)
+        self.current_schedule = result[2]
 
-        self.post_new_events()
+        self._post_new_events()
 
     def event_arrived(self, event):
         # existed types of events:
@@ -92,18 +98,18 @@ class GaHeftExecutor(EventMachine):
     def _task_start_handler(self, event):
 
         # check for time to get result from GA running background
-        if self._ga_calculation[0].job.id == event.task.id or self._ga_calculation[0].start_time == self.current_time:
-             # we estimate the rest time of ga calculation and wait it
-             result = self._get_result_until_current_time()
-             resulted_schedule = result.schedule
-             t1 = Utility.get_the_last_time(resulted_schedule)
-             t2 = Utility.get_the_last_time(self.current_schedule)
-             if t1 < t2:
-                 self.current_schedule = resulted_schedule
-             else:
-                ## TODO: run_ga_yet_another_with_old_genome
-                self._reschedule_by_GA(result)
 
+        result = self.ga_computation_manager.check_result(event, self.current_time)
+        if result is not None:
+            resulted_schedule = result.schedule
+            t1 = Utility.get_the_last_time(resulted_schedule)
+            t2 = Utility.get_the_last_time(self.current_schedule)
+            if t1 < t2:
+                ## generate new events
+                self._replace_current_schedule(event, resulted_schedule)
+            else:
+                ## TODO: run_ga_yet_another_with_old_genome
+                self.ga_computation_manager.run(self.current_schedule, self.current_time)
 
 
         def check_fail(task, node):
@@ -145,7 +151,8 @@ class GaHeftExecutor(EventMachine):
 
     def _node_failed_handler(self, event):
 
-        self._ga_processing()
+        ## interrupt ga
+        self.ga_computation_manager.stop_and_get_result_now(self.current_time)
 
         # check node down
         self.heft_planner.resource_manager.node(event.node).state = Node.Down
@@ -164,28 +171,27 @@ class GaHeftExecutor(EventMachine):
         self._reschedule(event)
 
         #run GA
-        self._reschedule_by_GA()
+        self.ga_computation_manager.run(self.current_schedule, self.current_time)
 
         pass
 
     def _node_up_handler(self, event):
-
-        self._ga_processing()
-
+        ## interrupt ga
+        self.ga_computation_manager.stop_and_get_result_now(self.current_time)
 
         # check node up
         self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
         self._reschedule(event)
 
-        #run GA
-        self._reschedule_by_GA()
+         #run GA
+        self.ga_computation_manager.run(self.current_schedule, self.current_time)
         pass
 
     def _reschedule(self, event):
         self.heft_planner.current_time = self.current_time
         current_cleaned_schedule = self._clean_events(event)
         self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
-        self.post_new_events()
+        self._post_new_events()
 
     def _post_new_events(self):
         unstarted_items = set()
@@ -234,29 +240,77 @@ class GaHeftExecutor(EventMachine):
         self.queue = deque([event for event in self.queue if check(event)])
         return clean_schedule
 
-    def _ga_processing(self):
-        ##TODO: correct it
-        if self._is_ga_running():
-             # we estimate the rest time of ga calculation and wait it
-             ## TODO: do we need really do it? rethink it later
-             self._get_result_until_current_time()
-             self._reschedule_by_GA()
+    def _replace_current_schedule(self, event, new_schedule):
+        # syncrhonize fixed part of new_schedule with the old schedule - lets assume new_schedule already synchonized
+        # remove all events related with the old schedule
+        # replace current with new
+        # generate events of new schedule and post their
+
+        self._clean_events(event)
+        self.current_schedule = new_schedule
+        self._post_new_events()
+        pass
+    pass
+
+## key responsibilities:
+##  - run ga computation in sync and async ways
+##  - interrupting by timer or external event
+##  - providing information about status of computation
+##  - encapsulating some action - ? (for the sake of simplicity it must be responsibility of GaHeftExecutor)
+class GAComputationManager:
+
+    def __init__(self,
+                 fixed_interval_for_ga,
+                 workflow,
+                 resource_manager,
+                 estimator):
+        self.fixed_interval_for_ga = fixed_interval_for_ga
+
+        self.workflow = workflow
+        self.resource_manager = resource_manager
+        self.estimator = estimator
+
+        self.current_computation = None
         pass
 
-    def _get_result_until_current_time(self):
-        ga_calc = self._ga_calculation[1]
-        ## TODO: blocking call with complete calculation
-        time_interval = self.current_time - ga_calc.creation_time
-        result = ga_calc.run(time_interval)
+    def _clean_current_computation(self):
+        self.current_computation = None
+
+    ## check result of ga computation if it appropriate event
+    def check_result(self, event, current_time):
+
+        if self.current_computation is None:
+            return None
+
+        if self.current_computation[0].job.id == event.task.id or self.current_computation[0].start_time == current_time:
+             # we estimate the rest time of ga calculation and wait it
+             result = self._get_result_until_current_time(current_time)
+             self._clean_current_computation()
+             return result
+
+        return None
+
+    def stop_and_get_result_now(self, current_time):
+        if self.current_computation is None:
+            return None
+        result = self._get_result_until_current_time(current_time)
         return result
 
-    def _reschedule_by_GA(self, prev_res):
+    def run(self, current_schedule, current_time, async=False):
+        self._reschedule_by_GA(current_schedule, current_time)
+        if not async:
+            result = self.current_computation[1].ga(self.current_computation[1].fixed_schedule_part, None)
+            self._clean_current_computation()
+            return result
+        return None
+
+    def _reschedule_by_GA(self, current_schedule, current_time):
 
         ## TODO: how about several events in one time?
         def _get_front_line(schedule, current_time, fixed_interval):
             event_time = current_time + fixed_interval
             ## TODO: remake it later
-            min_item = ScheduleItem(None,1000000,1000000)
+            min_item = ScheduleItem(None, 1000000, 1000000)
             for (node, items) in schedule.mapping.items():
                 for item in items:
                     if item.start_time >= event_time and item.end_time <= event_time and item.start_time < min_item.start_time:
@@ -268,76 +322,92 @@ class GaHeftExecutor(EventMachine):
                 if item.start_time < front_event.start_time:
                     return True
                 return False
+            ##TODO: it's dangerous operation
+            def set_proper_state(item):
+                non_finished = item.state == ScheduleItem.EXECUTING and item.state == ScheduleItem.UNSTARTED
+                if non_finished and item.end_time < front_event.start_time:
+                    item.state = ScheduleItem.FINISHED
+                if non_finished and item.end_time > front_event.start_time:
+                    item.state = ScheduleItem.EXECUTING
+                return item
             if front_event.job is None:
                 ##TODO: I don't for now what to do
                 print("GA's computation isn't able to meet the end of computation")
                 return schedule
             else:
-                fixed_mapping = {key: [item for item in items if is_before_event(item)] for (key, items) in schedule.mapping.items()}
+                fixed_mapping = {key: [set_proper_state(item) for item in items if is_before_event(item)] for (key, items) in schedule.mapping.items()}
                 return Schedule(fixed_mapping)
 
         ## TODO: make previous_result used
-        def run_ga(previous_result):
+        def run_ga(current_schedule):
             fixed_interval = self.fixed_interval_for_ga
-            front_event = _get_front_line(self.current_schedule, fixed_interval)
-            fixed_schedule = _get_fixed_schedule(self.current_schedule, front_event)
+            front_event = _get_front_line(current_schedule, current_time, fixed_interval)
+            fixed_schedule = _get_fixed_schedule(current_schedule, front_event)
 
             #_run_in_parallel_with_timer(fixed_schedule)
             #_register_line_events(front_event)
-            ga_calc = GACalculation(self.fixed_interval_for_ga, fixed_schedule)
-            self._ga_calculation = (front_event, ga_calc)
+            ## TODO: replace it with modified GAComputation from GAImplementation
+            ##ga_calc = GACalculation(self.fixed_interval_for_ga, fixed_schedule)...
+            ga = construct_ga_alg(True,
+                                       self.workflow,
+                                       self.resource_manager,
+                                       self.estimator,
+                                       params=Params(20, 300, 0.8, 0.5, 0.4, 2))
+
+            ga_calc = GAComputationWrapper(ga, fixed_schedule, None)
+
+            self.current_computation = (front_event, ga_calc)
             pass
 
         if not self._is_ga_running():
-            run_ga(prev_res)
+            run_ga(current_schedule)
         else:
-            result = self._ga_calculation[1].stop()
-            run_ga(result)
+            result = self.current_computation[1].stop()
+            self._clean_current_computation()
+            run_ga(current_schedule)
         pass
 
-    def _is_ga_running(self):
-        if self._ga_calculation is None:
-            return False
-        return self._ga_calculation[1].is_running()
+    ## actual run happens here
+    def _get_result_until_current_time(self, current_time):
+        ga_calc = self.current_computation[1]
+        ## TODO: blocking call with complete calculation
+        time_interval = current_time - ga_calc.creation_time
+        result = ga_calc.run(time_interval)
+        self._clean_current_computation()
+        return result
 
+    def _is_ga_running(self):
+        if self.current_computation is None:
+            return False
+        return self.current_computation[1].is_running()
     pass
 
+class GAComputationWrapper:
 
-class GACalculation(Thread):
-
-    # it doesn't have possibility to interrupt calculation
-    def __init__(self,
-                 creation_time,
-                 base_schedule):
-        self.creation_time = creation_time
-        self.base_schedule = base_schedule
-        self.stop_event = Event()
-        self.current_result = None
-
-        ##TODO: add posibility to estimate the rest time of calculation to current point
-        ##TODO: and interrupt calculation in this point only
-        ##TODO: perhaps using of sched.scheduler isn't appropriate for this goal
-
+    def __init__(self, ga, fixed_schedule_part, initial_schedule):
+        self.ga = ga
+        self.fixed_schedule_part = fixed_schedule_part
+        self.initial_schedule = initial_schedule
         pass
 
     def run(self, time_interval):
-        time_scheduler = sched.scheduler(time.time, time.sleep)
-        time_scheduler.enter(time_interval, 1, lambda: self.stop_event.set())
-        time_scheduler.run()
-        # check stop_event here
+        def run_func():
+            self.ga(self.fixed_schedule_part,
+                    self.initial_schedule)
+
+        event = Event()
+        t = Thread(target=run_func).start()
+        def go():
+            event.set()
+            self.ga.stop()
+            pass
+
+        threading.Timer(time_interval, go).start()
+        event.wait()
+        return self.ga.get_result()
+
+    def stop(self):
         pass
 
-    def set_stop(self):
-        self.stop_event.set()
-
-    ## stop and get currently being had result
-    def stop(self):
-        self.stop_event.set()
-        return self.current_result
-
-
     def is_running(self):
-        return not self.stop_event.isSet
-
-
-    pass
+        return False

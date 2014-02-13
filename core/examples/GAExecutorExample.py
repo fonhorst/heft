@@ -28,7 +28,7 @@ class GAExecutorExample(BaseExecutorExample):
     @staticmethod
     def single_run():
         obj = GAExecutorExample()
-        wf_name = 'CyberShake_75'
+        wf_name = 'CyberShake_30'
         reliability = 0.6
         obj.main(reliability, False, wf_name)
 
