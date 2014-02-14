@@ -65,7 +65,7 @@ class ScheduleBuilder:
             for item in items:
                 chromo_copy[nd_name].append(item)
 
-        print("ready_tasks start")
+
         while len(ready_tasks) > 0:
             alive_nodes = [node for node in self.nodes if node.state != Node.Down]
             if len(alive_nodes) == 0:
@@ -78,11 +78,9 @@ class ScheduleBuilder:
 
                 ## TODO: Urgent! completely rethink this procedure
                 tsk_id = None
-                print("tryna to get next ready: start ")
                 for i in range(len(chromo_copy[node.name])):
                     if chromo_copy[node.name][i] in ready_tasks:
                         tsk_id = chromo_copy[node.name][i]
-                print("tryna to get next ready: end ")
 
                 if tsk_id is not None:
                     task = self.task_map[tsk_id]
@@ -115,7 +113,7 @@ class ScheduleBuilder:
                     ready_children = self._get_ready_tasks(task.children, finished_tasks)
                     for child in ready_children:
                         ready_tasks.append(child.id)
-        print("ready_tasks end")
+
 
         schedule = Schedule(schedule_mapping)
         return schedule

@@ -50,7 +50,7 @@ class GAFunctions2:
         if schedule is None:
             return None
         def ids(items):
-            return [item.job.id for item in items]
+            return [item.job.id for item in items if item.state != ScheduleItem.FAILED]
         chromosome = {node.name: ids(items) for (node, items) in schedule.mapping.items()}
         return chromosome
 
@@ -60,7 +60,7 @@ class GAFunctions2:
         return initial
 
     def random_chromo(self, fixed_schedule_part, current_time):
-        print("random_chromo start")
+
         res = random.random()
         # # TODO:
         if res > 0.8 and self.initial_chromosome is not None:
@@ -72,6 +72,7 @@ class GAFunctions2:
         # seq_time_validaty = Utility.validateNodesSeq(sched)
         # dependency_validaty = Utility.validateParentsAndChildren(sched, self.workflow)
 
+        ## TODO: Urgent! Need to remove failed Tasks
         chromo = GAFunctions2.schedule_to_chromosome(sched)
         if fixed_schedule_part is not None:
             # remove fixed_schedule_part from chromosome
@@ -82,7 +83,8 @@ class GAFunctions2:
 
             # TODO: make common utility function with ScheduleBuilder and SimpleRandomizedHeuristic
             chromo = {node_name: [id for id in ids if not (id in finished_tasks)] for (node_name, ids) in chromo.items()}
-        print("random_chromo end")
+
+
         return chromo
 
     def build_fitness(self, fixed_schedule_part, current_time):
@@ -90,13 +92,12 @@ class GAFunctions2:
 
         def fitness(chromo):
 
-            print(" fitness start")
             ## value of fitness function is the last time point in the schedule
             ## built from the chromo
             ## chromo is {Task:Node},{Task:Node},... - fixed length
             schedule = builder(chromo, current_time)
             time = Utility.get_the_last_time(schedule)
-            print(" fitness end")
+
             return (1/time,)
         ## TODO: redesign it later
         return fitness
@@ -136,6 +137,7 @@ class GAFunctions2:
         ch1 = chromo_to_seq(child1)
         ch2 = chromo_to_seq(child2)
 
+
         window = dict()
         for i in range(index1, index2):
             tsk_id = ch1[i][1]
@@ -159,6 +161,7 @@ class GAFunctions2:
     #     while True:
 
     def mutation(self, chromosome):
+        ## TODO: only for debug. remove it later.
         #return chromosome
         # simply change one node of task mapping
         #TODO: make checking for all nodes are dead.(It's a very rare situation so it is not consider for now)
@@ -176,6 +179,8 @@ class GAFunctions2:
         return chromosome
 
     def sweep_mutation(self, chromosome):
+        ## TODO: only for debug. remove it later.
+        #return chromosome
 
         def is_dependent(tsk1, tsk2):
             for p in tsk1.parents:
