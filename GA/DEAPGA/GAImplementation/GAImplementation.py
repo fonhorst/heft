@@ -50,7 +50,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
 
     toolbox = base.Toolbox()
     # Attribute generator
-    toolbox.register("attr_bool", ga_functions.build_initial(None))
+    toolbox.register("attr_bool", ga_functions.build_initial(None, 0))
     # Structure initializers
     toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.attr_bool)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
@@ -58,7 +58,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
 
     ## default case
     fix_schedule_part = default_fixed_schedule_part(resource_manager)
-    toolbox.register("evaluate", ga_functions.build_fitness(fix_schedule_part))
+    toolbox.register("evaluate", ga_functions.build_fitness(fix_schedule_part, 0))
     # toolbox.register("mate", tools.cxOnePoint)
     # toolbox.register("mate", tools.cxTwoPoints)
     # toolbox.register("mate", tools.cxUniform, indpb=0.2)
@@ -92,10 +92,10 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             self.stop_lock = Lock()
             pass
 
-        def __call__(self, fixed_schedule_part, initial_schedule):
+        def __call__(self, fixed_schedule_part, initial_schedule, current_time=0):
             print("Evaluating...")
-            toolbox.register("evaluate", ga_functions.build_fitness(fixed_schedule_part))
-            toolbox.register("attr_bool", ga_functions.build_initial(fixed_schedule_part))
+            toolbox.register("evaluate", ga_functions.build_fitness(fixed_schedule_part, current_time))
+            toolbox.register("attr_bool", ga_functions.build_initial(fixed_schedule_part, current_time))
             # Structure initializers
             toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.attr_bool)
             toolbox.register("population", tools.initRepeat, list, toolbox.individual)
@@ -158,7 +158,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                 ## TODO: additional expenditures. Need to reduce it later.
                 resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
                 result = max(resulted_pop, key=lambda x: x[1])
-                self.current_result = (result[0], pop, ga_functions.build_schedule(result[0], fixed_schedule_part))
+                self.current_result = (result[0], pop, ga_functions.build_schedule(result[0], fixed_schedule_part, current_time))
                 pass
 
 

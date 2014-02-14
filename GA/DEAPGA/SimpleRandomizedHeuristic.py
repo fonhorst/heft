@@ -21,9 +21,7 @@ class SimpleRandomizedHeuristic(Scheduler):
             self.initial_chromosome = None
             pass
 
-     def schedule(self, fixed_schedule_part
-                  ##, nodes
-                  ):
+     def schedule(self, fixed_schedule_part, current_time):
 
          estimate = self.estimator.estimate_transfer_time
          # TODO: make common utility function with ScheduleBuilder
@@ -63,12 +61,15 @@ class SimpleRandomizedHeuristic(Scheduler):
              free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
              ## TODO: refactor it later
              f_time = max(free_time, comm_ready)
+             f_time = max(f_time, current_time)
              base_variant = [(f_time, f_time + runtime + 1)]
              zero_interval = [] if len(node_schedule) == 0 else [(0, node_schedule[0].start_time)]
              middle_intervals = [(node_schedule[i].end_time, node_schedule[i + 1].start_time) for i in range(len(node_schedule) - 1)]
              intervals = zero_interval + middle_intervals + base_variant
 
-             result = [(st, end) for (st, end) in intervals if st >= comm_ready and end - st >= runtime]
+             #result = [(st, end) for (st, end) in intervals if st >= comm_ready and end - st >= runtime]
+             ## TODO: rethink rounding
+             result = [(st, end) for (st, end) in intervals if (current_time < st or abs((current_time - st)) < 0.01) and st >= comm_ready and (runtime < (end - st) or abs((end - st) - runtime) < 0.01)]
              return result
 
          def comm_ready_func(task, node):
@@ -94,6 +95,7 @@ class SimpleRandomizedHeuristic(Scheduler):
             task = self.task_map[ready_tasks[choosed_index]]
 
             #TODO: make checking for all nodes are dead.(It's a very rare situation so it is not consider for now)
+            #alive_nodes = [node for node in self.nodes if node.state != Node.Down]
             while True:
                 choosed_node_index = random.randint(0, len(self.nodes) - 1)
                 node = self.nodes[choosed_node_index]

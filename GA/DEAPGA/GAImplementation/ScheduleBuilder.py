@@ -1,4 +1,5 @@
 from core.HeftHelper import HeftHelper
+from environment.Resource import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 
 class ScheduleBuilder:
@@ -54,7 +55,7 @@ class ScheduleBuilder:
         return (schedule_mapping, finished_tasks, ready_tasks, chrmo_mapping, task_to_node)
 
 
-    def __call__(self, chromo):
+    def __call__(self, chromo, current_time):
 
         (schedule_mapping, finished_tasks, ready_tasks, chrmo_mapping, task_to_node) = self._create_helping_structures(chromo)
 
@@ -68,6 +69,8 @@ class ScheduleBuilder:
         while len(ready_tasks) > 0:
             for node in self.nodes:
                 if len(chromo_copy[node.name]) == 0:
+                    continue
+                if node.state == Node.Down:
                     continue
 
                 ## TODO: Urgent! completely rethink this procedure
@@ -87,7 +90,8 @@ class ScheduleBuilder:
                                                 task_to_node,
                                                 chrmo_mapping,
                                                 task,
-                                                node)
+                                                node,
+                                                current_time)
 
                     time_slot = time_slots[0]
                     start_time = time_slot[0]
@@ -95,6 +99,7 @@ class ScheduleBuilder:
 
                     item = ScheduleItem(task, start_time, end_time)
 
+                    # need to account current time
                     Schedule.insert_item(schedule_mapping, node, item)
                     task_to_node[task.id] = (node, start_time, end_time)
 
@@ -122,17 +127,20 @@ class ScheduleBuilder:
                     schedule_mapping,
                     node,
                     comm_ready,
-                    runtime):
+                    runtime,
+                    current_time):
         node_schedule = schedule_mapping.get(node, list())
         free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
         ## TODO: refactor it later
         f_time = max(free_time, comm_ready)
+        f_time = max(f_time, current_time)
         base_variant = [(f_time, f_time + runtime)]
         zero_interval = [] if len(node_schedule) == 0 else [(0, node_schedule[0].start_time)]
         middle_intervals = [(node_schedule[i].end_time, node_schedule[i + 1].start_time) for i in range(len(node_schedule) - 1)]
         intervals = zero_interval + middle_intervals + base_variant
 
-        result = [(st, end) for (st, end) in intervals if st >= comm_ready and abs((end - st) - runtime) < 0.01]
+        ## TODO: rethink rounding
+        result = [(st, end) for (st, end) in intervals if (current_time < st or abs((current_time - st)) < 0.01) and st >= comm_ready and (runtime < (end - st) or abs((end - st) - runtime) < 0.01)]
         return result
 
     def _comm_ready_func(self,
@@ -164,7 +172,8 @@ class ScheduleBuilder:
                                       task_to_node,
                                       chrmo_mapping,
                                       task,
-                                      node):
+                                      node,
+                                      current_time):
         ## pay attention to the last element in the resulted seq
         ## it represents all available time of node after it completes all its work
         ## (if such interval can exist)
@@ -177,6 +186,7 @@ class ScheduleBuilder:
         time_slots = self._find_slots(schedule_mapping,
                                       node,
                                       comm_ready,
-                                      runtime)
+                                      runtime,
+                                      current_time)
         return time_slots, runtime
     pass

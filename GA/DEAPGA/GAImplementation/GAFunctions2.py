@@ -54,18 +54,18 @@ class GAFunctions2:
         chromosome = {node.name: ids(items) for (node, items) in schedule.mapping.items()}
         return chromosome
 
-    def build_initial(self, fixed_schedule_part):
+    def build_initial(self, fixed_schedule_part, current_time):
         def initial():
-            return self.random_chromo(fixed_schedule_part)
+            return self.random_chromo(fixed_schedule_part, current_time)
         return initial
 
-    def random_chromo(self, fixed_schedule_part):
+    def random_chromo(self, fixed_schedule_part, current_time):
         res = random.random()
         # # TODO:
         if res > 0.8 and self.initial_chromosome is not None:
             return self.initial_chromosome
         ##return [self.random_chromo() for j in range(self.size)]
-        sched = self.initializing_alg.schedule(fixed_schedule_part)
+        sched = self.initializing_alg.schedule(fixed_schedule_part, current_time)
         #TODO: remove it later
         # mark_finished(sched)
         # seq_time_validaty = Utility.validateNodesSeq(sched)
@@ -83,22 +83,22 @@ class GAFunctions2:
             chromo = {node_name: [id for id in ids if not (id in finished_tasks)] for (node_name, ids) in chromo.items()}
         return chromo
 
-    def build_fitness(self, fixed_schedule_part):
+    def build_fitness(self, fixed_schedule_part, current_time):
         builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
 
         def fitness(chromo):
             ## value of fitness function is the last time point in the schedule
             ## built from the chromo
             ## chromo is {Task:Node},{Task:Node},... - fixed length
-            schedule = builder(chromo)
+            schedule = builder(chromo, current_time)
             time = Utility.get_the_last_time(schedule)
             return (1/time,)
         ## TODO: redesign it later
         return fitness
 
-    def build_schedule(self, chromo, fixed_schedule_part):
+    def build_schedule(self, chromo, fixed_schedule_part, current_time):
         builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
-        schedule = builder(chromo)
+        schedule = builder(chromo, current_time)
         return schedule
 
 

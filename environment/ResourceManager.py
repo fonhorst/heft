@@ -48,6 +48,12 @@ class ScheduleItem:
         self.end_time = end_time
         self.state = ScheduleItem.UNSTARTED
 
+    @staticmethod
+    def copy(item):
+        new_item = ScheduleItem(item.job, item.start_time, item.end_time)
+        new_item.state = item.state
+        return new_item
+
 
 class Schedule:
     def __init__(self, mapping):
