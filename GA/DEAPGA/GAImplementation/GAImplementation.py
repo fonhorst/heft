@@ -79,7 +79,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
     ## TODO:     (genome's construction stays the same, but we need to account fixed part of schedule)
     ## TODO:  - ability to save results per generation turn
 
-    ## TODO: perhaps it can be represent as dead point
+    ## TODO: perhaps it can be represent as a dead point of Y-combinator
 
     ## TODO: redesign it as a stoppable ga
     class GAComputation:

@@ -1,4 +1,5 @@
 import random
+from environment.Resource import Node
 from environment.ResourceManager import Scheduler, ScheduleItem, Schedule
 from core.HeftHelper import HeftHelper
 
@@ -20,7 +21,9 @@ class SimpleRandomizedHeuristic(Scheduler):
             self.initial_chromosome = None
             pass
 
-     def schedule(self, fixed_schedule_part):
+     def schedule(self, fixed_schedule_part
+                  ##, nodes
+                  ):
 
          estimate = self.estimator.estimate_transfer_time
          # TODO: make common utility function with ScheduleBuilder
@@ -72,7 +75,7 @@ class SimpleRandomizedHeuristic(Scheduler):
                 ##TODO: remake this stub later.
                 if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
                     return 0
-                return max([task_to_node[p.id][2]+ estimate(node, task_to_node[p.id][0], task, p) for p in task.parents])
+                return max([task_to_node[p.id][2] + estimate(node, task_to_node[p.id][0], task, p) for p in task.parents])
 
 
 
@@ -90,8 +93,13 @@ class SimpleRandomizedHeuristic(Scheduler):
             choosed_index = random.randint(0, len(ready_tasks) - 1)
             task = self.task_map[ready_tasks[choosed_index]]
 
-            choosed_node_index = random.randint(0, len(self.nodes) - 1)
-            node = self.nodes[choosed_node_index]
+            #TODO: make checking for all nodes are dead.(It's a very rare situation so it is not consider for now)
+            while True:
+                choosed_node_index = random.randint(0, len(self.nodes) - 1)
+                node = self.nodes[choosed_node_index]
+                if node.state != Node.Down:
+                    break
+                pass
 
             time_slots, runtime = get_possible_execution_times(task, node)
             choosed_time_index = 0 if len(time_slots) == 1 else random.randint(0, len(time_slots) - 1)

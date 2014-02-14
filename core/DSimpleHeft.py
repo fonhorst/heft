@@ -44,8 +44,8 @@ class DynamicHeft(StaticHeftPlanner):
         for_planning = HeftHelper.get_tasks_for_planning(self.workflow, current_cleaned_schedule)
         ## TODO: check if it sorted properly
         for_planning = set([task.id for task in for_planning])
-        sorted_tasks = [ task for task in self.wf_jobs if  task.id  in for_planning]
-        new_sched = self.mapping([(self.workflow, sorted_tasks)],current_cleaned_schedule.mapping, nodes, self.commcost, self.compcost)
+        sorted_tasks = [ task for task in self.wf_jobs if task.id in for_planning]
+        new_sched = self.mapping([(self.workflow, sorted_tasks)], current_cleaned_schedule.mapping, nodes, self.commcost, self.compcost)
         return new_sched
 
     def endtime(self, job, events):

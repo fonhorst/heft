@@ -2,6 +2,7 @@
 import random
 from GA.DEAPGA.GAImplementation.ScheduleBuilder import ScheduleBuilder
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
+from environment.Resource import Node
 from environment.ResourceManager import ScheduleItem, Schedule
 from environment.Utility import Utility
 
@@ -151,14 +152,24 @@ class GAFunctions2:
 
     def mutation(self, chromosome):
         #return chromosome
-         # simply change one node of task mapping
-        node1 = self.nodes[random.randint(0, len(self.nodes) - 1)]
-        node2 = self.nodes[random.randint(0, len(self.nodes) - 1)]
+        # simply change one node of task mapping
+        #TODO: make checking for all nodes are dead.(It's a very rare situation so it is not consider for now)
+        while True:
+            node1 = self.nodes[random.randint(0, len(self.nodes) - 1)]
+            if node1.state != Node.Down:
+                break
+            pass
+
+        while True:
+            node2 = self.nodes[random.randint(0, len(self.nodes) - 1)]
+            if node2.state != Node.Down:
+                break
+            pass
 
         ch = chromosome[node1.name]
         if len(chromosome[node1.name]) > 0:
             length = len(chromosome[node1.name])
-            ind = random.randint(0,length - 1)
+            ind = random.randint(0, length - 1)
             dna = chromosome[node1.name][ind]
             del chromosome[node1.name][ind]
             chromosome[node2.name].append(dna)
@@ -175,17 +186,23 @@ class GAFunctions2:
             return False
 
         #return chromosome
-        node = self.nodes[random.randint(0, len(self.nodes) - 1)]
+        #TODO: make checking for all nodes are dead.(It's a very rare situation so it is not consider for now)
+        while True:
+            node = self.nodes[random.randint(0, len(self.nodes) - 1)]
+            if node.state != Node.Down:
+                break
+            pass
+
         ch = chromosome[node.name]
         if len(chromosome[node.name]) > 0:
             length = len(chromosome[node.name])
-            ind = random.randint(0,length - 1)
+            ind = random.randint(0, length - 1)
             tsk1 = self.task_map[chromosome[node.name][ind]]
             dna = chromosome[node.name][ind]
 
             count = 0
             while count < 5:
-                ind1 = random.randint(0,length - 1)
+                ind1 = random.randint(0, length - 1)
 
                 tsk2 = self.task_map[chromosome[node.name][ind1]]
                 if (not is_dependent(tsk1, tsk2)) and (not is_dependent(tsk2, tsk1)):

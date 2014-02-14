@@ -89,7 +89,7 @@ class EventMachine:
 
         ## TODO: raise exception if event.time_happened < self.current_time
         if event.time_happened < self.current_time:
-            k = 0
+            raise Exception("happened time: " + str(event.time_happened) + " is earlier than current time: " + str(self.current_time))
         self.queue.append(event)
         self.queue = deque(sorted(self.queue, key=lambda x: x.time_happened))
         #st = ''

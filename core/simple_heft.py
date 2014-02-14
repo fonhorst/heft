@@ -144,6 +144,7 @@ class StaticHeftPlanner(Scheduler):
         ## check if soft satisfy requirements
         if self.can_be_executed(node, task):
             ## static or running virtual machine
+            ## or failed node it works here too
             if node.state is not Node.Down:
 
                 # time_slots, runtime = get_possible_execution_times(task, node)

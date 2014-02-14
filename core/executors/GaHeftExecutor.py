@@ -410,8 +410,6 @@ class GAComputationWrapper:
 
     def run(self, time_interval, current_time):
 
-
-
         event = Event()
 
         def go():
