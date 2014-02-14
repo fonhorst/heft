@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_30_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/CyberShake_30_bundle.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" afterPath="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/ScheduleBuilder.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/ScheduleBuilder.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" afterPath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,30 +26,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GAvsHEFT.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="0" selection-start="609" selection-end="609" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleRandomizedHeuristic.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/SimpleRandomizedHeuristic.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="48" column="44" selection-start="2265" selection-end="2265" vertical-scroll-proportion="0.0" vertical-offset="1050" max-vertical-offset="3400">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GaHeftExecutor.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="GaHeftExecutor.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="439" column="0" selection-start="17394" selection-end="17394" vertical-scroll-proportion="0.0" vertical-offset="10380" max-vertical-offset="11900">
+            <state line="176" column="0" selection-start="6731" selection-end="6731" vertical-scroll-proportion="0.81632656" vertical-offset="3990" max-vertical-offset="12275">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GAFunctions2.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="115" column="38" selection-start="4661" selection-end="4661" vertical-scroll-proportion="0.0" vertical-offset="1546" max-vertical-offset="5225">
               <folding>
-                <element signature="e#5529#5699#0" expanded="false" />
+                <element signature="e#854#1546#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -60,30 +49,52 @@
       <file leaf-file-name="GAImplementation.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="96" column="61" selection-start="4259" selection-end="4259" vertical-scroll-proportion="0.0" vertical-offset="3540" max-vertical-offset="6950">
-              <folding>
-                <marker date="1392384797754" expanded="true" signature="1295:8391" placeholder="..." />
-                <marker date="1392384797754" expanded="true" signature="3888:8360" placeholder="..." />
-              </folding>
+            <state line="114" column="0" selection-start="5262" selection-end="5262" vertical-scroll-proportion="0.0" vertical-offset="2319" max-vertical-offset="6950">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GAFunctions2.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
+      <file leaf-file-name="ResourceManager.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="110" column="40" selection-start="4553" selection-end="4553" vertical-scroll-proportion="0.0" vertical-offset="2021" max-vertical-offset="5050">
-              <folding>
-                <element signature="e#854#1546#0" expanded="false" />
-              </folding>
+            <state line="132" column="8" selection-start="4104" selection-end="4127" vertical-scroll-proportion="0.0" vertical-offset="2994" max-vertical-offset="5550">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GaHeftvsHeft.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="threading.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/threading.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="613" column="0" selection-start="19647" selection-end="19647" vertical-scroll-proportion="0.0" vertical-offset="15067" max-vertical-offset="23950">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Utility.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/environment/Utility.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="285" column="8" selection-start="10287" selection-end="10287" vertical-scroll-proportion="0.0" vertical-offset="7477" max-vertical-offset="9625">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GaHeftExecutorExample.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="37" column="0" selection-start="1407" selection-end="1407" vertical-scroll-proportion="0.0" vertical-offset="468" max-vertical-offset="1000">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GaHeftvsHeft.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="0" selection-start="352" selection-end="352" vertical-scroll-proportion="0.5263158" vertical-offset="0" max-vertical-offset="550">
+            <state line="7" column="14" selection-start="277" selection-end="277" vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="550">
               <folding>
                 <element signature="e#0#74#0" expanded="true" />
               </folding>
@@ -91,10 +102,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ScheduleBuilder.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/ScheduleBuilder.py">
+      <file leaf-file-name="VersusFunctors.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="0" selection-start="2385" selection-end="2385" vertical-scroll-proportion="-12.92" vertical-offset="952" max-vertical-offset="5025">
+            <state line="119" column="8" selection-start="4459" selection-end="4459" vertical-scroll-proportion="0.0" vertical-offset="2823" max-vertical-offset="3450">
               <folding />
             </state>
           </provider>
@@ -137,12 +148,12 @@
         <option value="$PROJECT_DIR$/environment/ResourceManager.py" />
         <option value="$PROJECT_DIR$/core/simple_heft.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
-        <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
         <option value="$PROJECT_DIR$/core/executors/EventMachine.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/SimpleRandomizedHeuristic.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/ScheduleBuilder.py" />
-        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py" />
         <option value="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
+        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py" />
+        <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
       </list>
     </option>
   </component>
@@ -506,7 +517,9 @@
       <module name="heft" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
       <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -746,11 +759,11 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46498278" sideWeight="0.49849126" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16777308" sideWeight="0.5752009" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15958668" sideWeight="0.7833434" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16777308" sideWeight="0.29391503" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.70608497" sideWeight="0.7833434" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.42479908" sideWeight="0.21967411" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.42479908" sideWeight="0.7803259" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.70608497" sideWeight="0.21665661" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40757748" sideWeight="0.7803259" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -858,6 +871,26 @@
           <line>118</line>
           <option name="timeStamp" value="348" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py</url>
+          <line>123</line>
+          <option name="timeStamp" value="350" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
+          <line>316</line>
+          <option name="timeStamp" value="351" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py</url>
+          <line>386</line>
+          <option name="timeStamp" value="352" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py</url>
+          <line>385</line>
+          <option name="timeStamp" value="354" />
+        </line-breakpoint>
         <breakpoint enabled="true" type="python-exception">
           <properties exception="AttributeError" />
           <option name="timeStamp" value="54" />
@@ -866,54 +899,10 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="350" />
+      <option name="time" value="355" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/DSimpleHeft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="26" selection-start="312" selection-end="312" vertical-scroll-proportion="0.11574074" vertical-offset="0" max-vertical-offset="1450">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/HeftHelper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="106" selection-end="106" vertical-scroll-proportion="0.113464445" vertical-offset="0" max-vertical-offset="661">
-          <folding>
-            <element signature="e#140#5095#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/environment/Utility.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="62" selection-start="192" selection-end="192" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9625">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/simple_heft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="39" selection-start="3722" selection-end="3722" vertical-scroll-proportion="0.0" vertical-offset="2158" max-vertical-offset="4600">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/random.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="213" column="0" selection-start="7219" selection-end="7219" vertical-scroll-proportion="0.0" vertical-offset="4997" max-vertical-offset="18150">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="118" column="0" selection-start="3711" selection-end="3711" vertical-scroll-proportion="0.0" vertical-offset="2694" max-vertical-offset="5550">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/EventMachine.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="62" column="9" selection-start="1786" selection-end="1786" vertical-scroll-proportion="0.0" vertical-offset="317" max-vertical-offset="2925">
@@ -937,25 +926,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="439" column="0" selection-start="17394" selection-end="17394" vertical-scroll-proportion="0.0" vertical-offset="10305" max-vertical-offset="11900">
-          <folding>
-            <element signature="e#5529#5699#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="96" column="61" selection-start="4259" selection-end="4259" vertical-scroll-proportion="0.0" vertical-offset="1665" max-vertical-offset="6950">
-          <folding>
-            <marker date="1392384797754" expanded="true" signature="1295:8391" placeholder="..." />
-            <marker date="1392384797754" expanded="true" signature="3888:8360" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/SimpleRandomizedHeuristic.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="48" column="44" selection-start="2265" selection-end="2265" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3400">
@@ -970,12 +940,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
+    <entry file="file://$PROJECT_DIR$/core/examples/BaseExecutorExample.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="40" selection-start="4553" selection-end="4553" vertical-scroll-proportion="0.0" vertical-offset="2021" max-vertical-offset="5050">
+        <state line="50" column="0" selection-start="1967" selection-end="1967" vertical-scroll-proportion="0.0" vertical-offset="1042" max-vertical-offset="1550">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="0" selection-start="1407" selection-end="1407" vertical-scroll-proportion="0.0" vertical-offset="468" max-vertical-offset="1000">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="14" selection-start="277" selection-end="277" vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="550">
           <folding>
-            <element signature="e#854#1546#0" expanded="false" />
+            <element signature="e#0#74#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="119" column="8" selection-start="4459" selection-end="4459" vertical-scroll-proportion="0.0" vertical-offset="2823" max-vertical-offset="3450">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/environment/Utility.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="285" column="8" selection-start="10287" selection-end="10287" vertical-scroll-proportion="0.0" vertical-offset="7477" max-vertical-offset="9625">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="132" column="8" selection-start="4104" selection-end="4127" vertical-scroll-proportion="0.0" vertical-offset="2994" max-vertical-offset="5550">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/threading.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="613" column="0" selection-start="19647" selection-end="19647" vertical-scroll-proportion="0.0" vertical-offset="15067" max-vertical-offset="23950">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -986,12 +998,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py">
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="352" selection-end="352" vertical-scroll-proportion="0.5263158" vertical-offset="0" max-vertical-offset="550">
+        <state line="115" column="38" selection-start="4661" selection-end="4661" vertical-scroll-proportion="0.0" vertical-offset="1546" max-vertical-offset="5225">
           <folding>
-            <element signature="e#0#74#0" expanded="true" />
+            <element signature="e#854#1546#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="114" column="0" selection-start="5262" selection-end="5262" vertical-scroll-proportion="0.0" vertical-offset="2094" max-vertical-offset="6950">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="176" column="0" selection-start="6731" selection-end="6731" vertical-scroll-proportion="0.81632656" vertical-offset="3990" max-vertical-offset="12275">
+          <folding />
         </state>
       </provider>
     </entry>

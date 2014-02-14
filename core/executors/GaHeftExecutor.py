@@ -310,8 +310,10 @@ class GAComputationManager:
         if self.current_computation is None:
             return None
         print("Time: " + str(current_time) + " run execution due to something ")
-        result = self._get_result_until_current_time(current_time)
-        return result
+        ##TODO: just clean it for now. perhaps, we can't use existed results so drop it
+        self._clean_current_computation()
+        ##result = self._get_result_until_current_time(current_time)
+        return None
 
     def run(self, current_schedule, current_time, async=True):
         self._reschedule_by_GA(current_schedule, current_time)
@@ -377,6 +379,12 @@ class GAComputationManager:
                 print("GA's computation isn't able to meet the end of computation")
                 return
             fixed_schedule = _get_fixed_schedule(current_schedule, front_event)
+
+            ##TODO: only for debug. remove it later.
+            count = len(fixed_schedule.get_all_unique_tasks_id())
+            if count == 30:
+                k = 0
+                raise Exception("Look here!")
 
             #_run_in_parallel_with_timer(fixed_schedule)
             #_register_line_events(front_event)

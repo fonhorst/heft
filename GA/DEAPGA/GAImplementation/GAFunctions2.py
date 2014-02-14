@@ -114,7 +114,14 @@ class GAFunctions2:
         ##return
 
         #estimate size of a chromosome
+
+        alive_nodes = [node for node in self.nodes if node.state != Node.Down]
+        if len(alive_nodes) == 0:
+            raise Exception(" There are only dead nodes!!!!!!!!!!!!!")
+
         size = len([item for (node_name, items) in child1.items() for item in items])
+        if size == 0:
+            raise Exception("AAAAAAAAA!")
         # return None
         i1 = random.randint(0, size - 1)
         i2 = random.randint(0, size - 1)
