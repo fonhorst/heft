@@ -380,11 +380,12 @@ class GAComputationManager:
                 return
             fixed_schedule = _get_fixed_schedule(current_schedule, front_event)
 
-            ##TODO: only for debug. remove it later.
+
             count = len(fixed_schedule.get_all_unique_tasks_id())
             if count == 30:
-                k = 0
-                raise Exception("Look here!")
+                return
+                #k = 0
+                #raise Exception("Look here!")
 
             #_run_in_parallel_with_timer(fixed_schedule)
             #_register_line_events(front_event)
