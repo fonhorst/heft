@@ -154,17 +154,9 @@ class GAFunctions2:
         #return chromosome
         # simply change one node of task mapping
         #TODO: make checking for all nodes are dead.(It's a very rare situation so it is not consider for now)
-        while True:
-            node1 = self.nodes[random.randint(0, len(self.nodes) - 1)]
-            if node1.state != Node.Down:
-                break
-            pass
-
-        while True:
-            node2 = self.nodes[random.randint(0, len(self.nodes) - 1)]
-            if node2.state != Node.Down:
-                break
-            pass
+        alive_nodes = [node for node in self.nodes if node.state != Node.Down]
+        node1 = alive_nodes[random.randint(0, len(alive_nodes) - 1)]
+        node2 = alive_nodes[random.randint(0, len(alive_nodes) - 1)]
 
         ch = chromosome[node1.name]
         if len(chromosome[node1.name]) > 0:
@@ -187,11 +179,9 @@ class GAFunctions2:
 
         #return chromosome
         #TODO: make checking for all nodes are dead.(It's a very rare situation so it is not consider for now)
-        while True:
-            node = self.nodes[random.randint(0, len(self.nodes) - 1)]
-            if node.state != Node.Down:
-                break
-            pass
+        alive_nodes = [node for node in self.nodes if node.state != Node.Down]
+        node = alive_nodes[random.randint(0, len(alive_nodes) - 1)]
+
 
         ch = chromosome[node.name]
         if len(chromosome[node.name]) > 0:

@@ -95,13 +95,10 @@ class SimpleRandomizedHeuristic(Scheduler):
             task = self.task_map[ready_tasks[choosed_index]]
 
             #TODO: make checking for all nodes are dead.(It's a very rare situation so it is not consider for now)
-            #alive_nodes = [node for node in self.nodes if node.state != Node.Down]
-            while True:
-                choosed_node_index = random.randint(0, len(self.nodes) - 1)
-                node = self.nodes[choosed_node_index]
-                if node.state != Node.Down:
-                    break
-                pass
+            alive_nodes = [node for node in self.nodes if node.state != Node.Down]
+            choosed_node_index = random.randint(0, len(alive_nodes) - 1)
+            node = alive_nodes[choosed_node_index]
+
 
             time_slots, runtime = get_possible_execution_times(task, node)
             choosed_time_index = 0 if len(time_slots) == 1 else random.randint(0, len(time_slots) - 1)
