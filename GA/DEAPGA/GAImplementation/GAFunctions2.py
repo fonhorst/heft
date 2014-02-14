@@ -60,6 +60,7 @@ class GAFunctions2:
         return initial
 
     def random_chromo(self, fixed_schedule_part, current_time):
+        print("random_chromo start")
         res = random.random()
         # # TODO:
         if res > 0.8 and self.initial_chromosome is not None:
@@ -81,17 +82,21 @@ class GAFunctions2:
 
             # TODO: make common utility function with ScheduleBuilder and SimpleRandomizedHeuristic
             chromo = {node_name: [id for id in ids if not (id in finished_tasks)] for (node_name, ids) in chromo.items()}
+        print("random_chromo end")
         return chromo
 
     def build_fitness(self, fixed_schedule_part, current_time):
         builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
 
         def fitness(chromo):
+
+            print(" fitness start")
             ## value of fitness function is the last time point in the schedule
             ## built from the chromo
             ## chromo is {Task:Node},{Task:Node},... - fixed length
             schedule = builder(chromo, current_time)
             time = Utility.get_the_last_time(schedule)
+            print(" fitness end")
             return (1/time,)
         ## TODO: redesign it later
         return fitness
@@ -103,6 +108,9 @@ class GAFunctions2:
 
 
     def crossover(self, child1, child2):
+
+        ## TODO: only for debug. remove it later.
+        ##return
 
         #estimate size of a chromosome
         size = len([item for (node_name, items) in child1.items() for item in items])
