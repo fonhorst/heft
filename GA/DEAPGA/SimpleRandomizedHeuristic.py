@@ -27,17 +27,26 @@ class SimpleRandomizedHeuristic(Scheduler):
          def is_last_version_of_task_executing(item):
             return item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.UNSTARTED
 
+         def _get_ready_tasks(children, finished_tasks):
+            def _is_child_ready(child):
+                ids = set([p.id for p in child.parents])
+                result = False in [id in finished_tasks for id in ids]
+                return not result
+            ready_children = [child for child in children if _is_child_ready(child)]
+            return ready_children
+
          if fixed_schedule_part is None:
             schedule_mapping = {node: [] for node in self.nodes}
             ready_tasks = [child.id for child in self.workflow.head_task.children]
             task_to_node = dict()
             finished_tasks = set()
          else:
-            schedule_mapping = {node: [item for item in items] for (node, items) in self.fixed_schedule_part.mapping.items()}
-            finished_tasks = [item.job.id for (node, items) in self.fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)]
+            schedule_mapping = {node: [item for item in items] for (node, items) in fixed_schedule_part.mapping.items()}
+            finished_tasks = [item.job.id for (node, items) in fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)]
             finished_tasks = set([self.workflow.head_task.id] + finished_tasks)
             unfinished = [task for task in self.workflow.get_all_unique_tasks() if not task.id in finished_tasks]
-            ready_tasks = [task.id for task in self._get_ready_tasks(unfinished, finished_tasks)]
+            ready_tasks = [task.id for task in _get_ready_tasks(unfinished, finished_tasks)]
+            task_to_node = {item.job.id: (node, item.start_time, item.end_time) for (node, items) in fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)}
 
 
          def is_child_ready(child):

@@ -69,7 +69,17 @@ class GAFunctions2:
         # mark_finished(sched)
         # seq_time_validaty = Utility.validateNodesSeq(sched)
         # dependency_validaty = Utility.validateParentsAndChildren(sched, self.workflow)
+
         chromo = GAFunctions2.schedule_to_chromosome(sched)
+        if fixed_schedule_part is not None:
+            # remove fixed_schedule_part from chromosome
+            def is_last_version_of_task_executing(item):
+                return item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.UNSTARTED
+            # there is only finished, executing and unstarted tasks planned by Heft, perhaps it should have been called unplanned tasks
+            finished_tasks = [item.job.id for (node, items) in fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)]
+
+            # TODO: make common utility function with ScheduleBuilder and SimpleRandomizedHeuristic
+            chromo = {node_name: [id for id in ids if not (id in finished_tasks)] for (node_name, ids) in chromo.items()}
         return chromo
 
     def build_fitness(self, fixed_schedule_part):
@@ -92,9 +102,12 @@ class GAFunctions2:
 
 
     def crossover(self, child1, child2):
-        #return None
-        i1 = random.randint(0, self.workflow_size - 1)
-        i2 = random.randint(0, self.workflow_size - 1)
+
+        #estimate size of a chromosome
+        size = len([item for (node_name, items) in child1.items() for item in items])
+        # return None
+        i1 = random.randint(0, size - 1)
+        i2 = random.randint(0, size - 1)
         index1 = min(i1, i2)
         index2 = max(i1, i2)
 
@@ -119,7 +132,7 @@ class GAFunctions2:
             tsk_id = ch1[i][1]
             window[ch1[i][1]] = i
 
-        for i in range(self.workflow_size):
+        for i in range(size):
             tsk_id = ch2[i][1]
             if tsk_id in window:
                 buf = ch1[window[tsk_id]]

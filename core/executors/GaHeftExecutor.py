@@ -328,7 +328,7 @@ class GAComputationManager:
 
         def _get_fixed_schedule(schedule, front_event):
             def is_before_event(item):
-                if item.start_time < front_event.start_time:
+                if item.start_time <= front_event.start_time:
                     return True
                 return False
             ##TODO: it's dangerous operation
@@ -439,7 +439,26 @@ class GAComputationWrapper:
         print("Time: " + str(current_time) + " waiting for thread " + str(t.name) + " " + str(t.ident))
         event.wait()
         print("Time: " + str(current_time) + " thread finished " + str(t.name) + " " + str(t.ident))
-        return self.ga.get_result()
+
+        result = self.ga.get_result()
+
+        resulted_schedule = result[2]
+
+        ## TODO: Urgent! make a check for consistency with fixed schedule
+        fpart_check = Utility.check_fixed_part(resulted_schedule, self.fixed_schedule_part, current_time)
+        ## TODO: Urgent! make a check for abandoning of presence of duplicated tasks with state Finished, unstarted, executing
+        duplicated_check = Utility.check_duplicated_tasks(resulted_schedule)
+
+        if fpart_check is False:
+            raise Exception("check for consistency with fixed schedule didn't pass")
+        else:
+            print("Time: " + str(current_time) + " fpart_check passed")
+        if duplicated_check is False:
+            raise Exception("check for duplicated tasks didn't pass")
+        else:
+            print("Time: " + str(current_time) + " duplicated_check passed")
+
+        return result
 
     def stop(self):
         pass

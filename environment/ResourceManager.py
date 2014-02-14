@@ -128,6 +128,8 @@ class Schedule:
         ids = set(item.job.id for (node, items) in self.mapping.items() for item in items)
         return ids
 
+
+
     @staticmethod
     def insert_item(mapping, node, item):
         result = []

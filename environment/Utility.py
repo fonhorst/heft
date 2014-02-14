@@ -282,6 +282,43 @@ class Utility:
         f.close()
         return bundle
 
+    @staticmethod
+    def check_fixed_part(schedule, fixed_part, current_time):
+        def item_equality(item1, fix_item):
+
+            is_equal = item1.state == fix_item.state
+            not_finished = (fix_item.state == ScheduleItem.UNSTARTED or fix_item.state == ScheduleItem.EXECUTING)
+            is_finished_now = (not_finished and item1.state == ScheduleItem.FINISHED and fix_item.end_time <= current_time)
+            is_executing_now = (not_finished and item1.state == ScheduleItem.EXECUTING and fix_item.start_time <= current_time <= fix_item.end_time )
+            is_state_correct = is_equal or is_finished_now or is_executing_now
+
+            return item1.job.id == fix_item.job.id and is_state_correct and item1.start_time == fix_item.start_time and item1.end_time == fix_item.end_time
+        for (node, items) in fixed_part.mapping.items():
+            #TODO: need to make here search by node.name
+            itms = schedule.mapping[node]
+            for i in range(len(items)):
+                if not item_equality(itms[i], items[i]):
+                    return False
+        return True
+
+    @staticmethod
+    def check_duplicated_tasks(schedule):
+        task_instances = dict()
+        for (node, items) in schedule.mapping.items():
+            for item in items:
+                instances = task_instances.get(item.job.id, [])
+                instances.append((node, item))
+                task_instances[item.job.id] = instances
+
+        for (id, items) in task_instances.items():
+            sts = [item.state for (node, item) in items]
+            inter_excluded_states = list(filter(lambda x: x == ScheduleItem.FINISHED or x == ScheduleItem.EXECUTING or x == ScheduleItem.UNSTARTED, sts))
+            if len(inter_excluded_states) > 1:
+                return False
+            pass
+        return True
+
+
     pass
 class SaveBundleEncoder(json.JSONEncoder):
         def default(self, obj):
