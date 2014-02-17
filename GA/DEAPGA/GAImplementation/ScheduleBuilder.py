@@ -96,8 +96,7 @@ class ScheduleBuilder:
                                                 node,
                                                 current_time)
 
-
-                    time_slot = time_slots[0]
+                    time_slot = next(time_slots)
                     start_time = time_slot[0]
                     end_time = start_time + runtime
 
@@ -122,11 +121,36 @@ class ScheduleBuilder:
 
     def _get_ready_tasks(self, children, finished_tasks):
         def _is_child_ready(child):
-            ids = set([p.id for p in child.parents])
-            result = False in [id in finished_tasks for id in ids]
-            return not result
+            # ids = [p.id for p in child.parents]
+            # result = False in [id in finished_tasks for id in ids]
+            # return not result
+            for p in child.parents:
+                if p.id not in finished_tasks:
+                    return False
+            return True
         ready_children = [child for child in children if _is_child_ready(child)]
         return ready_children
+
+    ## TODO: remove this obsolete code later
+    # def _find_slots(self,
+    #                 schedule_mapping,
+    #                 node,
+    #                 comm_ready,
+    #                 runtime,
+    #                 current_time):
+    #     node_schedule = schedule_mapping.get(node, list())
+    #     free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
+    #     ## TODO: refactor it later
+    #     f_time = max(free_time, comm_ready)
+    #     f_time = max(f_time, current_time)
+    #     base_variant = [(f_time, f_time + runtime)]
+    #     zero_interval = [] if len(node_schedule) == 0 else [(0, node_schedule[0].start_time)]
+    #     middle_intervals = [(node_schedule[i].end_time, node_schedule[i + 1].start_time) for i in range(len(node_schedule) - 1)]
+    #     intervals = zero_interval + middle_intervals + base_variant
+    #
+    #     ## TODO: rethink rounding
+    #     result = [(st, end) for (st, end) in intervals if (current_time < st or abs((current_time - st)) < 0.01) and st >= comm_ready and (runtime < (end - st) or abs((end - st) - runtime) < 0.01)]
+    #     return result
 
     def _find_slots(self,
                     schedule_mapping,
@@ -134,19 +158,11 @@ class ScheduleBuilder:
                     comm_ready,
                     runtime,
                     current_time):
-        node_schedule = schedule_mapping.get(node, list())
-        free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
-        ## TODO: refactor it later
-        f_time = max(free_time, comm_ready)
-        f_time = max(f_time, current_time)
-        base_variant = [(f_time, f_time + runtime)]
-        zero_interval = [] if len(node_schedule) == 0 else [(0, node_schedule[0].start_time)]
-        middle_intervals = [(node_schedule[i].end_time, node_schedule[i + 1].start_time) for i in range(len(node_schedule) - 1)]
-        intervals = zero_interval + middle_intervals + base_variant
 
-        ## TODO: rethink rounding
-        result = [(st, end) for (st, end) in intervals if (current_time < st or abs((current_time - st)) < 0.01) and st >= comm_ready and (runtime < (end - st) or abs((end - st) - runtime) < 0.01)]
-        return result
+        node_schedule = schedule_mapping.get(node, list())
+        return FreeSlotIterator(current_time, comm_ready, runtime, node_schedule)
+
+
 
     def _comm_ready_func(self,
                          task_to_node,
@@ -195,3 +211,45 @@ class ScheduleBuilder:
                                       current_time)
         return time_slots, runtime
     pass
+
+class FreeSlotIterator:
+
+    def __init__(self, current_time, comm_ready, runtime, node_schedule):
+        self.current = 0
+        self.can_move = True
+
+        self.current_time = current_time
+        self.comm_ready = comm_ready
+        self.runtime = runtime
+        self.node_schedule = node_schedule
+        self.size = len(node_schedule) - 1
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.current < self.size:
+            i = self.current
+            while i < self.size:
+                st = self.node_schedule[i].end_time
+                end = self.node_schedule[i + 1].start_time
+                i += 1
+                if self._check(st, end):
+                    break
+                self.current = i
+
+            if i < self.size:
+                return st, end
+        if self.can_move:
+            self.can_move = False
+            free_time = 0 if len(self.node_schedule) == 0 else self.node_schedule[-1].end_time
+            ## TODO: refactor it later
+            f_time = max(free_time, self.comm_ready)
+            f_time = max(f_time, self.current_time)
+            base_variant = (f_time, f_time + self.runtime)
+            return base_variant
+        raise StopIteration()
+
+    def _check(self, st, end):
+        return (self.current_time < st or abs((self.current_time - st)) < 0.01) and st >= self.comm_ready and (self.runtime < (end - st) or abs((end - st) - self.runtime) < 0.01)
+

@@ -1,6 +1,9 @@
+import cProfile
 from collections import namedtuple
+import pstats
 import random
 from threading import Thread, Lock
+import io
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2, mark_finished
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from core.DSimpleHeft import DynamicHeft
@@ -249,6 +252,8 @@ def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
         name = wf_name +"_bundle"
         path = '..\\..\\resources\\saved_schedules\\' + name + '.json'
         Utility.save_schedule(path, wf_name, resources, transferMx, ideal_flops, schedule)
+
+        #Utility.create_jedule_visualization(schedule, wf_name+'_ga')
         pass
 
 
@@ -270,19 +275,19 @@ def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
     print("          Seq validaty %s" % str(dynamic_seq_time_validaty))
     print("   Dependancy validaty %s" % str(dynamic_dependency_validaty))
 
-    Utility.create_jedule_visualization(schedule_dynamic_heft, wf_name)
+   # Utility.create_jedule_visualization(schedule_dynamic_heft, wf_name+'_heft')
 
 
     ##================================
     ##GA Run
     ##================================
-    #pr = cProfile.Profile()
-    #pr.enable()
+    pr = cProfile.Profile()
+    pr.enable()
     main(schedule_dynamic_heft)
-    #pr.disable()
-    #s = io.StringIO()
-    #sortby = 'cumulative'
-    #ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-    #ps.print_stats()
-    #print(s.getvalue())
+    pr.disable()
+    s = io.StringIO()
+    sortby = 'cumulative'
+    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    ps.print_stats()
+    print(s.getvalue())
 
