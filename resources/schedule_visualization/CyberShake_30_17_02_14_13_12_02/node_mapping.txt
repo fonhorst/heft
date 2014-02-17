@@ -1,4 +1,0 @@
-1 <- res_0_node_3
-2 <- res_0_node_2
-0 <- res_0_node_1
-3 <- res_0_node_0

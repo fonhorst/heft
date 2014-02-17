@@ -20,7 +20,7 @@ class ExperimentEstimator(Estimator):
         ##TODO: remake it later
         if node1 == node2:
             return 0
-        return 5
+        return 100
         ##TODO: repair it later
         ##per_unit_of_time = 1##self.transfer_matrix[node1][node2]
         ##return self.get_or_estimate(task1, task2)/per_unit_of_time

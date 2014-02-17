@@ -1,6 +1,7 @@
 from GA.DEAPGA.GAImplementation.GAImplementation import build
 
-wf_names = ['CyberShake_30']
+wf_names = ['CyberShake_50']
+# wf_names = ['CyberShake_50_sweep']
 # wf_names = ['CyberShake_75', 'Montage_75', 'Epigenomics_72', 'Inspiral_72', 'Sipht_73']
 
 # wf_names = ["CyberShake_30", "CyberShake_50", "CyberShake_75", "CyberShake_100",
