@@ -270,6 +270,8 @@ def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
     print("          Seq validaty %s" % str(dynamic_seq_time_validaty))
     print("   Dependancy validaty %s" % str(dynamic_dependency_validaty))
 
+    Utility.create_jedule_visualization(schedule_dynamic_heft, wf_name)
+
 
     ##================================
     ##GA Run

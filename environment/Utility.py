@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 from core.comparisons.ComparisonBase import ComparisonUtility
 from environment.DAXParser import DAXParser
@@ -333,15 +334,7 @@ class Utility:
     @staticmethod
     def schedule_to_jed(schedule):
 
-        cmap_tmpl = '<cmap name="default">\
-	                <conf name="min_font_size_label" value="10" />\
-	                <conf name="font_size_label" value="18" />\
-	                <conf name="font_size_axes" value="18" />\
-	                <task id="wf1">\
-		            <color type="fg" rgb="FFFFFF" />\
-		            <color type="bg" rgb="0000FF" />\
-        < / task > \
-            < / cmap > '
+        cmap_tmpl = '<cmap name="default"><conf name="min_font_size_label" value="10" /><conf name="font_size_label" value="18" /><conf name="font_size_axes" value="18" /><task id="wf1"><color type="fg" rgb="FFFFFF" /><color type="bg" rgb="0000FF" /></task></cmap>'
 
         cmap = ET.fromstring(cmap_tmpl)
         nodes_count = len(schedule.mapping.keys())
@@ -379,36 +372,59 @@ class Utility:
         grid_schedule.append(grid_info)
         node_infos = ET.SubElement(grid_schedule, 'node_infos')
 
+        keys = schedule.mapping.keys()
+        # node to sequence number
+        ns = {node.name: i for (node, i) in zip(keys, range(len(keys)))}
+
         for (node, items) in schedule.mapping.items():
             for item in items:
-                el = ET.fromstring(task_tmpl.format(item.id, item.start_time, item.end_time, node.name))
+                el = ET.fromstring(task_tmpl.format(item.job.id, item.start_time, item.end_time, ns[node.name]))
                 node_infos.append(el)
 
-        return grid_schedule, cmap
+        return ET.ElementTree(grid_schedule), ET.ElementTree(cmap), ns
 
     @staticmethod
-    def write_schedule_to_jed(schedule, jed_path, cmap_path):
-        (grid_schedule, cmap) = Utility.schedule_to_jed(schedule)
-        jed_file = open(jed_path, 'w')
-        cmap_file = open(cmap_path, 'w')
+    def write_schedule_to_jed(schedule, jed_path, cmap_path, node_mapping_path):
+        def write_node_mapping(f, mapping):
+            for (name, i) in mapping.items():
+                f.write('{0} <- {1}\n'.format(i, name))
+            pass
+
+        (grid_schedule, cmap, ns) = Utility.schedule_to_jed(schedule)
+        jed_file = open(jed_path, 'wb')
+        cmap_file = open(cmap_path, 'wb')
+        node_mapping_file = open(node_mapping_path, 'w')
         grid_schedule.write(jed_file)
         cmap.write(cmap_file)
+        write_node_mapping(node_mapping_file, ns)
         jed_file.close()
         cmap_file.close()
+        node_mapping_file.close()
         pass
 
     @staticmethod
     def create_jedule_visualization(schedule, name):
+        ## TODO: fix it later.
+        old_dir = os.getcwd()
+        os.chdir('../../')
+
         folder = './resources/schedule_visualization/' + name + '_' + ComparisonUtility.cur_time()
         jed_path = folder + '/' + name + '.jed'
         cmap_path = folder + '/' + 'cmap.xml'
+        node_mapping_path = folder + '/' + 'node_mapping.txt'
         output_path = folder + '/' + 'output.png'
-        Utility.write_schedule_to_jed(schedule, jed_path, cmap_path)
 
-        p = subprocess.Popen('java -Xmx512M -jar jedule-0.3.2.jar net.sf.jedule.JeduleStarter \
-                            -f {0} -p simgrid -o {1} -d 1024x768 -n \
+        os.makedirs(folder)
+
+        Utility.write_schedule_to_jed(schedule, jed_path, cmap_path, node_mapping_path)
+
+        p = subprocess.Popen('java -Xmx512M -jar ./jedule-0.3.2.jar net.sf.jedule.JeduleStarter \
+                            -f {0} -p simgrid -o {1} -d 1024x768 \
                             -cm {2}'.format(jed_path, output_path, cmap_path))
         p.communicate()
+
+        ## TODO: fix it later.
+        os.chdir(old_dir)
         pass
 
 pass
