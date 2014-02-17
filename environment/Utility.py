@@ -374,11 +374,11 @@ class Utility:
 
         keys = schedule.mapping.keys()
         # node to sequence number
-        ns = {node.name: i for (node, i) in zip(keys, range(len(keys)))}
+        ns = {node: i for (node, i) in zip(keys, range(len(keys)))}
 
         for (node, items) in schedule.mapping.items():
             for item in items:
-                el = ET.fromstring(task_tmpl.format(item.job.id, item.start_time, item.end_time, ns[node.name]))
+                el = ET.fromstring(task_tmpl.format(item.job.id, item.start_time, item.end_time, ns[node]))
                 node_infos.append(el)
 
         return ET.ElementTree(grid_schedule), ET.ElementTree(cmap), ns
@@ -386,8 +386,8 @@ class Utility:
     @staticmethod
     def write_schedule_to_jed(schedule, jed_path, cmap_path, node_mapping_path):
         def write_node_mapping(f, mapping):
-            for (name, i) in mapping.items():
-                f.write('{0} <- {1}\n'.format(i, name))
+            for (node, i) in sorted(mapping.items(), key=lambda x: x[1]):
+                f.write('{0} <- name: {1}; flops: {2} \n'.format(i, node.name, node.flops))
             pass
 
         (grid_schedule, cmap, ns) = Utility.schedule_to_jed(schedule)
