@@ -1,8 +1,11 @@
 import json
+import subprocess
+from core.comparisons.ComparisonBase import ComparisonUtility
 from environment.DAXParser import DAXParser
 from random import Random
 from environment.Resource import Node, Resource
 from environment.ResourceManager import ScheduleItem, Schedule
+import xml.etree.ElementTree as ET
 
 
 def reverse_dict(d):
@@ -17,20 +20,21 @@ def reverse_dict(d):
             result[val] = result.get(val, tuple()) + (key, )
     return result
 
-class Utility:
 
+class Utility:
     MIN_PIPELINE_SIZE = 10
     MAX_PIPELINE_SIZE = 40
 
     def __init__(self):
-         pass
+        pass
 
     @staticmethod
     def generateUrgentPipeline(dax_filepath, wf_start_id, task_postfix_id, deadline):
         parser = DAXParser()
         random = Random()
         pipelineSize = 1##random.randint(Utility.MIN_PIPELINE_SIZE,Utility.MAX_PIPELINE_SIZE)
-        wfs = [parser.parseXml(dax_filepath,wf_start_id + str(i), task_postfix_id + str(i)) for i in range(0, pipelineSize)]
+        wfs = [parser.parseXml(dax_filepath, wf_start_id + str(i), task_postfix_id + str(i)) for i in
+               range(0, pipelineSize)]
         for wf in wfs:
             wf.deadline = deadline
         return wfs
@@ -48,7 +52,7 @@ class Utility:
         for item in items:
             if time > item.start_time:
                 return False
-                    ##raise Exception("Node: " + str(node) + " all time: " + str(time) + " st_time: " + str(item.start_time))
+                ##raise Exception("Node: " + str(node) + " all time: " + str(time) + " st_time: " + str(item.start_time))
             else:
                 time = item.start_time
             if time > item.end_time:
@@ -133,7 +137,7 @@ class Utility:
                 return False
             return True
 
-        task_to_node = {job_id: sorted(seq, key=lambda x: x.start_time)for (job_id, seq)in task_to_node.items() }
+        task_to_node = {job_id: sorted(seq, key=lambda x: x.start_time) for (job_id, seq) in task_to_node.items()}
         for (job_id, seq) in task_to_node.items():
             result = Utility.validate_time_seq(seq)
             if result is False:
@@ -156,7 +160,7 @@ class Utility:
         for task in workflow.head_task.children:
             res = check(task)
             if res is False:
-                    return False
+                return False
         return True
 
     @staticmethod
@@ -186,7 +190,7 @@ class Utility:
 
                 if pred is None and next is None:
                     return True
-                if next is None and pred.end_time <= pair.start_time :
+                if next is None and pred.end_time <= pair.start_time:
                     return True
                 if pred.end_time <= pair.start_time and next.start_time >= pair.end_time:
                     return True
@@ -198,15 +202,17 @@ class Utility:
                 return False
             return True
 
-        reslt = False in [check_unavailability(schedule.mapping[node], seq) for (node, seq) in unavailability_periods.items()]
+        reslt = False in [check_unavailability(schedule.mapping[node], seq) for (node, seq) in
+                          unavailability_periods.items()]
         if reslt is True:
             return False
         return True
 
     @staticmethod
-    def get_the_last_time( schedule):
+    def get_the_last_time(schedule):
         def get_last_time(node_items):
             return 0 if len(node_items) == 0 else node_items[-1].end_time
+
         last_time = max([get_last_time(node_items) for (node, node_items) in schedule.mapping.items()])
         return last_time
 
@@ -249,7 +255,8 @@ class Utility:
 
                 all_nodes = {node.name: node for node in all_nodes}
 
-                dct['ga_schedule'].mapping = {all_nodes[node_name]:values for (node_name,values) in dct['ga_schedule'].mapping.items()}
+                dct['ga_schedule'].mapping = {all_nodes[node_name]: values for (node_name, values) in
+                                              dct['ga_schedule'].mapping.items()}
 
                 bundle = SaveBundle(dct['name'],
                                     dct['dedicated_resources'],
@@ -265,7 +272,7 @@ class Utility:
     @staticmethod
     def save_schedule(path, wf_name, resources, transferMx, ideal_flops, schedule):
 
-        name = wf_name +"_bundle"
+        name = wf_name + "_bundle"
         bundle = SaveBundle(name, resources, transferMx, ideal_flops, schedule, wf_name)
 
         ##'..\\..\\resources\\saved_schedules\\' + name + '.json'
@@ -288,11 +295,14 @@ class Utility:
 
             is_equal = item1.state == fix_item.state
             not_finished = (fix_item.state == ScheduleItem.UNSTARTED or fix_item.state == ScheduleItem.EXECUTING)
-            is_finished_now = (not_finished and item1.state == ScheduleItem.FINISHED and fix_item.end_time <= current_time)
-            is_executing_now = (not_finished and item1.state == ScheduleItem.EXECUTING and fix_item.start_time <= current_time <= fix_item.end_time )
+            is_finished_now = (
+                not_finished and item1.state == ScheduleItem.FINISHED and fix_item.end_time <= current_time)
+            is_executing_now = (
+                not_finished and item1.state == ScheduleItem.EXECUTING and fix_item.start_time <= current_time <= fix_item.end_time )
             is_state_correct = is_equal or is_finished_now or is_executing_now
 
             return item1.job.id == fix_item.job.id and is_state_correct and item1.start_time == fix_item.start_time and item1.end_time == fix_item.end_time
+
         for (node, items) in fixed_part.mapping.items():
             #TODO: need to make here search by node.name
             itms = schedule.mapping[node]
@@ -312,43 +322,128 @@ class Utility:
 
         for (id, items) in task_instances.items():
             sts = [item.state for (node, item) in items]
-            inter_excluded_states = list(filter(lambda x: x == ScheduleItem.FINISHED or x == ScheduleItem.EXECUTING or x == ScheduleItem.UNSTARTED, sts))
+            inter_excluded_states = list(filter(
+                lambda x: x == ScheduleItem.FINISHED or x == ScheduleItem.EXECUTING or x == ScheduleItem.UNSTARTED,
+                sts))
             if len(inter_excluded_states) > 1:
                 return False
             pass
         return True
 
+    @staticmethod
+    def schedule_to_jed(schedule):
 
-    pass
+        cmap_tmpl = '<cmap name="default">\
+	                <conf name="min_font_size_label" value="10" />\
+	                <conf name="font_size_label" value="18" />\
+	                <conf name="font_size_axes" value="18" />\
+	                <task id="wf1">\
+		            <color type="fg" rgb="FFFFFF" />\
+		            <color type="bg" rgb="0000FF" />\
+        < / task > \
+            < / cmap > '
+
+        cmap = ET.fromstring(cmap_tmpl)
+        nodes_count = len(schedule.mapping.keys())
+
+        grid_schedule = ET.Element('grid_schedule')
+        meta_info = ET.fromstring('<meta_info>\
+		                <meta name="alloc" value="mcpa"/>\
+		                <meta name="pack" value="0"/>\
+		                <meta name="bf" value="0"/>\
+		                <meta name="ialloc" value="0"/>\
+	                   </meta_info>')
+
+        grid_info = ET.fromstring('<grid_info>\
+		    <info name="nb_clusters" value="1"/>\
+		    <clusters>\
+		        <cluster id="0" hosts="{0}" first_host="0"/>\
+		    </clusters>\
+	    </grid_info>'.format(nodes_count))
+
+        task_tmpl = '<node_statistics>\
+			<node_property name="id" value="{0}"/>\
+			<node_property name="type" value="wf1"/>\
+			<node_property name="start_time" value="{1}"/>\
+			<node_property name="end_time" value="{2}"/>\
+			<configuration>\
+			  <conf_property name="cluster_id" value="0"/>\
+			  <conf_property name="host_nb" value="1"/>\
+			  <host_lists>\
+			    <hosts start="{3}" nb="1"/>\
+			  </host_lists>\
+			</configuration>\
+		</node_statistics>'
+
+        grid_schedule.append(meta_info)
+        grid_schedule.append(grid_info)
+        node_infos = ET.SubElement(grid_schedule, 'node_infos')
+
+        for (node, items) in schedule.mapping.items():
+            for item in items:
+                el = ET.fromstring(task_tmpl.format(item.id, item.start_time, item.end_time, node.name))
+                node_infos.append(el)
+
+        return grid_schedule, cmap
+
+    @staticmethod
+    def write_schedule_to_jed(schedule, jed_path, cmap_path):
+        (grid_schedule, cmap) = Utility.schedule_to_jed(schedule)
+        jed_file = open(jed_path, 'w')
+        cmap_file = open(cmap_path, 'w')
+        grid_schedule.write(jed_file)
+        cmap.write(cmap_file)
+        jed_file.close()
+        cmap_file.close()
+        pass
+
+    @staticmethod
+    def create_jedule_visualization(schedule, name):
+        folder = './resources/schedule_visualization/' + name + '_' + ComparisonUtility.cur_time()
+        jed_path = folder + '/' + name + '.jed'
+        cmap_path = folder + '/' + 'cmap.xml'
+        output_path = folder + '/' + 'output.png'
+        Utility.write_schedule_to_jed(schedule, jed_path, cmap_path)
+
+        p = subprocess.Popen('java -Xmx512M -jar jedule-0.3.2.jar net.sf.jedule.JeduleStarter \
+                            -f {0} -p simgrid -o {1} -d 1024x768 -n \
+                            -cm {2}'.format(jed_path, output_path, cmap_path))
+        p.communicate()
+        pass
+
+pass
+
+
 class SaveBundleEncoder(json.JSONEncoder):
-        def default(self, obj):
-            if isinstance(obj, SaveBundle):
-                result = {'__cls__': 'SaveBundle',
-                        'name': obj.name,
-                        'dedicated_resources': [self.default(el) for el in obj.dedicated_resources],
-                        'transfer_mx': self.encode(obj.transfer_mx),
-                        'ideal_flops': obj.ideal_flops,
-                        'ga_schedule': self.default(obj.ga_schedule),
-                        'wf_name': obj.wf_name}
-                return result
-            if isinstance(obj, Resource):
-                return {'__cls__': 'Resource',
-                        'name': obj.name,
-                        'nodes': [self.default(node) for node in obj.nodes]}
-            if isinstance(obj, Schedule):
-                return {'__cls__': 'Schedule', 'mapping': [
-                    {'node': node.name,
-                      'value': [self.default(el) for el in values]}
-                     for (node, values) in obj.mapping.items()]}
-            if isinstance(obj, ScheduleItem):
-                return {'__cls__': 'ScheduleItem', 'job': obj.job.id, 'start_time': obj.start_time,
-                        'end_time': obj.end_time, 'state': obj.state}
+    def default(self, obj):
+        if isinstance(obj, SaveBundle):
+            result = {'__cls__': 'SaveBundle',
+                      'name': obj.name,
+                      'dedicated_resources': [self.default(el) for el in obj.dedicated_resources],
+                      'transfer_mx': self.encode(obj.transfer_mx),
+                      'ideal_flops': obj.ideal_flops,
+                      'ga_schedule': self.default(obj.ga_schedule),
+                      'wf_name': obj.wf_name}
+            return result
+        if isinstance(obj, Resource):
+            return {'__cls__': 'Resource',
+                    'name': obj.name,
+                    'nodes': [self.default(node) for node in obj.nodes]}
+        if isinstance(obj, Schedule):
+            return {'__cls__': 'Schedule', 'mapping': [
+                {'node': node.name,
+                 'value': [self.default(el) for el in values]}
+                for (node, values) in obj.mapping.items()]}
+        if isinstance(obj, ScheduleItem):
+            return {'__cls__': 'ScheduleItem', 'job': obj.job.id, 'start_time': obj.start_time,
+                    'end_time': obj.end_time, 'state': obj.state}
             # Let the base class default method raise the TypeError
-            if isinstance(obj, Node):
-                return {'__cls__': 'Node', 'name': obj.name, 'soft': obj.soft,
-                        'resource': obj.resource.name, 'flops': obj.flops}
+        if isinstance(obj, Node):
+            return {'__cls__': 'Node', 'name': obj.name, 'soft': obj.soft,
+                    'resource': obj.resource.name, 'flops': obj.flops}
             # Let the base class default method raise the TypeError
-            return json.JSONEncoder.default(self, obj)
+        return json.JSONEncoder.default(self, obj)
+
 
 class SaveBundle:
     def __init__(self, name, dedicated_resources, transfer_mx, ideal_flops, ga_schedule, wf_name):
@@ -358,6 +453,7 @@ class SaveBundle:
         self.ideal_flops = ideal_flops
         self.ga_schedule = ga_schedule
         self.wf_name = wf_name
+
 
 class StartEndPair:
     def __init__(self, start_time, end_time):
