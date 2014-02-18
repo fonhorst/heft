@@ -1,7 +1,7 @@
 from core.comparisons.ComparisonBase import ResultSaver, ComparisonUtility
 from core.comparisons.VersusFunctors import CloudHeftVsHeft
 
-reliability = 0.75
+reliability = 0.95
 
 save_file_name = ComparisonUtility.build_save_path('CloudHeftvsHeft')
 result_saver = ResultSaver(save_file_name)

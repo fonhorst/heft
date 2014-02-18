@@ -197,7 +197,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
     return GAComputation()
 
 
-def build(wf_name, is_silent=False, params=Params(20, 400, 0.8, 0.5, 0.4, 150)):
+def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
     print("Proccessing " + str(wf_name))
 
     dax1 = '..\\..\\resources\\' + wf_name + '.xml'
@@ -244,10 +244,12 @@ def build(wf_name, is_silent=False, params=Params(20, 400, 0.8, 0.5, 0.4, 150)):
         seq_time_validaty = Utility.validateNodesSeq(schedule)
         mark_finished(schedule)
         dependency_validaty = Utility.validateParentsAndChildren(schedule, wf)
+        transfer_dependency_validaty = Utility.static_validateParentsAndChildren_transfer(schedule_dynamic_heft, wf, estimator)
         print("=============Results====================")
         print("              Makespan %s" % str(max_makespan))
         print("          Seq validaty %s" % str(seq_time_validaty))
         print("   Dependancy validaty %s" % str(dependency_validaty))
+        print("    Transfer validaty %s" % str(transfer_dependency_validaty))
 
         name = wf_name +"_bundle"
         path = '..\\..\\resources\\saved_schedules\\' + name + '.json'
@@ -269,11 +271,13 @@ def build(wf_name, is_silent=False, params=Params(20, 400, 0.8, 0.5, 0.4, 150)):
     dynamic_seq_time_validaty = Utility.validateNodesSeq(schedule_dynamic_heft)
     mark_finished(schedule_dynamic_heft)
     dynamic_dependency_validaty = Utility.validateParentsAndChildren(schedule_dynamic_heft, wf)
+    transfer_dependency_validaty = Utility.static_validateParentsAndChildren_transfer(schedule_dynamic_heft, wf, estimator)
     print("heft_makespan: " + str(dynamic_heft_makespan))
     print("=============Dynamic HEFT Results====================")
     print("              Makespan %s" % str(dynamic_heft_makespan))
     print("          Seq validaty %s" % str(dynamic_seq_time_validaty))
     print("   Dependancy validaty %s" % str(dynamic_dependency_validaty))
+    print("    Transfer validaty %s" % str(transfer_dependency_validaty))
 
     Utility.create_jedule_visualization(schedule_dynamic_heft, wf_name+'_heft')
 
@@ -281,13 +285,13 @@ def build(wf_name, is_silent=False, params=Params(20, 400, 0.8, 0.5, 0.4, 150)):
     ##================================
     ##GA Run
     ##================================
-    pr = cProfile.Profile()
-    pr.enable()
+    # pr = cProfile.Profile()
+    # pr.enable()
     main(schedule_dynamic_heft)
-    pr.disable()
-    s = io.StringIO()
-    sortby = 'cumulative'
-    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-    ps.print_stats()
-    print(s.getvalue())
+    # pr.disable()
+    # s = io.StringIO()
+    # sortby = 'cumulative'
+    # ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    # ps.print_stats()
+    # print(s.getvalue())
 

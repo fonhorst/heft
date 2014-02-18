@@ -164,6 +164,70 @@ class Utility:
                 return False
         return True
 
+    ##TODO: only for static remove duplicate code later
+    @staticmethod
+    def static_validateParentsAndChildren_transfer(schedule, workflow, estimator):
+        #{
+        #   task: (node,start_time,end_time),
+        #   ...
+        #}
+        task_to_node = dict()
+        item_to_node = dict()
+        for (node, items) in schedule.mapping.items():
+            for item in items:
+                seq = task_to_node.get(item.job.id, [])
+                seq.append(item)
+                ##seq.append(node, item.start_time, item.end_time, item.state)
+                task_to_node[item.job.id] = seq
+                item_to_node[item] = node
+
+        def check_failed(seq):
+            ## in schedule items sequence, only one finished element must be
+            ## resulted schedule can contain only failed and finished elements
+            states = [item.state for item in seq]
+            if states[-1] != ScheduleItem.FINISHED:
+                return False
+            finished = [state for state in states if state == ScheduleItem.FINISHED]
+            if len(finished) != 1:
+                return False
+            failed = [state for state in states if state == ScheduleItem.FAILED]
+            if len(states) - len(finished) != len(failed):
+                return False
+            return True
+
+        task_to_node = {job_id: sorted(seq, key=lambda x: x.start_time) for (job_id, seq) in task_to_node.items()}
+        for (job_id, seq) in task_to_node.items():
+            result = Utility.validate_time_seq(seq)
+            if result is False:
+                return False
+            if check_failed(seq) is False:
+                return False
+
+
+        def check(task):
+            resulted_item = task_to_node[task.id][-1]
+            p_node = item_to_node[resulted_item]
+            p_job = resulted_item.job
+            p_end_time = resulted_item.end_time
+            for child in task.children:
+
+                c_res_item = task_to_node[child.id][-1]
+                c_node = item_to_node[c_res_item]
+                c_job = c_res_item.job
+                c_start_time = c_res_item.start_time
+                if c_start_time < p_end_time + estimator.estimate_transfer_time(p_node, c_node, p_job, c_job):
+                    return False
+                res = check(child)
+                if res is False:
+                    return False
+            return True
+
+        for task in workflow.head_task.children:
+            res = check(task)
+            if res is False:
+                return False
+        return True
+
     @staticmethod
     def validateUnavailabilityPeriods(schedule, unavailability_periods):
         ## TODO: refactor it later
@@ -418,6 +482,7 @@ class Utility:
 
         Utility.write_schedule_to_jed(schedule, jed_path, cmap_path, node_mapping_path)
 
+        ## TODO: remake for *nix systems
         p = subprocess.Popen('java -Xmx512M -jar ./jedule-0.3.2.jar net.sf.jedule.JeduleStarter \
                             -f {0} -p simgrid -o {1} -d 1024x768 \
                             -cm {2}'.format(jed_path, output_path, cmap_path))
