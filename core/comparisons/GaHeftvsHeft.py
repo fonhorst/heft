@@ -11,6 +11,6 @@ def calc(wf_name):
 
 print("reliability %s" % reliability)
 
-wf_names = ["Montage_25"]
+wf_names = ["CyberShake_30"]
 
 [calc(wf_name) for wf_name in wf_names]

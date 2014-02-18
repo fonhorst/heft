@@ -78,13 +78,13 @@ class EventMachine:
         event.time_posted = self.current_time
 
         # if isinstance(event, TaskStart):
-        #         print("Post Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id) + ' ' + str(event.node.name))
+        #         print("Post Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
         # elif isinstance(event, NodeUp):
         #        print("Post Event: " + str(event) + ' '+ str(event.time_happened)+ ' ' + str(event.node.name))
         # elif isinstance(event, NodeFailed):
         #         print( "Post Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
         # elif isinstance(event, TaskFinished):
-        #         print("Post Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
+        #         print("Post Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
 
 
         ## TODO: raise exception if event.time_happened < self.current_time
