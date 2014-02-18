@@ -77,10 +77,13 @@ class ScheduleBuilder:
                     continue
 
                 ## TODO: Urgent! completely rethink this procedure
+
                 tsk_id = None
                 for i in range(len(chromo_copy[node.name])):
                     if chromo_copy[node.name][i] in ready_tasks:
                         tsk_id = chromo_copy[node.name][i]
+                        break
+
 
                 if tsk_id is not None:
                     task = self.task_map[tsk_id]
@@ -89,12 +92,12 @@ class ScheduleBuilder:
                     ready_tasks.remove(tsk_id)
 
                     time_slots, runtime = self._get_possible_execution_times(
-                                                schedule_mapping,
-                                                task_to_node,
-                                                chrmo_mapping,
-                                                task,
-                                                node,
-                                                current_time)
+                                                    schedule_mapping,
+                                                    task_to_node,
+                                                    chrmo_mapping,
+                                                    task,
+                                                    node,
+                                                    current_time)
 
                     time_slot = next(time_slots)
                     start_time = time_slot[0]

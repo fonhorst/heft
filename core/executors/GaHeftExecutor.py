@@ -411,7 +411,7 @@ class GAComputationManager:
                                        self.workflow,
                                        self.resource_manager,
                                        self.estimator,
-                                       params=Params(20, 2, 0.8, 0.5, 0.4, 2))
+                                       params=Params(20, 10, 0.8, 0.5, 0.4, 2))
         return ga
 
     ## actual run happens here
@@ -439,6 +439,9 @@ class GAComputationWrapper:
         pass
 
     def run(self, time_interval, current_time):
+
+        #TODO: remove it later
+        time_interval = 1000
 
         event = Event()
 

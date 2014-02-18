@@ -1,8 +1,8 @@
 from GA.DEAPGA.GAImplementation.GAImplementation import build, Params
 
-# wf_names = ['CyberShake_50']
+wf_names = ['CyberShake_50']
 # wf_names = ['Sipht_30']
-wf_names = ['CyberShake_30']
+# wf_names = ['Montage_25']
 # wf_names = ['Sipht_60']
 # wf_names = ["Epigenomics_24", "Epigenomics_46", "Epigenomics_72", "Epigenomics_100"]
 # wf_names = ["Inspiral_30", "Inspiral_50", "Inspiral_72", "Inspiral_100"]
@@ -19,5 +19,5 @@ wf_names = ['CyberShake_30']
 #             "Sipht_30", "Sipht_60", "Sipht_73", "Sipht_100"]
 
 
-[build(wf_name, True, Params(20, 400, 0.9, 0.7, 0.5, 150), [10, 15, 25, 30]) for wf_name in wf_names]
+[build(wf_name, False, Params(20, 400, 0.9, 0.7, 0.5, 50), [10, 15, 25, 30]) for wf_name in wf_names]
 # [build(wf_name, True, Params(20, 400, 0.9, 0.5, 0.8, 150), [10, 15, 25, 30, 45]) for wf_name in wf_names]
