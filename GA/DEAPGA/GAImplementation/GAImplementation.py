@@ -69,7 +69,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
     toolbox.register("mate", ga_functions.crossover)
     toolbox.register("mutate", ga_functions.mutation)
     toolbox.register("select", tools.selTournament, tournsize=10)
-    #toolbox.register("select", tools.selRoulette)
+    # toolbox.register("select", tools.selRoulette)
 
     ## TODO: add here
     ## TODO:  - ability to use external pop as initial pop
@@ -159,11 +159,15 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
 
 
                 ## TODO: additional expenditures. Need to reduce it later.
-                resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
-                result = max(resulted_pop, key=lambda x: x[1])
-                self.current_result = (result[0], pop, ga_functions.build_schedule(result[0], fixed_schedule_part, current_time))
+                # resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
+                # result = max(resulted_pop, key=lambda x: x[1])
+                # self.current_result = (result[0], pop, ga_functions.build_schedule(result[0], fixed_schedule_part, current_time))
                 pass
 
+            ## TODO: additional expenditures. Need to reduce it later.
+            resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
+            result = max(resulted_pop, key=lambda x: x[1])
+            self.current_result = (result[0], pop, ga_functions.build_schedule(result[0], fixed_schedule_part, current_time))
 
             ## return the best fitted individual and resulted population
             print("Ready")
@@ -197,10 +201,10 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
     return GAComputation()
 
 
-def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
+def build(wf_name, is_silent=False, params=Params(20, 400, 0.9, 0.7, 0.5, 150), nodes_conf = None):
     print("Proccessing " + str(wf_name))
 
-    dax1 = '..\\..\\resources\\' + wf_name + '.xml'
+    dax1 = '../../resources/' + wf_name + '.xml'
 
     wf_start_id_1 = "00"
     task_postfix_id_1 = "00"
@@ -218,14 +222,20 @@ def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
     resources = rgen.generate()
     transferMx = rgen.generateTransferMatrix(resources)
 
-    ##TODO: remove it later
-    dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
-    path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle_backup' + '.json'
-    bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
-    resources = bundle.dedicated_resources
-    transferMx = bundle.transfer_mx
-    ideal_flops = bundle.ideal_flops
-    ##TODO: end
+    if nodes_conf is None:
+        ##TODO: remove it later
+        dax2 = '../../resources/' + 'CyberShake_30' + '.xml'
+        path = '../../resources/saved_schedules/' + 'CyberShake_30_bundle_backup' + '.json'
+        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_start_id_1, task_postfix_id_1, deadline_1))
+        resources = bundle.dedicated_resources
+        #transferMx = bundle.transfer_mx
+        ideal_flops = bundle.ideal_flops
+        ##TODO: end
+    else:
+        ## TODO: refactor it later.
+        resources = ResourceGenerator.r(nodes_conf)
+        ##
+
 
     estimator = ExperimentEstimator(transferMx, ideal_flops, dict())
     resource_manager = ExperimentResourceManager(resources)
@@ -252,7 +262,7 @@ def build(wf_name, is_silent=False, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
         print("    Transfer validaty %s" % str(transfer_dependency_validaty))
 
         name = wf_name +"_bundle"
-        path = '..\\..\\resources\\saved_schedules\\' + name + '.json'
+        path = '../../resources/saved_schedules/' + name + '.json'
         Utility.save_schedule(path, wf_name, resources, transferMx, ideal_flops, schedule)
 
         Utility.create_jedule_visualization(schedule, wf_name+'_ga')

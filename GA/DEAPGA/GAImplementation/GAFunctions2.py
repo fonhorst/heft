@@ -61,10 +61,10 @@ class GAFunctions2:
 
     def random_chromo(self, fixed_schedule_part, current_time):
 
-        res = random.random()
-        # # TODO:
-        if res > 0.8 and self.initial_chromosome is not None:
-            return self.initial_chromosome
+        # res = random.random()
+        # # # TODO:
+        # if res > 0.8 and self.initial_chromosome is not None:
+        #     return self.initial_chromosome
         ##return [self.random_chromo() for j in range(self.size)]
         sched = self.initializing_alg.schedule(fixed_schedule_part, current_time)
         #TODO: remove it later

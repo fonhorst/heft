@@ -483,14 +483,15 @@ class Utility:
         Utility.write_schedule_to_jed(schedule, jed_path, cmap_path, node_mapping_path)
 
         ## TODO: remake for *nix systems
-        p = subprocess.Popen('java -Xmx512M -jar ./jedule-0.3.2.jar net.sf.jedule.JeduleStarter \
-                            -f {0} -p simgrid -o {1} -d 1024x768 \
-                            -cm {2}'.format(jed_path, output_path, cmap_path))
+        p = subprocess.Popen(['java', '-Xmx512M', '-jar', './jedule-0.3.2.jar', 'net.sf.jedule.JeduleStarter', \
+                              '-f', jed_path, '-p', 'simgrid', '-o', output_path, '-d', '1024x768', \
+                              '-cm', cmap_path])
         p.communicate()
 
         ## TODO: fix it later.
         os.chdir(old_dir)
         pass
+
 
 pass
 
