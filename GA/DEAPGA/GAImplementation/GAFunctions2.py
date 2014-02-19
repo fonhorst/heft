@@ -1,5 +1,7 @@
 ## from Buyya
+from multiprocessing import Process
 import random
+import threading
 from GA.DEAPGA.GAImplementation.ScheduleBuilder import ScheduleBuilder
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from environment.Resource import Node
@@ -92,11 +94,23 @@ class GAFunctions2:
 
         def fitness(chromo):
 
+            ## TODO: remove it later.
+            # t_ident = str(threading.current_thread().ident)
+            # t_name = str(threading.current_thread().name)
+            # print("Time: " + str(current_time) + " Running ga in isolated thread " + t_name + " " + t_ident)
+
             ## value of fitness function is the last time point in the schedule
             ## built from the chromo
             ## chromo is {Task:Node},{Task:Node},... - fixed length
+
             schedule = builder(chromo, current_time)
             time = Utility.get_the_last_time(schedule)
+
+            # time = 1
+            # ## TODO: remove it later.
+            # k = 0
+            # for i in range(100000):
+            #     k += i
 
             return (1/time,)
         ## TODO: redesign it later

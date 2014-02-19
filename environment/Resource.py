@@ -241,6 +241,7 @@ class Workflow:
         self.deadline = None ## deadline time
         self.deadline_type = None ## deadline type
         self.priority = None ## priority of wf
+        self.unique_tasks = None
 
     def get_task_count(self):
         unique_tasks =self.get_all_unique_tasks()
@@ -248,17 +249,19 @@ class Workflow:
         return result
 
     def get_all_unique_tasks(self):
-        def add_tasks(unique_tasks, task):
-            unique_tasks.update(task.children)
-            for child in task.children:
-                add_tasks(unique_tasks, child)
-        unique_tasks = set()
-        if self.head_task is None:
-            result = []
-        else:
-            add_tasks(unique_tasks, self.head_task)
-            result = unique_tasks
-        return result
+        if self.unique_tasks is None:
+            def add_tasks(unique_tasks, task):
+                unique_tasks.update(task.children)
+                for child in task.children:
+                    add_tasks(unique_tasks, child)
+            unique_tasks = set()
+            if self.head_task is None:
+                result = []
+            else:
+                add_tasks(unique_tasks, self.head_task)
+                result = unique_tasks
+            self.unique_tasks = result
+        return self.unique_tasks
 
     ## TODO: for one-time use. Remove it later.
     def avr_runtime(self, package_name):

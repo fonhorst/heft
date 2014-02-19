@@ -1,13 +1,18 @@
 import cProfile
 from collections import namedtuple
+from concurrent.futures import ThreadPoolExecutor
+import datetime
+
 import pstats
 import random
 from threading import Thread, Lock
 import io
+import threading
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2, mark_finished
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from core.DSimpleHeft import DynamicHeft
 from core.HeftHelper import HeftHelper
+from core.comparisons.ComparisonBase import ComparisonUtility
 from core.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 from core.simple_heft import StaticHeftPlanner
 from deap import tools
@@ -16,6 +21,8 @@ from deap import base
 from environment.Resource import ResourceGenerator
 from environment.ResourceManager import Schedule, ScheduleItem
 from environment.Utility import Utility
+import multiprocessing
+from multiprocessing import Pool
 
 Params = namedtuple('Params', ['ideal_flops',
                                'population',
@@ -111,9 +118,13 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             fitnesses = list(map(toolbox.evaluate, pop))
             for ind, fit in zip(pop, fitnesses):
                 ind.fitness.values = fit
+
+            pool_size = multiprocessing.cpu_count()
+            executor = ThreadPoolExecutor(max_workers=pool_size)
+
             # Begin the evolution
             for g in range(NGEN):
-
+                # print("Iteration")
                 if self.is_stopped():
                     break
 
@@ -138,7 +149,57 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                         del mutant.fitness.values
                 # Evaluate the individuals with an invalid fitness
                 invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-                fitnesses = map(toolbox.evaluate, invalid_ind)
+
+
+
+                # l = len(invalid_ind)
+                # # fitnesses = [None] * l
+                # part_size = l//pool_size
+                #
+                # for_parallel = []
+                # i = 0
+                # while True:
+                #     for_parallel.append((i, min(i + part_size - 1, l - 1)))
+                #     if i + part_size >= l:
+                #         break
+                #     else:
+                #         i += part_size
+                #
+                # def ev(x):
+                #     # t_ident = str(threading.current_thread().ident)
+                #     # t_name = str(threading.current_thread().name)
+                #     start = ComparisonUtility.cur_time()
+                #
+                #
+                #     st = x[0]
+                #     end = x[1] + 1
+                #     lk = list(invalid_ind[st:end])
+                #     result = list(map(toolbox.evaluate, lk))
+                #     end = ComparisonUtility.cur_time()
+                #     ##print(len(result))
+                #     #print("Time: " + str(current_time) + " Running ga in isolated thread " + t_name + " " + t_ident)
+                #     print("start : " + start + " end: " + end)
+                #     return result
+
+                # calculated = executor.map(ev, for_parallel)
+                # fitnesses = []
+                # for c in calculated:
+                #     fitnesses += c
+
+
+                # start = ComparisonUtility.cur_time()
+                fitnesses = list(map(toolbox.evaluate, invalid_ind))
+                # end = ComparisonUtility.cur_time()
+                # print("start : " + start + " end: " + end)
+
+
+                ## TODO: fake
+                # fitnesses = map(lambda x: (5,), invalid_ind)
+
+
+
+
+
                 for ind, fit in zip(invalid_ind, fitnesses):
                     ind.fitness.values = fit
                 pop[:] = offspring
@@ -163,6 +224,8 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                 # result = max(resulted_pop, key=lambda x: x[1])
                 # self.current_result = (result[0], pop, ga_functions.build_schedule(result[0], fixed_schedule_part, current_time))
                 pass
+
+
 
             ## TODO: additional expenditures. Need to reduce it later.
             resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
@@ -201,7 +264,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
     return GAComputation()
 
 
-def build(wf_name, is_silent=False, params=Params(20, 400, 0.9, 0.7, 0.5, 150), nodes_conf = None):
+def build(wf_name, is_silent=False, is_visualized=True, params=Params(20, 400, 0.9, 0.7, 0.5, 150), nodes_conf = None):
     print("Proccessing " + str(wf_name))
 
     dax1 = '../../resources/' + wf_name + '.xml'
@@ -265,7 +328,8 @@ def build(wf_name, is_silent=False, params=Params(20, 400, 0.9, 0.7, 0.5, 150), 
         path = '../../resources/saved_schedules/' + name + '.json'
         Utility.save_schedule(path, wf_name, resources, transferMx, ideal_flops, schedule)
 
-        Utility.create_jedule_visualization(schedule, wf_name+'_ga')
+        if is_visualized:
+            Utility.create_jedule_visualization(schedule, wf_name+'_ga')
         pass
 
 
@@ -289,19 +353,20 @@ def build(wf_name, is_silent=False, params=Params(20, 400, 0.9, 0.7, 0.5, 150), 
     print("   Dependancy validaty %s" % str(dynamic_dependency_validaty))
     print("    Transfer validaty %s" % str(transfer_dependency_validaty))
 
-    Utility.create_jedule_visualization(schedule_dynamic_heft, wf_name+'_heft')
+    if is_visualized:
+        Utility.create_jedule_visualization(schedule_dynamic_heft, wf_name+'_heft')
 
 
     ##================================
     ##GA Run
     ##================================
-    # pr = cProfile.Profile()
-    # pr.enable()
+    pr = cProfile.Profile()
+    pr.enable()
     main(schedule_dynamic_heft)
-    # pr.disable()
-    # s = io.StringIO()
-    # sortby = 'cumulative'
-    # ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-    # ps.print_stats()
-    # print(s.getvalue())
+    pr.disable()
+    s = io.StringIO()
+    sortby = 'cumulative'
+    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    ps.print_stats()
+    print(s.getvalue())
 

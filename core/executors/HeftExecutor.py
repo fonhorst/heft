@@ -109,7 +109,6 @@ class HeftExecutor(EventMachine):
                 if item.state == ScheduleItem.UNSTARTED:
                     unstarted_items.add(item)
 
-        events_to_post = []
         for item in unstarted_items:
             event_start = TaskStart(item.job)
             event_start.time_happened = item.start_time
@@ -117,7 +116,6 @@ class HeftExecutor(EventMachine):
             event_finish = TaskFinished(item.job)
             event_finish.time_happened = item.end_time
 
-            events_to_post
             self.post(event_start)
             self.post(event_finish)
         pass

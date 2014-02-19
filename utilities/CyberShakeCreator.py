@@ -1,8 +1,8 @@
 import os
 import subprocess
 
-wf_type = "CYBERSHAKE"
-wf_name = "CyberShake"
+wf_type = "MONTAGE"
+wf_name = "Montage"
 
 wd = "C:\\Users\\nikolay\\Downloads\\BharathiPaper (1).tar\\BharathiPaper (1)\\BharathiPaper"
 cur_wd = os.getcwd()
@@ -15,7 +15,7 @@ if not os.path.exists(path_dir):
 for n in range(30, 110, 10):
     path = path_dir + wf_name + "_" + str(n) + ".xml"
     out = open(path, "w")
-    p = subprocess.Popen("java -jar WorkflowGenerator.jar -a {0} -- -n {1}".format(wf_type, 30), stdout=out)
+    p = subprocess.Popen("java -jar WorkflowGenerator.jar -a {0} -- -n {1}".format(wf_type, 35), stdout=out)
     p.communicate()
     out.close()
     out = open(path, "r")

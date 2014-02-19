@@ -52,6 +52,8 @@ class StaticHeftPlanner(Scheduler):
         new_plan = new_schedule.mapping
 
         for (wf, jobs) in wf_jobs.items():
+
+
             new_schedule = self.mapping([(wf, jobs)],
                                new_plan,
                                nodes,
@@ -87,6 +89,8 @@ class StaticHeftPlanner(Scheduler):
             runtime = compcost(task, machine)
             cost = st(machine, runtime) + runtime
             ##print("machine: %s job:%s cost: %s" % (machine.name, task.id, cost))
+            ##print("machine: " + str(machine.name) + " cost: " + str(cost))
+
             return cost
 
         for wf, tasks in sorted_jobs:

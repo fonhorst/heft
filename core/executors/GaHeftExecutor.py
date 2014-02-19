@@ -411,7 +411,7 @@ class GAComputationManager:
                                        self.workflow,
                                        self.resource_manager,
                                        self.estimator,
-                                       params=Params(20, 10, 0.8, 0.5, 0.4, 2))
+                                       params=Params(20, 400, 0.8, 0.5, 0.4, 50))
         return ga
 
     ## actual run happens here

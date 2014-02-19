@@ -26,6 +26,11 @@ class DynamicHeft(StaticHeftPlanner):
         nodes = self.get_nodes()
 
         self.wf_jobs = self.make_ranking(self.workflow, nodes)
+        #TODO: remove it later
+        # to_print = ''
+        # for job in self.wf_jobs:
+        #     to_print = to_print + str(job.id) + " "
+        # print(to_print)
         pass
 
     def run(self, current_cleaned_schedule):

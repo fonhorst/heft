@@ -92,7 +92,7 @@ class ReschedulingHeftPlanner(Scheduler):
 
         def ft(machine):
             cost = st(machine) + compcost(task, machine)
-            print("machine: %s job:%s cost: %s" % (machine.id, task.id, cost))
+            ##print("machine: %s job:%s cost: %s" % (machine.id, task.id, cost))
             return cost
 
         for wf, tasks in sorted_jobs:

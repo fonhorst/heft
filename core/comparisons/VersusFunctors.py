@@ -125,8 +125,9 @@ class GaHeftvsHeft(VersusFunctor):
     #@save_result
     @profit_print
     def __call__(self, wf_name):
-        resHeft = run(self.HEFT, self.mainHeft, wf_name, self.reliability)
-        resGaHeft = run(self.GA_HEFT, self.mainGaHeft, wf_name, self.reliability)
+        n = 1
+        resHeft = run(self.HEFT, self.mainHeft, wf_name, self.reliability, n=n)
+        resGaHeft = run(self.GA_HEFT, self.mainGaHeft, wf_name, self.reliability, n=n)
 
         pc = (1 - resGaHeft[2]/resHeft[2])*100
         result = dict()
@@ -135,5 +136,5 @@ class GaHeftvsHeft(VersusFunctor):
             self.HEFT: ComparisonUtility.get_dict(resHeft),
             self.GA_HEFT: ComparisonUtility.get_dict(resGaHeft)
         }
-        result['profit_by_avr'] = {"heft_ReX vs Heft": pc}
+        result['profit_by_avr'] = {"GaHeft vs Heft": pc}
         return result

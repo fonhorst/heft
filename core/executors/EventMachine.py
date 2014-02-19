@@ -49,6 +49,10 @@ class EventMachine:
         nodeFailedCount = 0
         while len(self.queue) > 0:
             event = self.queue.popleft()
+
+            if self.current_time > event.time_happened:
+                raise Exception('current_time > event.time_happened: ' + str(self.current_time) + ' > ' + str(event.time_happened))
+
             self.current_time = event.time_happened
 
             # if isinstance(event, TaskStart):
@@ -56,13 +60,13 @@ class EventMachine:
             # elif isinstance(event, NodeFailed):
             #     nodeFailedCount += 1
             # if isinstance(event, TaskStart):
-            #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id) + ' ' + str(None if event.node is None else event.node.name))
+            #     print(str(count) + " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + ' ' + str(event.task.id) + ' ' + str(None if event.node is None else event.node.name))
             # elif isinstance(event, NodeUp):
-            #    print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened)+ ' ' + str(event.node.name))
+            #    print(str(count) + " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(event.node.name))
             # elif isinstance(event, NodeFailed):
-            #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
+            #     print(str(count) + " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
             # elif isinstance(event, TaskFinished):
-            #     print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(None if event.node is None else event.node.name)+ ' ' + str(event.task.id))
+            #     print(str(count) + " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(None if event.node is None else event.node.name)+ ' ' + str(event.task.id))
             # else:
               # print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
             count += 1
