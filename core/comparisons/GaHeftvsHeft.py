@@ -1,3 +1,4 @@
+import os
 from core.comparisons.ComparisonBase import ResultSaver, ComparisonUtility
 from core.comparisons.VersusFunctors import GaHeftvsHeft
 
@@ -5,12 +6,18 @@ reliability = 0.95
 
 save_file_name = ComparisonUtility.build_save_path('GaHeftvsHeft')
 result_saver = ResultSaver(save_file_name)
-exp = GaHeftvsHeft(reliability, n=25)
-def calc(wf_name):
-    return result_saver(exp(wf_name))
+exp = GaHeftvsHeft(reliability, n=10)
+def calc(wf_name, out):
+    return result_saver(exp(wf_name, out))
 
 print("reliability %s" % reliability)
 
-wf_names = ["Montage_40"]
+base_dir = "../../resources/experiment_1/"
+if not os.path.exists(base_dir):
+    os.makedirs(base_dir)
+output_file_template = base_dir + "[{0}]_[{1}]_[{2}].txt"
+out = lambda w_name: output_file_template.format(w_name, reliability, ComparisonUtility.cur_time())
 
-[calc(wf_name) for wf_name in wf_names]
+wf_names = ["Montage_25"]
+
+[calc(wf_name, out(wf_name)) for wf_name in wf_names]

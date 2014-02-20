@@ -16,7 +16,8 @@ class GaHeftExecutor(EventMachine):
                  heft_planner,
                  base_fail_duration,
                  base_fail_dispersion,
-                 fixed_interval_for_ga):
+                 fixed_interval_for_ga,
+                 logger=None):
         self.queue = deque()
         self.current_time = 0
         # DynamicHeft
@@ -34,6 +35,7 @@ class GaHeftExecutor(EventMachine):
                                                            heft_planner.workflow,
                                                            heft_planner.resource_manager,
                                                            heft_planner.estimator)
+        self.logger = logger
 
         pass
 
@@ -417,7 +419,7 @@ class GAComputationManager:
                                        self.workflow,
                                        self.resource_manager,
                                        self.estimator,
-                                       params=Params(20, 400, 0.8, 0.5, 0.4, 50))
+                                       params=Params(20, 400, 0.8, 0.5, 0.4, 150))
         return ga
 
     ## actual run happens here

@@ -9,7 +9,7 @@ from core.executors.EventMachine import EventMachine, TaskStart, NodeFailed, Nod
 class HeftExecutor(EventMachine):
 
     def __init__(self, heft_planner, base_fail_duration, base_fail_dispersion ,
-                 initial_schedule = None):
+                 initial_schedule = None, logger=None):
         ## TODO: remake it later
         self.queue = deque()
         self.current_time = 0
@@ -19,6 +19,8 @@ class HeftExecutor(EventMachine):
         self.base_fail_dispersion = base_fail_dispersion
         self.initial_schedule = initial_schedule
         self.current_schedule = initial_schedule
+
+        self.logger = logger
 
     def init(self):
         if self.initial_schedule is None:

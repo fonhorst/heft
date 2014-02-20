@@ -1,9 +1,11 @@
 from functools import partial
+from Tools.Scripts.ndiff import fopen
 from core.comparisons.ComparisonBase import VersusFunctor, profit_print, ComparisonUtility, run
 from core.examples.GaHeftExecutorExample import GaHeftExecutorExample
 from core.examples.CloudHeftExecutorExample import CloudHeftExecutorExample
 from core.examples.GAExecutorExample import GAExecutorExample
 from core.examples.HeftExecutorExample import HeftExecutorExample
+from core.executors.EventMachine import NodeFailed, NodeUp
 from environment.Utility import Utility
 
 
@@ -125,17 +127,29 @@ class GaHeftvsHeft(VersusFunctor):
 
     #@save_result
     @profit_print
-    def __call__(self, wf_name):
+    def __call__(self, wf_name, output_file=None):
         print("Run counts: " + str(self.n))
-        resHeft = run(self.HEFT, self.mainHeft, wf_name, self.reliability, n=self.n)
-        resGaHeft = run(self.GA_HEFT, self.mainGaHeft, wf_name, self.reliability, n=self.n)
 
-        pc = (1 - resGaHeft[2]/resHeft[2])*100
+        f = open(output_file, 'a')
+
+        f.write("===============\n")
+        f.write("=== HEFT Run\n")
+        f.write("===============\n")
+        resHeft = run(self.HEFT, self.mainHeft, wf_name, self.reliability, f, n=self.n)
+        f.write("===============\n")
+        f.write("=== GAHEFT Run\n")
+        f.write("===============\n")
+        # resGaHeft = run(self.GA_HEFT, self.mainGaHeft, wf_name, self.reliability, f, n=self.n)
+
+        # pc = (1 - resGaHeft[2]/resHeft[2])*100
+        # f.write("GaHeft vs Heft: " + str(pc) + '\n')
+        f.close()
+
         result = dict()
         result['wf_name'] = wf_name
         result['algorithms'] = {
             self.HEFT: ComparisonUtility.get_dict(resHeft),
-            self.GA_HEFT: ComparisonUtility.get_dict(resGaHeft)
+            # self.GA_HEFT: ComparisonUtility.get_dict(resGaHeft)
         }
-        result['profit_by_avr'] = {"GaHeft vs Heft": pc}
+        # result['profit_by_avr'] = {"GaHeft vs Heft": pc}
         return result

@@ -1,6 +1,8 @@
 from datetime import datetime
 import json
 import os
+from Tools.Scripts.ndiff import fopen
+
 
 class VersusFunctor:
     def __call__(self, wf_name):
@@ -27,14 +29,47 @@ def output(f):
     return inner_func
 
 @output
-def run(run_name, mainFunc, wf_name, reliability, n=100):
-    result = [mainFunc(reliability, True, wf_name) for i in range(n)]
+def run(run_name, mainFunc, wf_name, reliability, output_file=None, n=100):
+
+    result = []
+    for i in range(n):
+        iter_str = "Run " + str(run_name) + " " + str(i) + '\n'
+        print(iter_str)
+
+        if output_file is not None:
+            output_file.write(iter_str)
+
+        class wrt:
+            def write(self, record):
+                output_file.write("\t" + record)
+            def flush(self):
+                output_file.flush()
+        logger = None if output_file is None else wrt()
+
+        res = mainFunc(reliability, True, wf_name, logger=logger)
+
+        if output_file is not None:
+            output_file.write("\t====RESULT====\n")
+            output_file.write('\t' + str(res) + '\n')
+            output_file.flush()
+
+        result.append(res)
+        pass
     mx_time = max(result)
     min_time = min(result)
     avr_time = sum(result)/n
+
+    if output_file is not None:
+        output_file.write("max: " + str(mx_time) + '\n')
+        output_file.write("min: " + str(min_time) + '\n')
+        output_file.write("avr: " + str(avr_time) + '\n')
     ## TODO: fix dispersion calculation
     #avr_dispersion = math.sqrt(sum([math.pow(abs(res - avr_time), 2) for res in result]))
     return (mx_time, min_time, avr_time)
+
+
+
+
 
 
 class ComparisonUtility:

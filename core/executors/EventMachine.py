@@ -38,9 +38,10 @@ class NodeUp(BaseEvent):
         return "NodeUp"
 
 class EventMachine:
-    def __init__(self):
+    def __init__(self, logger=None):
         self.queue = deque()
         self.current_time = 0
+        self.logger = logger
 
     def run(self):
         count = 0
@@ -54,6 +55,14 @@ class EventMachine:
                 raise Exception('current_time > event.time_happened: ' + str(self.current_time) + ' > ' + str(event.time_happened))
 
             self.current_time = event.time_happened
+
+            if self.logger is not None:
+                if isinstance(event, NodeUp):
+                    record = " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(event.node.name) + '\n'
+                    self.logger.write(record)
+                elif isinstance(event, NodeFailed):
+                    record = " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(event.node.name)+ ' ' + str(event.task.id) + '\n'
+                    self.logger.write(record)
 
             # if isinstance(event, TaskStart):
             #     taskStartCount += 1

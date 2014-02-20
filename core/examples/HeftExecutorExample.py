@@ -8,7 +8,7 @@ class HeftExecutorExample(BaseExecutorExample):
     def __init__(self):
         pass
 
-    def main(self, reliability, is_silent, wf_name, with_ga_initial=False, the_bundle=None):
+    def main(self, reliability, is_silent, wf_name, with_ga_initial=False, the_bundle=None, logger=None):
 
         wf = self.get_wf(wf_name)
         bundle = self.get_bundle(the_bundle)
@@ -20,10 +20,13 @@ class HeftExecutorExample(BaseExecutorExample):
                                     base_fail_duration=40,
                                     base_fail_dispersion=1,
                                     #initial_schedule=None)
-                                    initial_schedule=initial_schedule)
+                                    initial_schedule=initial_schedule,
+                                    logger=logger)
         heft_machine.init()
         heft_machine.run()
 
+        ## TODO: remove it later.
+        logger.flush()
 
         (makespan, vl1, vl2) = self.extract_result(heft_machine.current_schedule, is_silent, wf)
         return makespan
