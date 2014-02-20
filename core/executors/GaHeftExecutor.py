@@ -244,7 +244,7 @@ class GaHeftExecutor(EventMachine):
             t1 = Utility.get_the_last_time(resulted_schedule)
             t2 = Utility.get_the_last_time(self.current_schedule)
             ## TODO: uncomment it later.
-            if True:#t1 < t2:
+            if t1 < t2:
                 ## generate new events
                 self._replace_current_schedule(event, resulted_schedule)
                 ## if event is TaskStarted event the return value means skip further processing
@@ -379,6 +379,12 @@ class GAComputationManager:
                 print("GA's computation isn't able to meet the end of computation")
                 return
             fixed_schedule = _get_fixed_schedule(current_schedule, front_event)
+
+            #TODO: It isn't a good reliable solution. It should be reconsider later.
+            if len(fixed_schedule.get_all_unique_tasks_id()) == len(self.workflow.get_all_unique_tasks()):
+                print("Fixed schedule is complete. There is no use to run ga.")
+                return
+
 
 
             count = len(fixed_schedule.get_all_unique_tasks_id())

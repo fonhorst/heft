@@ -117,17 +117,18 @@ class GaHeftvsHeft(VersusFunctor):
     GA_HEFT = "gaHeft"
     HEFT = "heft"
 
-    def __init__(self, reliability):
+    def __init__(self, reliability, n=25):
         self.reliability = reliability
         self.mainHeft = HeftExecutorExample().main
         self.mainGaHeft = GaHeftExecutorExample().main
+        self.n = n
 
     #@save_result
     @profit_print
     def __call__(self, wf_name):
-        n = 1
-        resHeft = run(self.HEFT, self.mainHeft, wf_name, self.reliability, n=n)
-        resGaHeft = run(self.GA_HEFT, self.mainGaHeft, wf_name, self.reliability, n=n)
+        print("Run counts: " + str(self.n))
+        resHeft = run(self.HEFT, self.mainHeft, wf_name, self.reliability, n=self.n)
+        resGaHeft = run(self.GA_HEFT, self.mainGaHeft, wf_name, self.reliability, n=self.n)
 
         pc = (1 - resGaHeft[2]/resHeft[2])*100
         result = dict()

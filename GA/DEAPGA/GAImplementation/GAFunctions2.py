@@ -133,9 +133,10 @@ class GAFunctions2:
         if len(alive_nodes) == 0:
             raise Exception(" There are only dead nodes!!!!!!!!!!!!!")
 
+        # TODO: corner case when fixed schedule is complete. need to resolve this kind of case early.
         size = len([item for (node_name, items) in child1.items() for item in items])
         if size == 0:
-            raise Exception("AAAAAAAAA!")
+            raise Exception("Chromosome is empty")
         # return None
         i1 = random.randint(0, size - 1)
         i2 = random.randint(0, size - 1)
