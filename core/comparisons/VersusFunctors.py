@@ -139,17 +139,17 @@ class GaHeftvsHeft(VersusFunctor):
         f.write("===============\n")
         f.write("=== GAHEFT Run\n")
         f.write("===============\n")
-        # resGaHeft = run(self.GA_HEFT, self.mainGaHeft, wf_name, self.reliability, f, n=self.n)
+        resGaHeft = run(self.GA_HEFT, self.mainGaHeft, wf_name, self.reliability, f, n=self.n)
 
-        # pc = (1 - resGaHeft[2]/resHeft[2])*100
-        # f.write("GaHeft vs Heft: " + str(pc) + '\n')
+        pc = (1 - resGaHeft[2]/resHeft[2])*100
+        f.write("GaHeft vs Heft: " + str(pc) + '\n')
         f.close()
 
         result = dict()
         result['wf_name'] = wf_name
         result['algorithms'] = {
             self.HEFT: ComparisonUtility.get_dict(resHeft),
-            # self.GA_HEFT: ComparisonUtility.get_dict(resGaHeft)
+            self.GA_HEFT: ComparisonUtility.get_dict(resGaHeft)
         }
-        # result['profit_by_avr'] = {"GaHeft vs Heft": pc}
+        result['profit_by_avr'] = {"GaHeft vs Heft": pc}
         return result
