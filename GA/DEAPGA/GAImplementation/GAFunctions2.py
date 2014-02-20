@@ -1,7 +1,5 @@
 ## from Buyya
-from multiprocessing import Process
 import random
-import threading
 from GA.DEAPGA.GAImplementation.ScheduleBuilder import ScheduleBuilder
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from environment.Resource import Node
