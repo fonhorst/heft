@@ -26,7 +26,8 @@ class HeftExecutorExample(BaseExecutorExample):
         heft_machine.run()
 
         ## TODO: remove it later.
-        logger.flush()
+        if logger is not None:
+            logger.flush()
 
         (makespan, vl1, vl2) = self.extract_result(heft_machine.current_schedule, is_silent, wf)
         return makespan

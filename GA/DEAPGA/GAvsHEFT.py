@@ -6,7 +6,7 @@ from GA.DEAPGA.GAImplementation.GAImplementation import build, Params
 # wf_names = ['Sipht_30']
 from core.comparisons.ComparisonBase import ComparisonUtility
 
-wf_names = ['CyberShake_50']
+wf_names = ['Montage_50']
 # wf_names = ['Sipht_60']
 # wf_names = ["Epigenomics_24", "Epigenomics_46", "Epigenomics_72", "Epigenomics_100"]
 # wf_names = ["Inspiral_30", "Inspiral_50", "Inspiral_72", "Inspiral_100"]
@@ -24,7 +24,7 @@ wf_names = ['CyberShake_50']
 
 if __name__ == '__main__':
     # start = ComparisonUtility.cur_time()
-    #for i in range(10):
+    for i in range(10):
         [build(wf_name, False, False, Params(20, 100, 0.8, 0.5, 0.4, 100), [10, 15, 25, 30]) for wf_name in wf_names]
     # end = ComparisonUtility.cur_time()
     #

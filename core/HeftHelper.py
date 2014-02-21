@@ -35,6 +35,9 @@ class HeftHelper(Scheduler):
             #print("===========END_JBS=================")
 
             jobs = sorted(jobs, key=rank)
+
+
+
             return list(reversed(jobs))
 
         return ranking_func
@@ -63,7 +66,16 @@ class HeftHelper(Scheduler):
 
         """print( "%s %s" % (ni, result))"""
         result = estimate(ni)
+        result = int(round(result, 5) * 1000000) + HeftHelper.get_seq_number(ni)
         return result
+
+    @staticmethod
+    def get_seq_number(task):
+        ## It is assumed that task.id have only one format ID000[2 digits number]_000
+        id = task.id
+        number = id[5:7]
+        return int(number)
+
 
     @staticmethod
     def avr_compcost(ni, nodes, compcost):

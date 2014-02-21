@@ -26,6 +26,9 @@ class DynamicHeft(StaticHeftPlanner):
         nodes = self.get_nodes()
 
         self.wf_jobs = self.make_ranking(self.workflow, nodes)
+
+        # print("A: " + str(self.wf_jobs))
+
         #TODO: remove it later
         # to_print = ''
         # for job in self.wf_jobs:
@@ -49,7 +52,11 @@ class DynamicHeft(StaticHeftPlanner):
         for_planning = HeftHelper.get_tasks_for_planning(self.workflow, current_cleaned_schedule)
         ## TODO: check if it sorted properly
         for_planning = set([task.id for task in for_planning])
-        sorted_tasks = [ task for task in self.wf_jobs if task.id in for_planning]
+
+        sorted_tasks = [task for task in self.wf_jobs if task.id in for_planning]
+
+        # print("P: " + str(sorted_tasks))
+
         new_sched = self.mapping([(self.workflow, sorted_tasks)], current_cleaned_schedule.mapping, nodes, self.commcost, self.compcost)
         return new_sched
 

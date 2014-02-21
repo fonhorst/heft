@@ -54,6 +54,12 @@ class ScheduleItem:
         new_item.state = item.state
         return new_item
 
+    def __str__(self):
+        return str(self.job.id) + ":" + str(self.start_time) + ":" + str(self.end_time) + ":" + self.state
+
+    def __repr__(self):
+        return str(self.job.id) + ":" + str(self.start_time) + ":" + str(self.end_time) + ":" + self.state
+
 
 class Schedule:
     def __init__(self, mapping):

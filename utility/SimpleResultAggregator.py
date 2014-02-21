@@ -6,6 +6,7 @@
 ##      ...
 ## }
 import os
+import math
 
 
 def aggregate_fails(file_name):
@@ -65,24 +66,32 @@ def merge(dicts):
             result[key] = result[key] + dict.get(key, [])
     return result
 
+def print_result(f):
+    def inner_func(*args, **kwargs):
+        result = f(*args, **kwargs)
+        print("(ga profit, min:medium:max for ga, min:medium:max for heft, sigma ga / sigma heft, sigma ga/medium ga, sigma heft/medium heft, heft_results, ga_results)")
+        print("==================================")
+        print("=== " + str(args[0]))
+        print("==================================")
+        for (key, value) in result.items():
+            print("{0}: {1}".format(key, value))
+            # print("{0}: {1}, {2}, {3}".format(key, value[0], value[1], value[2]))
+        return result
+    return inner_func
+
 def averaging_counts(count_dict):
-    result = {count: sum(items)/len(items) for (count, items) in count_dict.items()}
+    def get_data(items):
+        avr = sum(items)/len(items)
+        sigma = math.sqrt(sum([(it-avr)*(it-avr) for it in items])/len(items))
+        return (avr, sigma)
+    result = {count: get_data(items) for (count, items) in count_dict.items()}
     return result
 
 ##================================================
 ##=== Lets aggregate
 ##================================================
 
-def print_result(f):
-    def inner_func(*args, **kwargs):
-        result = f(*args, **kwargs)
-        print("==================================")
-        print("=== " + str(args[0]))
-        print("==================================")
-        for (key, value) in result.items():
-            print("{0}: {1}".format(key, value))
-        return result
-    return inner_func
+
 
 @print_result
 def aggregate(wf_name):
@@ -100,7 +109,32 @@ def aggregate(wf_name):
 
     result = dict()
     for key in common_keys:
-        result[key] = (1 - average_ga_clustering[key]/average_heft_clustering[key])*100
+
+        max_heft = max(heft_clustering[key])
+        max_ga = max(ga_clustering[key])
+        min_heft = min(heft_clustering[key])
+        min_ga = min(ga_clustering[key])
+
+        gm = average_ga_clustering[key][0]
+        hm = average_heft_clustering[key][0]
+        g = average_ga_clustering[key][1]
+        h = average_heft_clustering[key][1]
+
+        ## estimate what percent of median sigma is
+        gp = (g/gm)*100
+        hp = (h/hm)*100
+
+        # additionally add results for counts with small number measurements
+        hc = None
+        gc = None
+
+        if len(heft_clustering[key]) < 10:
+            hc = heft_clustering[key]
+        if len(ga_clustering[key]) < 10:
+            gc = ga_clustering[key]
+
+        #(ga profit, min:medium:max for ga, min:medium:max for heft, sigma ga / sigma heft, sigma ga/medium ga, sigma heft/medium heft, heft_results, ga_results)
+        result[key] = ((1 - gm/hm)*100, str(min_ga)+":"+str(gm)+":"+str(max_ga), str(min_heft)+":"+str(hm)+":"+str(max_heft), str(g) + "/" + str(h), "ga: " + str(gp), "heft: " + str(hp), hc, gc)
     return result
 
 wf_names = ["Montage_25", "Montage_30", "Montage_40", "Montage_50"]

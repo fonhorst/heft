@@ -99,6 +99,12 @@ class GaHeftExecutor(EventMachine):
         pass
 
 
+    def _check_fail(self, task, node):
+            reliability = self.heft_planner.estimator.estimate_reliability(task, node)
+            res = random.random()
+            if res > reliability:
+                return True
+            return False
 
     def _task_start_handler(self, event):
 
@@ -106,12 +112,7 @@ class GaHeftExecutor(EventMachine):
         if res:
             return
 
-        def check_fail(task, node):
-            reliability = self.heft_planner.estimator.estimate_reliability(task, node)
-            res = random.random()
-            if res > reliability:
-                return True
-            return False
+
         # check task as executing
         # self.current_schedule.change_state(event.task, ScheduleItem.EXECUTING)
         # try to find nodes in cloud
@@ -119,7 +120,7 @@ class GaHeftExecutor(EventMachine):
         (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
         item.state = ScheduleItem.EXECUTING
 
-        if check_fail(event.task, node):
+        if self._check_fail(event.task, node):
             # generate fail time, post it
             duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
             time_of_fail = (item.end_time - self.current_time)*random.random()

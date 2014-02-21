@@ -32,6 +32,19 @@ class HeftExecutor(EventMachine):
             self.current_schedule = Schedule(mapping)
         self.post_new_events()
 
+    def _check_fail(self, task, node):
+            reliability = self.heft_planner.estimator.estimate_reliability(task, node)
+            res = random.random()
+            if res > reliability:
+                return True
+            return False
+
+    def _generate_failtime_and_duration(self, item):
+        # generate fail time, post it
+        duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
+        time_of_fail = (item.end_time - self.current_time)*random.random()
+        return (time_of_fail, duration)
+
     def event_arrived(self, event):
 
         def reschedule(event):
@@ -40,12 +53,7 @@ class HeftExecutor(EventMachine):
             self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
             self.post_new_events()
 
-        def check_fail(task, node):
-            reliability = self.heft_planner.estimator.estimate_reliability(task, node)
-            res = random.random()
-            if res > reliability:
-                return True
-            return False
+
 
         if isinstance(event, TaskStart):
             # check task as executing
@@ -58,10 +66,9 @@ class HeftExecutor(EventMachine):
             (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
             item.state = ScheduleItem.EXECUTING
 
-            if check_fail(event.task, node):
-                # generate fail time, post it
-                duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
-                time_of_fail = (item.end_time - self.current_time)*random.random()
+            if self._check_fail(event.task, node):
+
+                (time_of_fail, duration) = self._generate_failtime_and_duration(item)
                 time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
 
                 event_failed = NodeFailed(node, event.task)
