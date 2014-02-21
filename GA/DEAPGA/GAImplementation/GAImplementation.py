@@ -122,6 +122,9 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             pool_size = multiprocessing.cpu_count()
             executor = ThreadPoolExecutor(max_workers=pool_size)
 
+            repeat_counter = 0
+            previous_value = -1
+
             # Begin the evolution
             for g in range(NGEN):
                 # print("Iteration")
@@ -147,6 +150,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                     if random.random() < MUTPB:
                         toolbox.mutate(mutant)
                         del mutant.fitness.values
+
                 # Evaluate the individuals with an invalid fitness
                 invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
 
@@ -218,6 +222,9 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                     print("    Avg %s" % str(1/mean))
                     print("    Std %s" % str(1/std))
 
+
+                result = max(pop, key=lambda x: x.fitness.values[0])
+                #if result.fitness.values[0]  previous_value
 
                 ## TODO: additional expenditures. Need to reduce it later.
                 # resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
