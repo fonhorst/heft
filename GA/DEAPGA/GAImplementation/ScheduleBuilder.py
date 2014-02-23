@@ -65,12 +65,13 @@ class ScheduleBuilder:
             for item in items:
                 chromo_copy[nd_name].append(item)
 
+        alive_nodes = [node for node in self.nodes if node.state != Node.Down]
+        if len(alive_nodes) == 0:
+            raise Exception("There are not alive nodes")
 
         while len(ready_tasks) > 0:
-            alive_nodes = [node for node in self.nodes if node.state != Node.Down]
-            if len(alive_nodes) == 0:
-                raise Exception("There are not alive nodes")
-            for node in self.nodes:
+
+            for node in alive_nodes:
                 if len(chromo_copy[node.name]) == 0:
                     continue
                 if node.state == Node.Down:
@@ -180,11 +181,7 @@ class ScheduleBuilder:
         ## TODO: replace it with commented string below later
         res_list = []
         for p in task.parents:
-            try:
-                c1 = task_to_node[p.id][2]
-            except KeyError:
-                k = 0
-                raise
+            c1 = task_to_node[p.id][2]
             c2 = estimate(node, chrmo_mapping[p.id], task, p)
             res_list.append(c1 + c2)
 
@@ -254,5 +251,6 @@ class FreeSlotIterator:
         raise StopIteration()
 
     def _check(self, st, end):
-        return (self.current_time < st or abs((self.current_time - st)) < 0.01) and st >= self.comm_ready and (self.runtime < (end - st) or abs((end - st) - self.runtime) < 0.01)
+        #return (self.current_time < st or abs((self.current_time - st)) < 0.01) and st >= self.comm_ready and (self.runtime < (end - st) or abs((end - st) - self.runtime) < 0.01)
+        return (0.00001 < (st - self.current_time)) and st >= self.comm_ready and (0.00001 < (end - st) - self.runtime)
 

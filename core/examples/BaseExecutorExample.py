@@ -3,28 +3,36 @@ from core.HeftHelper import HeftHelper
 from core.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 
 
+
 class BaseExecutorExample:
     def __init__(self):
         pass
 
-    def get_wf(self, wf_name):
+    @staticmethod
+    def get_wf(wf_name, task_postfix_id="00"):
         ## TODO: make check for valid path in wf_name variable
         dax1 = '..\\..\\resources\\' + wf_name + '.xml'
-        wf = Utility.readWorkflow(dax1)
+        wf = Utility.readWorkflow(dax1, task_postfix_id=task_postfix_id)
         return wf
+
+    @staticmethod
+    def get_default_bundle():
+        ## dedicated resource are the same for all bundles
+        dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
+        path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle_backup' + '.json'
+        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2))
+        return bundle
 
     def get_bundle(self, the_bundle):
         bundle = None
         if the_bundle is None:
-            ## dedicated resource are the same for all bundles
-            dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
-            path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle_backup' + '.json'
-            bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2))
+            bundle = BaseExecutorExample.get_default_bundle()
         else:
             bundle = the_bundle
         return bundle
 
-    def get_infrastructure(self, bundle, reliability, with_ga_initial):
+    @staticmethod
+    def get_infrastructure(bundle, reliability, with_ga_initial):
 
         nodes = HeftHelper.to_nodes(bundle.dedicated_resources)
         realibility_map = {node.name: reliability for node in nodes}

@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utility/ExtractResults.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/tests/FailExperiment.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/experiments/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/DSimpleHeft.py" afterPath="$PROJECT_DIR$/core/DSimpleHeft.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/EventMachine.py" afterPath="$PROJECT_DIR$/core/executors/EventMachine.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" afterPath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/HeftExecutor.py" afterPath="$PROJECT_DIR$/core/executors/HeftExecutor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/examples/HeftExecutorExample.py" afterPath="$PROJECT_DIR$/core/examples/HeftExecutorExample.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/HeftHelper.py" afterPath="$PROJECT_DIR$/core/HeftHelper.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/environment/ResourceManager.py" afterPath="$PROJECT_DIR$/environment/ResourceManager.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utility/SimpleResultAggregator.py" afterPath="$PROJECT_DIR$/utility/SimpleResultAggregator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="" />
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,67 +23,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="FailExperiment.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/tests/FailExperiment.py">
+      <file leaf-file-name="AddingWFexperiment.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/comparisons/AddingWFexperiment.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="0" selection-start="1888" selection-end="1888" vertical-scroll-proportion="0.0" vertical-offset="1016" max-vertical-offset="3700">
+            <state line="37" column="38" selection-start="1459" selection-end="1459" vertical-scroll-proportion="0.63505745" vertical-offset="408" max-vertical-offset="1989">
               <folding>
-                <element signature="e#37#46#0" expanded="true" />
-                <element signature="e#4069#5165#0" expanded="false" />
+                <element signature="e#31#96#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EventMachine.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/EventMachine.py">
+      <file leaf-file-name="GAFunctions2.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="79" column="34" selection-start="2989" selection-end="2989" vertical-scroll-proportion="0.0" vertical-offset="1537" max-vertical-offset="3250">
-              <folding />
+            <state line="241" column="0" selection-start="9078" selection-end="9078" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272">
+              <folding>
+                <element signature="e#494#9076#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HeftExecutor.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/executors/HeftExecutor.py">
+      <file leaf-file-name="HeftHelper.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/HeftHelper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="73" column="0" selection-start="3003" selection-end="3003" vertical-scroll-proportion="0.33333334" vertical-offset="1541" max-vertical-offset="3900">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ResourceManager.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="61" column="0" selection-start="1718" selection-end="1718" vertical-scroll-proportion="0.0" vertical-offset="1049" max-vertical-offset="5700">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Resource.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/environment/Resource.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="284" column="4" selection-start="9079" selection-end="9168" vertical-scroll-proportion="0.0" vertical-offset="6799" max-vertical-offset="7575">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DSimpleHeft.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/DSimpleHeft.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="0" selection-start="906" selection-end="906" vertical-scroll-proportion="0.0" vertical-offset="262" max-vertical-offset="1750">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="builtins.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-2054679332/builtins.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="512" column="4" selection-start="19122" selection-end="19122" vertical-scroll-proportion="0.0" vertical-offset="12572" max-vertical-offset="140550">
+            <state line="18" column="0" selection-start="459" selection-end="459" vertical-scroll-proportion="0.0" vertical-offset="173" max-vertical-offset="2567">
               <folding />
             </state>
           </provider>
@@ -106,19 +57,65 @@
       <file leaf-file-name="simple_heft.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/simple_heft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="45" selection-start="1048" selection-end="1048" vertical-scroll-proportion="0.0" vertical-offset="181" max-vertical-offset="3925">
+            <state line="29" column="0" selection-start="1093" selection-end="1093" vertical-scroll-proportion="0.0" vertical-offset="241" max-vertical-offset="2669">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GAImplementation.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
+      <file leaf-file-name="Utility.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/environment/Utility.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="323" column="8" selection-start="13084" selection-end="13714" vertical-scroll-proportion="0.0" vertical-offset="7912" max-vertical-offset="9625">
+            <state line="43" column="53" selection-start="1301" selection-end="1316" vertical-scroll-proportion="0.0" vertical-offset="479" max-vertical-offset="7123">
               <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#4500#6874#0" expanded="false" />
+                <element signature="e#6975#8444#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DAXParser.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/environment/DAXParser.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="43" selection-start="774" selection-end="774" vertical-scroll-proportion="0.0" vertical-offset="202" max-vertical-offset="1105">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HeftExecutorExample.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/examples/HeftExecutorExample.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="30" selection-start="805" selection-end="805" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="714">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HeftExecutor.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/executors/HeftExecutor.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="12" selection-start="923" selection-end="1009" vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="2873">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BaseExecutorExample.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/examples/BaseExecutorExample.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="30" selection-start="446" selection-end="446" vertical-scroll-proportion="0.0" vertical-offset="32" max-vertical-offset="1190">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DSimpleHeft.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/DSimpleHeft.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="27" column="0" selection-start="799" selection-end="799" vertical-scroll-proportion="0.0" vertical-offset="241" max-vertical-offset="1190">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -141,30 +138,30 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
-        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py" />
-        <option value="$PROJECT_DIR$/utility/ExtractResults.py" />
-        <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
-        <option value="$PROJECT_DIR$/utility/SimpleResultAggregator.py" />
-        <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
-        <option value="$PROJECT_DIR$/core/examples/HeftExecutorExample.py" />
-        <option value="$PROJECT_DIR$/experiments/FailExperiment.py" />
-        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
         <option value="$PROJECT_DIR$/core/HeftHelper.py" />
-        <option value="$PROJECT_DIR$/core/executors/HeftExecutor.py" />
         <option value="$PROJECT_DIR$/core/DSimpleHeft.py" />
         <option value="$PROJECT_DIR$/core/executors/EventMachine.py" />
         <option value="$PROJECT_DIR$/core/tests/FailExperiment.py" />
         <option value="$PROJECT_DIR$/environment/ResourceManager.py" />
+        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
+        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/ScheduleBuilder2.py" />
+        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/ScheduleBuilder.py" />
+        <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
+        <option value="$PROJECT_DIR$/core/ExtendedDynamicHeft.py" />
+        <option value="$PROJECT_DIR$/core/executors/HeftExecutor.py" />
+        <option value="$PROJECT_DIR$/core/examples/HeftExecutorExample.py" />
+        <option value="$PROJECT_DIR$/environment/Utility.py" />
+        <option value="$PROJECT_DIR$/core/examples/BaseExecutorExample.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/AddingWFexperiment.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1696" />
-    <option name="height" value="1026" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -332,7 +329,79 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="tests" />
+              <option name="myItemId" value="executors" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="comparisons" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DEAPGA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DEAPGA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GAImplementation" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -343,17 +412,17 @@
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="options.lastSelected" value="reference.idesettings.debugger.python" />
     <property name="recentsLimit" value="5" />
-    <property name="restartRequiresConfirmation" value="true" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="C:/Pro/Python33/Lib/site-packages" />
+    <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
-      <console-settings />
+      <PyConsoleSettings />
     </option>
   </component>
   <component name="RecentsManager">
@@ -365,7 +434,7 @@
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.FailExperiment (1)">
+  <component name="RunManager" selected="Python.AddingWFexperiment">
     <configuration default="false" name="GaHeftvsHeft" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -383,24 +452,6 @@
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="VersusFunctors" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/comparisons" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -455,6 +506,26 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/FailExperiment.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="AddingWFexperiment" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/comparisons" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/comparisons/AddingWFexperiment.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
@@ -631,18 +702,18 @@
       <item index="0" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
       <item index="1" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
       <item index="2" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
-      <item index="3" class="java.lang.String" itemvalue="Python.VersusFunctors" />
-      <item index="4" class="java.lang.String" itemvalue="Python.SimpleResultAggregator" />
-      <item index="5" class="java.lang.String" itemvalue="Python.FailExperiment" />
-      <item index="6" class="java.lang.String" itemvalue="Python.FailExperiment (1)" />
+      <item index="3" class="java.lang.String" itemvalue="Python.SimpleResultAggregator" />
+      <item index="4" class="java.lang.String" itemvalue="Python.FailExperiment" />
+      <item index="5" class="java.lang.String" itemvalue="Python.FailExperiment (1)" />
+      <item index="6" class="java.lang.String" itemvalue="Python.AddingWFexperiment" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.FailExperiment (1)" />
-        <item index="1" class="java.lang.String" itemvalue="Python.FailExperiment" />
-        <item index="2" class="java.lang.String" itemvalue="Python.SimpleResultAggregator" />
-        <item index="3" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
-        <item index="4" class="java.lang.String" itemvalue="Python.VersusFunctors" />
+        <item index="0" class="java.lang.String" itemvalue="Python.AddingWFexperiment" />
+        <item index="1" class="java.lang.String" itemvalue="Python.FailExperiment (1)" />
+        <item index="2" class="java.lang.String" itemvalue="Python.FailExperiment" />
+        <item index="3" class="java.lang.String" itemvalue="Python.SimpleResultAggregator" />
+        <item index="4" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
       </list>
     </recent_temporary>
   </component>
@@ -693,19 +764,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1696" height="1026" extended-state="7" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21469575" sideWeight="0.49849126" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15619694" sideWeight="0.4981385" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.5924225" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40757748" sideWeight="0.7833434" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16976917" sideWeight="0.6706282" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30390492" sideWeight="0.7833209" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40757748" sideWeight="0.21665661" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4098737" sideWeight="0.7803259" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3293718" sideWeight="0.22040209" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3293718" sideWeight="0.77959794" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -722,50 +793,11 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>70</line>
-          <option name="timeStamp" value="129" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>75</line>
-          <option name="timeStamp" value="130" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>131</line>
-          <option name="timeStamp" value="136" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>134</line>
-          <option name="timeStamp" value="137" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>137</line>
-          <option name="timeStamp" value="138" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>146</line>
-          <option name="timeStamp" value="140" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>157</line>
-          <option name="timeStamp" value="141" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>340</line>
-          <option name="timeStamp" value="148" />
-        </line-breakpoint>
         <line-breakpoint type="python-line">
           <condition>event,task.id == 'ID00002_000'</condition>
           <url>file://$PROJECT_DIR$/core/executors/CloudHeftExecutor.py</url>
@@ -773,84 +805,9 @@
           <option name="timeStamp" value="240" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>154</line>
-          <option name="timeStamp" value="253" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>54</line>
-          <option name="timeStamp" value="297" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>59</line>
-          <option name="timeStamp" value="299" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/core/executors/EventMachine.py</url>
-          <line>104</line>
-          <option name="timeStamp" value="336" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py</url>
-          <line>131</line>
-          <option name="timeStamp" value="345" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/ResourceManager.py</url>
-          <line>124</line>
-          <option name="timeStamp" value="348" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py</url>
-          <line>136</line>
-          <option name="timeStamp" value="350" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>393</line>
-          <option name="timeStamp" value="351" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>218</line>
-          <option name="timeStamp" value="366" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
-          <line>221</line>
-          <option name="timeStamp" value="367" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py</url>
-          <line>305</line>
-          <option name="timeStamp" value="368" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
           <url>file://C:/Pro/Python33/Lib/multiprocessing/connection.py</url>
           <line>205</line>
           <option name="timeStamp" value="372" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py</url>
-          <line>28</line>
-          <option name="timeStamp" value="377" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/core/examples/HeftExecutorExample.py</url>
-          <line>32</line>
-          <option name="timeStamp" value="378" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/core/DSimpleHeft.py</url>
-          <line>57</line>
-          <option name="timeStamp" value="389" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/core/DSimpleHeft.py</url>
-          <line>29</line>
-          <option name="timeStamp" value="390" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/core/tests/FailExperiment.py</url>
@@ -876,6 +833,46 @@
           <line>46</line>
           <option name="timeStamp" value="400" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
+          <line>115</line>
+          <option name="timeStamp" value="403" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
+          <line>118</line>
+          <option name="timeStamp" value="404" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
+          <line>124</line>
+          <option name="timeStamp" value="405" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
+          <line>105</line>
+          <option name="timeStamp" value="406" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
+          <line>107</line>
+          <option name="timeStamp" value="407" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
+          <line>92</line>
+          <option name="timeStamp" value="408" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
+          <line>95</line>
+          <option name="timeStamp" value="409" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/environment/Utility.py</url>
+          <line>98</line>
+          <option name="timeStamp" value="410" />
+        </line-breakpoint>
         <breakpoint enabled="true" type="python-exception">
           <properties exception="AttributeError" />
           <option name="timeStamp" value="54" />
@@ -884,130 +881,126 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="401" />
+      <option name="time" value="412" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="4" selection-start="164" selection-end="164" vertical-scroll-proportion="0.0" vertical-offset="57" max-vertical-offset="3225">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="461" selection-end="519" vertical-scroll-proportion="0.0" vertical-offset="10" max-vertical-offset="725">
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/environment/Utility.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="0" selection-start="1368" selection-end="1368" vertical-scroll-proportion="0.0" vertical-offset="716" max-vertical-offset="13975">
+        <state line="38" column="35" selection-start="1172" selection-end="1172" vertical-scroll-proportion="0.0" vertical-offset="465" max-vertical-offset="2142">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/environment/DAXParser.py">
+    <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="786" selection-end="786" vertical-scroll-proportion="0.0" vertical-offset="223" max-vertical-offset="1625">
+        <state line="26" column="52" selection-start="962" selection-end="962" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="8568">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Pro/Python33/Lib/xml/etree/ElementTree.py">
+    <entry file="file://$PROJECT_DIR$/core/examples/CloudHeftExecutorExample.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1717" column="0" selection-start="58645" selection-end="58645" vertical-scroll-proportion="0.0" vertical-offset="42569" max-vertical-offset="45150">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utility/SimpleResultAggregator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="91" column="24" selection-start="2945" selection-end="2945" vertical-scroll-proportion="0.0" vertical-offset="2122" max-vertical-offset="4000">
-          <folding>
-            <element signature="e#269#278#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="323" column="8" selection-start="13084" selection-end="13714" vertical-scroll-proportion="0.0" vertical-offset="7912" max-vertical-offset="9625">
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/simple_heft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="45" selection-start="1048" selection-end="1048" vertical-scroll-proportion="0.0" vertical-offset="181" max-vertical-offset="3925">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-2054679332/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="512" column="4" selection-start="19122" selection-end="19122" vertical-scroll-proportion="0.0" vertical-offset="12572" max-vertical-offset="140550">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/HeftHelper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="0" selection-start="2939" selection-end="2939" vertical-scroll-proportion="0.53632146" vertical-offset="1578" max-vertical-offset="3775">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/DSimpleHeft.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="0" selection-start="906" selection-end="906" vertical-scroll-proportion="0.0" vertical-offset="262" max-vertical-offset="1750">
+        <state line="32" column="37" selection-start="1591" selection-end="1592" vertical-scroll-proportion="0.0" vertical-offset="258" max-vertical-offset="901">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/EventMachine.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="79" column="34" selection-start="2989" selection-end="2989" vertical-scroll-proportion="0.0" vertical-offset="1537" max-vertical-offset="3250">
+        <state line="33" column="4" selection-start="731" selection-end="829" vertical-scroll-proportion="0.0" vertical-offset="307" max-vertical-offset="2210">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/environment/Resource.py">
+    <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="284" column="4" selection-start="9079" selection-end="9168" vertical-scroll-proportion="0.0" vertical-offset="6799" max-vertical-offset="7575">
+        <state line="116" column="6" selection-start="4476" selection-end="4476" vertical-scroll-proportion="0.0" vertical-offset="1883" max-vertical-offset="3264">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
+    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-1688672925/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="0" selection-start="1718" selection-end="1718" vertical-scroll-proportion="0.0" vertical-offset="1049" max-vertical-offset="5700">
+        <state line="4386" column="8" selection-start="151524" selection-end="151524" vertical-scroll-proportion="0.0" vertical-offset="74252" max-vertical-offset="95574">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/tests/FailExperiment.py">
+    <entry file="file://$PROJECT_DIR$/core/examples/HeftExecutorExample.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="0" selection-start="1888" selection-end="1888" vertical-scroll-proportion="0.0" vertical-offset="1016" max-vertical-offset="3700">
-          <folding>
-            <element signature="e#37#46#0" expanded="true" />
-            <element signature="e#4069#5165#0" expanded="false" />
-          </folding>
+        <state line="18" column="30" selection-start="805" selection-end="805" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="714">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/HeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="0" selection-start="3003" selection-end="3003" vertical-scroll-proportion="0.33333334" vertical-offset="1541" max-vertical-offset="3900">
+        <state line="26" column="12" selection-start="923" selection-end="1009" vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="2873">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/HeftHelper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="0" selection-start="459" selection-end="459" vertical-scroll-proportion="0.0" vertical-offset="173" max-vertical-offset="2567">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/simple_heft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="0" selection-start="1093" selection-end="1093" vertical-scroll-proportion="0.0" vertical-offset="241" max-vertical-offset="2669">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/DSimpleHeft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="0" selection-start="799" selection-end="799" vertical-scroll-proportion="0.0" vertical-offset="241" max-vertical-offset="1190">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="241" column="0" selection-start="9078" selection-end="9078" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272">
+          <folding>
+            <element signature="e#494#9076#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/environment/DAXParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="43" selection-start="774" selection-end="774" vertical-scroll-proportion="0.0" vertical-offset="202" max-vertical-offset="1105">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/environment/Utility.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="53" selection-start="1301" selection-end="1316" vertical-scroll-proportion="0.0" vertical-offset="479" max-vertical-offset="7123">
+          <folding>
+            <element signature="e#4500#6874#0" expanded="false" />
+            <element signature="e#6975#8444#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/examples/BaseExecutorExample.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="30" selection-start="446" selection-end="446" vertical-scroll-proportion="0.0" vertical-offset="32" max-vertical-offset="1190">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/AddingWFexperiment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="38" selection-start="1459" selection-end="1459" vertical-scroll-proportion="0.63505745" vertical-offset="408" max-vertical-offset="1989">
+          <folding>
+            <element signature="e#31#96#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

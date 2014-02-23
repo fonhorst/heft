@@ -65,49 +65,10 @@ class Utility:
     @staticmethod
     def validateNodesSeq(schedule):
         for (node, items) in schedule.mapping.items():
-            #time = -1
-            #for item in items:
-            #    if time > item.start_time:
-            #        return False
-            #        ##raise Exception("Node: " + str(node) + " all time: " + str(time) + " st_time: " + str(item.start_time))
-            #    else:
-            #        time = item.start_time
-            #    if time > item.end_time:
-            #        return False
-            #    else:
-            #        time = item.end_time
             result = Utility.validate_time_seq(items)
             if result is False:
                 return False
         return True
-
-    #@staticmethod
-    #def validateParentsAndChildren(schedule, workflow):
-    #    #{
-    #    #   task: (node,start_time,end_time),
-    #    #   ...
-    #    #}
-    #    task_to_node = dict()
-    #    for (node, items) in schedule.mapping.items():
-    #        for item in items:
-    #            task_to_node[item.job.id] = (node, item.start_time, item.end_time)
-    #
-    #    def check(task):
-    #        for child in task.children:
-    #            p_end_time = task_to_node[task.id][2]
-    #            c_start_time = task_to_node[child.id][1]
-    #            if c_start_time < p_end_time:
-    #                return False
-    #            res = check(child)
-    #            if res is False:
-    #                return False
-    #        return True
-    #
-    #    for task in workflow.head_task.children:
-    #        res = check(task)
-    #        if res is False:
-    #                return False
-    #    return True
 
     ## TODO: under development now
     @staticmethod
@@ -272,6 +233,7 @@ class Utility:
         if reslt is True:
             return False
         return True
+
 
     @staticmethod
     def get_the_last_time(schedule):

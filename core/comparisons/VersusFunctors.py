@@ -153,3 +153,43 @@ class GaHeftvsHeft(VersusFunctor):
         }
         result['profit_by_avr'] = {"GaHeft vs Heft": pc}
         return result
+
+class GaHeftvsHeftWithWfAdding(VersusFunctor):
+
+    GA_HEFT = "gaHeft"
+    HEFT = "heft"
+
+    def __init__(self, n=25, time_koeff=0.1):
+        self.mainHeft = HeftExecutorExample().main
+        self.mainGaHeft = GaHeftExecutorExample().main
+        self.n = n
+        self.time_koeff = time_koeff
+
+    #@save_result
+    @profit_print
+    def __call__(self, wf_name, output_file=None):
+        print("Run counts: " + str(self.n))
+
+        f = open(output_file, 'a')
+
+        f.write("===============\n")
+        f.write("=== HEFT Run\n")
+        f.write("===============\n")
+        resHeft = run(self.HEFT, self.mainHeft, wf_name, 1.0, f, n=self.n)
+        f.write("===============\n")
+        f.write("=== GAHEFT Run\n")
+        f.write("===============\n")
+        resGaHeft = run(self.GA_HEFT, self.mainGaHeft, wf_name, 1.0, f, n=self.n)
+
+        pc = (1 - resGaHeft[2]/resHeft[2])*100
+        f.write("GaHeft vs Heft with WF adding: " + str(pc) + '\n')
+        f.close()
+
+        result = dict()
+        result['wf_name'] = wf_name
+        result['algorithms'] = {
+            self.HEFT: ComparisonUtility.get_dict(resHeft),
+            self.GA_HEFT: ComparisonUtility.get_dict(resGaHeft)
+        }
+        result['profit_by_avr'] = {"GaHeft vs Heft": pc}
+        return result

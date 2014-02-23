@@ -10,9 +10,9 @@ class HeftExecutorExample(BaseExecutorExample):
 
     def main(self, reliability, is_silent, wf_name, with_ga_initial=False, the_bundle=None, logger=None):
 
-        wf = self.get_wf(wf_name)
+        wf = BaseExecutorExample.get_wf(wf_name)
         bundle = self.get_bundle(the_bundle)
-        (estimator, resource_manager, initial_schedule) = self.get_infrastructure(bundle, reliability, with_ga_initial)
+        (estimator, resource_manager, initial_schedule) = BaseExecutorExample.get_infrastructure(bundle, reliability, with_ga_initial)
 
         ##TODO: look here ! I'm an idiot tasks of wf != tasks of initial_schedule
         dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
