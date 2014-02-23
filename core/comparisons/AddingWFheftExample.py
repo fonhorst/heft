@@ -25,6 +25,9 @@ empty_schedule  = Schedule({node:[] for node in heft.get_nodes()})
 heft_schedule = heft.run(empty_schedule)
 
 all_initial_wf_time = Utility.get_the_last_time(heft_schedule)
+print("Initial time: " + str(all_initial_wf_time))
+
+n = 1
 
 ## planning for added wf
 def heft_reschedule(wf_added_time):
@@ -51,7 +54,7 @@ def heft_reschedule(wf_added_time):
     result = Utility.get_the_last_time(heft_added_schedule)
     return result
 
-result = [heft_reschedule(wf_added_time) for wf_added_time in wf_added_times]
+result = [[heft_reschedule(wf_added_time) for i in range(n)] for wf_added_time in wf_added_times]
 print(str(result))
 
 

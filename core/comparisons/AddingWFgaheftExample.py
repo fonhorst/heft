@@ -32,6 +32,8 @@ ga_initial_schedule = ga._get_ga_alg()(empty_schedule, None)[2]
 
 all_initial_wf_time = Utility.get_the_last_time(ga_initial_schedule)
 
+print("Initial time: " + str(all_initial_wf_time))
+
 n = 5
 ## planning for added wf
 def gaheft_reschedule(wf_added_time):
