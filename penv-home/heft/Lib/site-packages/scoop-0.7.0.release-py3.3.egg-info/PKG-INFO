@@ -1,0 +1,25 @@
+Metadata-Version: 1.1
+Name: scoop
+Version: 0.7.0.release
+Summary: Scalable COncurrent Operations in Python
+Home-page: http://scoop.googlecode.com
+Author: SCOOP Development Team
+Author-email: scoop-users@googlegroups.com
+License: LGPL
+Download-URL: http://code.google.com/p/scoop/downloads/list
+Description: SCOOP (Scalable COncurrent Operations in Python) is a distributed task module 
+        allowing concurrent parallel programming on various environments, from 
+        heterogeneous grids to supercomputers.
+        
+        See https://scoop.googlecode.com/ for documentation, informations, bug
+        reporting and more.
+Keywords: distributed algorithms,parallel programming,Concurrency,Cluster programming,greenlet,zmq
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
+Classifier: Programming Language :: Python
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development

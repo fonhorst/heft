@@ -25,7 +25,7 @@ wf_names = ['Montage_25']
 if __name__ == '__main__':
     # start = ComparisonUtility.cur_time()
     #for i in range(10):
-        [build(wf_name, True, True, Params(20, 1000, 0.8, 0.5, 0.4, 30), [10, 15, 25, 30]) for wf_name in wf_names]
+        [build(wf_name, True, False, Params(20, 1000, 0.8, 0.5, 0.4, 30), [10, 15, 25, 30]) for wf_name in wf_names]
     #    [build(wf_name, True, False, Params(20, 1000, 1, 1, 1, 30), [10, 15, 25, 30]) for wf_name in wf_names]
     # end = ComparisonUtility.cur_time()
     #
