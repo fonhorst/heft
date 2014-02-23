@@ -321,7 +321,7 @@ class GAComputationManager:
     def run(self, current_schedule, current_time, async=True):
         self._reschedule_by_GA(current_schedule, current_time)
         if not async:
-            result = self.current_computation[1].ga(self.current_computation[1].fixed_schedule_part, None)
+            result = self.current_computation[1].ga(self.current_computation[1].fixed_schedule_part, None, current_time)
             self._clean_current_computation()
             return result
         return None
@@ -350,6 +350,9 @@ class GAComputationManager:
             def is_before_event(item):
                 # hard to resolve corner case. The simulator doesn't guranteed the order of appearing events.
                 if item.start_time < front_event.end_time:
+                    return True
+                ## TODO: Urgent!!! experimental change. Perhaps, It should be removed from here later.
+                if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.FAILED:
                     return True
                 return False
             ##TODO: it's dangerous operation.
@@ -384,15 +387,17 @@ class GAComputationManager:
             fixed_schedule = _get_fixed_schedule(current_schedule, front_event)
 
             #TODO: It isn't a good reliable solution. It should be reconsider later.
-            if len(fixed_schedule.get_all_unique_tasks_id()) == len(self.workflow.get_all_unique_tasks()):
+            fixed_ids = set(fixed_schedule.get_all_unique_tasks_id())
+            all_ids = set(task.id for task in self.workflow.get_all_unique_tasks())
+            if len(fixed_ids) == len(all_ids) == set(fixed_ids & all_ids):
                 print("Fixed schedule is complete. There is no use to run ga.")
                 return
 
 
 
-            count = len(fixed_schedule.get_all_unique_tasks_id())
-            if count == 30:
-                return
+            #count = len(fixed_schedule.get_all_unique_tasks_id())
+            #if count == 30:
+            #    return
                 #k = 0
                 #raise Exception("Look here!")
 
@@ -420,7 +425,7 @@ class GAComputationManager:
                                        self.workflow,
                                        self.resource_manager,
                                        self.estimator,
-                                       params=Params(20, 400, 0.8, 0.5, 0.4, 150))
+                                       params=Params(20, 1000, 0.8, 0.5, 0.4, 30))
         return ga
 
     ## actual run happens here

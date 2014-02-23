@@ -1,3 +1,4 @@
+## TODO: it's an example. It should be rewritten and moved to unit tests directory
 ## GaHeftvsHeft with wf adding
 from GA.DEAPGA.GAImplementation.GAFunctions2 import mark_finished
 
@@ -27,10 +28,13 @@ all_initial_wf_time = Utility.get_the_last_time(heft_schedule)
 
 ## planning for added wf
 def heft_reschedule(wf_added_time):
+
+    copy_heft_schedule = Schedule({node:[item for item in items] for (node, items) in heft_schedule.mapping.items()})
+
     added_time = all_initial_wf_time * wf_added_time
     heft_added = DynamicHeft(added_wf, resource_manager, estimator)
     heft_added.current_time = added_time
-    heft_added_schedule = heft_added.run(heft_schedule)
+    heft_added_schedule = heft_added.run(copy_heft_schedule)
 
     mark_finished(heft_added_schedule)
 
@@ -43,11 +47,12 @@ def heft_reschedule(wf_added_time):
     added_wf_validaty =  Utility.validateParentsAndChildren(heft_added_schedule, added_wf)
     if added_wf_validaty is not True:
         raise Exception("Check for added_wf_validaty didn't pass")
-    print("All Ok!")
+    #print("All Ok!")
     result = Utility.get_the_last_time(heft_added_schedule)
     return result
 
 result = [heft_reschedule(wf_added_time) for wf_added_time in wf_added_times]
+print(str(result))
 
 
 
