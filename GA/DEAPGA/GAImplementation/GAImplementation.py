@@ -23,6 +23,8 @@ from environment.ResourceManager import Schedule, ScheduleItem
 from environment.Utility import Utility
 import multiprocessing
 from multiprocessing import Pool
+from scoop import futures
+
 
 Params = namedtuple('Params', ['ideal_flops',
                                'population',
@@ -192,7 +194,10 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
 
 
                 # start = ComparisonUtility.cur_time()
+
                 fitnesses = list(map(toolbox.evaluate, invalid_ind))
+                # fitnesses = list(futures.map_as_completed(toolbox.evaluate, invalid_ind))
+
                 # end = ComparisonUtility.cur_time()
                 # print("start : " + start + " end: " + end)
 

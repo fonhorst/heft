@@ -49,8 +49,9 @@ def sum_list(m):
 temp = [sum_list(m) for m in zip(*mas)]
 
 avr_results = [sum(t)/len(t) for t in temp]
-sigma_results =[ math.sqrt(sum((el - avr)*(el - avr) for el in t)/len(t)) for (t, avr) in zip(temp, avr_results)]
-results = [ (avr, sigma, (sigma/avr)*100) for (avr, sigma) in zip(avr_results, sigma_results)]
+sigma_results =[math.sqrt(sum((el - avr)*(el - avr) for el in t)/len(t)) for (t, avr) in zip(temp, avr_results)]
+max_min_results = [(max(t), min(t)) for t in temp]
+results = [(avr, sigma, (sigma/avr)*100, max, min) for (avr, sigma, (max, min)) in zip(avr_results, sigma_results, max_min_results)]
 print(results)
 
 wf_added_times = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
