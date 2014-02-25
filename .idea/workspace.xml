@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utility/test_and_play/ParalleProcessExample.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utility/test_and_play/funcs.py" />
+      <change type="DELETED" beforePath="D:\wspace\heft\utility\test_and_play\PlayWithScoop.py" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,41 +28,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GaHeftExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
+      <file leaf-file-name="ParalleProcessExample.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/utility/test_and_play/ParalleProcessExample.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="392" column="18" selection-start="16041" selection-end="16041" vertical-scroll-proportion="0.0" vertical-offset="8882" max-vertical-offset="12375">
-              <folding>
-                <element signature="e#11113#11150#0" expanded="false" />
-                <element signature="e#11266#11791#0" expanded="false" />
-                <element signature="e#11854#12214#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAvsHEFT.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="35" selection-start="586" selection-end="586" vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="1025">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GetResults.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utility/GetResults.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="82" column="35" selection-start="15714" selection-end="15714" vertical-scroll-proportion="0.0" vertical-offset="1817" max-vertical-offset="2450">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAImplementation.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="0" selection-start="917" selection-end="917" vertical-scroll-proportion="0.44466403" vertical-offset="425" max-vertical-offset="9725">
+            <state line="13" column="14" selection-start="300" selection-end="300" vertical-scroll-proportion="0.66056913" vertical-offset="0" max-vertical-offset="1550">
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -67,57 +39,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HeftExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/HeftExecutor.py">
+      <file leaf-file-name="funcs.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utility/test_and_play/funcs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="30" selection-start="1630" selection-end="1630" vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="4225">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="random.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/random.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="703" column="0" selection-start="24840" selection-end="24840" vertical-scroll-proportion="0.0" vertical-offset="17110" max-vertical-offset="18150">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GaHeftvsHeft.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="0" selection-start="762" selection-end="762" vertical-scroll-proportion="0.0" vertical-offset="168" max-vertical-offset="725">
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="extres.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utility/extres.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="21" selection-start="767" selection-end="767" vertical-scroll-proportion="0.0" vertical-offset="146" max-vertical-offset="725">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EventMachine.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/EventMachine.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="17" selection-start="1013" selection-end="1013" vertical-scroll-proportion="0.0" vertical-offset="507" max-vertical-offset="3250">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VersusFunctors.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="121" column="38" selection-start="4586" selection-end="4586" vertical-scroll-proportion="0.0" vertical-offset="2660" max-vertical-offset="4800">
+            <state line="22" column="14" selection-start="523" selection-end="523" vertical-scroll-proportion="0.0" vertical-offset="83" max-vertical-offset="750">
               <folding />
             </state>
           </provider>
@@ -141,7 +66,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/core/executors/HeftExecutor.py" />
         <option value="$PROJECT_DIR$/core/examples/HeftExecutorExample.py" />
         <option value="$PROJECT_DIR$/environment/Utility.py" />
         <option value="$PROJECT_DIR$/core/examples/BaseExecutorExample.py" />
@@ -149,7 +73,6 @@
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py" />
         <option value="$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py" />
         <option value="$PROJECT_DIR$/core/comparisons/AddingWFheftExample.py" />
-        <option value="$PROJECT_DIR$/utility/test_and_play/PlayWithScoop.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
         <option value="$PROJECT_DIR$/utility/GetResults.py" />
         <option value="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
@@ -157,6 +80,8 @@
         <option value="$PROJECT_DIR$/utility/extres.py" />
         <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
+        <option value="$PROJECT_DIR$/utility/test_and_play/funcs.py" />
+        <option value="$PROJECT_DIR$/utility/test_and_play/PlayWithScoop.py" />
       </list>
     </option>
   </component>
@@ -473,7 +398,7 @@
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.extres">
+  <component name="RunManager" selected="Python.PlayWithScoop">
     <configuration default="false" name="AddingWFgaheftExample" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -515,7 +440,7 @@
       <method />
     </configuration>
     <configuration default="false" name="PlayWithScoop" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="-m scoop" />
+      <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
@@ -526,7 +451,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility/test_and_play/PlayWithScoop.py" />
+      <option name="SCRIPT_NAME" value="D:\wspace\heft\utility\test_and_play\ParalleProcessExample.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
@@ -740,17 +665,17 @@
       <item index="1" class="java.lang.String" itemvalue="Python.AddingWFgaheftExample" />
       <item index="2" class="java.lang.String" itemvalue="Python.GetResults" />
       <item index="3" class="java.lang.String" itemvalue="Python.PlayWithScoop" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="5" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
-      <item index="6" class="java.lang.String" itemvalue="Python.extres" />
+      <item index="4" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
+      <item index="5" class="java.lang.String" itemvalue="Python.extres" />
+      <item index="6" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.extres" />
-        <item index="1" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
-        <item index="2" class="java.lang.String" itemvalue="Python.GetResults" />
-        <item index="3" class="java.lang.String" itemvalue="Python.AddingWFgaheftExample" />
-        <item index="4" class="java.lang.String" itemvalue="Python.PlayWithScoop" />
+        <item index="0" class="java.lang.String" itemvalue="Python.PlayWithScoop" />
+        <item index="1" class="java.lang.String" itemvalue="Python.extres" />
+        <item index="2" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
+        <item index="3" class="java.lang.String" itemvalue="Python.GetResults" />
+        <item index="4" class="java.lang.String" itemvalue="Python.AddingWFgaheftExample" />
       </list>
     </recent_temporary>
   </component>
@@ -807,13 +732,13 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37428242" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37428242" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17320459" sideWeight="0.6257176" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17320459" sideWeight="0.6234214" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.45120552" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37428242" sideWeight="0.50211227" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37657866" sideWeight="0.7791189" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37657866" sideWeight="0.2208811" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37657866" sideWeight="0.7791189" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -937,38 +862,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/penv/Lib/site-packages/scoop/_comm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="204" column="0" selection-start="7119" selection-end="7119" vertical-scroll-proportion="0.0" vertical-offset="6670" max-vertical-offset="9850">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="24" selection-start="4564" selection-end="4564" vertical-scroll-proportion="0.0" vertical-offset="2225" max-vertical-offset="6050">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/CloudHeftExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9225">
-          <folding>
-            <element signature="e#0#29#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utility/test_and_play/PlayWithScoop.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="25" selection-start="125" selection-end="125" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="950">
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="33" column="0" selection-start="1354" selection-end="1354" vertical-scroll-proportion="0.0" vertical-offset="1532" max-vertical-offset="1950">
@@ -981,13 +874,6 @@
     <entry file="file://$PROJECT_DIR$/utility/ExtractResults.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="16" column="16" selection-start="426" selection-end="426" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1100">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utility/GetResults.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="35" selection-start="15714" selection-end="15714" vertical-scroll-proportion="0.0" vertical-offset="1817" max-vertical-offset="2450">
           <folding />
         </state>
       </provider>
@@ -1043,6 +929,15 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="19" selection-start="983" selection-end="983" vertical-scroll-proportion="0.0" vertical-offset="50" max-vertical-offset="9725">
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="392" column="18" selection-start="16041" selection-end="16041" vertical-scroll-proportion="0.0" vertical-offset="8882" max-vertical-offset="12375">
@@ -1054,9 +949,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
+    <entry file="file://$PROJECT_DIR$/utility/GetResults.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="0" selection-start="917" selection-end="917" vertical-scroll-proportion="0.44466403" vertical-offset="425" max-vertical-offset="9725">
+        <state line="82" column="35" selection-start="15714" selection-end="15714" vertical-scroll-proportion="0.0" vertical-offset="1817" max-vertical-offset="2450">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/multiprocessing/queues.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="244" column="0" selection-start="7409" selection-end="7409" vertical-scroll-proportion="2.2185686" vertical-offset="4628" max-vertical-offset="9300">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/multiprocessing/connection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="205" column="0" selection-start="5408" selection-end="5408" vertical-scroll-proportion="0.3326886" vertical-offset="4578" max-vertical-offset="22875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utility/test_and_play/funcs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="14" selection-start="523" selection-end="523" vertical-scroll-proportion="0.0" vertical-offset="83" max-vertical-offset="750">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utility/test_and_play/ParalleProcessExample.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="14" selection-start="300" selection-end="300" vertical-scroll-proportion="0.66056913" vertical-offset="0" max-vertical-offset="1550">
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
