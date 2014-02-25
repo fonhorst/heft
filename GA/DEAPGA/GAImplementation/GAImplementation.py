@@ -23,7 +23,6 @@ from environment.ResourceManager import Schedule, ScheduleItem
 from environment.Utility import Utility
 import multiprocessing
 from multiprocessing import Pool
-from scoop import futures
 
 
 Params = namedtuple('Params', ['ideal_flops',

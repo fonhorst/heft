@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" afterPath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,10 +25,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GaHeftExecutor.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="GaHeftExecutor.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="396" column="64" selection-start="16229" selection-end="16272" vertical-scroll-proportion="0.52964425" vertical-offset="8882" max-vertical-offset="12375">
+            <state line="392" column="18" selection-start="16041" selection-end="16041" vertical-scroll-proportion="0.0" vertical-offset="8882" max-vertical-offset="12375">
               <folding>
                 <element signature="e#11113#11150#0" expanded="false" />
                 <element signature="e#11266#11791#0" expanded="false" />
@@ -52,6 +52,17 @@
           <provider selected="true" editor-type-id="text-editor">
             <state line="82" column="35" selection-start="15714" selection-end="15714" vertical-scroll-proportion="0.0" vertical-offset="1817" max-vertical-offset="2450">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GAImplementation.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="0" selection-start="917" selection-end="917" vertical-scroll-proportion="0.44466403" vertical-offset="425" max-vertical-offset="9725">
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -112,15 +123,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExtractResults.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utility/ExtractResults.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="16" selection-start="426" selection-end="426" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1100">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindManager">
@@ -148,13 +150,13 @@
         <option value="$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py" />
         <option value="$PROJECT_DIR$/core/comparisons/AddingWFheftExample.py" />
         <option value="$PROJECT_DIR$/utility/test_and_play/PlayWithScoop.py" />
-        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
         <option value="$PROJECT_DIR$/utility/GetResults.py" />
         <option value="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
         <option value="$PROJECT_DIR$/core/executors/EventMachine.py" />
         <option value="$PROJECT_DIR$/utility/extres.py" />
         <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
+        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
       </list>
     </option>
   </component>
@@ -958,15 +960,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="376" column="20" selection-start="15612" selection-end="15612" vertical-scroll-proportion="-11.0" vertical-offset="9125" max-vertical-offset="9750">
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utility/test_and_play/PlayWithScoop.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="25" selection-start="125" selection-end="125" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="950">
@@ -1052,11 +1045,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="396" column="64" selection-start="16229" selection-end="16272" vertical-scroll-proportion="0.52964425" vertical-offset="8882" max-vertical-offset="12375">
+        <state line="392" column="18" selection-start="16041" selection-end="16041" vertical-scroll-proportion="0.0" vertical-offset="8882" max-vertical-offset="12375">
           <folding>
             <element signature="e#11113#11150#0" expanded="false" />
             <element signature="e#11266#11791#0" expanded="false" />
             <element signature="e#11854#12214#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="0" selection-start="917" selection-end="917" vertical-scroll-proportion="0.44466403" vertical-offset="425" max-vertical-offset="9725">
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
