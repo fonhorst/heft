@@ -48,10 +48,12 @@ def sum_list(m):
 
 temp = [sum_list(m) for m in zip(*mas)]
 
+
 avr_results = [sum(t)/len(t) for t in temp]
 sigma_results =[math.sqrt(sum((el - avr)*(el - avr) for el in t)/len(t)) for (t, avr) in zip(temp, avr_results)]
 max_min_results = [(max(t), min(t)) for t in temp]
-results = [(avr, sigma, (sigma/avr)*100, max, min) for (avr, sigma, (max, min)) in zip(avr_results, sigma_results, max_min_results)]
+# (avr, sigma, sigma/avr in %, max, min, q1, q3)
+results = [(avr, sigma, (sigma/avr)*100, max, min, avr + (sigma*-0.6745), avr + (sigma*0.6745)) for (avr, sigma, (max, min)) in zip(avr_results, sigma_results, max_min_results)]
 print(results)
 
 wf_added_times = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
@@ -62,3 +64,29 @@ gaheft_times = [nominal_gaheft * time for time in wf_added_times]
 heft_times = [nominal_heft * time for time in wf_added_times]
 print("gaheft_times: " + str(gaheft_times))
 print("heft_times: " + str(heft_times))
+
+path = "D:/testdir/_plot_second/data.txt"
+f = open(path, "w")
+f.write("#x min     Q1          median      q3          max     width   label\n")
+i = 1
+for ((avr, sigma, p, max, min, q1, q3), time_koeff) in zip(results, wf_added_times):
+    line = "{0} {1} {2} {3} {4} {5} {6} {7}\n".format(i, min, q1, avr, q3, max, 0.3, time_koeff)
+    f.write(line)
+    i += 1
+    pass
+f.close()
+
+heft_results = [334.696, 443.18000000000006, 443.18000000000006, 443.18000000000006, 451.87733333333347, 473.9186666666668, 509.38800000000015, 540.5773333333333, 571.7666666666668]
+
+path = "D:/testdir/_plot_second/data2.txt"
+f = open(path, "w")
+f.write("#x value width   label\n")
+i = 1
+for (value, time_koeff) in zip(heft_results, wf_added_times):
+    line = "{0} {1} {2} {3}\n".format(i, value, 0.3, time_koeff)
+    f.write(line)
+    i += 1
+    pass
+f.close()
+
+
