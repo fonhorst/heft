@@ -389,7 +389,13 @@ class GAComputationManager:
             #TODO: It isn't a good reliable solution. It should be reconsider later.
             fixed_ids = set(fixed_schedule.get_all_unique_tasks_id())
             all_ids = set(task.id for task in self.workflow.get_all_unique_tasks())
-            if len(fixed_ids) == len(all_ids) == set(fixed_ids & all_ids):
+
+            # if len(fixed_ids) == len(all_ids) == set(fixed_ids & all_ids):
+            #     print("Fixed schedule is complete. There is no use to run ga.")
+            #     return
+
+            ## TODO: urgent bugfix to correctly run GaHeftvsHeft
+            if len(fixed_ids) == len(all_ids):
                 print("Fixed schedule is complete. There is no use to run ga.")
                 return
 
