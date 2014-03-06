@@ -7,7 +7,7 @@ from GA.DEAPGA.GAImplementation.GAImplementation import build, Params
 from core.comparisons.ComparisonBase import ComparisonUtility
 from scoop import futures
 
-wf_names = ['Montage_50']
+wf_names = ['Montage_25']
 # wf_names = ['Sipht_60']
 # wf_names = ["Epigenomics_24", "Epigenomics_46", "Epigenomics_72", "Epigenomics_100"]
 # wf_names = ["Inspiral_30", "Inspiral_50", "Inspiral_72", "Inspiral_100"]
@@ -26,8 +26,9 @@ wf_names = ['Montage_50']
 if __name__ == '__main__':
     # start = ComparisonUtility.cur_time()
     #for i in range(10):
-        [build(wf_name, True, False, Params(20, 1000, 0.8, 0.5, 0.4, 30), [10, 15, 25, 30]) for wf_name in wf_names]
-       # [build(wf_name, True, False, Params(20, 1000, 1, 1, 1, 30), [10, 15, 25, 30]) for wf_name in wf_names]
+        # [build(wf_name, True, False, Params(20, 1000, 0.8, 0.5, 0.4, 30), [10, 15, 25, 30]) for wf_name in wf_names]
+       # TODO: only for test purpose.
+       [build(wf_name, True, False, Params(20, 1000, 1, 1, 1, 30), [10, 15, 25, 30]) for wf_name in wf_names]
 
     # end = ComparisonUtility.cur_time()
     #

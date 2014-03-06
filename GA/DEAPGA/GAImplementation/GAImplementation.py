@@ -1,6 +1,6 @@
 import cProfile
 from collections import namedtuple
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 import datetime
 
 import pstats
@@ -9,6 +9,7 @@ from threading import Thread, Lock
 import io
 import threading
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2, mark_finished
+from GA.DEAPGA.GAImplementation.TemporaryEvaluate import create_builder, temp_fitness, temp_fit_for_all
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from core.DSimpleHeft import DynamicHeft
 from core.HeftHelper import HeftHelper
@@ -121,7 +122,9 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                 ind.fitness.values = fit
 
             pool_size = multiprocessing.cpu_count()
-            executor = ThreadPoolExecutor(max_workers=pool_size)
+            # executor = ThreadPoolExecutor(max_workers=pool_size)
+            executor = ProcessPoolExecutor()
+            builder = create_builder(ga_functions, fixed_schedule_part)
 
             repeat_counter = 0
             previous_value = -1
@@ -194,7 +197,41 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
 
                 # start = ComparisonUtility.cur_time()
 
-                fitnesses = list(map(toolbox.evaluate, invalid_ind))
+                # fitnesses = list(map(toolbox.evaluate, invalid_ind))
+
+                d = [dict(el) for el in invalid_ind]
+                triplets = zip(d, [builder]*len(invalid_ind), [current_time]*len(invalid_ind))
+                # fitnesses = list(executor.map(temp_fitness, triplets))
+
+                buf = list(triplets)
+
+
+                # base_size = int(len(buf)/pool_size)
+                # ct = int(len(buf)/base_size)
+                # for_submit = [buf[i:(i + 1)*base_size] for i in range(ct)] + buf[ct*base_size:]
+                # futures_mas = [executor.submit(temp_fit_for_all, fs) for fs in for_submit]
+                # fitnesses = []
+                # for fs in futures_mas:
+                #     fitnesses += fs.result()
+                #     pass
+
+                a = buf[0:250]
+                b = buf[250:500]
+                c = buf[500:750]
+                d = buf[750:]
+                af = executor.submit(temp_fit_for_all, a)
+                bf = executor.submit(temp_fit_for_all, b)
+                cf = executor.submit(temp_fit_for_all, c)
+                df = executor.submit(temp_fit_for_all, d)
+                ar = list(af.result())
+                br = list(bf.result())
+                cr = list(cf.result())
+                dr = list(df.result())
+                fitnesses = ar + br + cr + dr
+
+
+
+
                 # fitnesses = list(futures.map_as_completed(toolbox.evaluate, invalid_ind))
 
                 # end = ComparisonUtility.cur_time()
@@ -236,7 +273,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                 # self.current_result = (result[0], pop, ga_functions.build_schedule(result[0], fixed_schedule_part, current_time))
                 pass
 
-
+            executor.shutdown()
 
             ## TODO: additional expenditures. Need to reduce it later.
             resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
