@@ -1,6 +1,7 @@
 import cProfile
 from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+import copy
 import datetime
 
 import pstats
@@ -8,6 +9,7 @@ import random
 from threading import Thread, Lock
 import io
 import threading
+import math
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2, mark_finished
 from GA.DEAPGA.GAImplementation.TemporaryEvaluate import create_builder, temp_fitness, temp_fit_for_all
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
@@ -80,6 +82,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
     toolbox.register("select", tools.selTournament, tournsize=10)
     # toolbox.register("select", tools.selRoulette)
 
+    repeated_best_count = 10
     ## TODO: add here
     ## TODO:  - ability to use external pop as initial pop
     ## TODO:    (in some circumstances it's very hard to do because of ga is relatively slow
@@ -102,6 +105,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
 
             self._is_stopped = False
             self.stop_lock = Lock()
+            self._current_pop = None
             pass
 
         def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None):
@@ -117,21 +121,34 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             SWEEPMUTPB = params.sweep_mutation_probability
 
             if initial_population is None:
-                pop = toolbox.population(n=population)
-            else:
-                pop = initial_population
+                initial_population = []
+            pop = initial_population + toolbox.population(n=population - len(initial_population))
             # Evaluate the entire population
             fitnesses = list(map(toolbox.evaluate, pop))
             for ind, fit in zip(pop, fitnesses):
                 ind.fitness.values = fit
 
 
+            previous_raised_avr_individuals = []
+
             # Begin the evolution
             for g in range(NGEN):
                 # print("Iteration")
                 if self.is_stopped():
                     break
-                
+
+                # check if evolution process has stopped
+                if len(previous_raised_avr_individuals) == repeated_best_count:
+                    length = len(previous_raised_avr_individuals)
+                    whole_sum = sum(previous_raised_avr_individuals)
+                    mean = whole_sum / length
+                    sum2 = sum(abs(x - mean) for x in previous_raised_avr_individuals)
+                    std = sum2/length
+                    print("std: " + str(std))
+                    if std < 0.0001:
+                        print(" Evolution process has stopped at " + str(g) + " iteration")
+                        break
+
 
                 # print("-- Generation %i --" % g)
                 # Select the next generation individuals
@@ -179,10 +196,16 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                 best = self._find_best(pop)
                 result = (best, pop, fixed_schedule_part, current_time)
                 self._save_result(result)
+                self._save_pop(pop)
+
+                if len(previous_raised_avr_individuals) == repeated_best_count:
+                    previous_raised_avr_individuals = previous_raised_avr_individuals[1::]
+                previous_raised_avr_individuals.append(1/max(fits))
+
                 pass
 
-            best = self._find_best(pop)
-            self._save_result((best, pop, fixed_schedule_part, current_time))
+            # best = self._find_best(pop)
+            # self._save_result((best, pop, fixed_schedule_part, current_time))
 
             ## return the best fitted individual and resulted population
             print("Ready")
@@ -201,6 +224,12 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             self.lock.release()
             pass
 
+        def _save_pop(self, pop):
+            self.lock.acquire()
+            self._current_pop = copy.deepcopy(pop)
+            self.lock.release()
+            pass
+
         def _construct_result(self, result):
             (best, pop, fixed_schedule_part, current_time) = result
             return best, pop, ga_functions.build_schedule(best, fixed_schedule_part, current_time)
@@ -211,6 +240,12 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             self.lock.release()
             constructed = self._construct_result(result)
             return constructed
+
+        def get_pop(self):
+            self.lock.acquire()
+            result = self._current_pop
+            self.lock.release()
+            return result
 
         def stop(self):
             self.stop_lock.acquire()
@@ -327,13 +362,13 @@ def build(wf_name, is_silent=False, is_visualized=True, params=Params(20, 400, 0
     ##================================
     ##GA Run
     ##================================
-    pr = cProfile.Profile()
-    pr.enable()
+    # pr = cProfile.Profile()
+    # pr.enable()
     main(schedule_dynamic_heft)
-    pr.disable()
-    s = io.StringIO()
-    sortby = 'cumulative'
-    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-    ps.print_stats()
-    print(s.getvalue())
+    # pr.disable()
+    # s = io.StringIO()
+    # sortby = 'cumulative'
+    # ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    # ps.print_stats()
+    # print(s.getvalue())
 

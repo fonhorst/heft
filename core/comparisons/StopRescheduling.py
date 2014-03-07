@@ -1,5 +1,6 @@
 from collections import deque
 import random
+from GA.DEAPGA.GAImplementation.GAImplementation import construct_ga_alg
 from core.examples.BaseExecutorExample import BaseExecutorExample
 from core.executors.EventMachine import EventMachine
 from core.executors.EventMachine import TaskStart, TaskFinished, NodeFailed, NodeUp
@@ -25,20 +26,25 @@ class GaExecutor(EventMachine):
         self.base_fail_dispersion = base_fail_dispersion
         self.current_schedule = None
 
-        self.ga_computation_manager = GAComputationManager(0,
-                                                           workflow,
-                                                           resource_manager,
-                                                           estimator,
-                                                           ga_params)
+
         self.resource_manager = resource_manager
         self.estimator = estimator
         self.logger = logger
 
+
+        self.past_pop = None
         pass
 
     def init(self):
+        ga_planner = construct_ga_alg(True,
+                                       self.workflow,
+                                       self.resource_manager,
+                                       self.estimator,
+                                       params=self.params)
         self.current_schedule = Schedule({node: [] for node in self.resource_manager.get_nodes()})
-        result = self.ga_computation_manager._get_ga_alg()(self.current_schedule, None)
+
+        result = ga_planner(self.current_schedule, None)
+        self.past_pop = ga_planner.get_pop()
         self.current_schedule = result[2]
         self._post_new_events()
         pass
@@ -116,8 +122,31 @@ class GaExecutor(EventMachine):
         pass
 
     def _reschedule(self, event):
+        ga_planner = construct_ga_alg(True,
+                                       self.workflow,
+                                       self.resource_manager,
+                                       self.estimator,
+                                       params=self.params)
         current_cleaned_schedule = self._clean_events(event)
-        self.current_schedule = self.ga_computation_manager.run(current_cleaned_schedule, self.current_time)
+        # fixed_schedule_part, initial_schedule, current_time=0, initial_population=None
+        def clean_chromosome(chromosome):
+            if isinstance(event, NodeFailed):
+                tasks = chromosome[event.node.name]
+                ## TODO: here must be a procedure of getting currently alive nodes
+                working_nodes = list(chromosome.keys() - set([event.node.name]))
+                for t in tasks:
+                    new_node = random.randint(0, len(working_nodes))
+                    length = len(chromosome[new_node])
+                    # TODO: correct 0 and length
+                    new_place = random.randint(0, length)
+                    chromosome[new_node].insert(new_place, t)
+                return chromosome
+            if isinstance(event, NodeUp):
+                pass
+            return chromosome
+        cleaned_chromosomes = [clean_chromosome(ch) for ch in self.past_pop]
+        self.current_schedule = ga_planner(current_cleaned_schedule, None, self.current_time, initial_population=cleaned_chromosomes)
+        self.past_pop = ga_planner.get_pop()
         self._post_new_events()
         pass
 
