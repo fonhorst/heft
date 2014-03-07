@@ -1,4 +1,6 @@
 ##interface Algorithm
+
+
 class Algorithm:
     def __init__(self):
         self.resource_manager = None
@@ -18,6 +20,14 @@ class ResourceManager:
 
     def change_performance(self, node, performance):
         pass
+
+    ## TODO: remove duplcate code with HeftHelper
+    def get_nodes(self):
+        resources = self.get_resources()
+        result = set()
+        for resource in resources:
+            result.update(resource.nodes)
+        return result
 
 ##interface Estimator
 class Estimator:

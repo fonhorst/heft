@@ -22,7 +22,7 @@ bundle = BaseExecutorExample.get_default_bundle()
 
 ## planning for initial wf
 heft = DynamicHeft(initial_wf, resource_manager, estimator)
-empty_schedule  = Schedule({node:[] for node in heft.get_nodes()})
+empty_schedule = Schedule({node:[] for node in heft.get_nodes()})
 ga = GAComputationManager(15,
                           initial_wf,
                           resource_manager,
@@ -58,10 +58,10 @@ def gaheft_reschedule(wf_added_time):
     nodes_seq_validaty = Utility.validateNodesSeq(gaheft_added_schedule)
     if nodes_seq_validaty is not True:
         raise Exception("Check for nodes_seq_validaty didn't pass")
-    initial_wf_validaty =  Utility.validateParentsAndChildren(gaheft_added_schedule, initial_wf)
+    initial_wf_validaty = Utility.validateParentsAndChildren(gaheft_added_schedule, initial_wf)
     if initial_wf_validaty is not True:
         raise Exception("Check for initial_wf_validaty didn't pass")
-    added_wf_validaty =  Utility.validateParentsAndChildren(gaheft_added_schedule, added_wf)
+    added_wf_validaty = Utility.validateParentsAndChildren(gaheft_added_schedule, added_wf)
     if added_wf_validaty is not True:
         raise Exception("Check for added_wf_validaty didn't pass")
     #print("All Ok!")

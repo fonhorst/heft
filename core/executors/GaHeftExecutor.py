@@ -281,7 +281,8 @@ class GAComputationManager:
                  fixed_interval_for_ga,
                  workflow,
                  resource_manager,
-                 estimator):
+                 estimator,
+                 ga_params=Params(20, 1000, 0.8, 0.5, 0.4, 30)):
         self.fixed_interval_for_ga = fixed_interval_for_ga
 
         self.workflow = workflow
@@ -289,6 +290,8 @@ class GAComputationManager:
         self.estimator = estimator
 
         self.current_computation = None
+
+        self.params = ga_params
         pass
 
     def _clean_current_computation(self):
@@ -431,7 +434,7 @@ class GAComputationManager:
                                        self.workflow,
                                        self.resource_manager,
                                        self.estimator,
-                                       params=Params(20, 1000, 0.8, 0.5, 0.4, 30))
+                                       params=self.params)
         return ga
 
     ## actual run happens here

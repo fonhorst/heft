@@ -104,7 +104,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             self.stop_lock = Lock()
             pass
 
-        def __call__(self, fixed_schedule_part, initial_schedule, current_time=0):
+        def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None):
             print("Evaluating...")
             toolbox.register("evaluate", ga_functions.build_fitness(fixed_schedule_part, current_time))
             toolbox.register("attr_bool", ga_functions.build_initial(fixed_schedule_part, current_time))
@@ -115,25 +115,23 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
             CXPB, MUTPB, NGEN = params.crossover_probability, params.replacing_mutation_probability, params.generations
             SWEEPMUTPB = params.sweep_mutation_probability
-            pop = toolbox.population(n=population)
+
+            if initial_population is None:
+                pop = toolbox.population(n=population)
+            else:
+                pop = initial_population
             # Evaluate the entire population
             fitnesses = list(map(toolbox.evaluate, pop))
             for ind, fit in zip(pop, fitnesses):
                 ind.fitness.values = fit
 
-            pool_size = multiprocessing.cpu_count()
-            # executor = ThreadPoolExecutor(max_workers=pool_size)
-            executor = ProcessPoolExecutor()
-            builder = create_builder(ga_functions, fixed_schedule_part)
-
-            repeat_counter = 0
-            previous_value = -1
 
             # Begin the evolution
             for g in range(NGEN):
                 # print("Iteration")
                 if self.is_stopped():
                     break
+                
 
                 # print("-- Generation %i --" % g)
                 # Select the next generation individuals
@@ -158,92 +156,7 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                 # Evaluate the individuals with an invalid fitness
                 invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
 
-
-
-                # l = len(invalid_ind)
-                # # fitnesses = [None] * l
-                # part_size = l//pool_size
-                #
-                # for_parallel = []
-                # i = 0
-                # while True:
-                #     for_parallel.append((i, min(i + part_size - 1, l - 1)))
-                #     if i + part_size >= l:
-                #         break
-                #     else:
-                #         i += part_size
-                #
-                # def ev(x):
-                #     # t_ident = str(threading.current_thread().ident)
-                #     # t_name = str(threading.current_thread().name)
-                #     start = ComparisonUtility.cur_time()
-                #
-                #
-                #     st = x[0]
-                #     end = x[1] + 1
-                #     lk = list(invalid_ind[st:end])
-                #     result = list(map(toolbox.evaluate, lk))
-                #     end = ComparisonUtility.cur_time()
-                #     ##print(len(result))
-                #     #print("Time: " + str(current_time) + " Running ga in isolated thread " + t_name + " " + t_ident)
-                #     print("start : " + start + " end: " + end)
-                #     return result
-
-                # calculated = executor.map(ev, for_parallel)
-                # fitnesses = []
-                # for c in calculated:
-                #     fitnesses += c
-
-
-                # start = ComparisonUtility.cur_time()
-
-                # fitnesses = list(map(toolbox.evaluate, invalid_ind))
-
-                d = [dict(el) for el in invalid_ind]
-                triplets = zip(d, [builder]*len(invalid_ind), [current_time]*len(invalid_ind))
-                # fitnesses = list(executor.map(temp_fitness, triplets))
-
-                buf = list(triplets)
-
-
-                # base_size = int(len(buf)/pool_size)
-                # ct = int(len(buf)/base_size)
-                # for_submit = [buf[i:(i + 1)*base_size] for i in range(ct)] + buf[ct*base_size:]
-                # futures_mas = [executor.submit(temp_fit_for_all, fs) for fs in for_submit]
-                # fitnesses = []
-                # for fs in futures_mas:
-                #     fitnesses += fs.result()
-                #     pass
-
-                a = buf[0:250]
-                b = buf[250:500]
-                c = buf[500:750]
-                d = buf[750:]
-                af = executor.submit(temp_fit_for_all, a)
-                bf = executor.submit(temp_fit_for_all, b)
-                cf = executor.submit(temp_fit_for_all, c)
-                df = executor.submit(temp_fit_for_all, d)
-                ar = list(af.result())
-                br = list(bf.result())
-                cr = list(cf.result())
-                dr = list(df.result())
-                fitnesses = ar + br + cr + dr
-
-
-
-
-                # fitnesses = list(futures.map_as_completed(toolbox.evaluate, invalid_ind))
-
-                # end = ComparisonUtility.cur_time()
-                # print("start : " + start + " end: " + end)
-
-
-                ## TODO: fake
-                # fitnesses = map(lambda x: (5,), invalid_ind)
-
-
-
-
+                fitnesses = list(map(toolbox.evaluate, invalid_ind))
 
                 for ind, fit in zip(invalid_ind, fitnesses):
                     ind.fitness.values = fit
@@ -263,37 +176,41 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                     print("    Avg %s" % str(1/mean))
                     print("    Std %s" % str(1/std))
 
-
-                result = max(pop, key=lambda x: x.fitness.values[0])
-                #if result.fitness.values[0]  previous_value
-
-                ## TODO: additional expenditures. Need to reduce it later.
-                # resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
-                # result = max(resulted_pop, key=lambda x: x[1])
-                # self.current_result = (result[0], pop, ga_functions.build_schedule(result[0], fixed_schedule_part, current_time))
+                best = self._find_best(pop)
+                result = (best, pop, fixed_schedule_part, current_time)
+                self._save_result(result)
                 pass
 
-            executor.shutdown()
-
-            ## TODO: additional expenditures. Need to reduce it later.
-            resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
-            result = max(resulted_pop, key=lambda x: x[1])
-            self.current_result = (result[0], pop, ga_functions.build_schedule(result[0], fixed_schedule_part, current_time))
+            best = self._find_best(pop)
+            self._save_result((best, pop, fixed_schedule_part, current_time))
 
             ## return the best fitted individual and resulted population
             print("Ready")
-            return self.current_result
+            return self.get_result()
+
+        def _find_best(self, pop):
+            # resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]
+            # result = max(resulted_pop, key=lambda x: x[1])
+            # return result[0]
+            result = max(pop, key=lambda x: x.fitness.values[0])
+            return result
 
         def _save_result(self, result):
             self.lock.acquire()
             self.current_result = result
             self.lock.release()
+            pass
+
+        def _construct_result(self, result):
+            (best, pop, fixed_schedule_part, current_time) = result
+            return best, pop, ga_functions.build_schedule(best, fixed_schedule_part, current_time)
 
         def get_result(self):
             self.lock.acquire()
             result = self.current_result
             self.lock.release()
-            return result
+            constructed = self._construct_result(result)
+            return constructed
 
         def stop(self):
             self.stop_lock.acquire()
@@ -305,6 +222,8 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             result = self._is_stopped
             self.stop_lock.release()
             return result
+
+        pass
 
 
 
