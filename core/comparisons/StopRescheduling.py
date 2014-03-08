@@ -7,6 +7,7 @@ from core.executors.EventMachine import TaskStart, TaskFinished, NodeFailed, Nod
 from core.executors.GaHeftExecutor import GAComputationManager
 from environment.Resource import Node
 from environment.ResourceManager import Schedule, ScheduleItem
+from environment.Utility import Utility
 
 
 class GaExecutor(EventMachine):
@@ -143,7 +144,21 @@ class GaExecutor(EventMachine):
         self._reschedule(event)
         pass
 
-    def _clean_chromosome(self, chromosome, event):
+    def _clean_chromosome(self, chromosome, event, current_cleaned_schedule):
+
+            not_scheduled_tasks = [ item.job.id for (node, items) in current_cleaned_schedule.mapping.items() for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING]
+
+            for (node_name, ids) in chromosome.items():
+                for_removing = []
+                for id in ids:
+                    if id in not_scheduled_tasks:
+                        for_removing.append(id)
+                    pass
+                for r in for_removing:
+                    ids.remove(r)
+                    pass
+                pass
+
             if isinstance(event, NodeFailed):
                 tasks = chromosome[event.node.name]
                 ## TODO: here must be a procedure of getting currently alive nodes
@@ -172,8 +187,13 @@ class GaExecutor(EventMachine):
                                        self.resource_manager,
                                        self.estimator,
                                        params=self.params)
-        cleaned_chromosomes = [self._clean_chromosome(ch, event) for ch in self.past_pop]
-        self.current_schedule = ga_planner(current_cleaned_schedule, None, self.current_time, initial_population=cleaned_chromosomes)[2]
+        cleaned_chromosomes = [self._clean_chromosome(ch, event, current_cleaned_schedule) for ch in self.past_pop]
+
+        resulted_schedule = ga_planner(current_cleaned_schedule, None, self.current_time, initial_population=cleaned_chromosomes)[2]
+        #checking
+        Utility.check_and_raise_for_fixed_part(resulted_schedule, current_cleaned_schedule, self.current_time)
+
+        self.current_schedule = resulted_schedule
         self.past_pop = ga_planner.get_pop()
 
         ## scheduling with random initial population
@@ -183,7 +203,9 @@ class GaExecutor(EventMachine):
                                        self.resource_manager,
                                        self.estimator,
                                        params=self.params)
-        schedule_with_random = ga_planner_with_random_init_population(current_cleaned_schedule, None, self.current_time, initial_population=None)
+        schedule_with_random = ga_planner_with_random_init_population(current_cleaned_schedule, None, self.current_time, initial_population=None)[2]
+
+        Utility.check_and_raise_for_fixed_part(schedule_with_random, current_cleaned_schedule, self.current_time)
 
         self._post_new_events()
         pass

@@ -317,6 +317,23 @@ class Utility:
         return bundle
 
     @staticmethod
+    def check_and_raise_for_fixed_part(resulted_schedule, fixed_schedule_part, current_time):
+         ## TODO: Urgent! make a check for consistency with fixed schedule
+        fpart_check = Utility.check_fixed_part(resulted_schedule, fixed_schedule_part, current_time)
+        ## TODO: Urgent! make a check for abandoning of presence of duplicated tasks with state Finished, unstarted, executing
+        duplicated_check = Utility.check_duplicated_tasks(resulted_schedule)
+
+        if fpart_check is False:
+            raise Exception("check for consistency with fixed schedule didn't pass")
+        else:
+            print("Time: " + str(current_time) + " fpart_check passed")
+        if duplicated_check is False:
+            raise Exception("check for duplicated tasks didn't pass")
+        else:
+            print("Time: " + str(current_time) + " duplicated_check passed")
+        pass
+
+    @staticmethod
     def check_fixed_part(schedule, fixed_part, current_time):
         def item_equality(item1, fix_item):
 
