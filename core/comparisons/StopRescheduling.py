@@ -1,6 +1,7 @@
 from collections import deque
 import random
 from GA.DEAPGA.GAImplementation.GAImplementation import construct_ga_alg
+from core.comparisons.ComparisonBase import ResultSaver
 from core.examples.BaseExecutorExample import BaseExecutorExample
 from core.executors.EventMachine import EventMachine
 from core.executors.EventMachine import TaskStart, TaskFinished, NodeFailed, NodeUp
@@ -20,7 +21,7 @@ class GaExecutor(EventMachine):
                  base_fail_duration,
                  base_fail_dispersion,
 
-                 entity_name,
+                 wf_name,
                  stat_saver,
 
                  logger=None):
@@ -31,13 +32,12 @@ class GaExecutor(EventMachine):
         self.base_fail_dispersion = base_fail_dispersion
         self.current_schedule = None
 
-
         self.workflow = workflow
         self.resource_manager = resource_manager
         self.estimator = estimator
         self.params = ga_params
 
-        self.entity_name = entity_name
+        self.wf_name = wf_name
         self.stat_saver = stat_saver
 
         self.logger = logger
@@ -47,20 +47,28 @@ class GaExecutor(EventMachine):
         pass
 
     def init(self):
-        ga_planner = construct_ga_alg(True,
-                                       self.workflow,
-                                       self.resource_manager,
-                                       self.estimator,
-                                       params=self.params)
+        ga_planner = self._create_ga()
         self.current_schedule = Schedule({node: [] for node in self.resource_manager.get_nodes()})
 
         result = ga_planner(self.current_schedule, None)
         self.past_pop = ga_planner.get_pop()
+
+        print("Result makespan: " + str(Utility.get_the_last_time(result[2])))
+
         self.current_schedule = result[2]
         self._post_new_events()
 
         self.failed_once = False
         pass
+
+    def _create_ga(self):
+        ga_planner = construct_ga_alg(True,
+                                       self.workflow,
+                                       self.resource_manager,
+                                       self.estimator,
+                                       params=self.params)
+        return ga_planner
+
 
     #def _check_fail(self, task, node):
     #    reliability = self.estimator.estimate_reliability(task, node)
@@ -73,7 +81,7 @@ class GaExecutor(EventMachine):
         if self.failed_once is not True:
             reliability = self.estimator.estimate_reliability(task, node)
             res = random.random()
-            if res > reliability or task.id == "ID00015_000":
+            if res > reliability: ##or task.id == "ID00015_000":
                 self.failed_once = True
                 return True
         return False
@@ -180,32 +188,52 @@ class GaExecutor(EventMachine):
     def _reschedule(self, event):
         current_cleaned_schedule = self._clean_events(event)
 
+        task_id = "" if not hasattr(event, 'task') else " " + str(event.task.id)
         ## scheduling with initial population created of the previous population by moving elements from a downed node
-        print("Scheduling with the old pop: " + str(event.__class__.__name__))
-        ga_planner = construct_ga_alg(True,
-                                       self.workflow,
-                                       self.resource_manager,
-                                       self.estimator,
-                                       params=self.params)
+        print("Scheduling with the old pop: " + str(event.__class__.__name__) + task_id )
+        ga_planner = self._create_ga()
         cleaned_chromosomes = [self._clean_chromosome(ch, event, current_cleaned_schedule) for ch in self.past_pop]
 
-        resulted_schedule = ga_planner(current_cleaned_schedule, None, self.current_time, initial_population=cleaned_chromosomes)[2]
+        (v1, v2, resulted_schedule, iter_old_pop) = ga_planner(current_cleaned_schedule, None, self.current_time, initial_population=cleaned_chromosomes)
         #checking
         Utility.check_and_raise_for_fixed_part(resulted_schedule, current_cleaned_schedule, self.current_time)
+        makespan_old_pop = Utility.get_the_last_time(resulted_schedule)
+        print("Result makespan: " + str(makespan_old_pop))
+
+
 
         self.current_schedule = resulted_schedule
         self.past_pop = ga_planner.get_pop()
 
         ## scheduling with random initial population
-        print("Scheduling with a random pop: " + str(event.__class__.__name__))
-        ga_planner_with_random_init_population = construct_ga_alg(True,
-                                       self.workflow,
-                                       self.resource_manager,
-                                       self.estimator,
-                                       params=self.params)
-        schedule_with_random = ga_planner_with_random_init_population(current_cleaned_schedule, None, self.current_time, initial_population=None)[2]
+        print("Scheduling with a random pop: " + str(event.__class__.__name__)+ task_id)
+        ga_planner_with_random_init_population = self._create_ga()
+        (v3, v4, schedule_with_random, iter_random) = ga_planner_with_random_init_population(current_cleaned_schedule, None, self.current_time, initial_population=None)
 
         Utility.check_and_raise_for_fixed_part(schedule_with_random, current_cleaned_schedule, self.current_time)
+        makespan_random = Utility.get_the_last_time(schedule_with_random)
+
+        print("Result makespan: " + str(Utility.get_the_last_time(schedule_with_random)))
+
+
+        # creating and writing some stat data
+        # Note: it can be rewritten with using of events
+        if self.stat_saver is not None:
+            stat_data = {
+                "wf_name": self.wf_name,
+                "event_name": event.__class__.__name__,
+                "task_id": task_id,
+                "with_old_pop": {
+                    "iter": iter_old_pop,
+                    "makespan": makespan_old_pop,
+                },
+                "with_random": {
+                    "iter": iter_random,
+                    "makespan": makespan_random
+                }
+            }
+            self.stat_saver(stat_data)
+
 
         self._post_new_events()
         pass
@@ -259,13 +287,18 @@ class GaExecutor(EventMachine):
 
 
 class GaExecutorExample(BaseExecutorExample):
+
+    DEFAULT_SAVE_PATH = "../../results/GaRescheduleResults_{0}.json"
+
     def __init__(self):
         pass
 
-    def main(self, reliability, is_silent, wf_name, ga_params, the_bundle=None, logger=None):
+    def main(self, reliability, is_silent, wf_name, ga_params, key_for_save, the_bundle=None, logger=None):
         wf = self.get_wf(wf_name)
         bundle = self.get_bundle(the_bundle)
         (estimator, resource_manager, initial_schedule) = self.get_infrastructure(bundle, reliability, False)
+
+        stat_saver = ResultSaver(GaExecutorExample.DEFAULT_SAVE_PATH.format(key_for_save))
 
         ga_machine = GaExecutor(
                             workflow=wf,
@@ -274,8 +307,8 @@ class GaExecutorExample(BaseExecutorExample):
                             ga_params=ga_params,
                             base_fail_duration=40,
                             base_fail_dispersion=1,
-                            entity_name=None,
-                            stat_saver=None,
+                            wf_name=wf_name,
+                            stat_saver=stat_saver,
                             logger=logger)
 
         ga_machine.init()

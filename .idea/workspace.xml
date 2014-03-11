@@ -2,51 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/config/ftconfig.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/config/ftheader.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/config/ftmodule.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/config/ftoption.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/config/ftstdlib.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/freetype.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftbbox.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftbdf.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftbitmap.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftcache.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftchapters.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/fterrdef.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/fterrors.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftgasp.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftglyph.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftgxval.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftgzip.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftimage.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftincrem.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftlcdfil.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftlist.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftlzw.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftmac.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftmm.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftmodapi.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftmoderr.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftotval.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftoutln.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftpfr.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftrender.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftsizes.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftsnames.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftstroke.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftsynth.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftsystem.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/fttrigon.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/fttypes.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftwinfnt.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ftxf86.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/t1tables.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ttnameid.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/tttables.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/tttags.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/freetype2/freetype/ttunpat.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/penv/Include/freetype2/ft2build.h" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" afterPath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/tests/GaExecutorTests.py" afterPath="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" afterPath="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
@@ -73,45 +33,76 @@
       <file leaf-file-name="GAImplementation.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="243" column="8" selection-start="10390" selection-end="10390" vertical-scroll-proportion="0.0" vertical-offset="5033" max-vertical-offset="8825">
+            <state line="278" column="0" selection-start="11530" selection-end="11530" vertical-scroll-proportion="0.0" vertical-offset="5608" max-vertical-offset="9175">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GaHeftExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="434" column="36" selection-start="17466" selection-end="17723" vertical-scroll-proportion="0.0" vertical-offset="9895" max-vertical-offset="10775">
-              <folding>
-                <element signature="e#11210#11247#0" expanded="false" />
-                <element signature="e#11363#11888#0" expanded="false" />
-                <element signature="e#11951#12311#0" expanded="false" />
-                <element signature="e#18320#20572#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StopRescheduling.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="StopRescheduling.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/comparisons/StopRescheduling.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="124" column="18" selection-start="4569" selection-end="4569" vertical-scroll-proportion="-0.29659644" vertical-offset="2883" max-vertical-offset="4575">
+            <state line="291" column="0" selection-start="11075" selection-end="11075" vertical-scroll-proportion="11.84" vertical-offset="7571" max-vertical-offset="8375">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-                <element signature="e#1977#2399#0" expanded="false" />
-                <element signature="e#3758#3879#0" expanded="false" />
-                <element signature="e#6073#6629#0" expanded="false" />
-                <element signature="e#6676#7667#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="random.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/random.py">
+      <file leaf-file-name="Resource.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/environment/Resource.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="706" column="19" selection-start="24935" selection-end="24935" vertical-scroll-proportion="0.0" vertical-offset="17290" max-vertical-offset="18150">
+            <state line="235" column="6" selection-start="7326" selection-end="7326" vertical-scroll-proportion="0.0" vertical-offset="5427" max-vertical-offset="7575">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ComparisonBase.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="107" column="37" selection-start="3079" selection-end="3079" vertical-scroll-proportion="0.0" vertical-offset="2322" max-vertical-offset="3325">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GaExecutorTests.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="24" column="0" selection-start="798" selection-end="798" vertical-scroll-proportion="0.0" vertical-offset="302" max-vertical-offset="825">
+              <folding>
+                <element signature="e#0#27#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GaExecResultsAggregator.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/utility/GaExecResultsAggregator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="54" column="34" selection-start="1745" selection-end="1745" vertical-scroll-proportion="0.75236297" vertical-offset="952" max-vertical-offset="2150">
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="decoder.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/json/decoder.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="351" column="0" selection-start="12357" selection-end="12357" vertical-scroll-proportion="0.0" vertical-offset="8497" max-vertical-offset="9300">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/json/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="273" column="0" selection-start="10675" selection-end="10675" vertical-scroll-proportion="0.0" vertical-offset="6647" max-vertical-offset="8425">
               <folding />
             </state>
           </provider>
@@ -135,8 +126,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/AddingWFheftExample.py" />
         <option value="$PROJECT_DIR$/utility/GetResults.py" />
         <option value="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
         <option value="$PROJECT_DIR$/core/executors/EventMachine.py" />
@@ -147,10 +136,12 @@
         <option value="$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py" />
         <option value="$PROJECT_DIR$/environment/ResourceManager.py" />
         <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
-        <option value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
         <option value="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
+        <option value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
+        <option value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
       </list>
     </option>
   </component>
@@ -330,42 +321,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="comparisons" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -373,13 +328,13 @@
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="recentsLimit" value="5" />
-    <property name="restartRequiresConfirmation" value="true" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="last_opened_file_path" value="C:/Pro/Python33/Lib/site-packages" />
+    <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -395,8 +350,8 @@
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.GAvsHEFT">
-    <configuration default="false" name="Unittest TestGaExecutor.test_without_errors" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.GaExecResultsAggregator">
+    <configuration default="false" name="Unittests in TestGaExecutor (5)" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -408,9 +363,9 @@
       <module name="heft" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
       <option name="CLASS_NAME" value="TestGaExecutor" />
-      <option name="METHOD_NAME" value="test_without_errors" />
+      <option name="METHOD_NAME" value="" />
       <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="TEST_TYPE" value="TEST_CLASS" />
       <option name="PATTERN" value="" />
       <option name="USE_PATTERN" value="false" />
       <option name="PUREUNITTEST" value="true" />
@@ -492,27 +447,23 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittest TestGaExecutor.test_with_errors" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="GaExecResultsAggregator" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utility" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
-      <option name="CLASS_NAME" value="TestGaExecutor" />
-      <option name="METHOD_NAME" value="test_with_errors" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -684,19 +635,19 @@
     <list size="7">
       <item index="0" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
       <item index="1" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_without_errors" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor (5)" />
       <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor" />
       <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in GaExecutorTests" />
       <item index="5" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor (1)" />
-      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
+      <item index="6" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_without_errors" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor (1)" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in GaExecutorTests" />
+        <item index="0" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in GaExecutorTests" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor (5)" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor (1)" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor" />
       </list>
     </recent_temporary>
   </component>
@@ -751,15 +702,15 @@
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17320459" sideWeight="0.7531573" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17320459" sideWeight="0.652124" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27095294" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29850745" sideWeight="0.2208811" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24684271" sideWeight="0.7791189" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.347876" sideWeight="0.7791189" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -783,9 +734,9 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17320459" sideWeight="0.70149255" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29850745" sideWeight="0.7791189" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -875,76 +826,14 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="445" />
+      <option name="time" value="446" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/tests/FailExperiment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="166" column="0" selection-start="6851" selection-end="6851" vertical-scroll-proportion="0.0" vertical-offset="3536" max-vertical-offset="4150">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/penv-home/heft/Lib/site-packages/deap/tests/test_pickle.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="108" column="51" selection-start="4287" selection-end="4400" vertical-scroll-proportion="0.0" vertical-offset="2226" max-vertical-offset="2750">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="49" selection-start="459" selection-end="459" vertical-scroll-proportion="0.47281325" vertical-offset="375" max-vertical-offset="3425">
-          <folding>
-            <element signature="e#1981#5321#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/HeftHelper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="30" selection-start="279" selection-end="279" vertical-scroll-proportion="0.41707316" vertical-offset="79" max-vertical-offset="3800">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/imp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="113" column="0" selection-start="3344" selection-end="3344" vertical-scroll-proportion="0.0" vertical-offset="2684" max-vertical-offset="7050">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/utrunner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="115" column="0" selection-start="3445" selection-end="3445" vertical-scroll-proportion="0.0" vertical-offset="2684" max-vertical-offset="3875">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/EventMachine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="11" selection-start="842" selection-end="842" vertical-scroll-proportion="0.0" vertical-offset="725" max-vertical-offset="3250">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/examples/BaseExecutorExample.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="13" column="0" selection-start="360" selection-end="360" vertical-scroll-proportion="0.0" vertical-offset="134" max-vertical-offset="1750">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="31" selection-start="576" selection-end="576" vertical-scroll-proportion="0.0" vertical-offset="240" max-vertical-offset="825">
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -976,25 +865,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="434" column="36" selection-start="17466" selection-end="17723" vertical-scroll-proportion="0.0" vertical-offset="9895" max-vertical-offset="10775">
-          <folding>
-            <element signature="e#11210#11247#0" expanded="false" />
-            <element signature="e#11363#11888#0" expanded="false" />
-            <element signature="e#11951#12311#0" expanded="false" />
-            <element signature="e#18320#20572#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="243" column="8" selection-start="10390" selection-end="10390" vertical-scroll-proportion="0.0" vertical-offset="5033" max-vertical-offset="8825">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Pro/Python33/Lib/random.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="706" column="19" selection-start="24935" selection-end="24935" vertical-scroll-proportion="0.0" vertical-offset="17290" max-vertical-offset="18150">
@@ -1002,15 +872,87 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="434" column="36" selection-start="17466" selection-end="17723" vertical-scroll-proportion="0.0" vertical-offset="9895" max-vertical-offset="10775">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/subprocess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1111" column="0" selection-start="39817" selection-end="39817" vertical-scroll-proportion="0.0" vertical-offset="27580" max-vertical-offset="44075">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="49" selection-start="459" selection-end="459" vertical-scroll-proportion="0.34965035" vertical-offset="375" max-vertical-offset="3425">
+          <folding>
+            <element signature="e#1981#5321#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/environment/Resource.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="235" column="6" selection-start="7326" selection-end="7326" vertical-scroll-proportion="0.0" vertical-offset="5427" max-vertical-offset="7575">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/json/decoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="351" column="0" selection-start="12357" selection-end="12357" vertical-scroll-proportion="0.0" vertical-offset="8497" max-vertical-offset="9300">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/json/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="273" column="0" selection-start="10675" selection-end="10675" vertical-scroll-proportion="0.0" vertical-offset="6647" max-vertical-offset="8425">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="107" column="37" selection-start="3079" selection-end="3079" vertical-scroll-proportion="0.0" vertical-offset="2322" max-vertical-offset="3325">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="278" column="0" selection-start="11530" selection-end="11530" vertical-scroll-proportion="0.0" vertical-offset="5608" max-vertical-offset="9175">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="0" selection-start="798" selection-end="798" vertical-scroll-proportion="0.0" vertical-offset="302" max-vertical-offset="825">
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/StopRescheduling.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="124" column="18" selection-start="4569" selection-end="4569" vertical-scroll-proportion="-0.29659644" vertical-offset="2883" max-vertical-offset="4575">
+        <state line="291" column="0" selection-start="11075" selection-end="11075" vertical-scroll-proportion="11.84" vertical-offset="7571" max-vertical-offset="8375">
           <folding>
             <element signature="e#0#29#0" expanded="true" />
-            <element signature="e#1977#2399#0" expanded="false" />
-            <element signature="e#3758#3879#0" expanded="false" />
-            <element signature="e#6073#6629#0" expanded="false" />
-            <element signature="e#6676#7667#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utility/GaExecResultsAggregator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="34" selection-start="1745" selection-end="1745" vertical-scroll-proportion="0.75236297" vertical-offset="952" max-vertical-offset="2150">
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>

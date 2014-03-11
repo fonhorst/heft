@@ -99,9 +99,16 @@ class ResultSaver:
     def __init__(self, path):
         # path to save result of function
         self.path = path
+        self.dir = os.path.dirname(self.path)
 
     def __call__(self, result):
         result_arrays = []
+
+        if not os.path.exists(self.dir):
+            ## TODO: remove it later.
+            print("dir to create: " + str(self.dir))
+            os.makedirs(self.dir)
+
         if os.path.exists(self.path):
             a_save = open(self.path, 'r')
             result_arrays = json.load(a_save)

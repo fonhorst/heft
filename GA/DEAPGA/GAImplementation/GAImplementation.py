@@ -38,7 +38,7 @@ def default_fixed_schedule_part(resource_manager):
     fix_schedule_part = Schedule({node: [] for node in HeftHelper.to_nodes(resource_manager.get_resources())})
     return fix_schedule_part
 
-def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(20, 300, 0.8, 0.5, 0.4, 50)):
+def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(20, 300, 0.8, 0.5, 0.4, 50), context=None):
 
     population = params.population
     nodes = list(HeftHelper.to_nodes(resource_manager.get_resources()))
@@ -99,6 +99,8 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
     ## TODO: redesign it as a stoppable ga
     class GAComputation:
 
+        EVOLUTION_STOPPED_ITERATION_NUMBER = "EvoStpdIterNum"
+
         def __init__(self):
             self.current_result = None
             self.lock = Lock()
@@ -144,9 +146,13 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                     mean = whole_sum / length
                     sum2 = sum(abs(x - mean) for x in previous_raised_avr_individuals)
                     std = sum2/length
-                    print("std: " + str(std))
+                    ## TODO: uncomment it later. output
+                    # print("std: " + str(std))
                     if std < 0.0001:
                         print(" Evolution process has stopped at " + str(g) + " iteration")
+                        res = self._get_result()
+                        extended_result = (res[0], res[1], res[2], res[3], g)
+                        self._save_result(extended_result)
                         break
 
 
@@ -194,7 +200,8 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
                     print("    Std %s" % str(1/std))
 
                 best = self._find_best(pop)
-                result = (best, pop, fixed_schedule_part, current_time)
+                # the last component is iteration number when evolution stopped
+                result = (best, pop, fixed_schedule_part, current_time, g)
                 self._save_result(result)
                 self._save_pop(pop)
 
@@ -224,6 +231,12 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             self.lock.release()
             pass
 
+        def _get_result(self):
+            self.lock.acquire()
+            result = self.current_result
+            self.lock.release()
+            return result
+
         def _save_pop(self, pop):
             self.lock.acquire()
             self._current_pop = copy.deepcopy(pop)
@@ -231,8 +244,9 @@ def construct_ga_alg(is_silent, wf, resource_manager, estimator, params=Params(2
             pass
 
         def _construct_result(self, result):
-            (best, pop, fixed_schedule_part, current_time) = result
-            return best, pop, ga_functions.build_schedule(best, fixed_schedule_part, current_time)
+            (best, pop, fixed_schedule_part, current_time, stopped_iteration) = result
+            ## TODO: make additional structure to return elements
+            return best, pop, ga_functions.build_schedule(best, fixed_schedule_part, current_time), stopped_iteration
 
         def get_result(self):
             self.lock.acquire()
