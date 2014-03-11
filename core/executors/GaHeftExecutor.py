@@ -499,19 +499,7 @@ class GAComputationWrapper:
 
         resulted_schedule = result[2]
 
-        ## TODO: Urgent! make a check for consistency with fixed schedule
-        fpart_check = Utility.check_fixed_part(resulted_schedule, self.fixed_schedule_part, current_time)
-        ## TODO: Urgent! make a check for abandoning of presence of duplicated tasks with state Finished, unstarted, executing
-        duplicated_check = Utility.check_duplicated_tasks(resulted_schedule)
-
-        if fpart_check is False:
-            raise Exception("check for consistency with fixed schedule didn't pass")
-        else:
-            print("Time: " + str(current_time) + " fpart_check passed")
-        if duplicated_check is False:
-            raise Exception("check for duplicated tasks didn't pass")
-        else:
-            print("Time: " + str(current_time) + " duplicated_check passed")
+        Utility.check_and_raise_for_fixed_part(resulted_schedule, self.fixed_schedule_part, current_time)
 
         return result
 
