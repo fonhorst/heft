@@ -64,7 +64,7 @@ for wf_name, tasks in results.items():
         id, (old_pop, random) = item
         old_pop_info = "\t{0:4.2f}\t{1:4.2f}\t{2:4.2f}\t{3:4.2f}\t".format(old_pop[0], old_pop[1], old_pop[2], old_pop[3])
         random_info = "\t{0:4.2f}\t{1:4.2f}\t{2:4.2f}\t{3:4.2f}\t".format(random[0], random[1], random[2], random[3])
-        out = str(id) + " " + old_pop_info + "|" + random_info
+        out = "\t{0:11} {1}|{2}".format(id, old_pop_info, random_info)
         return out
     print("==={0}================".format(wf_name))
     print("\t____________old_pop________________|||||||____________random________________")
