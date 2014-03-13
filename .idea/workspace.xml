@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/for_play/Scoop_example.py" afterPath="$PROJECT_DIR$/for_play/Scoop_example.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/Scoop_mapreduce.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -75,13 +76,33 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Scoop_example.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Scoop_example.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/for_play/Scoop_example.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="36" selection-start="362" selection-end="362" vertical-scroll-proportion="-0.09195402" vertical-offset="415" max-vertical-offset="850">
+            <state line="15" column="36" selection-start="362" selection-end="362" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="850">
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Scoop_mapreduce.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/for_play/Scoop_mapreduce.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="16" selection-start="266" selection-end="266" vertical-scroll-proportion="0.30494037" vertical-offset="96" max-vertical-offset="725">
+              <folding>
+                <element signature="e#60#73#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_comm.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_comm.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="204" column="0" selection-start="7119" selection-end="7119" vertical-scroll-proportion="0.0" vertical-offset="4530" max-vertical-offset="9850">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -106,15 +127,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="builtins.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-752747175/builtins.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="531" column="4" selection-start="19719" selection-end="19719" vertical-scroll-proportion="0.0" vertical-offset="13093" max-vertical-offset="140550">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindManager">
@@ -133,7 +145,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
         <option value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
         <option value="$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py" />
@@ -149,6 +160,7 @@
         <option value="$PROJECT_DIR$/environment/Utility.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" />
         <option value="$PROJECT_DIR$/for_play/Scoop_example.py" />
+        <option value="$PROJECT_DIR$/for_play/Scoop_mapreduce.py" />
       </list>
     </option>
   </component>
@@ -269,7 +281,7 @@
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Scoop_example">
+  <component name="RunManager" selected="Python.Scoop_mapreduce">
     <configuration default="false" name="GAFunctions2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -324,6 +336,24 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
+    <configuration default="false" name="Scoop_mapreduce" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="-m scoop" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/for_play" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/for_play/Scoop_mapreduce.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
     <configuration default="false" name="Unittest TestGaExecutor.test_with_errors" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -339,30 +369,6 @@
       <option name="METHOD_NAME" value="test_with_errors" />
       <option name="FOLDER_NAME" value="" />
       <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Unittests in TestGaExecutor" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
-      <option name="CLASS_NAME" value="TestGaExecutor" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_CLASS" />
       <option name="PATTERN" value="" />
       <option name="USE_PATTERN" value="false" />
       <option name="PUREUNITTEST" value="true" />
@@ -542,17 +548,17 @@
       <item index="1" class="java.lang.String" itemvalue="Python.GAFunctions2" />
       <item index="2" class="java.lang.String" itemvalue="Python.GAImpl" />
       <item index="3" class="java.lang.String" itemvalue="Python.Scoop_example" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
-      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor" />
+      <item index="4" class="java.lang.String" itemvalue="Python.Scoop_mapreduce" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
+      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Scoop_example" />
-        <item index="1" class="java.lang.String" itemvalue="Python.GAImpl" />
-        <item index="2" class="java.lang.String" itemvalue="Python.GAFunctions2" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Scoop_mapreduce" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Scoop_example" />
+        <item index="2" class="java.lang.String" itemvalue="Python.GAImpl" />
+        <item index="3" class="java.lang.String" itemvalue="Python.GAFunctions2" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
       </list>
     </recent_temporary>
   </component>
@@ -611,11 +617,11 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.52927667" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.70378876" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27095294" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4707233" sideWeight="0.2208811" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4707233" sideWeight="0.7791189" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29621124" sideWeight="0.2208811" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29621124" sideWeight="0.7791189" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -735,20 +741,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/examples/GAExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="28" selection-start="525" selection-end="525" vertical-scroll-proportion="0.3859275" vertical-offset="119" max-vertical-offset="975">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/GAExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="40" selection-start="1252" selection-end="1252" vertical-scroll-proportion="0.6030702" vertical-offset="450" max-vertical-offset="5175">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="48" column="0" selection-start="1441" selection-end="1441" vertical-scroll-proportion="0.3326226" vertical-offset="969" max-vertical-offset="3325">
@@ -853,9 +845,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/for_play/Scoop_example.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="36" selection-start="362" selection-end="362" vertical-scroll-proportion="-0.09195402" vertical-offset="415" max-vertical-offset="850">
+        <state line="15" column="36" selection-start="362" selection-end="362" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="850">
           <folding>
             <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_comm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="204" column="0" selection-start="7119" selection-end="7119" vertical-scroll-proportion="0.0" vertical-offset="4530" max-vertical-offset="9850">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/Scoop_mapreduce.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="16" selection-start="266" selection-end="266" vertical-scroll-proportion="0.30494037" vertical-offset="96" max-vertical-offset="725">
+          <folding>
+            <element signature="e#60#73#0" expanded="true" />
           </folding>
         </state>
       </provider>
