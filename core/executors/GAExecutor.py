@@ -31,6 +31,8 @@ class GAExecutor(EventMachine):
         #self.ready_tasks = []
         self.finished_tasks = [self.workflow.head_task.id]
 
+        ## TODO: correct this stub later
+        self.logger = None
 
     def init(self):
         #self.current_schedule = self.heft_planner.run(self.current_schedule)

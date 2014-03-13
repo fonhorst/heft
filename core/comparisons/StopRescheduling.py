@@ -1,11 +1,10 @@
 from collections import deque
 import random
-from GA.DEAPGA.GAImplementation.GAImplementation import construct_ga_alg
+from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from core.comparisons.ComparisonBase import ResultSaver
 from core.examples.BaseExecutorExample import BaseExecutorExample
 from core.executors.EventMachine import EventMachine
 from core.executors.EventMachine import TaskStart, TaskFinished, NodeFailed, NodeUp
-from core.executors.GaHeftExecutor import GAComputationManager
 from environment.Resource import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 from environment.Utility import Utility
@@ -23,6 +22,7 @@ class GaExecutor(EventMachine):
 
                  wf_name,
                  stat_saver,
+                 task_id_to_fail,
 
                  logger=None):
         self.queue = deque()
@@ -39,6 +39,7 @@ class GaExecutor(EventMachine):
 
         self.wf_name = wf_name
         self.stat_saver = stat_saver
+        self.task_id_to_fail = task_id_to_fail
 
         self.logger = logger
 
@@ -62,11 +63,11 @@ class GaExecutor(EventMachine):
         pass
 
     def _create_ga(self):
-        ga_planner = construct_ga_alg(True,
-                                       self.workflow,
-                                       self.resource_manager,
-                                       self.estimator,
-                                       params=self.params)
+        ga_planner = GAFactory.default().create_ga(silent=True,
+                                                   wf=self.workflow,
+                                                   resource_manager=self.resource_manager,
+                                                   estimator=self.estimator,
+                                                   ga_params=self.params)
         return ga_planner
 
 
@@ -80,8 +81,15 @@ class GaExecutor(EventMachine):
     def _check_fail(self, task, node):
         if self.failed_once is not True:
             reliability = self.estimator.estimate_reliability(task, node)
-            res = random.random()
-            if res > reliability: ##or task.id == "ID00015_000":
+
+            failed = False
+            if self.task_id_to_fail is None:
+                res = random.random()
+                failed = res > reliability
+            elif self.task_id_to_fail == task.id:
+                failed = True
+
+            if failed is True:
                 self.failed_once = True
                 return True
         return False
@@ -293,7 +301,7 @@ class GaExecutorExample(BaseExecutorExample):
     def __init__(self):
         pass
 
-    def main(self, reliability, is_silent, wf_name, ga_params, key_for_save, the_bundle=None, logger=None):
+    def main(self, reliability, is_silent, wf_name, ga_params, key_for_save, task_id_to_fail=None, the_bundle=None, logger=None):
         wf = self.get_wf(wf_name)
         bundle = self.get_bundle(the_bundle)
         (estimator, resource_manager, initial_schedule) = self.get_infrastructure(bundle, reliability, False)
@@ -309,6 +317,7 @@ class GaExecutorExample(BaseExecutorExample):
                             base_fail_dispersion=1,
                             wf_name=wf_name,
                             stat_saver=stat_saver,
+                            task_id_to_fail=task_id_to_fail,
                             logger=logger)
 
         ga_machine.init()

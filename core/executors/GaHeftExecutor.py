@@ -1,10 +1,8 @@
 from collections import deque
 import random
-import sched
 from threading import Thread, Event
 import threading
-import time
-from GA.DEAPGA.GAImplementation.GAImplementation import construct_ga_alg, Params
+from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from core.executors.EventMachine import EventMachine, TaskStart, TaskFinished, NodeFailed, NodeUp
 from environment.Resource import Node
 from environment.ResourceManager import ScheduleItem, Schedule
@@ -275,6 +273,13 @@ class GaHeftExecutor(EventMachine):
 ##  - interrupting by timer or external event
 ##  - providing information about status of computation
 ##  - encapsulating some action - ? (for the sake of simplicity it must be responsibility of GaHeftExecutor)
+GA_PARAMS = {
+    "population": 1000,
+    "crossover_probability": 0.8,
+    "replacing_mutation_probability": 0.5,
+    "sweep_mutation_probability": 0.4,
+    "generations": 30
+}
 class GAComputationManager:
 
     def __init__(self,
@@ -282,7 +287,7 @@ class GAComputationManager:
                  workflow,
                  resource_manager,
                  estimator,
-                 ga_params=Params(20, 1000, 0.8, 0.5, 0.4, 30)):
+                 ga_params=GA_PARAMS):
         self.fixed_interval_for_ga = fixed_interval_for_ga
 
         self.workflow = workflow
@@ -430,11 +435,12 @@ class GAComputationManager:
         pass
 
     def _get_ga_alg(self):
-        ga = construct_ga_alg(True,
-                                       self.workflow,
-                                       self.resource_manager,
-                                       self.estimator,
-                                       params=self.params)
+        ga = GAFactory.default().create_ga(silent=True,
+                                                 wf=self.workflow,
+                                                 resource_manager=self.resource_manager,
+                                                 estimator=self.estimator,
+                                                 ga_params=self.params)
+
         return ga
 
     ## actual run happens here

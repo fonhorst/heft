@@ -3,7 +3,7 @@ import random
 from GA.DEAPGA.GAImplementation.ScheduleBuilder import ScheduleBuilder
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from environment.Resource import Node
-from environment.ResourceManager import ScheduleItem, Schedule
+from environment.ResourceManager import ScheduleItem
 from environment.Utility import Utility
 
 def mark_finished(schedule):
@@ -62,9 +62,10 @@ class GAFunctions2:
     def random_chromo(self, fixed_schedule_part, current_time):
 
         # res = random.random()
-        # # # TODO:
-        # if res > 0.8 and self.initial_chromosome is not None:
-        #     return self.initial_chromosome
+        # # # # TODO:
+        # if res > 0.95 and self.initial_chromosome is not None:
+        #      return self.initial_chromosome
+
         ##return [self.random_chromo() for j in range(self.size)]
         sched = self.initializing_alg.schedule(fixed_schedule_part, current_time)
         #TODO: remove it later
@@ -172,7 +173,7 @@ class GAFunctions2:
 
         fill_chromo(child1, ch1)
         fill_chromo(child2, ch2)
-        pass
+        return child1, child2
 
     # def swap_mutation(self, chromo):
     #     node_index = random.randint(0, len(self.nodes) - 1)

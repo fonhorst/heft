@@ -1,4 +1,3 @@
-from GA.DEAPGA.GAPlanner import GAPlanner
 from core.DSimpleHeft import DynamicHeft
 from core.examples.BaseExecutorExample import BaseExecutorExample
 from core.executors.GaHeftExecutor import GaHeftExecutor

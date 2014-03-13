@@ -1,8 +1,10 @@
 import json
 import math
 
-base_path = "../results_example/"
-filename = "GaRescheduleResults_example.json"
+# base_path = "../results_example/"
+# filename = "GaRescheduleResults_example.json"
+base_path = "../results/"
+filename = "GaRescheduleResults_by_5.json"
 path = base_path + filename
 
 with open(path, 'r') as f:
@@ -29,8 +31,8 @@ with open(path, 'r') as f:
 def aggr(data):
     iter_avr = sum(el[0] for el in data)/len(data)
     makespan_avr = sum(el[1] for el in data)/len(data)
-    iter_sigma = math.sqrt(sum(math.pow((el[0] - iter_avr), 2) for el in data))/len(data)
-    makespan_sigma = math.sqrt(sum(math.pow((el[1] - makespan_avr), 2) for el in data))/len(data)
+    iter_sigma = math.sqrt(sum(math.pow((el[0] - iter_avr), 2) for el in data)/len(data))
+    makespan_sigma = math.sqrt(sum(math.pow((el[1] - makespan_avr), 2) for el in data)/len(data))
     return (iter_avr, iter_sigma, makespan_avr, makespan_sigma)
 
 transformed_data = {nm: dict() for nm in set(el["wf_name"] for el in data)}
@@ -57,7 +59,6 @@ for wf_name, tasks in transformed_data.items():
 
     results[wf_name]["overall"] = (aggr(overall_old_pop), aggr(overall_random))
 
-print(str(results))
 
 for wf_name, tasks in results.items():
     def form_record(item):

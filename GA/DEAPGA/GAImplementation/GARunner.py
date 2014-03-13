@@ -6,6 +6,7 @@ from core.concrete_realization import ExperimentEstimator, ExperimentResourceMan
 from environment.Resource import ResourceGenerator
 from environment.ResourceManager import Schedule
 from environment.Utility import Utility, profile_decorator
+from environment.Utility import GraphVisualizationUtility as viz
 
 DEFAULT_GA_PARAMS = {
     "population": 50,
@@ -57,7 +58,7 @@ def run(wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEF
                                              resource_manager=resource_manager,
                                              estimator=estimator,
                                              ga_params=ga_params)
-    @profile_decorator
+    # @profile_decorator
     def run_ga(initial_schedule):
         def default_fixed_schedule_part(resource_manager):
             fix_schedule_part = Schedule({node: [] for node in HeftHelper.to_nodes(resource_manager.get_resources())})
@@ -80,8 +81,11 @@ def run(wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEF
         path = '../../resources/saved_schedules/' + name + '.json'
         Utility.save_schedule(path, wf_name, resources, transferMx, ideal_flops, schedule)
 
+
+
         if is_visualized:
-            Utility.create_jedule_visualization(schedule, wf_name+'_ga')
+            viz.visualize_task_node_mapping(wf, schedule)
+            # Utility.create_jedule_visualization(schedule, wf_name+'_ga')
         pass
 
 
@@ -108,7 +112,8 @@ def run(wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEF
     print("    Transfer validaty %s" % str(transfer_dependency_validaty))
 
     if is_visualized:
-        Utility.create_jedule_visualization(schedule_dynamic_heft, wf_name+'_heft')
+        viz.visualize_task_node_mapping(wf, schedule_dynamic_heft)
+        # Utility.create_jedule_visualization(schedule_dynamic_heft, wf_name+'_heft')
 
 
     ##================================
