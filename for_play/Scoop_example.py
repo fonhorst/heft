@@ -18,7 +18,9 @@ def helloWorld(value):
 @profile_decorator
 def main():
     # returnValues = list(map(helloWorld, range(16)))
-    returnValues = list(futures.map(helloWorld, range(16)))
+    shared_obj = 35
+    arr = list(shared_obj for i in range(16))
+    returnValues = list(futures.map(helloWorld, arr))
     print("\n".join(returnValues))
 
 if __name__ == "__main__":
