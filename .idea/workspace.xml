@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/Scoop_mapreduce.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/full_tree.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/hosts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
@@ -29,7 +30,7 @@
       <file leaf-file-name="GARunner.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="86" column="48" selection-start="3946" selection-end="3946" vertical-scroll-proportion="0.0" vertical-offset="1994" max-vertical-offset="3275">
+            <state line="86" column="48" selection-start="3946" selection-end="3946" vertical-scroll-proportion="0.0" vertical-offset="2594" max-vertical-offset="3275">
               <folding>
                 <element signature="e#0#65#0" expanded="true" />
               </folding>
@@ -37,40 +38,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Utility.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/environment/Utility.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="43" column="20" selection-start="1194" selection-end="1194" vertical-scroll-proportion="0.0" vertical-offset="619" max-vertical-offset="14825">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAFunctions2.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="90" column="45" selection-start="3658" selection-end="3658" vertical-scroll-proportion="0.0" vertical-offset="4200" max-vertical-offset="5425">
-              <folding>
-                <element signature="e#844#1536#0" expanded="false" />
-                <element signature="e#1606#1879#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ResourceManager.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="73" column="6" selection-start="1967" selection-end="1967" vertical-scroll-proportion="0.0" vertical-offset="3089" max-vertical-offset="5950">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="GAvsHEFT.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="26" selection-start="395" selection-end="395" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="700">
+            <state line="8" column="26" selection-start="195" selection-end="195" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="700">
               <folding />
             </state>
           </provider>
@@ -87,10 +58,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Scoop_mapreduce.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Scoop_mapreduce.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/for_play/Scoop_mapreduce.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="16" selection-start="266" selection-end="266" vertical-scroll-proportion="0.30494037" vertical-offset="96" max-vertical-offset="725">
+            <state line="11" column="16" selection-start="266" selection-end="266" vertical-scroll-proportion="0.0" vertical-offset="21" max-vertical-offset="725">
               <folding>
                 <element signature="e#60#73#0" expanded="true" />
               </folding>
@@ -98,31 +69,56 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_comm.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_comm.py">
+      <file leaf-file-name="full_tree.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/for_play/full_tree.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="204" column="0" selection-start="7119" selection-end="7119" vertical-scroll-proportion="0.0" vertical-offset="4530" max-vertical-offset="9850">
+            <state line="62" column="10" selection-start="2075" selection-end="2075" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1725">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nx_pylab.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/site-packages/networkx/drawing/nx_pylab.py">
+      <file leaf-file-name="subprocess.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/subprocess.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="371" column="0" selection-start="10827" selection-end="10827" vertical-scroll-proportion="0.0" vertical-offset="9103" max-vertical-offset="22500">
+            <state line="1111" column="0" selection-start="39817" selection-end="39817" vertical-scroll-proportion="0.0" vertical-offset="27376" max-vertical-offset="44075">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GAImpl.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
+      <file leaf-file-name="workerLaunch.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="237" column="29" selection-start="9355" selection-end="9731" vertical-scroll-proportion="0.0" vertical-offset="5444" max-vertical-offset="8000">
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
+            <state line="200" column="66" selection-start="7574" selection-end="7574" vertical-scroll-proportion="0.41639343" vertical-offset="4671" max-vertical-offset="6575">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="launcher.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launcher.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="253" column="0" selection-start="9501" selection-end="9501" vertical-scroll-proportion="-114.8" vertical-offset="3255" max-vertical-offset="12050">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="brokerLaunch.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launch/brokerLaunch.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="90" column="39" selection-start="3233" selection-end="3233" vertical-scroll-proportion="0.0" vertical-offset="1821" max-vertical-offset="5325">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="hosts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/for_play/hosts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="150">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -145,12 +141,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
-        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImplementation.py" />
-        <option value="$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
-        <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
-        <option value="$PROJECT_DIR$/core/examples/GAExecutorExample.py" />
         <option value="$PROJECT_DIR$/core/executors/GAExecutor.py" />
         <option value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py" />
@@ -161,6 +151,12 @@
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" />
         <option value="$PROJECT_DIR$/for_play/Scoop_example.py" />
         <option value="$PROJECT_DIR$/for_play/Scoop_mapreduce.py" />
+        <option value="$PROJECT_DIR$/for_play/full_tree.py" />
+        <option value="C:/Pro/Python33/Lib/site-packages/scoop/launcher.py" />
+        <option value="C:/Pro/Python33/Lib/subprocess.py" />
+        <option value="$PROJECT_DIR$/for_play/hosts" />
+        <option value="C:/Pro/Python33/Lib/site-packages/scoop/launch/brokerLaunch.py" />
+        <option value="C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py" />
       </list>
     </option>
   </component>
@@ -227,6 +223,68 @@
               <option name="myItemId" value="External Libraries" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="site-packages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="site-packages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zmq" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Python33" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -281,7 +339,7 @@
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Scoop_mapreduce">
+  <component name="RunManager" selected="Python.full_tree">
     <configuration default="false" name="GAFunctions2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -354,26 +412,20 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittest TestGaExecutor.test_with_errors" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="launcher" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
+      <option name="WORKING_DIRECTORY" value="C:/Pro/Python33/Lib/site-packages/scoop" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
-      <option name="CLASS_NAME" value="TestGaExecutor" />
-      <option name="METHOD_NAME" value="test_with_errors" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
+      <option name="SCRIPT_NAME" value="C:/Pro/Python33/Lib/site-packages/scoop/launcher.py" />
+      <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
@@ -519,6 +571,26 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
+    <configuration default="false" name="full_tree" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="-m scoop --hostfile $PROJECT_DIR$/for_play/hosts -vv --pythonpath /usr/local/lib/python3.3 --python-interpreter /usr/local/bin/python3.3 --external-hostname 192.168.168.1" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/for_play" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/for_play/full_tree.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
     <configuration default="false" name="test_core_unittests" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -543,22 +615,23 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <list size="7">
+    <list size="8">
       <item index="0" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
-      <item index="1" class="java.lang.String" itemvalue="Python.GAFunctions2" />
-      <item index="2" class="java.lang.String" itemvalue="Python.GAImpl" />
-      <item index="3" class="java.lang.String" itemvalue="Python.Scoop_example" />
-      <item index="4" class="java.lang.String" itemvalue="Python.Scoop_mapreduce" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
+      <item index="1" class="java.lang.String" itemvalue="Python.full_tree" />
+      <item index="2" class="java.lang.String" itemvalue="Python.GAFunctions2" />
+      <item index="3" class="java.lang.String" itemvalue="Python.GAImpl" />
+      <item index="4" class="java.lang.String" itemvalue="Python.Scoop_example" />
+      <item index="5" class="java.lang.String" itemvalue="Python.Scoop_mapreduce" />
+      <item index="6" class="java.lang.String" itemvalue="Python.launcher" />
+      <item index="7" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Scoop_mapreduce" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Scoop_example" />
-        <item index="2" class="java.lang.String" itemvalue="Python.GAImpl" />
-        <item index="3" class="java.lang.String" itemvalue="Python.GAFunctions2" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
+        <item index="0" class="java.lang.String" itemvalue="Python.launcher" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Scoop_mapreduce" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Scoop_example" />
+        <item index="3" class="java.lang.String" itemvalue="Python.GAImpl" />
+        <item index="4" class="java.lang.String" itemvalue="Python.GAFunctions2" />
       </list>
     </recent_temporary>
   </component>
@@ -613,15 +686,15 @@
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3857635" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.70378876" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27095294" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.73019516" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38002297" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29621124" sideWeight="0.2208811" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29621124" sideWeight="0.7791189" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26980484" sideWeight="0.5003018" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35361654" sideWeight="0.7791189" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -729,6 +802,16 @@
           <line>38</line>
           <option name="timeStamp" value="438" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://C:/Pro/Python33/Lib/subprocess.py</url>
+          <line>1111</line>
+          <option name="timeStamp" value="447" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://C:/Pro/Python33/Lib/subprocess.py</url>
+          <line>1061</line>
+          <option name="timeStamp" value="448" />
+        </line-breakpoint>
         <breakpoint enabled="true" type="python-exception">
           <properties exception="AttributeError" />
           <option name="timeStamp" value="54" />
@@ -737,64 +820,15 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="447" />
+      <option name="time" value="450" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="0" selection-start="1441" selection-end="1441" vertical-scroll-proportion="0.3326226" vertical-offset="969" max-vertical-offset="3325">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/StopRescheduling.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="66" selection-start="2279" selection-end="2279" vertical-scroll-proportion="1.9230769" vertical-offset="675" max-vertical-offset="8600">
-          <folding>
-            <element signature="e#0#29#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="38" selection-start="764" selection-end="764" vertical-scroll-proportion="1.0733453" vertical-offset="0" max-vertical-offset="1150">
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/deap/tools/support.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="504" column="8" selection-start="20716" selection-end="20716" vertical-scroll-proportion="0.0" vertical-offset="12589" max-vertical-offset="16200">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-752747175/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="531" column="4" selection-start="19719" selection-end="19719" vertical-scroll-proportion="0.0" vertical-offset="13093" max-vertical-offset="140550">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="45" selection-start="3658" selection-end="3658" vertical-scroll-proportion="0.0" vertical-offset="1125" max-vertical-offset="5425">
-          <folding>
-            <element signature="e#844#1536#0" expanded="false" />
-            <element signature="e#1606#1879#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="237" column="29" selection-start="9355" selection-end="9731" vertical-scroll-proportion="0.0" vertical-offset="5444" max-vertical-offset="8000">
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -809,6 +843,20 @@
     <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="73" column="6" selection-start="1967" selection-end="1967" vertical-scroll-proportion="0.0" vertical-offset="3089" max-vertical-offset="5950">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/__future__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3500">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_comm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="204" column="0" selection-start="7119" selection-end="7119" vertical-scroll-proportion="0.0" vertical-offset="4530" max-vertical-offset="9850">
           <folding />
         </state>
       </provider>
@@ -829,20 +877,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="26" selection-start="395" selection-end="395" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="700">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/__future__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3500">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/for_play/Scoop_example.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="36" selection-start="362" selection-end="362" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="850">
@@ -852,19 +886,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_comm.py">
+    <entry file="file://$PROJECT_DIR$/for_play/Scoop_mapreduce.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="204" column="0" selection-start="7119" selection-end="7119" vertical-scroll-proportion="0.0" vertical-offset="4530" max-vertical-offset="9850">
+        <state line="11" column="16" selection-start="266" selection-end="266" vertical-scroll-proportion="0.0" vertical-offset="96" max-vertical-offset="725">
+          <folding>
+            <element signature="e#60#73#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="26" selection-start="195" selection-end="195" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="700">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/for_play/Scoop_mapreduce.py">
+    <entry file="file://$PROJECT_DIR$/for_play/hosts">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="16" selection-start="266" selection-end="266" vertical-scroll-proportion="0.30494037" vertical-offset="96" max-vertical-offset="725">
-          <folding>
-            <element signature="e#60#73#0" expanded="true" />
-          </folding>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="537">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/subprocess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1111" column="0" selection-start="39817" selection-end="39817" vertical-scroll-proportion="0.0" vertical-offset="27376" max-vertical-offset="44075">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/full_tree.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="10" selection-start="2075" selection-end="2075" vertical-scroll-proportion="0.0" vertical-offset="1167" max-vertical-offset="1725">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launch/brokerLaunch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="90" column="39" selection-start="3233" selection-end="3233" vertical-scroll-proportion="0.0" vertical-offset="1821" max-vertical-offset="5325">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="253" column="0" selection-start="9501" selection-end="9501" vertical-scroll-proportion="-114.8" vertical-offset="3255" max-vertical-offset="12050">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="200" column="66" selection-start="7574" selection-end="7574" vertical-scroll-proportion="0.41639343" vertical-offset="4671" max-vertical-offset="6575">
+          <folding />
         </state>
       </provider>
     </entry>
