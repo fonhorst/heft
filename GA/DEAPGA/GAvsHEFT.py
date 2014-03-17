@@ -1,18 +1,18 @@
 from GA.DEAPGA.GAImplementation.GARunner import run
 
-wf_names = ['Montage_25']
+wf_names = ['Epigenomics_100']
 # wf_names = ["CyberShake_50"]
 
 PARAMS = {
     "ideal_flops": 20,
     "is_silent": False,
-    "is_visualized": True,
+    "is_visualized": False,
     "ga_params": {
         "population": 50,
         "crossover_probability": 0.8,
         "replacing_mutation_probability": 0.5,
         "sweep_mutation_probability": 0.4,
-        "generations": 300
+        "generations": 500
     },
     "nodes_conf": [10, 15, 25, 30]
 }

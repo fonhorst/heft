@@ -85,8 +85,11 @@ class GAFactory:
 
         toolbox.register("mate", ga_functions.crossover)
         toolbox.register("mutate", ga_functions.mutation)
-        toolbox.register("select", tools.selTournament, tournsize=4)
+        # toolbox.register("select", tools.selTournament, tournsize=4)
         # toolbox.register("select", tools.selRoulette)
+        toolbox.register("select", tools.selBest)
+        # toolbox.register("select", tools.selTournamentDCD)
+        # toolbox.register("select", tools.selNSGA2)
 
         repeated_best_count = 10
 

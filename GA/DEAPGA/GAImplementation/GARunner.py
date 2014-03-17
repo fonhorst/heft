@@ -88,6 +88,8 @@ def run(wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEF
             # Utility.create_jedule_visualization(schedule, wf_name+'_ga')
         pass
 
+        return schedule
+
 
     ##================================
     ##Dynamic Heft Run
@@ -120,6 +122,13 @@ def run(wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEF
     ##GA Run
     ##================================
 
-    run_ga(schedule_dynamic_heft)
+    ga_schedule = run_ga(schedule_dynamic_heft)
+
+    print("===========================================")
+    heft_makespan = Utility.get_the_last_time(schedule_dynamic_heft)
+    ga_makespan = Utility.get_the_last_time(ga_schedule)
+    print("Profit: " + str((1 - ga_makespan/heft_makespan)*100))
+    print("===========================================")
+    pass
 
 
