@@ -86,6 +86,13 @@ class Utility:
     def __init__(self):
         pass
 
+    @staticmethod
+    def get_default_bundle():
+        ## dedicated resource are the same for all bundles
+        dax2 = '../../resources/' + 'CyberShake_30' + '.xml'
+        path = '../../resources/saved_schedules/' + 'CyberShake_30_bundle_backup' + '.json'
+        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2))
+        return bundle
 
     @staticmethod
     def generateUrgentPipeline(dax_filepath, wf_start_id, task_postfix_id, deadline):

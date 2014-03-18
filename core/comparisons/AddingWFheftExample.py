@@ -16,7 +16,7 @@ added_wf_name = "Montage_25"
 
 initial_wf = BaseExecutorExample.get_wf(initial_wf_name, "00")
 added_wf = BaseExecutorExample.get_wf(added_wf_name, "10")
-bundle = BaseExecutorExample.get_default_bundle()
+bundle = Utility.get_default_bundle()
 (estimator, resource_manager, initial_schedule) = BaseExecutorExample.get_infrastructure(bundle, 1.0, False)
 
 ## planning for initial wf

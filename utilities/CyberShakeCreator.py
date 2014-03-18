@@ -12,10 +12,12 @@ path_dir = cur_wd + "\\..\\resources\\generated\\"
 if not os.path.exists(path_dir):
     os.makedirs(path_dir)
 
-for n in range(30, 110, 10):
+# seq = range(250, 510, 10)
+seq = [250]
+for n in seq:
     path = path_dir + wf_name + "_" + str(n) + ".xml"
     out = open(path, "w")
-    p = subprocess.Popen("java -jar WorkflowGenerator.jar -a {0} -- -n {1}".format(wf_type, 35), stdout=out)
+    p = subprocess.Popen("java -jar WorkflowGenerator.jar -a {0} -- -n {1}".format(wf_type, n), stdout=out)
     p.communicate()
     out.close()
     out = open(path, "r")

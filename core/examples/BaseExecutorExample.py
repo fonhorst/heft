@@ -15,18 +15,10 @@ class BaseExecutorExample:
         wf = Utility.readWorkflow(dax1, task_postfix_id=task_postfix_id)
         return wf
 
-    @staticmethod
-    def get_default_bundle():
-        ## dedicated resource are the same for all bundles
-        dax2 = '..\\..\\resources\\' + 'CyberShake_30' + '.xml'
-        path = '..\\..\\resources\\saved_schedules\\' + 'CyberShake_30_bundle_backup' + '.json'
-        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2))
-        return bundle
-
     def get_bundle(self, the_bundle):
         bundle = None
         if the_bundle is None:
-            bundle = BaseExecutorExample.get_default_bundle()
+            bundle = Utility.get_default_bundle()
         else:
             bundle = the_bundle
         return bundle

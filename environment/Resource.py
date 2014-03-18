@@ -208,7 +208,7 @@ class ResourceGenerator:
                  allNodes.append(node)
          transferMx = dict()
          def gen(node, nd):
-             return  0 if node.name == nd.name else self.rand(random, self.min_transfer_speed, self.max_transfer_speed)
+             return 0 if node.name == nd.name else self.rand(random, self.min_transfer_speed, self.max_transfer_speed)
          for node in allNodes:
              transferMx[node.name] = {nd.name: gen(node, nd) for nd in allNodes}
          return transferMx

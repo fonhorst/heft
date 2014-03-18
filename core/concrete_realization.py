@@ -3,11 +3,12 @@ from environment.ResourceManager import Estimator
 
 
 class ExperimentEstimator(Estimator):
-    def __init__(self, transferMx, ideal_flops, reliability):
+    def __init__(self, transferMx, ideal_flops, reliability, transfer_time=100):
         self.transfer_matrix = transferMx
         self.cache = dict()
         self.ideal_flops = ideal_flops
         self.reliability = reliability
+        self.transfer_time = transfer_time
 
     ##get estimated time of running the task on the node
     def estimate_runtime(self, task, node):
@@ -20,7 +21,7 @@ class ExperimentEstimator(Estimator):
         ##TODO: remake it later
         if node1 == node2:
             return 0
-        return 100
+        return self.transfer_time
         ##TODO: repair it later
         ##per_unit_of_time = 1##self.transfer_matrix[node1][node2]
         ##return self.get_or_estimate(task1, task2)/per_unit_of_time
