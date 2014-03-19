@@ -131,10 +131,11 @@ for wf_name, tasks in transformed_data.items():
         pass
     pass
 
-import matplotlib.pyplot as plt
-plt.plot([1,2,3,4])
-plt.ylabel('some numbers')
-plt.show()
+
+a_save = open("D:/wspace/heft/results/backup/convergence_results.json", 'w')
+json.dump(convergence_results, a_save)
+a_save.close()
+
 
 
 

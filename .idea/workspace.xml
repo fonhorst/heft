@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GA/SimulatedAnnealing.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" afterPath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/matplotlib_eaxmple.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" afterPath="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/tests/GaExecutorTests.py" afterPath="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/GaRescheduleResults_by_5.json" afterPath="$PROJECT_DIR$/results/GaRescheduleResults_by_5.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" afterPath="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
@@ -37,7 +31,25 @@
       <file leaf-file-name="GaExecResultsAggregator.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/utility/GaExecResultsAggregator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="142" column="0" selection-start="4591" selection-end="4591" vertical-scroll-proportion="0.6666667" vertical-offset="3225" max-vertical-offset="3675">
+            <state line="133" column="0" selection-start="4496" selection-end="4496" vertical-scroll-proportion="0.6764706" vertical-offset="2955" max-vertical-offset="3700">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ComparisonBase.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="119" column="12" selection-start="3457" selection-end="3599" vertical-scroll-proportion="0.0" vertical-offset="2530" max-vertical-offset="3400">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="matplotlib_eaxmple.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/for_play/matplotlib_eaxmple.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="13" selection-start="192" selection-end="192" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="350">
               <folding />
             </state>
           </provider>
@@ -97,7 +109,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/utilities/CyberShakeCreator.py" />
         <option value="$PROJECT_DIR$/environment/Resource.py" />
         <option value="$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py" />
         <option value="$PROJECT_DIR$/core/comparisons/AddingWFheftExample.py" />
@@ -112,6 +123,7 @@
         <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py" />
         <option value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
+        <option value="$PROJECT_DIR$/for_play/matplotlib_eaxmple.py" />
         <option value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
       </list>
     </option>
@@ -375,25 +387,7 @@
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Unittest TestGaExecutor.test_with_errors">
-    <configuration default="false" name="GARunner" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.GaExecResultsAggregator">
     <configuration default="false" name="Unittests in TestGaExecutor" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -479,6 +473,26 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="matplotlib_eaxmple" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/for_play" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/for_play/matplotlib_eaxmple.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -673,19 +687,19 @@
       <item index="0" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
       <item index="1" class="java.lang.String" itemvalue="Python.full_tree" />
       <item index="2" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="3" class="java.lang.String" itemvalue="Python.GARunner" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor (1)" />
-      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
-      <item index="7" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor (1)" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
+      <item index="6" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
+      <item index="7" class="java.lang.String" itemvalue="Python.matplotlib_eaxmple" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
-        <item index="1" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor (1)" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor" />
-        <item index="4" class="java.lang.String" itemvalue="Python.GARunner" />
+        <item index="0" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
+        <item index="1" class="java.lang.String" itemvalue="Python.matplotlib_eaxmple" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor (1)" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor" />
       </list>
     </recent_temporary>
   </component>
@@ -744,11 +758,11 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39380023" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.56142366" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17451206" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.63031" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.45350173" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.43857634" sideWeight="0.22148462" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.43857634" sideWeight="0.7785154" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36969" sideWeight="0.22148462" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36969" sideWeight="0.7785154" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -874,17 +888,10 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="451" />
+      <option name="time" value="452" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/utility/SimpleResultAggregator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3975">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-752747175/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="3854" column="8" selection-start="134060" selection-end="134060" vertical-scroll-proportion="0.0" vertical-offset="96534" max-vertical-offset="140550">
@@ -953,13 +960,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="123" column="0" selection-start="3600" selection-end="3600" vertical-scroll-proportion="0.0" vertical-offset="2455" max-vertical-offset="3400">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Pro/Python33/Lib/site-packages/deap/tools/support.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="331" column="8" selection-start="13600" selection-end="13600" vertical-scroll-proportion="0.0" vertical-offset="7934" max-vertical-offset="16200">
@@ -988,9 +988,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/matplotlib_eaxmple.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="192" selection-end="192" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="350">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="119" column="12" selection-start="3457" selection-end="3599" vertical-scroll-proportion="0.0" vertical-offset="2530" max-vertical-offset="3400">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/utility/GaExecResultsAggregator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="142" column="0" selection-start="4591" selection-end="4591" vertical-scroll-proportion="0.6666667" vertical-offset="3225" max-vertical-offset="3675">
+        <state line="133" column="0" selection-start="4496" selection-end="4496" vertical-scroll-proportion="0.6764706" vertical-offset="2955" max-vertical-offset="3700">
           <folding />
         </state>
       </provider>
