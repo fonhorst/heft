@@ -51,7 +51,7 @@ class GaExecutor(EventMachine):
         ga_planner = self._create_ga()
         self.current_schedule = Schedule({node: [] for node in self.resource_manager.get_nodes()})
 
-        result = ga_planner(self.current_schedule, None)
+        (result, logbook) = ga_planner(self.current_schedule, None)
         self.past_pop = ga_planner.get_pop()
 
         print("Result makespan: " + str(Utility.get_the_last_time(result[2])))
@@ -88,6 +88,9 @@ class GaExecutor(EventMachine):
                 failed = res > reliability
             elif self.task_id_to_fail == task.id:
                 failed = True
+
+            # r = self.task_id_to_fail == task.id
+            # print("Checking failed {0} == {1}: {2} ".format(self.task_id_to_fail, task.id, r))
 
             if failed is True:
                 self.failed_once = True
@@ -200,9 +203,14 @@ class GaExecutor(EventMachine):
         ## scheduling with initial population created of the previous population by moving elements from a downed node
         print("Scheduling with the old pop: " + str(event.__class__.__name__) + task_id )
         ga_planner = self._create_ga()
-        cleaned_chromosomes = [self._clean_chromosome(ch, event, current_cleaned_schedule) for ch in self.past_pop]
 
-        (v1, v2, resulted_schedule, iter_old_pop) = ga_planner(current_cleaned_schedule, None, self.current_time, initial_population=cleaned_chromosomes)
+        cleaned_chromosomes = [self._clean_chromosome(ch, event, current_cleaned_schedule) for ch in self.past_pop]
+        def is_empty(ch):
+            return len([item for n, items in ch.items() for item in items]) == 0
+        cleaned_chromosomes = [ch for ch in cleaned_chromosomes if not is_empty(ch)]
+        cleaned_chromosomes = None if len(cleaned_chromosomes) == 0 else cleaned_chromosomes
+
+        ((v1, v2, resulted_schedule, iter_old_pop), logbook_old_pop) = ga_planner(current_cleaned_schedule, None, self.current_time, initial_population=cleaned_chromosomes)
         #checking
         Utility.check_and_raise_for_fixed_part(resulted_schedule, current_cleaned_schedule, self.current_time)
         makespan_old_pop = Utility.get_the_last_time(resulted_schedule)
@@ -216,7 +224,7 @@ class GaExecutor(EventMachine):
         ## scheduling with random initial population
         print("Scheduling with a random pop: " + str(event.__class__.__name__)+ task_id)
         ga_planner_with_random_init_population = self._create_ga()
-        (v3, v4, schedule_with_random, iter_random) = ga_planner_with_random_init_population(current_cleaned_schedule, None, self.current_time, initial_population=None)
+        ((v3, v4, schedule_with_random, iter_random), logbook_random) = ga_planner_with_random_init_population(current_cleaned_schedule, None, self.current_time, initial_population=None)
 
         Utility.check_and_raise_for_fixed_part(schedule_with_random, current_cleaned_schedule, self.current_time)
         makespan_random = Utility.get_the_last_time(schedule_with_random)
@@ -234,10 +242,12 @@ class GaExecutor(EventMachine):
                 "with_old_pop": {
                     "iter": iter_old_pop,
                     "makespan": makespan_old_pop,
+                    "pop_aggr": logbook_old_pop
                 },
                 "with_random": {
                     "iter": iter_random,
-                    "makespan": makespan_random
+                    "makespan": makespan_random,
+                    "pop_aggr": logbook_random
                 }
             }
             self.stat_saver(stat_data)

@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 import os
 from Tools.Scripts.ndiff import fopen
+from filelock.filelock import FileLock
 
 
 class VersusFunctor:
@@ -110,15 +111,18 @@ class ResultSaver:
             os.makedirs(self.dir)
 
         if os.path.exists(self.path):
-            a_save = open(self.path, 'r')
-            result_arrays = json.load(a_save)
+            with FileLock(self.path):
+                a_save = open(self.path, 'r')
+                result_arrays = json.load(a_save)
+                a_save.close()
+
+        with FileLock(self.path):
+            a_save = open(self.path, 'w')
+            result_arrays.append(result)
+            json.dump(result_arrays, a_save)
             a_save.close()
 
-        a_save = open(self.path, 'w')
-        result_arrays.append(result)
-        json.dump(result_arrays, a_save)
-        a_save.close()
-
+        print("results saved")
         return result
 
 

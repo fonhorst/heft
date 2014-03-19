@@ -135,12 +135,15 @@ class GAFactory:
 
                 hallOfFame = deap.tools.HallOfFame(5)
 
+                logbook = tools.Logbook()
+                #logbook.record(gen=0, evals=30, **record)
 
 
                 # Evaluate the entire population
                 fitnesses = list(map(toolbox.evaluate, pop))
                 for ind, fit in zip(pop, fitnesses):
                     ind.fitness.values = fit
+
 
 
                 previous_raised_avr_individuals = []
@@ -152,6 +155,8 @@ class GAFactory:
                         break
 
                     hallOfFame.update(pop)
+
+                    # logbook.record(pop=copy.deepcopy(pop))
 
                     # check if evolution process has stopped
                     if len(previous_raised_avr_individuals) == repeated_best_count:
@@ -171,6 +176,8 @@ class GAFactory:
 
 
 
+
+
                     # print("-- Generation %i --" % g)
                     # Select the next generation individuals
                     offspring = toolbox.select(pop, len(pop))
@@ -187,6 +194,7 @@ class GAFactory:
                         if random.random() < SWEEPMUTPB:
                             ga_functions.sweep_mutation(mutant)
                             del mutant.fitness.values
+                            continue
                         if random.random() < MUTPB:
                             toolbox.mutate(mutant)
                             del mutant.fitness.values
@@ -213,12 +221,16 @@ class GAFactory:
                     mean = sum(fits) / length
                     sum2 = sum(x*x for x in fits)
                     std = abs(sum2 / length - mean**2)**0.5
+                    worst = 1/min(fits)
+                    best = 1/max(fits)
+                    avr = 1/mean
 
+                    logbook.record(iter=g, worst=worst, best=best, avr=avr)
                     if not is_silent:
                         print("-- Generation %i --" % g)
-                        print("  Worst %s" % str(1/min(fits)))
-                        print("   Best %s" % str(1/max(fits)))
-                        print("    Avg %s" % str(1/mean))
+                        print("  Worst %s" % str(worst))
+                        print("   Best %s" % str(best))
+                        print("    Avg %s" % str(avr))
                         print("    Std %s" % str(1/std))
 
                     best = self._find_best(pop)
@@ -247,8 +259,10 @@ class GAFactory:
                 # self._save_result((best, pop, fixed_schedule_part, current_time))
 
                 ## return the best fitted individual and resulted population
+
+
                 print("Ready")
-                return self.get_result()
+                return self.get_result(), logbook
 
             def _find_best(self, pop):
                 # resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]

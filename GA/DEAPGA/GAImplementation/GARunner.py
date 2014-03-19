@@ -119,6 +119,7 @@ class MixRunner(BaseRunner):
         def _run_sa(initial_schedule):
 
 
+
             return None
 
         ##================================
@@ -128,7 +129,7 @@ class MixRunner(BaseRunner):
         ##===============================================
         ##Simulated Annealing
         ##===============================================
-        _run_sa(None)
+        _run_sa(heft_schedule)
         ##================================
         ##GA Run
         ##================================

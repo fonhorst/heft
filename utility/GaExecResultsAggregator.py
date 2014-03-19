@@ -10,6 +10,7 @@ path = base_path + filename
 with open(path, 'r') as f:
     data = json.load(f)
 
+# logbook.record(worst=worst, best=best, avr=avr)
 ## it is assumed that Data element looks like:
 # stat_data = {
 #     "wf_name": self.wf_name,
@@ -18,10 +19,12 @@ with open(path, 'r') as f:
 #     "with_old_pop": {
 #         "iter": iter_old_pop,
 #         "makespan": makespan_old_pop,
+#         "pop_aggr": logbook_old_pop
 #     },
 #     "with_random": {
 #         "iter": iter_random,
-#         "makespan": makespan_random
+#         "makespan": makespan_random,
+#         "pop_aggr": logbook_random
 #     }
 # }
 
@@ -29,18 +32,25 @@ with open(path, 'r') as f:
 
 
 def aggr(data):
+    # iteration aggregations
     iter_avr = sum(el[0] for el in data)/len(data)
-    makespan_avr = sum(el[1] for el in data)/len(data)
     iter_sigma = math.sqrt(sum(math.pow((el[0] - iter_avr), 2) for el in data)/len(data))
+    # makespan aggreagtions
+    makespan_avr = sum(el[1] for el in data)/len(data)
     makespan_sigma = math.sqrt(sum(math.pow((el[1] - makespan_avr), 2) for el in data)/len(data))
+
+
+
     return (iter_avr, iter_sigma, makespan_avr, makespan_sigma)
+
+
 
 transformed_data = {nm: dict() for nm in set(el["wf_name"] for el in data)}
 
 for el in data:
     tpls = transformed_data[el["wf_name"]].get(el["task_id"],  ([], []))
-    tpls[0].append((el["with_old_pop"]["iter"], el["with_old_pop"]["makespan"]))
-    tpls[1].append((el["with_random"]["iter"], el["with_random"]["makespan"]))
+    tpls[0].append((el["with_old_pop"]["iter"], el["with_old_pop"]["makespan"], el["with_old_pop"]["pop_aggr"]))
+    tpls[1].append((el["with_random"]["iter"], el["with_random"]["makespan"], el["with_random"]["pop_aggr"]))
     transformed_data[el["wf_name"]][el["task_id"]] = tpls
 
 results = dict()
@@ -78,4 +88,55 @@ for wf_name, tasks in results.items():
         pass
     print(form_record(("overall", tasks["overall"])))
     pass
+
+###
+# visualize here
+###
+def converge_aggr(data):
+    # convergence aggregation
+    interesting_iter_number = [10, 20, 30, 40, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500]
+    interest_dict = {iter_num: [] for iter_num in interesting_iter_number }
+    for el in data:
+        #iteration massive
+        for record in el[2]:
+            iter_num = record["iter"] + 1
+            if iter_num in interest_dict.keys():
+                interest_dict[iter_num].append(record)
+                pass
+            pass
+        pass
+
+    aggr_dict = dict()
+    for inum, items in interest_dict.items():
+        avr = [i["avr"] for i in items]
+        avr_avr = sum(avr)/len(items)
+        min_avr = min(avr)
+        max_avr = max(avr)
+
+        best = [i["best"] for i in items]
+        best_avr = sum(best)/len(items)
+        min_best = min(best)
+        max_best = max(best)
+
+        aggr_dict[inum] = {"avr_avr": avr_avr, "min_avr": min_avr, "max_avr": max_avr,
+                           "best_avr": best_avr, "min_best": min_best, "max_best": max_best}
+        pass
+    return aggr_dict
+
+convergence_results = dict()
+for wf_name, tasks in transformed_data.items():
+    convergence_results[wf_name] = dict()
+    for task_id, (old_pop, random) in tasks.items():
+        convergence_results[wf_name][task_id] = (converge_aggr(old_pop), converge_aggr(random))
+        pass
+    pass
+
+import matplotlib.pyplot as plt
+plt.plot([1,2,3,4])
+plt.ylabel('some numbers')
+plt.show()
+
+
+
+
 

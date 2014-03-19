@@ -15,7 +15,7 @@ PARAMS = {
         "crossover_probability": 0.8,
         "replacing_mutation_probability": 0.5,
         "sweep_mutation_probability": 0.4,
-        "generations": 500
+        "generations": 200
     },
     "nodes_conf": [10, 15, 25, 30]
 }
