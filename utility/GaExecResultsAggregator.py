@@ -89,52 +89,12 @@ for wf_name, tasks in results.items():
     print(form_record(("overall", tasks["overall"])))
     pass
 
-###
-# visualize here
-###
-def converge_aggr(data):
-    # convergence aggregation
-    interesting_iter_number = [10, 20, 30, 40, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500]
-    interest_dict = {iter_num: [] for iter_num in interesting_iter_number }
-    for el in data:
-        #iteration massive
-        for record in el[2]:
-            iter_num = record["iter"] + 1
-            if iter_num in interest_dict.keys():
-                interest_dict[iter_num].append(record)
-                pass
-            pass
-        pass
-
-    aggr_dict = dict()
-    for inum, items in interest_dict.items():
-        avr = [i["avr"] for i in items]
-        avr_avr = sum(avr)/len(items)
-        min_avr = min(avr)
-        max_avr = max(avr)
-
-        best = [i["best"] for i in items]
-        best_avr = sum(best)/len(items)
-        min_best = min(best)
-        max_best = max(best)
-
-        aggr_dict[inum] = {"avr_avr": avr_avr, "min_avr": min_avr, "max_avr": max_avr,
-                           "best_avr": best_avr, "min_best": min_best, "max_best": max_best}
-        pass
-    return aggr_dict
-
-convergence_results = dict()
-for wf_name, tasks in transformed_data.items():
-    convergence_results[wf_name] = dict()
-    for task_id, (old_pop, random) in tasks.items():
-        convergence_results[wf_name][task_id] = (converge_aggr(old_pop), converge_aggr(random))
-        pass
-    pass
 
 
-a_save = open("D:/wspace/heft/results/backup/convergence_results.json", 'w')
-json.dump(convergence_results, a_save)
-a_save.close()
+
+# a_save = open("D:/wspace/heft/results/convergence_results.json", 'w')
+# json.dump(convergence_results, a_save)
+# a_save.close()
 
 
 

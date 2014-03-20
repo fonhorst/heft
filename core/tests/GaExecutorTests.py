@@ -29,9 +29,9 @@ class TestGaExecutor(unittest.TestCase):
         ## here mustn't be any exception
         # ids = ['ID00005_000']
         # ids = ['ID00010_000']
-        ids = ['ID00015_000']
+        # ids = ['ID00015_000']
         # ids = ['ID00005_000', 'ID00010_000', 'ID00015_000']
-        # ids = ['ID00020_000', 'ID00025_000']
+        ids = ['ID00020_000', 'ID00025_000']
         # ids = ['ID00030_000', 'ID00035_000']
         # ids = ['ID00040_000', 'ID00045_000', 'ID00049_000']
         print("Ids:" + str(ids))

@@ -210,6 +210,10 @@ class GaExecutor(EventMachine):
         cleaned_chromosomes = [ch for ch in cleaned_chromosomes if not is_empty(ch)]
         cleaned_chromosomes = None if len(cleaned_chromosomes) == 0 else cleaned_chromosomes
 
+        if self.workflow.get_all_unique_tasks() in current_cleaned_schedule.get_all_unique_tasks_id():
+            print("Schedule alleady has all unique tasks")
+            return
+
         ((v1, v2, resulted_schedule, iter_old_pop), logbook_old_pop) = ga_planner(current_cleaned_schedule, None, self.current_time, initial_population=cleaned_chromosomes)
         #checking
         Utility.check_and_raise_for_fixed_part(resulted_schedule, current_cleaned_schedule, self.current_time)
