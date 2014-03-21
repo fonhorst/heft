@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
-      <change type="DELETED" beforePath="D:\wspace\heft\results\backup\convergence_results.json" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" afterPath="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/tests/GaExecutorTests.py" afterPath="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/GaRescheduleResults_by_5.json" afterPath="$PROJECT_DIR$/results/GaRescheduleResults_by_5.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" afterPath="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/subprocess_example.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/for_play/hosts" afterPath="$PROJECT_DIR$/for_play/hosts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
@@ -31,34 +27,83 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GaExecResultsAggregator.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utility/GaExecResultsAggregator.py">
+      <file leaf-file-name="full_tree.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/for_play/full_tree.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="94" column="0" selection-start="3122" selection-end="3249" vertical-scroll-proportion="0.0" vertical-offset="2025" max-vertical-offset="2725">
+            <state line="46" column="13" selection-start="1603" selection-end="1603" vertical-scroll-proportion="0.0" vertical-offset="505" max-vertical-offset="1725">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="subprocess_example.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/for_play/subprocess_example.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="0" selection-start="1216" selection-end="1216" vertical-scroll-proportion="0.69818914" vertical-offset="128" max-vertical-offset="625">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="subprocess.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/subprocess.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1061" column="0" selection-start="37186" selection-end="37186" vertical-scroll-proportion="-5.56" vertical-offset="22086" max-vertical-offset="37150">
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#28568#28658#0" expanded="false" />
+                <element signature="e#28693#28704#0" expanded="false" />
+                <element signature="e#28762#29002#0" expanded="false" />
+                <element signature="e#29074#29675#0" expanded="false" />
+                <element signature="e#29713#29834#0" expanded="false" />
+                <element signature="e#29897#31771#0" expanded="false" />
+                <element signature="e#31802#31830#0" expanded="false" />
+                <element signature="e#31881#32043#0" expanded="false" />
+                <element signature="e#32107#32298#0" expanded="false" />
+                <element signature="e#32432#35517#0" expanded="false" />
+                <element signature="e#35577#35854#0" expanded="false" />
+                <element signature="e#35903#36728#0" expanded="false" />
+                <element signature="e#41050#41485#0" expanded="false" />
+                <element signature="e#41552#42279#0" expanded="false" />
+                <element signature="e#42339#42386#0" expanded="false" />
+                <element signature="e#42463#44934#0" expanded="false" />
+                <element signature="e#44984#45399#0" expanded="false" />
+                <element signature="e#45442#45878#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DrawConvergenceResults.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
+      <file leaf-file-name="launcher.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launcher.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="91" column="0" selection-start="3255" selection-end="3255" vertical-scroll-proportion="1.0160966" vertical-offset="1095" max-vertical-offset="3450">
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-                <element signature="e#1460#2542#0" expanded="false" />
-                <element signature="e#2586#2633#0" expanded="false" />
-              </folding>
+            <state line="301" column="0" selection-start="11406" selection-end="11406" vertical-scroll-proportion="0.0" vertical-offset="7130" max-vertical-offset="12325">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pyplot.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/site-packages/matplotlib/pyplot.py">
+      <file leaf-file-name="_winapi.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-752747175/_winapi.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2978" column="4" selection-start="95211" selection-end="95211" vertical-scroll-proportion="0.0" vertical-offset="73605" max-vertical-offset="91325">
+            <state line="121" column="4" selection-start="2023" selection-end="2023" vertical-scroll-proportion="0.0" vertical-offset="2935" max-vertical-offset="8350">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="workerLaunch.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="210" column="17" selection-start="7739" selection-end="7974" vertical-scroll-proportion="0.0" vertical-offset="5005" max-vertical-offset="6850">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="hosts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/for_play/hosts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1" column="5" selection-start="17" selection-end="17" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="175">
               <folding />
             </state>
           </provider>
@@ -82,10 +127,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/AddingWFheftExample.py" />
-        <option value="$PROJECT_DIR$/core/examples/BaseExecutorExample.py" />
-        <option value="$PROJECT_DIR$/environment/Utility.py" />
         <option value="$PROJECT_DIR$/core/concrete_realization.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
@@ -98,6 +139,10 @@
         <option value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
         <option value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
         <option value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
+        <option value="C:/Pro/Python33/Lib/subprocess.py" />
+        <option value="C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py" />
+        <option value="$PROJECT_DIR$/for_play/hosts" />
+        <option value="$PROJECT_DIR$/for_play/subprocess_example.py" />
       </list>
     </option>
   </component>
@@ -164,14 +209,12 @@
               <option name="myItemId" value="External Libraries" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
+              <option name="myItemId" value="-752747175" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -181,11 +224,21 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="utility" />
+              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -203,134 +256,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="experiments" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="environment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="executors" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="examples" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="comparisons" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="GA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -339,7 +264,7 @@
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
+    <property name="options.lastSelected" value="reference.idesettings.debugger.python" />
     <property name="last_opened_file_path" value="C:/Pro/Python33/Lib/site-packages" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
@@ -360,27 +285,61 @@
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.DrawConvergenceResults">
-    <configuration default="false" name="Unittests in TestGaExecutor (1)" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.subprocess_example">
+    <configuration default="false" name="GaExecResultsAggregator" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utility" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
-      <option name="CLASS_NAME" value="TestGaExecutor" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_CLASS" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="DrawConvergenceResults" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utility" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Scoop_example" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="-m scoop" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/for_play" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/for_play/Scoop_example.py" />
+      <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
@@ -409,27 +368,7 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="GaExecResultsAggregator" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utility" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="matplotlib_eaxmple" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="subprocess_example" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -441,25 +380,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/for_play/matplotlib_eaxmple.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="DrawConvergenceResults" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utility" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/for_play/subprocess_example.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
@@ -609,7 +530,7 @@
       <method />
     </configuration>
     <configuration default="false" name="full_tree" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="-m scoop --hostfile $PROJECT_DIR$/for_play/hosts -vv --pythonpath /usr/local/lib/python3.3 --python-interpreter /usr/local/bin/python3.3 --external-hostname 192.168.168.1" />
+      <option name="INTERPRETER_OPTIONS" value="-m scoop --hostfile $PROJECT_DIR$/for_play/hosts -vv" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
@@ -655,20 +576,20 @@
     <list size="8">
       <item index="0" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
       <item index="1" class="java.lang.String" itemvalue="Python.full_tree" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor (1)" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
-      <item index="5" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
-      <item index="6" class="java.lang.String" itemvalue="Python.matplotlib_eaxmple" />
-      <item index="7" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
+      <item index="2" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
+      <item index="3" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
+      <item index="4" class="java.lang.String" itemvalue="Python.Scoop_example" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
+      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
+      <item index="7" class="java.lang.String" itemvalue="Python.subprocess_example" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
-        <item index="1" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
-        <item index="3" class="java.lang.String" itemvalue="Python.matplotlib_eaxmple" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in TestGaExecutor (1)" />
+        <item index="0" class="java.lang.String" itemvalue="Python.subprocess_example" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Scoop_example" />
+        <item index="2" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
+        <item index="3" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
       </list>
     </recent_temporary>
   </component>
@@ -720,7 +641,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
@@ -728,10 +649,10 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39380023" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.61538464" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46153846" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4477612" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3846154" sideWeight="0.22148462" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3846154" sideWeight="0.7785154" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3846154" sideWeight="0.7785154" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -740,25 +661,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27095294" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29850745" sideWeight="0.2208811" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17320459" sideWeight="0.70149255" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29850745" sideWeight="0.7791189" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -845,9 +747,9 @@
           <option name="timeStamp" value="447" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://C:/Pro/Python33/Lib/subprocess.py</url>
-          <line>1061</line>
-          <option name="timeStamp" value="448" />
+          <url>file://C:/Pro/Python33/Lib/site-packages/scoop/launcher.py</url>
+          <line>443</line>
+          <option name="timeStamp" value="461" />
         </line-breakpoint>
         <breakpoint enabled="true" type="python-exception">
           <properties exception="AttributeError" />
@@ -857,97 +759,10 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="461" />
+      <option name="time" value="465" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="231" column="47" selection-start="9171" selection-end="9171" vertical-scroll-proportion="0.0" vertical-offset="5015" max-vertical-offset="8125">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="119" column="12" selection-start="3457" selection-end="3599" vertical-scroll-proportion="0.0" vertical-offset="2530" max-vertical-offset="3400">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/for_play/matplotlib_eaxmple.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="14" selection-start="0" selection-end="232" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="350">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/environment/ResourceManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="148" column="8" selection-start="4608" selection-end="4608" vertical-scroll-proportion="0.0" vertical-offset="3537" max-vertical-offset="5950">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/environment/Resource.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="250" column="8" selection-start="7817" selection-end="7817" vertical-scroll-proportion="0.0" vertical-offset="6162" max-vertical-offset="7575">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/StopRescheduling.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="242" column="40" selection-start="9766" selection-end="9766" vertical-scroll-proportion="0.0" vertical-offset="5625" max-vertical-offset="8725">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/matplotlib/axes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1362" column="0" selection-start="49173" selection-end="49173" vertical-scroll-proportion="0.0" vertical-offset="31983" max-vertical-offset="235925">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/json/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="270" column="0" selection-start="10551" selection-end="10551" vertical-scroll-proportion="0.0" vertical-offset="6558" max-vertical-offset="8425">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="137" column="0" selection-start="5473" selection-end="5473" vertical-scroll-proportion="0.0" vertical-offset="2330" max-vertical-offset="5425">
-          <folding>
-            <element signature="e#844#1536#0" expanded="false" />
-            <element signature="e#1606#1879#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="27" selection-start="1361" selection-end="1361" vertical-scroll-proportion="0.0" vertical-offset="552" max-vertical-offset="1375">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/matplotlib/gridspec.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="175" column="0" selection-start="5254" selection-end="5254" vertical-scroll-proportion="0.0" vertical-offset="5701" max-vertical-offset="12025">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/figure.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1144" column="15" selection-start="37629" selection-end="37629" vertical-scroll-proportion="0.0" vertical-offset="27508" max-vertical-offset="41175">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Pro/Python33/Lib/site-packages/matplotlib/legend.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="149" column="21" selection-start="5568" selection-end="5581" vertical-scroll-proportion="0.0" vertical-offset="3158" max-vertical-offset="24425">
@@ -962,23 +777,107 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="79" column="27" selection-start="2801" selection-end="2801" vertical-scroll-proportion="0.41247484" vertical-offset="1095" max-vertical-offset="3450">
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#1460#2542#0" expanded="false" />
+            <element signature="e#2586#2633#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/utility/GaExecResultsAggregator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="0" selection-start="3122" selection-end="3249" vertical-scroll-proportion="0.0" vertical-offset="2025" max-vertical-offset="2725">
+        <state line="94" column="0" selection-start="3122" selection-end="3249" vertical-scroll-proportion="0.6539235" vertical-offset="2025" max-vertical-offset="2725">
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
+    <entry file="file://$PROJECT_DIR$/for_play/Scoop_mapreduce.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="91" column="0" selection-start="3255" selection-end="3255" vertical-scroll-proportion="1.0160966" vertical-offset="1095" max-vertical-offset="3450">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/Scoop_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="19" selection-start="487" selection-end="487" vertical-scroll-proportion="0.5392157" vertical-offset="225" max-vertical-offset="850">
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
-            <element signature="e#1460#2542#0" expanded="false" />
-            <element signature="e#2586#2633#0" expanded="false" />
+            <element signature="e#0#37#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-752747175/_winapi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="121" column="4" selection-start="2023" selection-end="2023" vertical-scroll-proportion="0.0" vertical-offset="2935" max-vertical-offset="8350">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/full_tree.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="13" selection-start="1603" selection-end="1603" vertical-scroll-proportion="0.0" vertical-offset="505" max-vertical-offset="1725">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="301" column="0" selection-start="11406" selection-end="11406" vertical-scroll-proportion="0.0" vertical-offset="7153" max-vertical-offset="12325">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="210" column="17" selection-start="7739" selection-end="7974" vertical-scroll-proportion="0.0" vertical-offset="5005" max-vertical-offset="6850">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/hosts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="5" selection-start="17" selection-end="17" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="175">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/subprocess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1061" column="0" selection-start="37186" selection-end="37186" vertical-scroll-proportion="-5.56" vertical-offset="22086" max-vertical-offset="37150">
+          <folding>
+            <element signature="e#28568#28658#0" expanded="false" />
+            <element signature="e#28693#28704#0" expanded="false" />
+            <element signature="e#28762#29002#0" expanded="false" />
+            <element signature="e#29074#29675#0" expanded="false" />
+            <element signature="e#29713#29834#0" expanded="false" />
+            <element signature="e#29897#31771#0" expanded="false" />
+            <element signature="e#31802#31830#0" expanded="false" />
+            <element signature="e#31881#32043#0" expanded="false" />
+            <element signature="e#32107#32298#0" expanded="false" />
+            <element signature="e#32432#35517#0" expanded="false" />
+            <element signature="e#35577#35854#0" expanded="false" />
+            <element signature="e#35903#36728#0" expanded="false" />
+            <element signature="e#41050#41485#0" expanded="false" />
+            <element signature="e#41552#42279#0" expanded="false" />
+            <element signature="e#42339#42386#0" expanded="false" />
+            <element signature="e#42463#44934#0" expanded="false" />
+            <element signature="e#44984#45399#0" expanded="false" />
+            <element signature="e#45442#45878#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/subprocess_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="0" selection-start="1216" selection-end="1216" vertical-scroll-proportion="0.69818914" vertical-offset="128" max-vertical-offset="625">
+          <folding />
         </state>
       </provider>
     </entry>
