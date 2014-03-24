@@ -1,6 +1,8 @@
+import functools
+from scoop import futures
 from GA.DEAPGA.GAImplementation.GARunner import MixRunner
 
-wf_names = ['Montage_25']
+wf_names = ['Montage_25', 'Montage_50']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
 # wf_names = ['Epigenomics_100']
@@ -21,6 +23,7 @@ PARAMS = {
 }
 
 if __name__ == '__main__':
-    run = MixRunner()
-    [run(wf_name, **PARAMS) for wf_name in wf_names]
+    run = functools.partial(MixRunner(), **PARAMS)
 
+    # [run(wf_name) for wf_name in wf_names]
+    list(futures.map(run, wf_names))

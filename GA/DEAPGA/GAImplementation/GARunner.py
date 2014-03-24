@@ -101,7 +101,7 @@ class MixRunner(BaseRunner):
                 return fix_schedule_part
 
             fix_schedule_part = default_fixed_schedule_part(resource_manager)
-            (the_best_individual, pop, schedule, iter_stopped) = alg_func(fix_schedule_part, initial_schedule)
+            ((the_best_individual, pop, schedule, iter_stopped), logbook) = alg_func(fix_schedule_part, initial_schedule)
 
             self._validate(wf, estimator, schedule)
 
