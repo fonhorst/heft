@@ -4,6 +4,7 @@ import subprocess
 import sys
 
 args = ['ssh', '-x', '-n', '-oStrictHostKeyChecking=no', 'user@192.168.168.130', "(echo 'Hello World' > /home/user/hw.test.txt)"]
+print(" ".join(args))
 # args = ['-x', '-n', '-oStrictHostKeyChecking=no', 'user@192.168.168.130', "(echo 'Hello World' > /home/user/hw.test.txt)"]
 out, err = subprocess.Popen(args,
                  # executable="ssh",
