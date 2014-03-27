@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/for_play/hosts" afterPath="$PROJECT_DIR$/for_play/hosts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/MRO_example.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
@@ -28,12 +26,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GAvsHEFT.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="GAvsHEFT.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="0" selection-start="760" selection-end="760" vertical-scroll-proportion="0.63144964" vertical-offset="468" max-vertical-offset="875">
+            <state line="15" column="14" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0" vertical-offset="392" max-vertical-offset="875">
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MRO_example.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/for_play/MRO_example.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="12" selection-start="547" selection-end="547" vertical-scroll-proportion="0.50091076" vertical-offset="0" max-vertical-offset="2075">
+              <folding>
+                <element signature="e#1986#2196#0" expanded="false" />
+                <element signature="e#2226#2436#0" expanded="false" />
+                <element signature="e#2466#3069#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -42,7 +53,7 @@
       <file leaf-file-name="_functools.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-752747175/_functools.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="8" selection-start="1462" selection-end="1462" vertical-scroll-proportion="0.0" vertical-offset="990" max-vertical-offset="3400">
+            <state line="45" column="8" selection-start="1462" selection-end="1462" vertical-scroll-proportion="0.0" vertical-offset="1125" max-vertical-offset="3400">
               <folding />
             </state>
           </provider>
@@ -51,7 +62,7 @@
       <file leaf-file-name="GARunner.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="104" column="0" selection-start="4664" selection-end="4664" vertical-scroll-proportion="0.0" vertical-offset="2197" max-vertical-offset="3600">
+            <state line="104" column="0" selection-start="4664" selection-end="4664" vertical-scroll-proportion="0.0" vertical-offset="2600" max-vertical-offset="3800">
               <folding />
             </state>
           </provider>
@@ -61,9 +72,7 @@
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="35" column="8" selection-start="822" selection-end="822" vertical-scroll-proportion="0.0" vertical-offset="6397" max-vertical-offset="8425">
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -71,7 +80,7 @@
       <file leaf-file-name="__main__.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/bootstrap/__main__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="301" column="0" selection-start="11134" selection-end="11134" vertical-scroll-proportion="0.0" vertical-offset="7193" max-vertical-offset="7600">
+            <state line="301" column="0" selection-start="11134" selection-end="11134" vertical-scroll-proportion="0.0" vertical-offset="7525" max-vertical-offset="7700">
               <folding />
             </state>
           </provider>
@@ -80,7 +89,7 @@
       <file leaf-file-name="scoopzmq.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_comm/scoopzmq.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="187" column="0" selection-start="6630" selection-end="6630" vertical-scroll-proportion="0.0" vertical-offset="4415" max-vertical-offset="9600">
+            <state line="187" column="0" selection-start="6630" selection-end="6630" vertical-scroll-proportion="0.0" vertical-offset="4675" max-vertical-offset="9725">
               <folding />
             </state>
           </provider>
@@ -89,7 +98,7 @@
       <file leaf-file-name="runpy.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://C:/Pro/Python33/Lib/runpy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="159" column="0" selection-start="6134" selection-end="6134" vertical-scroll-proportion="0.0" vertical-offset="890" max-vertical-offset="6600">
+            <state line="159" column="0" selection-start="6134" selection-end="6134" vertical-scroll-proportion="0.0" vertical-offset="3975" max-vertical-offset="6700">
               <folding />
             </state>
           </provider>
@@ -113,7 +122,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/SimulatedAnnealing.py" />
         <option value="$PROJECT_DIR$/GA/SimulatedAnnealing.py" />
         <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
         <option value="$PROJECT_DIR$/for_play/matplotlib_eaxmple.py" />
@@ -129,6 +137,7 @@
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
+        <option value="$PROJECT_DIR$/for_play/MRO_example.py" />
       </list>
     </option>
   </component>
@@ -183,7 +192,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -386,18 +394,19 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="options.lastSelected" value="reference.idesettings.debugger.python" />
     <property name="recentsLimit" value="5" />
-    <property name="restartRequiresConfirmation" value="true" />
+    <property name="options.lastSelected" value="reference.idesettings.debugger.python" />
     <property name="last_opened_file_path" value="C:/Pro/Python33/Lib/site-packages" />
+    <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -413,7 +422,7 @@
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.GAvsHEFT">
+  <component name="RunManager" selected="Python.MRO_example">
     <configuration default="false" name="GaExecResultsAggregator" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -492,27 +501,23 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittest TestGaExecutor.test_with_errors" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="MRO_example" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/for_play" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
-      <option name="CLASS_NAME" value="TestGaExecutor" />
-      <option name="METHOD_NAME" value="test_with_errors" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/for_play/MRO_example.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -704,20 +709,20 @@
     <list size="8">
       <item index="0" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
       <item index="1" class="java.lang.String" itemvalue="Python.full_tree" />
-      <item index="2" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
-      <item index="3" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
-      <item index="4" class="java.lang.String" itemvalue="Python.Scoop_example" />
-      <item index="5" class="java.lang.String" itemvalue="Python.subprocess_example" />
-      <item index="6" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="7" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
+      <item index="3" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
+      <item index="4" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
+      <item index="5" class="java.lang.String" itemvalue="Python.Scoop_example" />
+      <item index="6" class="java.lang.String" itemvalue="Python.subprocess_example" />
+      <item index="7" class="java.lang.String" itemvalue="Python.MRO_example" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.subprocess_example" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Scoop_example" />
-        <item index="2" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
-        <item index="3" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestGaExecutor.test_with_errors" />
+        <item index="0" class="java.lang.String" itemvalue="Python.MRO_example" />
+        <item index="1" class="java.lang.String" itemvalue="Python.subprocess_example" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Scoop_example" />
+        <item index="3" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
+        <item index="4" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
       </list>
     </recent_temporary>
   </component>
@@ -768,23 +773,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39289805" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.49599084" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34135166" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.6586483" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34135166" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5040092" sideWeight="0.2238986" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5040092" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34135166" sideWeight="0.10742305" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41695303" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39289805" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -897,17 +902,10 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="467" />
+      <option name="time" value="469" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/__main__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="6" selection-start="827" selection-end="827" vertical-scroll-proportion="0.0" vertical-offset="74" max-vertical-offset="650">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launcher.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="16" selection-start="782" selection-end="782" vertical-scroll-proportion="154.0" vertical-offset="4275" max-vertical-offset="12325">
@@ -917,55 +915,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/for_play/hosts">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="22" selection-start="22" selection-end="22" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
-          <folding />
-        </state>
+        <state line="0" column="22" selection-start="22" selection-end="22" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/for_play/Scoop_example.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
-          <folding>
-            <element signature="e#0#37#0" expanded="false" />
-          </folding>
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/for_play/full_tree.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="23" selection-start="1840" selection-end="1840" vertical-scroll-proportion="0.0" vertical-offset="1009" max-vertical-offset="1725">
-          <folding />
-        </state>
+        <state line="54" column="23" selection-start="1840" selection-end="1840" vertical-scroll-proportion="0.0" vertical-offset="1009" max-vertical-offset="1725" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/TemporaryEvaluate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="40" selection-start="780" selection-end="780" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="625">
-          <folding>
-            <element signature="e#0#70#0" expanded="false" />
-          </folding>
-        </state>
+        <state line="19" column="40" selection-start="780" selection-end="780" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="625" />
       </provider>
     </entry>
     <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/futures.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="0" selection-start="2184" selection-end="2184" vertical-scroll-proportion="0.33333334" vertical-offset="1002" max-vertical-offset="11725">
-          <folding />
-        </state>
+        <state line="63" column="0" selection-start="2184" selection-end="2184" vertical-scroll-proportion="0.33333334" vertical-offset="1002" max-vertical-offset="11725" />
       </provider>
     </entry>
     <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_control.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="206" column="0" selection-start="6893" selection-end="6893" vertical-scroll-proportion="0.33333334" vertical-offset="4677" max-vertical-offset="6425">
-          <folding />
-        </state>
+        <state line="206" column="0" selection-start="6893" selection-end="6893" vertical-scroll-proportion="0.33333334" vertical-offset="4677" max-vertical-offset="6425" />
       </provider>
     </entry>
     <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_types.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="319" column="0" selection-start="12653" selection-end="12653" vertical-scroll-proportion="0.33333334" vertical-offset="7627" max-vertical-offset="9700">
-          <folding />
-        </state>
+        <state line="319" column="0" selection-start="12653" selection-end="12653" vertical-scroll-proportion="0.33333334" vertical-offset="7627" max-vertical-offset="9700" />
       </provider>
     </entry>
     <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/bootstrap/__main__.py">
@@ -999,9 +979,7 @@
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="35" column="8" selection-start="822" selection-end="822" vertical-scroll-proportion="0.0" vertical-offset="6397" max-vertical-offset="8425">
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1014,9 +992,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="0" selection-start="760" selection-end="760" vertical-scroll-proportion="0.63144964" vertical-offset="468" max-vertical-offset="875">
+        <state line="15" column="14" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0" vertical-offset="392" max-vertical-offset="875">
           <folding>
             <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/MRO_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="12" selection-start="547" selection-end="547" vertical-scroll-proportion="0.50091076" vertical-offset="0" max-vertical-offset="2075">
+          <folding>
+            <element signature="e#1986#2196#0" expanded="false" />
+            <element signature="e#2226#2436#0" expanded="false" />
+            <element signature="e#2466#3069#0" expanded="false" />
           </folding>
         </state>
       </provider>
