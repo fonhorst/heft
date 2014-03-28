@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/MRO_example.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/Popen_test.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/Scoop_simple.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/for_play/hosts" afterPath="$PROJECT_DIR$/for_play/hosts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
@@ -26,52 +28,62 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GAvsHEFT.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
+      <file leaf-file-name="subprocess.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/subprocess.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="14" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0" vertical-offset="392" max-vertical-offset="875">
+            <state line="780" column="16" selection-start="26062" selection-end="26062" vertical-scroll-proportion="-47.08" vertical-offset="18323" max-vertical-offset="41375">
               <folding>
-                <element signature="e#0#16#0" expanded="true" />
+                <element signature="e#28568#28658#0" expanded="false" />
+                <element signature="e#28693#28704#0" expanded="false" />
+                <element signature="e#29074#29675#0" expanded="false" />
+                <element signature="e#35577#35854#0" expanded="false" />
+                <element signature="e#35903#36728#0" expanded="false" />
+                <element signature="e#37142#40801#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MRO_example.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/for_play/MRO_example.py">
+      <file leaf-file-name="launcher.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/penv-home/heft/Lib/site-packages/scoop/launcher.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="12" selection-start="547" selection-end="547" vertical-scroll-proportion="0.50091076" vertical-offset="0" max-vertical-offset="2075">
-              <folding>
-                <element signature="e#1986#2196#0" expanded="false" />
-                <element signature="e#2226#2436#0" expanded="false" />
-                <element signature="e#2466#3069#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_functools.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-752747175/_functools.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="8" selection-start="1462" selection-end="1462" vertical-scroll-proportion="0.0" vertical-offset="1125" max-vertical-offset="3400">
+            <state line="27" column="0" selection-start="910" selection-end="910" vertical-scroll-proportion="0.0" vertical-offset="2925" max-vertical-offset="12050">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GARunner.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py">
+      <file leaf-file-name="workerLaunch.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="104" column="0" selection-start="4664" selection-end="4664" vertical-scroll-proportion="0.0" vertical-offset="2600" max-vertical-offset="3800">
+            <state line="250" column="34" selection-start="9791" selection-end="9791" vertical-scroll-proportion="-151.4" vertical-offset="2390" max-vertical-offset="7025">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GAImpl.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
+      <file leaf-file-name="Scoop_simple.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/for_play/Scoop_simple.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="8" selection-start="822" selection-end="822" vertical-scroll-proportion="0.0" vertical-offset="6397" max-vertical-offset="8425">
+            <state line="11" column="0" selection-start="240" selection-end="240" vertical-scroll-proportion="0.32894737" vertical-offset="0" max-vertical-offset="760">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Popen_test.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/for_play/Popen_test.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="0" selection-start="570" selection-end="570" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="hosts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/for_play/hosts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2" column="0" selection-start="43" selection-end="43" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="200">
               <folding />
             </state>
           </provider>
@@ -80,25 +92,36 @@
       <file leaf-file-name="__main__.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/bootstrap/__main__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="301" column="0" selection-start="11134" selection-end="11134" vertical-scroll-proportion="0.0" vertical-offset="7525" max-vertical-offset="7700">
+            <state line="86" column="0" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.0" vertical-offset="1479" max-vertical-offset="7600">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="scoopzmq.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_comm/scoopzmq.py">
+      <file leaf-file-name="utils.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="187" column="0" selection-start="6630" selection-end="6630" vertical-scroll-proportion="0.0" vertical-offset="4675" max-vertical-offset="9725">
+            <state line="65" column="44" selection-start="1849" selection-end="1849" vertical-scroll-proportion="-15.64" vertical-offset="1234" max-vertical-offset="6900">
+              <folding>
+                <element signature="e#766#803#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/logging/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1722" column="4" selection-start="60204" selection-end="60204" vertical-scroll-proportion="0.0" vertical-offset="42926" max-vertical-offset="47800">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="runpy.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/runpy.py">
+      <file leaf-file-name="config.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/logging/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="159" column="0" selection-start="6134" selection-end="6134" vertical-scroll-proportion="0.0" vertical-offset="3975" max-vertical-offset="6700">
+            <state line="398" column="20" selection-start="13938" selection-end="13938" vertical-scroll-proportion="0.0" vertical-offset="9726" max-vertical-offset="23225">
               <folding />
             </state>
           </provider>
@@ -122,22 +145,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/GA/SimulatedAnnealing.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
-        <option value="$PROJECT_DIR$/for_play/matplotlib_eaxmple.py" />
         <option value="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
         <option value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
         <option value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
         <option value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
-        <option value="C:/Pro/Python33/Lib/subprocess.py" />
-        <option value="C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py" />
         <option value="$PROJECT_DIR$/for_play/subprocess_example.py" />
         <option value="C:/Pro/Python33/Lib/site-packages/scoop/launch/brokerLaunch.py" />
-        <option value="$PROJECT_DIR$/for_play/hosts" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
         <option value="$PROJECT_DIR$/for_play/MRO_example.py" />
+        <option value="C:/Pro/Python33/Lib/subprocess.py" />
+        <option value="C:/Pro/Python33/Lib/site-packages/scoop/utils.py" />
+        <option value="$PROJECT_DIR$/for_play/Popen_test.py" />
+        <option value="C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py" />
+        <option value="$PROJECT_DIR$/for_play/hosts" />
+        <option value="$PROJECT_DIR$/for_play/Scoop_simple.py" />
       </list>
     </option>
   </component>
@@ -306,6 +329,32 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="site-packages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scoop" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bootstrap" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="heft" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -401,7 +450,7 @@
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="reference.idesettings.debugger.python" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="last_opened_file_path" value="C:/Pro/Python33/Lib/site-packages" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
@@ -422,47 +471,7 @@
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.MRO_example">
-    <configuration default="false" name="GaExecResultsAggregator" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utility" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="DrawConvergenceResults" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utility" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.Popen_test">
     <configuration default="false" name="Scoop_example" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="-m scoop" />
       <option name="PARENT_ENVS" value="true" />
@@ -518,6 +527,42 @@
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="workerLaunch" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="C:/Pro/Python33/Lib/site-packages/scoop/launch" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Popen_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/for_play" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/for_play/Popen_test.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -663,7 +708,7 @@
       <method />
     </configuration>
     <configuration default="false" name="full_tree" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="-m scoop --hostfile $PROJECT_DIR$/for_play/hosts -vv --python-interpreter /usr/local/bin/python3.3  --path /home/user/heft --external-hostname 192.168.168.130" />
+      <option name="INTERPRETER_OPTIONS" value="-m scoop --hostfile $PROJECT_DIR$/for_play/hosts -vv --python-interpreter /usr/local/bin/python3.3  --path /home/user/heft --external-hostname 10.253.0.151" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
@@ -709,20 +754,20 @@
     <list size="8">
       <item index="0" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
       <item index="1" class="java.lang.String" itemvalue="Python.full_tree" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="3" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
-      <item index="4" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
-      <item index="5" class="java.lang.String" itemvalue="Python.Scoop_example" />
-      <item index="6" class="java.lang.String" itemvalue="Python.subprocess_example" />
-      <item index="7" class="java.lang.String" itemvalue="Python.MRO_example" />
+      <item index="2" class="java.lang.String" itemvalue="Python.Scoop_example" />
+      <item index="3" class="java.lang.String" itemvalue="Python.subprocess_example" />
+      <item index="4" class="java.lang.String" itemvalue="Python.MRO_example" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
+      <item index="6" class="java.lang.String" itemvalue="Python.workerLaunch" />
+      <item index="7" class="java.lang.String" itemvalue="Python.Popen_test" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.MRO_example" />
-        <item index="1" class="java.lang.String" itemvalue="Python.subprocess_example" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Scoop_example" />
-        <item index="3" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
-        <item index="4" class="java.lang.String" itemvalue="Python.GaExecResultsAggregator" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Popen_test" />
+        <item index="1" class="java.lang.String" itemvalue="Python.workerLaunch" />
+        <item index="2" class="java.lang.String" itemvalue="Python.MRO_example" />
+        <item index="3" class="java.lang.String" itemvalue="Python.subprocess_example" />
+        <item index="4" class="java.lang.String" itemvalue="Python.Scoop_example" />
       </list>
     </recent_temporary>
   </component>
@@ -773,23 +818,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1696" height="1026" extended-state="7" />
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.11021814" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.6586483" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34135166" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.90241104" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34135166" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34135166" sideWeight="0.10742305" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41695303" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.09758898" sideWeight="0.2238986" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.09758898" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39289805" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -894,6 +939,11 @@
           <line>190</line>
           <option name="timeStamp" value="466" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py</url>
+          <line>107</line>
+          <option name="timeStamp" value="469" />
+        </line-breakpoint>
         <breakpoint enabled="true" type="python-exception">
           <properties exception="AttributeError" />
           <option name="timeStamp" value="54" />
@@ -902,87 +952,10 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="469" />
+      <option name="time" value="470" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launcher.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="16" selection-start="782" selection-end="782" vertical-scroll-proportion="154.0" vertical-offset="4275" max-vertical-offset="12325">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/for_play/hosts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="22" selection-start="22" selection-end="22" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/for_play/Scoop_example.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/for_play/full_tree.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="23" selection-start="1840" selection-end="1840" vertical-scroll-proportion="0.0" vertical-offset="1009" max-vertical-offset="1725" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/TemporaryEvaluate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="40" selection-start="780" selection-end="780" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="625" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/futures.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="0" selection-start="2184" selection-end="2184" vertical-scroll-proportion="0.33333334" vertical-offset="1002" max-vertical-offset="11725" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_control.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="206" column="0" selection-start="6893" selection-end="6893" vertical-scroll-proportion="0.33333334" vertical-offset="4677" max-vertical-offset="6425" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_types.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="319" column="0" selection-start="12653" selection-end="12653" vertical-scroll-proportion="0.33333334" vertical-offset="7627" max-vertical-offset="9700" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/bootstrap/__main__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="301" column="0" selection-start="11134" selection-end="11134" vertical-scroll-proportion="0.0" vertical-offset="7193" max-vertical-offset="7600">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/_comm/scoopzmq.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="187" column="0" selection-start="6630" selection-end="6630" vertical-scroll-proportion="0.0" vertical-offset="4415" max-vertical-offset="9600">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/runpy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="159" column="0" selection-start="6134" selection-end="6134" vertical-scroll-proportion="0.0" vertical-offset="890" max-vertical-offset="6600">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-752747175/_functools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="8" selection-start="1462" selection-end="1462" vertical-scroll-proportion="0.0" vertical-offset="990" max-vertical-offset="3400">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="8" selection-start="822" selection-end="822" vertical-scroll-proportion="0.0" vertical-offset="6397" max-vertical-offset="8425">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="104" column="0" selection-start="4664" selection-end="4664" vertical-scroll-proportion="0.0" vertical-offset="2197" max-vertical-offset="3600">
@@ -990,23 +963,117 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
+    <entry file="file://$PROJECT_DIR$/penv-home/heft/Lib/site-packages/scoop/launch/workerLaunch.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="14" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0" vertical-offset="392" max-vertical-offset="875">
+        <state line="245" column="20" selection-start="9390" selection-end="9390" vertical-scroll-proportion="0.0" vertical-offset="5821" max-vertical-offset="6550">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stdout_output.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="483">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/penv/Lib/site-packages/scoop/launcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="161" column="34" selection-start="5851" selection-end="5851" vertical-scroll-proportion="2.4554296" vertical-offset="2310" max-vertical-offset="12050">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/full_tree.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="17" selection-start="2018" selection-end="2018" vertical-scroll-proportion="0.0" vertical-offset="989" max-vertical-offset="1725">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="315" column="29" selection-start="12061" selection-end="12061" vertical-scroll-proportion="-11.52" vertical-offset="7362" max-vertical-offset="12325">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/logging/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1722" column="4" selection-start="60204" selection-end="60204" vertical-scroll-proportion="0.0" vertical-offset="42926" max-vertical-offset="47800">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/logging/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="398" column="20" selection-start="13938" selection-end="13938" vertical-scroll-proportion="0.0" vertical-offset="9726" max-vertical-offset="23225">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/subprocess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="780" column="16" selection-start="26062" selection-end="26062" vertical-scroll-proportion="-47.08" vertical-offset="18323" max-vertical-offset="41375">
           <folding>
-            <element signature="e#0#16#0" expanded="true" />
+            <element signature="e#28568#28658#0" expanded="false" />
+            <element signature="e#28693#28704#0" expanded="false" />
+            <element signature="e#29074#29675#0" expanded="false" />
+            <element signature="e#35577#35854#0" expanded="false" />
+            <element signature="e#35903#36728#0" expanded="false" />
+            <element signature="e#37142#40801#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/for_play/MRO_example.py">
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/bootstrap/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="12" selection-start="547" selection-end="547" vertical-scroll-proportion="0.50091076" vertical-offset="0" max-vertical-offset="2075">
+        <state line="86" column="0" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.0" vertical-offset="1479" max-vertical-offset="7600">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/penv-home/heft/Lib/site-packages/scoop/launcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="0" selection-start="910" selection-end="910" vertical-scroll-proportion="0.0" vertical-offset="2925" max-vertical-offset="12050">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="44" selection-start="1849" selection-end="1849" vertical-scroll-proportion="-15.64" vertical-offset="1234" max-vertical-offset="6900">
           <folding>
-            <element signature="e#1986#2196#0" expanded="false" />
-            <element signature="e#2226#2436#0" expanded="false" />
-            <element signature="e#2466#3069#0" expanded="false" />
+            <element signature="e#766#803#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/hosts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="43" selection-end="43" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="200">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/Popen_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="570" selection-end="570" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="250" column="34" selection-start="9791" selection-end="9791" vertical-scroll-proportion="-151.4" vertical-offset="2390" max-vertical-offset="7025">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/Scoop_simple.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="0" selection-start="240" selection-end="240" vertical-scroll-proportion="0.32894737" vertical-offset="0" max-vertical-offset="760">
+          <folding />
         </state>
       </provider>
     </entry>

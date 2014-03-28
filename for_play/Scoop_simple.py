@@ -1,0 +1,11 @@
+import platform
+from scoop import futures
+data = range(100)
+
+def pr(par):
+    print('%s %s' % (platform.node(), par))
+    return par
+
+if __name__ == '__main__':
+    # SCOOP's parallel function
+    dataParallel = list(futures.map(pr, data))
