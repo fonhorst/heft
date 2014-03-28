@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/Popen_test.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/for_play/Scoop_simple.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/for_play/Scoop_simple.py" afterPath="$PROJECT_DIR$/for_play/Scoop_simple.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/for_play/hosts" afterPath="$PROJECT_DIR$/for_play/hosts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -28,100 +27,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="subprocess.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/subprocess.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="780" column="16" selection-start="26062" selection-end="26062" vertical-scroll-proportion="-47.08" vertical-offset="18323" max-vertical-offset="41375">
-              <folding>
-                <element signature="e#28568#28658#0" expanded="false" />
-                <element signature="e#28693#28704#0" expanded="false" />
-                <element signature="e#29074#29675#0" expanded="false" />
-                <element signature="e#35577#35854#0" expanded="false" />
-                <element signature="e#35903#36728#0" expanded="false" />
-                <element signature="e#37142#40801#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="launcher.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/penv-home/heft/Lib/site-packages/scoop/launcher.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="0" selection-start="910" selection-end="910" vertical-scroll-proportion="0.0" vertical-offset="2925" max-vertical-offset="12050">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="workerLaunch.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="250" column="34" selection-start="9791" selection-end="9791" vertical-scroll-proportion="-151.4" vertical-offset="2390" max-vertical-offset="7025">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Scoop_simple.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/for_play/Scoop_simple.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="0" selection-start="240" selection-end="240" vertical-scroll-proportion="0.32894737" vertical-offset="0" max-vertical-offset="760">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Popen_test.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/for_play/Popen_test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="0" selection-start="570" selection-end="570" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="hosts" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/for_play/hosts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="0" selection-start="43" selection-end="43" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="200">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="__main__.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/bootstrap/__main__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="86" column="0" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.0" vertical-offset="1479" max-vertical-offset="7600">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="utils.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="44" selection-start="1849" selection-end="1849" vertical-scroll-proportion="-15.64" vertical-offset="1234" max-vertical-offset="6900">
-              <folding>
-                <element signature="e#766#803#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/logging/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1722" column="4" selection-start="60204" selection-end="60204" vertical-scroll-proportion="0.0" vertical-offset="42926" max-vertical-offset="47800">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/logging/config.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="398" column="20" selection-start="13938" selection-end="13938" vertical-scroll-proportion="0.0" vertical-offset="9726" max-vertical-offset="23225">
+            <state line="8" column="26" selection-start="160" selection-end="160" vertical-scroll-proportion="0.35496956" vertical-offset="0" max-vertical-offset="493">
               <folding />
             </state>
           </provider>
@@ -145,7 +54,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
         <option value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
         <option value="$PROJECT_DIR$/utility/GaExecResultsAggregator.py" />
         <option value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
@@ -159,6 +67,7 @@
         <option value="C:/Pro/Python33/Lib/site-packages/scoop/utils.py" />
         <option value="$PROJECT_DIR$/for_play/Popen_test.py" />
         <option value="C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py" />
+        <option value="C:/Pro/Python33/Lib/site-packages/scoop/broker/brokerzmq.py" />
         <option value="$PROJECT_DIR$/for_play/hosts" />
         <option value="$PROJECT_DIR$/for_play/Scoop_simple.py" />
       </list>
@@ -345,7 +254,59 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="broker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="site-packages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scoop" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="bootstrap" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="heft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="site-packages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scoop" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="_comm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -824,13 +785,13 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.11021814" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40413317" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.90241104" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.5958668" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34135166" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.09758898" sideWeight="0.2238986" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.09758898" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40413317" sideWeight="0.50211227" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.09758898" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -952,97 +913,120 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="470" />
+      <option name="time" value="473" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py">
+    <entry file="file://$PROJECT_DIR$/penv/Lib/site-packages/pip/_vendor/requests/packages/urllib3/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="0" selection-start="4664" selection-end="4664" vertical-scroll-proportion="0.0" vertical-offset="2197" max-vertical-offset="3600">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/penv-home/heft/Lib/site-packages/scoop/launch/workerLaunch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="245" column="20" selection-start="9390" selection-end="9390" vertical-scroll-proportion="0.0" vertical-offset="5821" max-vertical-offset="6550">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stdout_output.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="483">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/penv/Lib/site-packages/scoop/launcher.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="161" column="34" selection-start="5851" selection-end="5851" vertical-scroll-proportion="2.4554296" vertical-offset="2310" max-vertical-offset="12050">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/for_play/full_tree.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="17" selection-start="2018" selection-end="2018" vertical-scroll-proportion="0.0" vertical-offset="989" max-vertical-offset="1725">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launcher.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="315" column="29" selection-start="12061" selection-end="12061" vertical-scroll-proportion="-11.52" vertical-offset="7362" max-vertical-offset="12325">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/logging/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1722" column="4" selection-start="60204" selection-end="60204" vertical-scroll-proportion="0.0" vertical-offset="42926" max-vertical-offset="47800">
+        <state line="31" column="29" selection-start="853" selection-end="853" vertical-scroll-proportion="0.0" vertical-offset="322" max-vertical-offset="1350">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://C:/Pro/Python33/Lib/logging/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="398" column="20" selection-start="13938" selection-end="13938" vertical-scroll-proportion="0.0" vertical-offset="9726" max-vertical-offset="23225">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/subprocess.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="780" column="16" selection-start="26062" selection-end="26062" vertical-scroll-proportion="-47.08" vertical-offset="18323" max-vertical-offset="41375">
+        <state line="459" column="4" selection-start="16320" selection-end="16320" vertical-scroll-proportion="-8.92" vertical-offset="11252" max-vertical-offset="18475">
           <folding>
-            <element signature="e#28568#28658#0" expanded="false" />
-            <element signature="e#28693#28704#0" expanded="false" />
-            <element signature="e#29074#29675#0" expanded="false" />
-            <element signature="e#35577#35854#0" expanded="false" />
-            <element signature="e#35903#36728#0" expanded="false" />
-            <element signature="e#37142#40801#0" expanded="false" />
+            <element signature="e#1282#1350#0" expanded="true" />
+            <element signature="e#17486#25239#0" expanded="false" />
+            <element signature="e#25292#26200#0" expanded="false" />
+            <element signature="e#26250#26491#0" expanded="false" />
+            <element signature="e#26547#26813#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/bootstrap/__main__.py">
+    <entry file="file://C:/Pro/Python33/Lib/logging/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="86" column="0" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.0" vertical-offset="1479" max-vertical-offset="7600">
+        <state line="1851" column="23" selection-start="64101" selection-end="64101" vertical-scroll-proportion="0.0" vertical-offset="39847" max-vertical-offset="47800">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/logging/handlers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="40" selection-start="1805" selection-end="1805" vertical-scroll-proportion="0.0" vertical-offset="976" max-vertical-offset="27600">
+          <folding>
+            <element signature="e#1817#4224#0" expanded="false" />
+            <element signature="e#4278#7595#0" expanded="false" />
+            <element signature="e#7654#17285#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1000">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/__main__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="760">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/Popen_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="570" selection-end="570" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/penv-home/heft/Lib/site-packages/scoop/launcher.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="0" selection-start="910" selection-end="910" vertical-scroll-proportion="0.0" vertical-offset="2925" max-vertical-offset="12050">
+        <state line="315" column="23" selection-start="12075" selection-end="12075" vertical-scroll-proportion="-3.4872563" vertical-offset="10001" max-vertical-offset="12050">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/penv/Lib/site-packages/scoop/launcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="315" column="23" selection-start="12075" selection-end="12075" vertical-scroll-proportion="8.245877" vertical-offset="2175" max-vertical-offset="12050">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/for_play/Scoop_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/bootstrap/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="667">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/bootstrap/__main__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="32" selection-start="1790" selection-end="1790" vertical-scroll-proportion="0.0" vertical-offset="1176" max-vertical-offset="5250">
+          <folding>
+            <element signature="e#3026#6434#0" expanded="false" />
+            <element signature="e#6465#6712#0" expanded="false" />
+            <element signature="e#6746#7794#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/broker/brokerzmq.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="0" selection-start="1029" selection-end="1029" vertical-scroll-proportion="0.0" vertical-offset="403" max-vertical-offset="7725">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="44" selection-start="1849" selection-end="1849" vertical-scroll-proportion="-15.64" vertical-offset="1234" max-vertical-offset="6900">
+        <state line="34" column="10" selection-start="1096" selection-end="1096" vertical-scroll-proportion="-0.56" vertical-offset="836" max-vertical-offset="6900">
           <folding>
             <element signature="e#766#803#0" expanded="true" />
           </folding>
@@ -1056,23 +1040,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/for_play/Popen_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="570" selection-end="570" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/launch/workerLaunch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="250" column="34" selection-start="9791" selection-end="9791" vertical-scroll-proportion="-151.4" vertical-offset="2390" max-vertical-offset="7025">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/for_play/Scoop_simple.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="240" selection-end="240" vertical-scroll-proportion="0.32894737" vertical-offset="0" max-vertical-offset="760">
+        <state line="8" column="26" selection-start="160" selection-end="160" vertical-scroll-proportion="0.35496956" vertical-offset="0" max-vertical-offset="493">
           <folding />
         </state>
       </provider>

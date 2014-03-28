@@ -8,4 +8,5 @@ def pr(par):
 
 if __name__ == '__main__':
     # SCOOP's parallel function
+    print("Run on: " + platform.node())
     dataParallel = list(futures.map(pr, data))
