@@ -2,7 +2,7 @@ from datetime import datetime
 import json
 import os
 from Tools.Scripts.ndiff import fopen
-from filelock.filelock import FileLock
+#from filelock.filelock import FileLock
 
 
 class VersusFunctor:
@@ -75,7 +75,7 @@ def run(run_name, mainFunc, wf_name, reliability, output_file=None, n=100):
 
 class ComparisonUtility:
 
-    SAVE_PATH_TEMPLATE = '..\\..\\resources\\saved_simulation_results\\{0}_{1}.json'
+    SAVE_PATH_TEMPLATE = '..\\..\\resources\\saved_simulation_results\\{0}_[{1}].json'
 
     @staticmethod
     def get_dict(result):
@@ -111,16 +111,16 @@ class ResultSaver:
             os.makedirs(self.dir)
 
         if os.path.exists(self.path):
-            with FileLock(self.path):
-                a_save = open(self.path, 'r')
-                result_arrays = json.load(a_save)
-                a_save.close()
-
-        with FileLock(self.path):
-            a_save = open(self.path, 'w')
-            result_arrays.append(result)
-            json.dump(result_arrays, a_save)
+            #with FileLock(self.path):
+            a_save = open(self.path, 'r')
+            result_arrays = json.load(a_save)
             a_save.close()
+
+        #with FileLock(self.path):
+        a_save = open(self.path, 'w')
+        result_arrays.append(result)
+        json.dump(result_arrays, a_save)
+        a_save.close()
 
         print("results saved")
         return result
