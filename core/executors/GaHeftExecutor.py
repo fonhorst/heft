@@ -46,7 +46,7 @@ class GaHeftExecutor(EventMachine):
         #TODO: correct this hack later.
         #result = self.ga_computation_manager.run(self.current_schedule, self.current_time, False)
         result = self.ga_computation_manager._get_ga_alg()(self.current_schedule, None)
-        self.current_schedule = result[2]
+        self.current_schedule = result[0][2]
 
         self._post_new_events()
 
@@ -274,11 +274,11 @@ class GaHeftExecutor(EventMachine):
 ##  - providing information about status of computation
 ##  - encapsulating some action - ? (for the sake of simplicity it must be responsibility of GaHeftExecutor)
 GA_PARAMS = {
-    "population": 1000,
+    "population": 50,
     "crossover_probability": 0.8,
     "replacing_mutation_probability": 0.5,
     "sweep_mutation_probability": 0.4,
-    "generations": 30
+    "generations": 200
 }
 class GAComputationManager:
 

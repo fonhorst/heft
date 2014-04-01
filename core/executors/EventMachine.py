@@ -64,12 +64,12 @@ class EventMachine:
                     record = " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(event.node.name)+ ' ' + str(event.task.id) + '\n'
                     self.logger.write(record)
 
+            if isinstance(event, TaskStart):
+                taskStartCount += 1
+            elif isinstance(event, NodeFailed):
+                nodeFailedCount += 1
             # if isinstance(event, TaskStart):
-            #     taskStartCount += 1
-            # elif isinstance(event, NodeFailed):
-            #     nodeFailedCount += 1
-            # # if isinstance(event, TaskStart):
-            # #     print(str(count) + " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + ' ' + str(event.task.id) + ' ' + str(None if event.node is None else event.node.name))
+            #     print(str(count) + " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + ' ' + str(event.task.id) + ' ' + str(None if event.node is None else event.node.name))
             # if isinstance(event, NodeUp):
             #    print(str(count) + " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(event.node.name))
             # if isinstance(event, NodeFailed):

@@ -14,7 +14,7 @@ class GAExecutorExample(BaseExecutorExample):
         ga_machine = GAExecutor(wf,
                             resource_manager,
                             estimator,
-                            base_fail_duration=40,
+                            base_fail_duration=120,
                             base_fail_dispersion=1,
                             initial_schedule=bundle.ga_schedule)
 
@@ -23,6 +23,7 @@ class GAExecutorExample(BaseExecutorExample):
 
         resulted_schedule = ga_machine.current_schedule
         (makespan, vl1, vl2) = self.extract_result(resulted_schedule, is_silent, wf)
+        print("GA: " + str(makespan))
         return makespan
 
     @staticmethod

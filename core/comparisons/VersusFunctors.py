@@ -51,7 +51,7 @@ class GAvsHeftGA(VersusFunctor):
         path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
         bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2))
 
-        mainHEFTwithGA = partial(self.mainHeft, with_ga_initial=True, the_bundle=bundle)
+        mainHEFTwithGA = partial(self.mainHeft, with_ga_initial=False, the_bundle=bundle)
         mainGAwithBundle = partial(self.mainGA, the_bundle=bundle)
 
         resHeft = run(self.GA_HEFT, mainHEFTwithGA, wf_name, self.reliability)

@@ -35,7 +35,7 @@ def run(run_name, mainFunc, wf_name, reliability, output_file=None, n=100):
     result = []
     for i in range(n):
         iter_str = "Run " + str(run_name) + " " + str(i) + '\n'
-        # print(iter_str)
+        #print(iter_str)
 
         if output_file is not None:
             output_file.write(iter_str)

@@ -1,0 +1,167 @@
+===============
+=== HEFT Run
+===============
+Run heft 0
+	 Curtime: 138.70508908927465 Event: NodeFailed res_0_node_2 ID00012_000
+	 Curtime: 139.16137072624392 Event: NodeFailed res_0_node_1 ID00019_000
+	 Curtime: 152.49205105406784 Event: NodeFailed res_0_node_3 ID00019_000
+	 Curtime: 259.2905027223651 Event: NodeUp res_0_node_1
+	 Curtime: 259.5737860063847 Event: NodeUp res_0_node_2
+	 Curtime: 272.72820070057287 Event: NodeUp res_0_node_3
+	====RESULT====
+	468.9266666666668
+Run heft 1
+	 Curtime: 1.290459400682808 Event: NodeFailed res_0_node_0 ID00004_000
+	 Curtime: 119.69419239105295 Event: NodeFailed res_0_node_2 ID00014_000
+	 Curtime: 122.14401819372905 Event: NodeUp res_0_node_0
+	 Curtime: 137.2413436470423 Event: NodeFailed res_0_node_3 ID00014_000
+	 Curtime: 240.62453571192765 Event: NodeUp res_0_node_2
+	 Curtime: 258.1531734528804 Event: NodeUp res_0_node_3
+	====RESULT====
+	383.77068486039576
+Run heft 2
+	 Curtime: 14.8551587890795 Event: NodeFailed res_0_node_3 ID00005_000
+	 Curtime: 135.67342418731496 Event: NodeUp res_0_node_3
+	 Curtime: 326.96797267221433 Event: NodeFailed res_0_node_1 ID00027_000
+	 Curtime: 447.1561009594682 Event: NodeUp res_0_node_1
+	 Curtime: 476.743029141765 Event: NodeFailed res_0_node_3 ID00031_000
+	 Curtime: 484.0353467428673 Event: NodeFailed res_0_node_2 ID00032_000
+	 Curtime: 597.2587059185379 Event: NodeUp res_0_node_3
+	 Curtime: 604.9463632826994 Event: NodeUp res_0_node_2
+	====RESULT====
+	595.4333333333334
+Run heft 3
+	 Curtime: 128.4018101798291 Event: NodeFailed res_0_node_3 ID00017_000
+	 Curtime: 248.7005909510303 Event: NodeUp res_0_node_3
+	 Curtime: 271.06031578044224 Event: NodeFailed res_0_node_0 ID00022_000
+	 Curtime: 391.8551596926886 Event: NodeUp res_0_node_0
+	====RESULT====
+	332.4866666666668
+Run heft 4
+	 Curtime: 40.092232203253076 Event: NodeFailed res_0_node_3 ID00007_000
+	 Curtime: 160.21914188003157 Event: NodeUp res_0_node_3
+	 Curtime: 295.7388148652481 Event: NodeFailed res_0_node_2 ID00030_000
+	 Curtime: 416.2530937088763 Event: NodeUp res_0_node_2
+	====RESULT====
+	504.98580854669825
+Run heft 5
+	 Curtime: 17.72666794199658 Event: NodeFailed res_0_node_3 ID00005_000
+	 Curtime: 36.49705434140425 Event: NodeFailed res_0_node_1 ID00013_000
+	 Curtime: 138.47011033456926 Event: NodeUp res_0_node_3
+	 Curtime: 156.66368997525885 Event: NodeUp res_0_node_1
+	 Curtime: 158.6522248756657 Event: NodeFailed res_0_node_2 ID00019_000
+	 Curtime: 278.71723023171853 Event: NodeUp res_0_node_2
+	 Curtime: 327.66699631810707 Event: NodeFailed res_0_node_3 ID00025_000
+	 Curtime: 447.7503472138788 Event: NodeUp res_0_node_3
+	====RESULT====
+	510.3196899752589
+Run heft 6
+	 Curtime: 18.255935759974882 Event: NodeFailed res_0_node_3 ID00005_000
+	 Curtime: 20.44904467691348 Event: NodeFailed res_0_node_2 ID00002_000
+	 Curtime: 39.62553000823349 Event: NodeFailed res_0_node_1 ID00005_000
+	 Curtime: 138.26989935202224 Event: NodeUp res_0_node_3
+	 Curtime: 141.08214425661862 Event: NodeUp res_0_node_2
+	 Curtime: 160.38285639463012 Event: NodeUp res_0_node_1
+	 Curtime: 190.88672720687404 Event: NodeFailed res_0_node_3 ID00016_000
+	 Curtime: 290.299791835349 Event: NodeFailed res_0_node_2 ID00023_000
+	 Curtime: 311.23568246767843 Event: NodeUp res_0_node_3
+	 Curtime: 410.91596539727277 Event: NodeUp res_0_node_2
+	 Curtime: 446.96531671280064 Event: NodeFailed res_0_node_3 ID00033_000
+	 Curtime: 567.9171354352688 Event: NodeUp res_0_node_3
+	====RESULT====
+	548.9495230612969
+Run heft 7
+	====RESULT====
+	311.89333333333343
+Run heft 8
+	 Curtime: 7.60748723296046 Event: NodeFailed res_0_node_1 ID00001_000
+	 Curtime: 127.8459177481705 Event: NodeUp res_0_node_1
+	 Curtime: 138.57269629374096 Event: NodeFailed res_0_node_2 ID00012_000
+	 Curtime: 156.02274045727577 Event: NodeFailed res_0_node_3 ID00011_000
+	 Curtime: 259.41328927087073 Event: NodeUp res_0_node_2
+	 Curtime: 276.6500725756846 Event: NodeUp res_0_node_3
+	====RESULT====
+	490.97258441483723
+Run heft 9
+	 Curtime: 19.14381782355679 Event: NodeFailed res_0_node_3 ID00003_000
+	 Curtime: 30.895715902051382 Event: NodeFailed res_0_node_2 ID00003_000
+	 Curtime: 139.2811267818723 Event: NodeUp res_0_node_3
+	 Curtime: 151.0891908556811 Event: NodeUp res_0_node_2
+	 Curtime: 156.83674028807482 Event: NodeFailed res_0_node_0 ID00012_000
+	 Curtime: 277.3066983415245 Event: NodeFailed res_0_node_3 ID00023_000
+	 Curtime: 277.62236548609 Event: NodeUp res_0_node_0
+	 Curtime: 397.3826697686194 Event: NodeUp res_0_node_3
+	====RESULT====
+	447.8571908556812
+max: 595.4333333333334
+min: 311.89333333333343
+avr: 459.55954817141685
+===============
+=== GAHEFT Run
+===============
+Run gaHeft 0
+	 Curtime: 167.3371497492073 Event: NodeFailed res_0_node_1 ID00009_000
+	 Curtime: 287.9207982632466 Event: NodeUp res_0_node_1
+	====RESULT====
+	439.42381641587406
+Run gaHeft 1
+	 Curtime: 0.7201172023164043 Event: NodeFailed res_0_node_1 ID00006_000
+	 Curtime: 4.803316863351005 Event: NodeFailed res_0_node_3 ID00003_000
+	 Curtime: 120.90369421417977 Event: NodeUp res_0_node_1
+	 Curtime: 124.92529454196661 Event: NodeUp res_0_node_3
+	 Curtime: 284.65700837886703 Event: NodeFailed res_0_node_2 ID00029_000
+	 Curtime: 405.3661718222188 Event: NodeUp res_0_node_2
+	====RESULT====
+	493.7773333333334
+Run gaHeft 2
+	 Curtime: 201.58577034311816 Event: NodeFailed res_0_node_3 ID00025_000
+	 Curtime: 322.1508380232954 Event: NodeUp res_0_node_3
+	====RESULT====
+	444.85083802329547
+Run gaHeft 3
+	====RESULT====
+	299.6093333333334
+Run gaHeft 4
+	 Curtime: 11.974456541069516 Event: NodeFailed res_0_node_3 ID00003_000
+	 Curtime: 13.660170806286633 Event: NodeFailed res_0_node_2 ID00001_000
+	 Curtime: 132.19543840916674 Event: NodeUp res_0_node_3
+	 Curtime: 134.4963591383233 Event: NodeUp res_0_node_2
+	 Curtime: 151.63713994982638 Event: NodeFailed res_0_node_3 ID00016_000
+	 Curtime: 272.12950520278605 Event: NodeUp res_0_node_3
+	====RESULT====
+	379.231806616493
+Run gaHeft 5
+	====RESULT====
+	234.03466666666665
+Run gaHeft 6
+	====RESULT====
+	419.67199999999997
+Run gaHeft 7
+	 Curtime: 174.3427953410161 Event: NodeFailed res_0_node_0 ID00018_000
+	 Curtime: 294.86148141559585 Event: NodeUp res_0_node_0
+	 Curtime: 351.95701697837256 Event: NodeFailed res_0_node_2 ID00033_000
+	 Curtime: 472.44982460201766 Event: NodeUp res_0_node_2
+	====RESULT====
+	452.25479534101623
+Run gaHeft 8
+	 Curtime: 158.30826682065623 Event: NodeFailed res_0_node_1 ID00021_000
+	 Curtime: 167.14340067093622 Event: NodeFailed res_0_node_2 ID00008_000
+	 Curtime: 171.0201570993094 Event: NodeFailed res_0_node_3 ID00020_000
+	 Curtime: 278.918835526609 Event: NodeUp res_0_node_1
+	 Curtime: 281.6375463300998 Event: NodeFailed res_0_node_0 ID00026_000
+	 Curtime: 287.3715008993611 Event: NodeUp res_0_node_2
+	 Curtime: 291.09283282366323 Event: NodeUp res_0_node_3
+	 Curtime: 402.0241857566816 Event: NodeUp res_0_node_0
+	 Curtime: 484.53045779038735 Event: NodeFailed res_0_node_3 ID00031_000
+	 Curtime: 604.9592864910753 Event: NodeUp res_0_node_3
+	====RESULT====
+	515.0202668206563
+Run gaHeft 9
+	 Curtime: 2.6937573667702495 Event: NodeFailed res_0_node_3 ID00006_000
+	 Curtime: 123.35309021236071 Event: NodeUp res_0_node_3
+	====RESULT====
+	311.2373333333334
+max: 515.0202668206563
+min: 234.03466666666665
+avr: 398.91121898840015
+GaHeft vs Heft: 13.197055620829957

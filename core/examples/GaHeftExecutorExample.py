@@ -16,7 +16,7 @@ class GaHeftExecutorExample(BaseExecutorExample):
         dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
         ga_heft_machine = GaHeftExecutor(
                             heft_planner=dynamic_heft,
-                            base_fail_duration=40,
+                            base_fail_duration=120,
                             base_fail_dispersion=1,
                             fixed_interval_for_ga=self.fixed_interval_for_ga,
                             logger=logger)

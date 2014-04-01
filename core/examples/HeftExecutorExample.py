@@ -17,7 +17,7 @@ class HeftExecutorExample(BaseExecutorExample):
         ##TODO: look here ! I'm an idiot tasks of wf != tasks of initial_schedule
         dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
         heft_machine = HeftExecutor(heft_planner=dynamic_heft,
-                                    base_fail_duration=40,
+                                    base_fail_duration=120,
                                     base_fail_dispersion=1,
                                     #initial_schedule=None)
                                     initial_schedule=initial_schedule,

@@ -105,9 +105,9 @@ class MixRunner(BaseRunner):
 
             self._validate(wf, estimator, schedule)
 
-            # name = wf_name +"_bundle"
-            # path = '../../resources/saved_schedules/' + name + '.json'
-            # Utility.save_schedule(path, wf_name, resources, transferMx, ideal_flops, schedule)
+            name = wf_name +"_bundle"
+            path = '../../resources/saved_schedules/' + name + '.json'
+            Utility.save_schedule(path, wf_name, resource_manager.get_resources(), estimator.transfer_matrix, ideal_flops, schedule)
 
             if is_visualized:
                 viz.visualize_task_node_mapping(wf, schedule)
