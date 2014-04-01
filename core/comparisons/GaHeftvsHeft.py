@@ -7,7 +7,7 @@ reliability = 0.9
 
 wf_name = "Montage_50"
 
-save_file_name = ComparisonUtility.build_save_path(wf_name + '\\GaHeftvsHeft_['+str(uuid4()+']'))
+save_file_name = ComparisonUtility.build_save_path(wf_name + '\\GaHeftvsHeft_['+str(uuid4())+']')
 result_saver = ResultSaver(save_file_name)
 exp = GaHeftvsHeft(reliability, n=1)
 def calc(wf_name, out):
