@@ -4,7 +4,7 @@ from GA.DEAPGA.GAImplementation.GAFunctions2 import mark_finished
 
 from core.DSimpleHeft import DynamicHeft
 ## reliability doesn't matter anything here
-from core.examples.ExecutorRunner import ExecutorRunner
+from core.runners.ExecutorRunner import ExecutorRunner
 from environment.ResourceManager import Schedule
 from environment.Utility import Utility
 

@@ -1,7 +1,7 @@
 from core.DSimpleHeft import DynamicHeft
 from core.PublicResourceManager import PublicResourceManager
 from core.comparisons.ComparisonBase import ResultSaver
-from core.comparisons.StopRescheduling import GaOldPopExecutorRunner, GaOldPopExecutor
+from core.comparisons.StopRescheduling import GaOldPopExecutor
 from core.executors.CloudHeftExecutor import CloudHeftExecutor
 from core.executors.GAExecutor import GAExecutor
 from core.executors.GaHeftExecutor import GaHeftExecutor
@@ -106,8 +106,18 @@ class ExecutorRunner:
 
 class ExecutorsFactory:
 
+    DEFAULT_SAVE_PATH = "../../resources/saved_simulation_results"
+
+    _default = None
+
+    @staticmethod
+    def default():
+        if ExecutorsFactory._default is None:
+            ExecutorsFactory._default = ExecutorsFactory()
+        return ExecutorsFactory._default
+
     @ExecutorRunner
-    def create_ga_executor(self, *args, **kwargs):
+    def run_ga_executor(self, *args, **kwargs):
         ga_machine = GAExecutor(kwargs["wf"],
                             kwargs["resource_manager"],
                             kwargs["estimator"],
@@ -121,7 +131,7 @@ class ExecutorsFactory:
         return resulted_schedule
 
     @ExecutorRunner
-    def create_heft_executor(self, *args, **kwargs):
+    def run_heft_executor(self, *args, **kwargs):
         ##TODO: look here ! I'm an idiot tasks of wf != tasks of initial_schedule
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
         heft_machine = HeftExecutor(heft_planner=dynamic_heft,
@@ -136,7 +146,7 @@ class ExecutorsFactory:
         return resulted_schedule
 
     @ExecutorRunner
-    def create_gaheft_executor(self, *args, **kwargs):
+    def run_gaheft_executor(self, *args, **kwargs):
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
         ga_heft_machine = GaHeftExecutor(
                             heft_planner=dynamic_heft,
@@ -152,7 +162,7 @@ class ExecutorsFactory:
         return resulted_schedule
 
     @ExecutorRunner
-    def create_cloudheft_executor(self, *args, **kwargs):
+    def run_cloudheft_executor(self, *args, **kwargs):
         rgen = ResourceGenerator(min_res_count=1,
                                  max_res_count=1,
                                  min_node_count=4,
@@ -178,8 +188,8 @@ class ExecutorsFactory:
         return resulted_schedule
 
     @ExecutorRunner
-    def create_oldpop_executor(self, *args, **kwargs):
-        stat_saver = ResultSaver(GaOldPopExecutorRunner.DEFAULT_SAVE_PATH.format(key_for_save))
+    def run_oldpop_executor(self, *args, **kwargs):
+        stat_saver = ResultSaver(self.DEFAULT_SAVE_PATH.format(kwargs["key_for_save"]))
 
         ga_machine = GaOldPopExecutor(
                             workflow=kwargs["wf"],
@@ -200,7 +210,7 @@ class ExecutorsFactory:
         return resulted_schedule
 
     @ExecutorRunner
-    def create_singlefail_heft_executor(self, *args, **kwargs):
+    def run_singlefail_heft_executor(self, *args, **kwargs):
         ##TODO: look here ! I'm an idiot tasks of wf != tasks of initial_schedule
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
         heft_machine = SingleFailHeftExecutor(heft_planner=dynamic_heft,
@@ -218,7 +228,7 @@ class ExecutorsFactory:
         return resulted_schedule
 
     @ExecutorRunner
-    def create_singlefail_gaheft_executor(self, *args, **kwargs):
+    def run_singlefail_gaheft_executor(self, *args, **kwargs):
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
         ga_heft_machine = SingleFailGaHeftExecutor(
                             heft_planner=dynamic_heft,

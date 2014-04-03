@@ -3,7 +3,7 @@ import random
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from core.CommonComponents.failers.FailOnce import FailOnce
 from core.comparisons.ComparisonBase import ResultSaver
-from core.examples.ExecutorRunner import ExecutorRunner
+from core.runners.ExecutorRunner import ExecutorRunner
 from core.executors.BaseExecutor import BaseExecutor
 from core.executors.EventMachine import TaskFinished, NodeFailed, NodeUp
 from environment.Resource import Node
@@ -211,47 +211,6 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
 
         self._post_new_events()
         pass
-
-    pass
-
-
-class GaOldPopExecutorRunner(ExecutorRunner):
-
-    DEFAULT_SAVE_PATH = "../../results/GaRescheduleResults_{0}.json"
-
-    def __init__(self):
-        pass
-
-    def main(self, reliability, is_silent, wf_name, ga_params, key_for_save, task_id_to_fail=None, the_bundle=None, logger=None):
-        wf = self.get_wf(wf_name)
-        bundle = self.get_bundle(the_bundle)
-        (estimator, resource_manager, initial_schedule) = self.get_infrastructure(bundle, reliability, False)
-
-        stat_saver = ResultSaver(GaOldPopExecutorRunner.DEFAULT_SAVE_PATH.format(key_for_save))
-
-        ga_machine = GaOldPopExecutor(
-                            workflow=wf,
-                            resource_manager=resource_manager,
-                            estimator=estimator,
-                            ga_params=ga_params,
-                            base_fail_duration=40,
-                            base_fail_dispersion=1,
-                            wf_name=wf_name,
-                            stat_saver=stat_saver,
-                            task_id_to_fail=task_id_to_fail,
-                            logger=logger)
-
-        ga_machine.init()
-        ga_machine.run()
-
-        resulted_schedule = ga_machine.current_schedule
-        (makespan, time_seq, depend_seq) = self.extract_result(resulted_schedule, is_silent, wf)
-
-        if time_seq is not True:
-            raise Exception("Time sequence isn't valid")
-        if depend_seq is not True:
-            raise Exception("Dependency sequence isn't valid")
-        return makespan
 
     pass
 

@@ -1,10 +1,10 @@
 import unittest
-from core.comparisons.StopRescheduling import GaOldPopExecutorRunner
+from core.runners.ExecutorRunner import ExecutorsFactory
 
 
 class TestGaExecutor(unittest.TestCase):
     def setUp(self):
-        self.example_executor = GaOldPopExecutorRunner()
+        self.example_executor = ExecutorsFactory.default().run_oldpop_executor
         self.wf_name = "Montage_50"
         self.ga_params = {
             "population": 50,
@@ -37,7 +37,7 @@ class TestGaExecutor(unittest.TestCase):
         print("Ids:" + str(ids))
         for i in range(10):
             for id in ids:
-                makespan = self.example_executor.main(0.95, False, self.wf_name, self.ga_params,
+                makespan = self.example_executor(0.95, False, self.wf_name, self.ga_params,
                                                       key_for_save='by_5',
                                                       task_id_to_fail=id)
                 pass

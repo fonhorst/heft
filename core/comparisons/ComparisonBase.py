@@ -47,7 +47,7 @@ def run(run_name, mainFunc, wf_name, reliability, output_file=None, n=1000):
                 output_file.flush()
         logger = None if output_file is None else wrt()
 
-        res = mainFunc(reliability, True, wf_name, logger=logger)
+        res = mainFunc(reliability=reliability, is_silent=True, wf_name=wf_name, logger=logger)
 
         if output_file is not None:
             output_file.write("\t====RESULT====\n")

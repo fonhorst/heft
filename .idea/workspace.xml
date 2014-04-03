@@ -2,82 +2,60 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/CommonComponents/failers/FailBase.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/CommonComponents/failers/FailOnce.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/CommonComponents/failers/FailRandom.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/CommonComponents/failers/__init__.py" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\config\ftconfig.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\config\ftheader.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\config\ftmodule.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\config\ftoption.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\config\ftstdlib.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\freetype.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftbbox.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftbdf.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftbitmap.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftcache.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftchapters.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\fterrdef.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\fterrors.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftgasp.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftglyph.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftgxval.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftgzip.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftimage.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftincrem.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftlcdfil.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftlist.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftlzw.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftmac.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftmm.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftmodapi.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftmoderr.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftotval.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftoutln.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftpfr.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftrender.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftsizes.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftsnames.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftstroke.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftsynth.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftsystem.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\fttrigon.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\fttypes.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftwinfnt.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ftxf86.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\t1tables.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ttnameid.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\tttables.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\tttags.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\freetype2\freetype\ttunpat.h" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\penv\Include\freetype2\ft2build.h" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\core\comparisons\GaHeftExecutorExampleRun.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\CloudHeftExecutorExample.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\ExecutorRunner.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\GAExecutorExample.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\GaHeftExecutorExample.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\HeftExecutorExample.py" afterPath="" />
+      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\__init__.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py" afterPath="$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/AddingWFheftExample.py" afterPath="$PROJECT_DIR$/core/comparisons/AddingWFheftExample.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/BaseExecutor.py" afterPath="$PROJECT_DIR$/core/executors/BaseExecutor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/examples/CloudHeftExecutorExample.py" afterPath="$PROJECT_DIR$/core/examples/CloudHeftExecutorExample.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" afterPath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/EventMachine.py" afterPath="$PROJECT_DIR$/core/executors/EventMachine.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/tests/FailExperiment.py" afterPath="$PROJECT_DIR$/core/tests/FailExperiment.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/GAExecutor.py" afterPath="$PROJECT_DIR$/core/executors/GAExecutor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/examples/GAExecutorExample.py" afterPath="$PROJECT_DIR$/core/examples/GAExecutorExample.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py" afterPath="$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/tests/GaExecutorTests.py" afterPath="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" afterPath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py" afterPath="$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/GaHeftExecutorExampleRun.py" afterPath="$PROJECT_DIR$/core/comparisons/GaHeftExecutorExampleRun.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" afterPath="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/HeftExecutor.py" afterPath="$PROJECT_DIR$/core/executors/HeftExecutor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/examples/HeftExecutorExample.py" afterPath="$PROJECT_DIR$/core/examples/HeftExecutorExample.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Montage_25_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Montage_25_bundle.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Montage_30_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Montage_30_bundle.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Montage_40_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Montage_40_bundle.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/saved_schedules/Montage_50_bundle.json" afterPath="$PROJECT_DIR$/resources/saved_schedules/Montage_50_bundle.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" afterPath="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" afterPath="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="D:\wspace\heft\core\examples\BaseExecutorExample.py" afterPath="$PROJECT_DIR$/core/examples/ExecutorRunner.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/deap/__init__.py" afterPath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/deap/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/deap/__init__.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/deap/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/pytz/__init__.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/pytz/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/lib/_iotools.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/lib/_iotools.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/add_newdocs.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/add_newdocs.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/argparse.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/argparse.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/axes.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/axes.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_cocoaagg.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_cocoaagg.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_pgf.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_pgf.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_template.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_template.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/cbook.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/cbook.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/collections.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/collections.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/f2py/crackfortran.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/f2py/crackfortran.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/deap/creator.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/deap/creator.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/algorithms/centrality/current_flow_closeness.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/algorithms/centrality/current_flow_closeness.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/dates.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/dates.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/setuptools/tests/doctest.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/setuptools/tests/doctest.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/setuptools/command/easy_install.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/setuptools/command/easy_install.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/readwrite/edgelist.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/readwrite/edgelist.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/ma/extras.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/ma/extras.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/core/fromnumeric.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/core/fromnumeric.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/graph.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/graph.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/image.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/image.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/mlab.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/mlab.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/multidigraph.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/multidigraph.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/multigraph.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/multigraph.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/testing/noseclasses.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/testing/noseclasses.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/drawing/nx_pylab.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/drawing/nx_pylab.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/pyplot.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/pyplot.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/utils/random_sequence.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/utils/random_sequence.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/rcsetup.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/rcsetup.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/sankey.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/sankey.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/f2py/docs/usersguide/setup_example.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/f2py/docs/usersguide/setup_example.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/lib/shape_base.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/lib/shape_base.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/zmq/eventloop/minitornado/stack_context.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/zmq/eventloop/minitornado/stack_context.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/ticker.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/ticker.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/deap/tools.py" afterPath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/deap/tools.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/deap/tools.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/deap/tools.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/pip-1.4.1-py3.3.egg/pip/vendor/distlib/util.py" afterPath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/pip-1.4.1-py3.3.egg/pip/vendor/distlib/util.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/pip/_vendor/distlib/util.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/pip/_vendor/distlib/util.py" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -100,91 +78,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ExecutorRunner.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/examples/ExecutorRunner.py">
+      <file leaf-file-name="ExecutorRunner.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/runners/ExecutorRunner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="218" column="0" selection-start="9458" selection-end="9458" vertical-scroll-proportion="0.0" vertical-offset="329" max-vertical-offset="1225">
+            <state line="190" column="51" selection-start="7878" selection-end="7878" vertical-scroll-proportion="1.106576" vertical-offset="1787" max-vertical-offset="2650">
               <folding>
                 <element signature="e#0#40#0" expanded="true" />
-                <element signature="e#798#4135#0" expanded="false" />
-                <element signature="e#826#830#0" expanded="false" />
-                <element signature="e#905#1106#0" expanded="false" />
-                <element signature="e#1154#1316#0" expanded="false" />
-                <element signature="e#1411#2170#0" expanded="false" />
-                <element signature="e#2273#2277#0" expanded="false" />
-                <element signature="e#2342#2897#0" expanded="false" />
-                <element signature="e#2980#4126#0" expanded="false" />
-                <element signature="e#4242#4698#0" expanded="false" />
-                <element signature="e#4781#5482#0" expanded="false" />
-                <element signature="e#5567#6149#0" expanded="false" />
-                <element signature="e#6237#7568#0" expanded="false" />
-                <element signature="e#7653#8497#0" expanded="false" />
-                <element signature="e#8591#9457#0" expanded="false" />
-                <element signature="e#9553#10216#0" expanded="false" />
+                <element signature="e#881#1082#0" expanded="false" />
+                <element signature="e#1130#1292#0" expanded="false" />
+                <element signature="e#1387#2146#0" expanded="false" />
+                <element signature="e#2249#2253#0" expanded="false" />
+                <element signature="e#2318#2873#0" expanded="false" />
+                <element signature="e#4273#4410#0" expanded="false" />
+                <element signature="e#4488#4944#0" expanded="false" />
+                <element signature="e#5024#5725#0" expanded="false" />
+                <element signature="e#5807#6389#0" expanded="false" />
+                <element signature="e#6474#7805#0" expanded="false" />
+                <element signature="e#7887#8723#0" expanded="false" />
+                <element signature="e#8814#9680#0" expanded="false" />
+                <element signature="e#9773#10436#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FailExperiment.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/tests/FailExperiment.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="26" selection-start="2329" selection-end="3033" vertical-scroll-proportion="0.0" vertical-offset="1144" max-vertical-offset="4150">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StopRescheduling.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/StopRescheduling.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="234" column="48" selection-start="9422" selection-end="10164" vertical-scroll-proportion="0.0" vertical-offset="2169" max-vertical-offset="3100">
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-                <element signature="e#1980#2372#0" expanded="false" />
-                <element signature="e#2424#3676#0" expanded="false" />
-                <element signature="e#3731#3852#0" expanded="false" />
-                <element signature="e#3905#4335#0" expanded="false" />
-                <element signature="e#4384#4488#0" expanded="false" />
-                <element signature="e#4577#5923#0" expanded="false" />
-                <element signature="e#5967#8927#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CloudHeftExecutorExample.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/examples/CloudHeftExecutorExample.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="18" selection-start="292" selection-end="292" vertical-scroll-proportion="0.16447368" vertical-offset="0" max-vertical-offset="850">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HeftExecutorExample.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/examples/HeftExecutorExample.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="24" selection-start="607" selection-end="1167" vertical-scroll-proportion="0.0" vertical-offset="131" max-vertical-offset="1050">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAExecutorExample.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/examples/GAExecutorExample.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="0" selection-start="1908" selection-end="1908" vertical-scroll-proportion="0.0" vertical-offset="385" max-vertical-offset="1625">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GaHeftExecutorExample.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="30" selection-start="617" selection-end="1121" vertical-scroll-proportion="0.0" vertical-offset="50" max-vertical-offset="1025">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -207,11 +120,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
-        <option value="$PROJECT_DIR$/core/executors/CloudHeftExecutor.py" />
-        <option value="$PROJECT_DIR$/core/CommonComponents/failers/FailBase.py" />
         <option value="$PROJECT_DIR$/core/CommonComponents/failers/FailOnce.py" />
         <option value="$PROJECT_DIR$/core/CommonComponents/failers/RandomFail.py" />
         <option value="$PROJECT_DIR$/core/CommonComponents/failers/FailRandom.py" />
@@ -219,10 +127,15 @@
         <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
         <option value="$PROJECT_DIR$/core/executors/HeftExecutor.py" />
         <option value="$PROJECT_DIR$/core/executors/GAExecutor.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
         <option value="$PROJECT_DIR$/core/examples/BaseExecutorExample.py" />
         <option value="$PROJECT_DIR$/core/examples/CloudHeftExecutorExample.py" />
         <option value="$PROJECT_DIR$/core/examples/ExecutorRunner.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
+        <option value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
+        <option value="$PROJECT_DIR$/core/tests/FailExperiment.py" />
+        <option value="$PROJECT_DIR$/core/runners/ExecutorRunner.py" />
       </list>
     </option>
   </component>
@@ -700,7 +613,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="executors" />
+              <option name="myItemId" value="runners" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -718,7 +631,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="examples" />
+              <option name="myItemId" value="executors" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1203,18 +1116,18 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40757748" sideWeight="0.497552" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4489093" sideWeight="0.497552" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17258263" sideWeight="0.5924225" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17258263" sideWeight="0.5510907" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34098738" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21848226" sideWeight="0.5924225" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21848226" sideWeight="0.5510907" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40757748" sideWeight="0.50244796" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4489093" sideWeight="0.50244796" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.048220437" sideWeight="0.77662176" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23650976" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1340,38 +1253,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/executors/CloudHeftExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="187" column="39" selection-start="8267" selection-end="8267" vertical-scroll-proportion="1.8765008" vertical-offset="3456" max-vertical-offset="9100">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/CommonComponents/failers/FailRandom.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="20" selection-start="329" selection-end="329" vertical-scroll-proportion="0.37751678" vertical-offset="0" max-vertical-offset="596">
-          <folding>
-            <element signature="e#0#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/CommonComponents/failers/FailBase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="55" selection-end="55" vertical-scroll-proportion="0.08389262" vertical-offset="0" max-vertical-offset="596">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/CommonComponents/failers/FailOnce.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="20" selection-start="820" selection-end="820" vertical-scroll-proportion="0.79697984" vertical-offset="0" max-vertical-offset="650">
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/HeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="42" column="39" selection-start="1898" selection-end="1898" vertical-scroll-proportion="0.0" vertical-offset="222" max-vertical-offset="1700">
@@ -1438,78 +1319,77 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py">
+    <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="30" selection-start="617" selection-end="1121" vertical-scroll-proportion="0.0" vertical-offset="50" max-vertical-offset="1025">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/examples/GAExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="0" selection-start="1908" selection-end="1908" vertical-scroll-proportion="0.0" vertical-offset="385" max-vertical-offset="1625">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/examples/HeftExecutorExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="24" selection-start="607" selection-end="1167" vertical-scroll-proportion="0.0" vertical-offset="131" max-vertical-offset="1050">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/StopRescheduling.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="234" column="48" selection-start="9422" selection-end="10164" vertical-scroll-proportion="0.0" vertical-offset="2169" max-vertical-offset="3100">
+        <state line="4" column="0" selection-start="224" selection-end="224" vertical-scroll-proportion="0.22675736" vertical-offset="0" max-vertical-offset="1350">
           <folding>
             <element signature="e#0#29#0" expanded="true" />
-            <element signature="e#1980#2372#0" expanded="false" />
-            <element signature="e#2424#3676#0" expanded="false" />
-            <element signature="e#3731#3852#0" expanded="false" />
-            <element signature="e#3905#4335#0" expanded="false" />
-            <element signature="e#4384#4488#0" expanded="false" />
-            <element signature="e#4577#5923#0" expanded="false" />
-            <element signature="e#5967#8927#0" expanded="false" />
+            <element signature="e#267#1261#0" expanded="false" />
+            <element signature="e#2596#4426#0" expanded="false" />
+            <element signature="e#4468#5744#0" expanded="false" />
+            <element signature="e#5798#7064#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="51" selection-start="1665" selection-end="1665" vertical-scroll-proportion="0.600907" vertical-offset="960" max-vertical-offset="3425">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="26" selection-start="278" selection-end="278" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1400">
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/tests/FailExperiment.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="26" selection-start="2329" selection-end="3033" vertical-scroll-proportion="0.0" vertical-offset="1144" max-vertical-offset="4150">
+        <state line="131" column="34" selection-start="5369" selection-end="5369" vertical-scroll-proportion="0.1632653" vertical-offset="3053" max-vertical-offset="3500">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/examples/ExecutorRunner.py">
+    <entry file="file://$PROJECT_DIR$/core/comparisons/StopRescheduling.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="218" column="0" selection-start="9458" selection-end="9458" vertical-scroll-proportion="0.0" vertical-offset="329" max-vertical-offset="1225">
+        <state line="13" column="17" selection-start="557" selection-end="557" vertical-scroll-proportion="0.64977974" vertical-offset="30" max-vertical-offset="575">
           <folding>
-            <element signature="e#0#40#0" expanded="true" />
-            <element signature="e#798#4135#0" expanded="false" />
-            <element signature="e#826#830#0" expanded="false" />
-            <element signature="e#905#1106#0" expanded="false" />
-            <element signature="e#1154#1316#0" expanded="false" />
-            <element signature="e#1411#2170#0" expanded="false" />
-            <element signature="e#2273#2277#0" expanded="false" />
-            <element signature="e#2342#2897#0" expanded="false" />
-            <element signature="e#2980#4126#0" expanded="false" />
-            <element signature="e#4242#4698#0" expanded="false" />
-            <element signature="e#4781#5482#0" expanded="false" />
-            <element signature="e#5567#6149#0" expanded="false" />
-            <element signature="e#6237#7568#0" expanded="false" />
-            <element signature="e#7653#8497#0" expanded="false" />
-            <element signature="e#8591#9457#0" expanded="false" />
-            <element signature="e#9553#10216#0" expanded="false" />
+            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#593#8936#0" expanded="false" />
+            <element signature="e#2423#3675#0" expanded="false" />
+            <element signature="e#3730#3851#0" expanded="false" />
+            <element signature="e#3904#4334#0" expanded="false" />
+            <element signature="e#4383#4487#0" expanded="false" />
+            <element signature="e#4576#5922#0" expanded="false" />
+            <element signature="e#5966#8926#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/examples/CloudHeftExecutorExample.py">
+    <entry file="file://$PROJECT_DIR$/core/runners/ExecutorRunner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="18" selection-start="292" selection-end="292" vertical-scroll-proportion="0.16447368" vertical-offset="0" max-vertical-offset="850">
-          <folding />
+        <state line="190" column="51" selection-start="7878" selection-end="7878" vertical-scroll-proportion="1.106576" vertical-offset="1787" max-vertical-offset="2650">
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+            <element signature="e#881#1082#0" expanded="false" />
+            <element signature="e#1130#1292#0" expanded="false" />
+            <element signature="e#1387#2146#0" expanded="false" />
+            <element signature="e#2249#2253#0" expanded="false" />
+            <element signature="e#2318#2873#0" expanded="false" />
+            <element signature="e#4273#4410#0" expanded="false" />
+            <element signature="e#4488#4944#0" expanded="false" />
+            <element signature="e#5024#5725#0" expanded="false" />
+            <element signature="e#5807#6389#0" expanded="false" />
+            <element signature="e#6474#7805#0" expanded="false" />
+            <element signature="e#7887#8723#0" expanded="false" />
+            <element signature="e#8814#9680#0" expanded="false" />
+            <element signature="e#9773#10436#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -1,11 +1,6 @@
 from functools import partial
-from Tools.Scripts.ndiff import fopen
 from core.comparisons.ComparisonBase import VersusFunctor, profit_print, ComparisonUtility, run
-from core.examples.GaHeftExecutorExample import GaHeftExecutorRunner
-from core.examples.CloudHeftExecutorExample import CloudHeftExecutorRunner
-from core.examples.GAExecutorExample import GAExecutorRunner
-from core.examples.HeftExecutorExample import HeftExecutorRunner
-from core.executors.EventMachine import NodeFailed, NodeUp
+from core.runners.ExecutorRunner import ExecutorsFactory
 from environment.Utility import Utility
 
 
@@ -15,8 +10,11 @@ class CloudHeftVsHeft(VersusFunctor):
 
     def __init__(self, reliability):
         self.reliability = reliability
-        self.mainHeft = HeftExecutorRunner().main
-        self.mainCloudHeft = CloudHeftExecutorRunner().main
+        ##TODO: simplify this
+        # self.mainHeft = HeftExecutorRunner().main
+        self.mainHeft = ExecutorsFactory.default().run_heft_executor
+        # self.mainCloudHeft = CloudHeftExecutorRunner().main
+        self.mainCloudHeft = ExecutorsFactory.default().run_cloudheft_executor
 
     @profit_print
     def __call__(self, wf_name):
@@ -40,8 +38,8 @@ class GAvsHeftGA(VersusFunctor):
 
     def __init__(self, reliability):
         self.reliability = reliability
-        self.mainHeft = HeftExecutorRunner().main
-        self.mainGA = GAExecutorRunner().main
+        self.mainHeft = ExecutorsFactory.default().run_heft_executor
+        self.mainGA = ExecutorsFactory.default().run_ga_executor
 
     #@save_result
     @profit_print
@@ -77,9 +75,9 @@ class GAvsHeftGAvsHeftReXGA(VersusFunctor):
 
     def __init__(self, reliability):
         self.reliability = reliability
-        self.mainCloudHeft = CloudHeftExecutorRunner().main
-        self.mainHeft = HeftExecutorRunner().main
-        self.mainGA = GAExecutorRunner().main
+        self.mainCloudHeft = ExecutorsFactory.default().run_cloudheft_executor
+        self.mainHeft = ExecutorsFactory.default().run_heft_executor
+        self.mainGA = ExecutorsFactory.default().run_ga_executor
 
     #@save_result
     @profit_print
@@ -122,8 +120,8 @@ class GaHeftvsHeft(VersusFunctor):
 
     def __init__(self, reliability, n=25):
         self.reliability = reliability
-        self.mainHeft = HeftExecutorRunner().main
-        self.mainGaHeft = GaHeftExecutorRunner().main
+        self.mainHeft = ExecutorsFactory.default().run_heft_executor
+        self.mainGaHeft = ExecutorsFactory.default().run_gaheft_executor
         self.n = n
 
     #@save_result
@@ -161,8 +159,8 @@ class GaHeftvsHeftWithWfAdding(VersusFunctor):
     HEFT = "heft"
 
     def __init__(self, n=25, time_koeff=0.1):
-        self.mainHeft = HeftExecutorRunner().main
-        self.mainGaHeft = GaHeftExecutorRunner().main
+        self.mainHeft = ExecutorsFactory.default().run_heft_executor
+        self.mainGaHeft = ExecutorsFactory.default().run_gaheft_executor
         self.n = n
         self.time_koeff = time_koeff
 
