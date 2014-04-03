@@ -1,3 +1,4 @@
 *.pyc
 ./penv
 ./penv_home
+./penv/*
