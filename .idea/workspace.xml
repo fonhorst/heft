@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" afterPath="$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py" />
-    </list>
+    <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="" />
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,9 +27,7 @@
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="12" column="23" selection-start="311" selection-end="311" vertical-scroll-proportion="0.0" vertical-offset="177" max-vertical-offset="875">
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -39,7 +35,7 @@
       <file leaf-file-name="GaHeftvsHeft.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="37" selection-start="520" selection-end="520" vertical-scroll-proportion="0.39612675" vertical-offset="175" max-vertical-offset="825">
+            <state line="16" column="37" selection-start="520" selection-end="520" vertical-scroll-proportion="0.30701753" vertical-offset="225" max-vertical-offset="825">
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -50,7 +46,7 @@
       <file leaf-file-name="GARunner.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GARunner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="103" column="53" selection-start="4595" selection-end="4717" vertical-scroll-proportion="0.0" vertical-offset="2247" max-vertical-offset="3600">
+            <state line="103" column="53" selection-start="4595" selection-end="4717" vertical-scroll-proportion="0.0" vertical-offset="2575" max-vertical-offset="3800">
               <folding />
             </state>
           </provider>
@@ -59,7 +55,7 @@
       <file leaf-file-name="concrete_realization.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/concrete_realization.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="6" selection-start="114" selection-end="114" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1900">
+            <state line="4" column="6" selection-start="114" selection-end="114" vertical-scroll-proportion="0.0" vertical-offset="100" max-vertical-offset="1925">
               <folding />
             </state>
           </provider>
@@ -68,10 +64,8 @@
       <file leaf-file-name="GAvsHeftGA.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="21" selection-start="242" selection-end="242" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
-              <folding>
-                <element signature="e#0#74#0" expanded="true" />
-              </folding>
+            <state line="6" column="21" selection-start="242" selection-end="242" vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="850">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -80,9 +74,7 @@
         <entry file="file://$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="18" column="50" selection-start="840" selection-end="840" vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="1075">
-              <folding>
-                <element signature="e#0#40#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -90,7 +82,7 @@
       <file leaf-file-name="GaHeftExecutor.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="245" column="24" selection-start="9318" selection-end="9318" vertical-scroll-proportion="0.0" vertical-offset="4509" max-vertical-offset="12850">
+            <state line="245" column="24" selection-start="9318" selection-end="9318" vertical-scroll-proportion="0.0" vertical-offset="6125" max-vertical-offset="13050">
               <folding />
             </state>
           </provider>
@@ -99,7 +91,7 @@
       <file leaf-file-name="VersusFunctors.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="19" selection-start="2165" selection-end="2165" vertical-scroll-proportion="0.0" vertical-offset="941" max-vertical-offset="4800">
+            <state line="56" column="19" selection-start="2165" selection-end="2165" vertical-scroll-proportion="0.0" vertical-offset="1400" max-vertical-offset="5000">
               <folding />
             </state>
           </provider>
@@ -109,9 +101,7 @@
         <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="94" column="48" selection-start="2750" selection-end="2750" vertical-scroll-proportion="0.0" vertical-offset="2166" max-vertical-offset="3500">
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -213,6 +203,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -731,21 +722,20 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="62" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="63" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="recentsLimit" value="5" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="63" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="recentsLimit" value="5" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="last_opened_file_path" value="C:/Pro/Python33/Lib/site-packages" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="62" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="597" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="608" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="597" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="59" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="54" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
@@ -1054,13 +1044,13 @@
       <method />
     </configuration>
     <list size="8">
-      <item index="0" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
-      <item index="1" class="java.lang.String" itemvalue="Python.full_tree" />
-      <item index="2" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
-      <item index="3" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
-      <item index="4" class="java.lang.String" itemvalue="Python.ComparisonBase" />
-      <item index="5" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
-      <item index="6" class="java.lang.String" itemvalue="Python.HeftExecutorExample" />
+      <item index="0" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
+      <item index="1" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
+      <item index="2" class="java.lang.String" itemvalue="Python.ComparisonBase" />
+      <item index="3" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
+      <item index="4" class="java.lang.String" itemvalue="Python.HeftExecutorExample" />
+      <item index="5" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
+      <item index="6" class="java.lang.String" itemvalue="Python.full_tree" />
       <item index="7" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
     </list>
     <recent_temporary>
@@ -1126,17 +1116,17 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2858783" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.70608497" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17018709" sideWeight="0.7067583" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34098738" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29391503" sideWeight="0.22329511" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2932417" sideWeight="0.22329511" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39839265" sideWeight="0.7767049" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23650976" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2858783" sideWeight="0.49788776" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1287,9 +1277,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftExecutorExampleRun.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="9" selection-start="80" selection-end="80" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="225">
-          <folding />
-        </state>
+        <state line="2" column="9" selection-start="80" selection-end="80" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="225" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/examples/HeftExecutorExample.py">
@@ -1318,9 +1306,7 @@
     <entry file="file://$PROJECT_DIR$/core/examples/GaHeftExecutorExample.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="18" column="50" selection-start="840" selection-end="840" vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="1075">
-          <folding>
-            <element signature="e#0#40#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1341,9 +1327,7 @@
     <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAvsHEFT.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="23" selection-start="311" selection-end="311" vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="875">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1357,9 +1341,7 @@
     <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="21" selection-start="242" selection-end="242" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
-          <folding>
-            <element signature="e#0#74#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1373,15 +1355,13 @@
     <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="94" column="48" selection-start="2750" selection-end="2750" vertical-scroll-proportion="0.0" vertical-offset="2166" max-vertical-offset="3500">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="37" selection-start="520" selection-end="520" vertical-scroll-proportion="0.39612675" vertical-offset="175" max-vertical-offset="825">
+        <state line="16" column="37" selection-start="520" selection-end="520" vertical-scroll-proportion="0.30701753" vertical-offset="225" max-vertical-offset="825">
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
