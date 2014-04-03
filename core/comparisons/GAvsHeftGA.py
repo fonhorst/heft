@@ -1,7 +1,7 @@
 from core.comparisons.ComparisonBase import ResultSaver, ComparisonUtility
 from core.comparisons.VersusFunctors import GAvsHeftGA
 
-reliability = 0.99
+reliability = 0.9
 
 save_file_name = ComparisonUtility.build_save_path('CloudHeftvsHeft')
 result_saver = ResultSaver(save_file_name)
@@ -11,7 +11,7 @@ def calc(wf_name):
 
 print("reliability %s" % reliability)
 
-wf_names = ["Montage_50"]
+wf_names = ["Montage_40"]
 
 result = [calc(wf_name) for wf_name in wf_names]
 

@@ -3,7 +3,7 @@
 import os
 from core.DSimpleHeft import DynamicHeft
 from core.comparisons.ComparisonBase import ComparisonUtility
-from core.examples.BaseExecutorExample import BaseExecutorExample
+from core.examples.ExecutorRunner import ExecutorRunner
 from core.executors.GaHeftExecutor import GaHeftExecutor
 from core.executors.HeftExecutor import HeftExecutor
 from environment.Utility import Utility
@@ -48,7 +48,7 @@ class SingleFailHeftExecutor(HeftExecutor):
         return (failtime, self.base_fail_duration)
     pass
 
-class SingleFailHeftExecutorExample(BaseExecutorExample):
+class SingleFailHeftExecutorRunner(ExecutorRunner):
     def __init__(self):
         pass
 
@@ -90,7 +90,7 @@ class SingleFailHeftExecutorExample(BaseExecutorExample):
         (makespan, vl1, vl2) = self.extract_result(heft_machine.current_schedule, is_silent, wf)
         return makespan
 
-class SingleFailGaHeftExecutorExample(BaseExecutorExample):
+class SingleFailGaHeftExecutorRunner(ExecutorRunner):
     def __init__(self, fixed_interval_for_ga=15, logger=None):
         self.fixed_interval_for_ga = fixed_interval_for_ga
         pass
@@ -152,7 +152,7 @@ failure_coeffs = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
 
 
 ## reliability 0.95 doesn't matter anything in this case
-heft_makespans = [SingleFailHeftExecutorExample().main(0.95, True, wf_name, None, ids[6], coeff) for coeff in failure_coeffs]
+heft_makespans = [SingleFailHeftExecutorRunner().main(0.95, True, wf_name, None, ids[6], coeff) for coeff in failure_coeffs]
 save_result(heft_f, heft_makespans, id)
 
 #     heft_makespans = [SingleFailHeftExecutorExample().main(0.95, True, wf_name, None, id) for i in range(n)]

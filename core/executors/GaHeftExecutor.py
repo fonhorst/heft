@@ -3,13 +3,15 @@ import random
 from threading import Thread, Event
 import threading
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
+from core.CommonComponents.failers.FailRandom import FailRandom
+from core.executors.BaseExecutor import BaseExecutor
 from core.executors.EventMachine import EventMachine, TaskStart, TaskFinished, NodeFailed, NodeUp
 from environment.Resource import Node
 from environment.ResourceManager import ScheduleItem, Schedule
 from environment.Utility import Utility
 
 
-class GaHeftExecutor(EventMachine):
+class GaHeftExecutor(FailRandom, BaseExecutor):
     def __init__(self,
                  heft_planner,
                  base_fail_duration,
@@ -50,8 +52,7 @@ class GaHeftExecutor(EventMachine):
 
         self._post_new_events()
 
-    def event_arrived(self, event):
-        # existed types of events:
+     # existed types of events:
         # TaskStart, TaskFinished, NodeFailed, NodeUp
 
         #TODO: catch events and
@@ -82,27 +83,6 @@ class GaHeftExecutor(EventMachine):
         # case 5: non-critical event (task started, task finished)
         #   - continue execution
 
-        if isinstance(event, TaskStart):
-            self._task_start_handler(event)
-            return
-        if isinstance(event, TaskFinished):
-            self._task_finished_handler(event)
-            return
-        if isinstance(event, NodeFailed):
-            self._node_failed_handler(event)
-            return
-        if isinstance(event, NodeUp):
-            self._node_up_handler(event)
-            return
-        pass
-
-
-    def _check_fail(self, task, node):
-            reliability = self.heft_planner.estimator.estimate_reliability(task, node)
-            res = random.random()
-            if res > reliability:
-                return True
-            return False
 
     def _task_start_handler(self, event):
 
@@ -184,59 +164,6 @@ class GaHeftExecutor(EventMachine):
         self.ga_computation_manager.run(self.current_schedule, self.current_time)
         pass
 
-    def _reschedule(self, event):
-        self.heft_planner.current_time = self.current_time
-        current_cleaned_schedule = self._clean_events(event)
-        self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
-        self._post_new_events()
-
-    def _post_new_events(self):
-        unstarted_items = set()
-        for (node, items) in self.current_schedule.mapping.items():
-            for item in items:
-                if item.state == ScheduleItem.UNSTARTED:
-                    unstarted_items.add(item)
-
-        events_to_post = []
-        for item in unstarted_items:
-            event_start = TaskStart(item.job)
-            event_start.time_happened = item.start_time
-
-            event_finish = TaskFinished(item.job)
-            event_finish.time_happened = item.end_time
-
-            events_to_post
-            self.post(event_start)
-            self.post(event_finish)
-        pass
-
-    def _clean_events(self, event):
-
-        # remove all unstarted tasks
-        cleaned_task = set()
-        if isinstance(event, NodeFailed):
-            cleaned_task = set([event.task])
-
-        new_mapping = dict()
-        for (node, items) in self.current_schedule.mapping.items():
-            new_mapping[node] = []
-            for item in items:
-                if item.state != ScheduleItem.UNSTARTED:
-                    new_mapping[node].append(item)
-                else:
-                    cleaned_task.add(item.job)
-        clean_schedule = Schedule(new_mapping)
-        # remove all events associated with these tasks
-        def check(event):
-            if isinstance(event, TaskStart) and event.task in cleaned_task:
-                return False
-            if isinstance(event, TaskFinished) and event.task in cleaned_task:
-                return False
-            return True
-        ##TODO: refactor it later
-        self.queue = deque([event for event in self.queue if check(event)])
-        return clean_schedule
-
     def _check_event_for_ga_result(self, event):
         # check for time to get result from GA running background
         result = self.ga_computation_manager.check_result(event, self.current_time)
@@ -274,11 +201,11 @@ class GaHeftExecutor(EventMachine):
 ##  - providing information about status of computation
 ##  - encapsulating some action - ? (for the sake of simplicity it must be responsibility of GaHeftExecutor)
 GA_PARAMS = {
-    "population": 50,
+    "population": 1000,
     "crossover_probability": 0.8,
     "replacing_mutation_probability": 0.5,
     "sweep_mutation_probability": 0.4,
-    "generations": 200
+    "generations": 50
 }
 class GAComputationManager:
 

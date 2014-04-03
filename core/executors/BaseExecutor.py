@@ -1,4 +1,6 @@
+from collections import deque
 from core.executors.EventMachine import EventMachine, TaskStart, TaskFinished, NodeFailed, NodeUp
+from environment.ResourceManager import ScheduleItem, Schedule
 
 
 class BaseExecutor(EventMachine):
@@ -16,6 +18,57 @@ class BaseExecutor(EventMachine):
             self._node_up_handler(event)
             return
         raise Exception("Unknown event: " + str(event))
+
+    def _clean_events(self, event):
+
+        # remove all unstarted tasks
+        cleaned_task = set()
+        if isinstance(event, NodeFailed):
+            cleaned_task = set([event.task])
+
+        new_mapping = dict()
+        for (node, items) in self.current_schedule.mapping.items():
+            new_mapping[node] = []
+            for item in items:
+                if item.state != ScheduleItem.UNSTARTED:
+                    new_mapping[node].append(item)
+                else:
+                    cleaned_task.add(item.job)
+        clean_schedule = Schedule(new_mapping)
+        # remove all events associated with these tasks
+        def check(event):
+            if isinstance(event, TaskStart) and event.task in cleaned_task:
+                return False
+            if isinstance(event, TaskFinished) and event.task in cleaned_task:
+                return False
+            return True
+        ##TODO: refactor it later
+        self.queue = deque([event for event in self.queue if check(event)])
+        return clean_schedule
+
+    def _post_new_events(self):
+        unstarted_items = set()
+        for (node, items) in self.current_schedule.mapping.items():
+            for item in items:
+                if item.state == ScheduleItem.UNSTARTED:
+                    unstarted_items.add(item)
+
+        for item in unstarted_items:
+            event_start = TaskStart(item.job)
+            event_start.time_happened = item.start_time
+
+            event_finish = TaskFinished(item.job)
+            event_finish.time_happened = item.end_time
+
+            self.post(event_start)
+            self.post(event_finish)
+        pass
+
+    def _reschedule(self, event):
+        self.heft_planner.current_time = self.current_time
+        current_cleaned_schedule = self._clean_events(event)
+        self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
+        self._post_new_events()
 
     def _task_start_handler(self, event):
         pass

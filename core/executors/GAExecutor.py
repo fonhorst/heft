@@ -1,11 +1,13 @@
 from collections import deque
 import random
+from core.CommonComponents.failers.FailRandom import FailRandom
+from core.executors.BaseExecutor import BaseExecutor
 from environment.Resource import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 from core.executors.EventMachine import EventMachine, TaskStart, TaskFinished, NodeFailed, NodeUp
 
 
-class GAExecutor(EventMachine):
+class GAExecutor(FailRandom, BaseExecutor):
 
     def __init__(self,
                  workflow,
@@ -52,91 +54,82 @@ class GAExecutor(EventMachine):
         not_next = False in [(it.job.id in self.finished_tasks) for it in its]
         return not not_next
 
-    def event_arrived(self, event):
-        def check_fail(task, node):
-            ## TODO: remove it later
-            #return False
-            reliability = self.estimator.estimate_reliability(task, node)
-            res = random.random()
-            if res > reliability:
-                return True
-            return False
+    def _task_start_handler(self, event):
+        (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
+        item.state = ScheduleItem.EXECUTING
 
-        if isinstance(event, TaskStart):
-            (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
-            item.state = ScheduleItem.EXECUTING
+        if self._check_fail(event.task, node):
+            # generate fail time, post it
+            duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
+            time_of_fail = (item.end_time - self.current_time)*random.random()
+            time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
 
-            if check_fail(event.task, node):
-                # generate fail time, post it
-                duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
-                time_of_fail = (item.end_time - self.current_time)*random.random()
-                time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
+            event_failed = NodeFailed(node, event.task)
+            event_failed.time_happened = time_of_fail
 
-                event_failed = NodeFailed(node, event.task)
-                event_failed.time_happened = time_of_fail
+            event_nodeup = NodeUp(node)
+            event_nodeup.time_happened = time_of_fail + duration
 
-                event_nodeup = NodeUp(node)
-                event_nodeup.time_happened = time_of_fail + duration
+            self.post(event_failed)
+            self.post(event_nodeup)
+            # remove TaskFinished event
+            self.queue = deque([ev for ev in self.queue if not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id)])
 
-                self.post(event_failed)
-                self.post(event_nodeup)
-                # remove TaskFinished event
-                self.queue = deque([ev for ev in self.queue if not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id)])
+            pass
+        pass
 
-                pass
-            return None
-        if isinstance(event, TaskFinished):
-            # check task finished
+    def _task_finished_handler(self, event):
+        # check task finished
 
-            self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
+        self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
 
-            self.finished_tasks.append(event.task.id)
+        self.finished_tasks.append(event.task.id)
 
-            unstarted_items = self.get_ready_tasks(event.task, event.node)
+        unstarted_items = self.get_ready_tasks(event.task, event.node)
 
-            ##TODO: remove it later
-            #print("==============================")
-            #print("Task " + str(event.task) + " finished")
-            #for item in unstarted_items:
-            #    print("Start task: " + str(item.job) + " On node: " + str(self.initial_schedule.place(item.job)[0]))
-            #print("==============================")
-            #generate new task start events
-            self.post_new_events(unstarted_items)
-            return None
-        if isinstance(event, NodeFailed):
-            # check node down
-            self.resource_manager.node(event.node).state = Node.Down
-            # check failed event in schedule
-            ## TODO: ambigious choice
-            ##self.current_schedule.change_state(event.task, ScheduleItem.FAILED)
-            it = [item for item in self.current_schedule.mapping[event.node] if item.job.id == event.task.id and item.state == ScheduleItem.EXECUTING]
-            if len(it) != 1:
-                ## TODO: raise exception here
-                pass
+        ##TODO: remove it later
+        #print("==============================")
+        #print("Task " + str(event.task) + " finished")
+        #for item in unstarted_items:
+        #    print("Start task: " + str(item.job) + " On node: " + str(self.initial_schedule.place(item.job)[0]))
+        #print("==============================")
+        #generate new task start events
+        self.post_new_events(unstarted_items)
+        pass
 
-            it[0].state = ScheduleItem.FAILED
-            it[0].end_time = self.current_time
+    def _node_failed_handler(self, event):
+        # check node down
+        self.resource_manager.node(event.node).state = Node.Down
+        # check failed event in schedule
+        ## TODO: ambigious choice
+        ##self.current_schedule.change_state(event.task, ScheduleItem.FAILED)
+        it = [item for item in self.current_schedule.mapping[event.node] if item.job.id == event.task.id and item.state == ScheduleItem.EXECUTING]
+        if len(it) != 1:
+            ## TODO: raise exception here
+            pass
 
-            return None
-        if isinstance(event, NodeUp):
-            # check node up
-            self.resource_manager.node(event.node).state = Node.Unknown
-            #get next task for this node
-            next_sched_item = []
-            for item in self.initial_schedule.mapping[event.node]:
-                if item.job.id not in self.finished_tasks:
-                    next_sched_item = item
-                    break
+        it[0].state = ScheduleItem.FAILED
+        it[0].end_time = self.current_time
+        pass
 
-            runtime = next_sched_item.end_time - next_sched_item.start_time
-            start_time = self.current_time
-            end_time = start_time + runtime
+    def _node_up_handler(self, event):
+        # check node up
+        self.resource_manager.node(event.node).state = Node.Unknown
+        #get next task for this node
+        next_sched_item = []
+        for item in self.initial_schedule.mapping[event.node]:
+            if item.job.id not in self.finished_tasks:
+                next_sched_item = item
+                break
 
-            actual_sched_item = ScheduleItem(next_sched_item.job, start_time, end_time)
-            self.post_new_events([actual_sched_item])
+        runtime = next_sched_item.end_time - next_sched_item.start_time
+        start_time = self.current_time
+        end_time = start_time + runtime
 
-            return None
-        return None
+        actual_sched_item = ScheduleItem(next_sched_item.job, start_time, end_time)
+        self.post_new_events([actual_sched_item])
+        pass
+
 
     def get_ready_tasks(self, ptask, pnode):
         unstarted_items = []
@@ -164,11 +157,21 @@ class GAExecutor(EventMachine):
             (node, item) = self.initial_schedule.place(child)
 
             ## TODO: remake it later
-            transf = 0 if pnode is None else self.estimator.estimate_transfer_time(pnode, node, ptask, child)
+            # transf = 0 if pnode is None else self.estimator.estimate_transfer_time(pnode, node, ptask, child)
+            # runtime = item.end_time - item.start_time
+            # start_time = self.current_time + transf
+            # end_time = start_time + runtime
+
+            sitems = self.current_schedule.mapping.items()
+            pids = [p.id for p in child.parents]
+            mp = {it.job.id: (pnd, it) for (pnd, items) in sitems for it in items if (it.job.id in pids) and (it.state == ScheduleItem.FINISHED) }
+            estms = [it.end_time + self.estimator.estimate_transfer_time(pnd, node, it.job, child) for (id, (pnd, it)) in mp.items()]
+            transf_end = 0 if len(estms) == 0 else max(estms)
 
             runtime = item.end_time - item.start_time
-            start_time = self.current_time + transf
+            start_time = max(self.current_time, transf_end)
             end_time = start_time + runtime
+
 
             actual_sched_item = ScheduleItem(item.job, start_time, end_time)
             unstarted_items.append(actual_sched_item)

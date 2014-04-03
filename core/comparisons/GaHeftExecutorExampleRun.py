@@ -1,3 +1,3 @@
-from core.examples.GaHeftExecutorExample import GaHeftExecutorExample
+from core.examples.GaHeftExecutorExample import GaHeftExecutorRunner
 
-GaHeftExecutorExample.single_run()
+GaHeftExecutorRunner.single_run()

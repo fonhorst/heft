@@ -30,7 +30,7 @@ def output(f):
     return inner_func
 
 @output
-def run(run_name, mainFunc, wf_name, reliability, output_file=None, n=100):
+def run(run_name, mainFunc, wf_name, reliability, output_file=None, n=1000):
 
     result = []
     for i in range(n):

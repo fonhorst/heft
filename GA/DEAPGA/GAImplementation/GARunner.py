@@ -9,11 +9,11 @@ from environment.Utility import Utility, profile_decorator
 from environment.Utility import GraphVisualizationUtility as viz
 
 DEFAULT_GA_PARAMS = {
-    "population": 50,
+    "population": 1000,
     "crossover_probability": 0.8,
     "replacing_mutation_probability": 0.5,
     "sweep_mutation_probability": 0.4,
-    "generations": 100
+    "generations": 50
 }
 
 class BaseRunner:
@@ -133,7 +133,8 @@ class MixRunner(BaseRunner):
         ##================================
         ##GA Run
         ##================================
-        ga_schedule = _run_ga(heft_schedule)
+        # ga_schedule = _run_ga(heft_schedule)
+        ga_schedule = _run_ga(None)
 
 
         print("===========================================")

@@ -1,9 +1,9 @@
 from core.DSimpleHeft import DynamicHeft
-from core.examples.BaseExecutorExample import BaseExecutorExample
+from core.examples.ExecutorRunner import ExecutorRunner
 from core.executors.GaHeftExecutor import GaHeftExecutor
 
 
-class GaHeftExecutorExample(BaseExecutorExample):
+class GaHeftExecutorRunner(ExecutorRunner):
     def __init__(self, fixed_interval_for_ga=15, logger=None):
         self.fixed_interval_for_ga = fixed_interval_for_ga
         pass
@@ -16,7 +16,7 @@ class GaHeftExecutorExample(BaseExecutorExample):
         dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
         ga_heft_machine = GaHeftExecutor(
                             heft_planner=dynamic_heft,
-                            base_fail_duration=120,
+                            base_fail_duration=40,
                             base_fail_dispersion=1,
                             fixed_interval_for_ga=self.fixed_interval_for_ga,
                             logger=logger)
@@ -30,7 +30,7 @@ class GaHeftExecutorExample(BaseExecutorExample):
 
     @staticmethod
     def single_run():
-        obj = GaHeftExecutorExample()
+        obj = GaHeftExecutorRunner()
         wf_name = 'Montage_25'
         reliability = 0.95
         obj.main(reliability, False, wf_name)

@@ -1,10 +1,10 @@
 import unittest
-from core.comparisons.StopRescheduling import GaExecutorExample
+from core.comparisons.StopRescheduling import GaOldPopExecutorRunner
 
 
 class TestGaExecutor(unittest.TestCase):
     def setUp(self):
-        self.example_executor = GaExecutorExample()
+        self.example_executor = GaOldPopExecutorRunner()
         self.wf_name = "Montage_50"
         self.ga_params = {
             "population": 50,

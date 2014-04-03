@@ -2,7 +2,7 @@ import functools
 from scoop import futures
 from GA.DEAPGA.GAImplementation.GARunner import MixRunner
 
-wf_names = ['Montage_30']
+wf_names = ['Montage_50']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
 # wf_names = ['Epigenomics_100']
@@ -10,7 +10,7 @@ wf_names = ['Montage_30']
 
 PARAMS = {
     "ideal_flops": 20,
-    "is_silent": False,
+    "is_silent": True,
     "is_visualized": False,
     "ga_params": {
         "population": 50,
@@ -23,7 +23,13 @@ PARAMS = {
 }
 
 if __name__ == '__main__':
+    print("Population size: " + str(PARAMS["ga_params"]["population"]))
     run = functools.partial(MixRunner(), **PARAMS)
 
     [run(wf_name) for wf_name in wf_names]
     # list(futures.map(run, wf_names))
+    # for i in range(5):
+    #     print("ITERATION: " + str(i))
+    #     run(wf_names[0])
+    #     pass
+

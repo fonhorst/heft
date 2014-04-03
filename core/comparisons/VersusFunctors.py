@@ -1,10 +1,10 @@
 from functools import partial
 from Tools.Scripts.ndiff import fopen
 from core.comparisons.ComparisonBase import VersusFunctor, profit_print, ComparisonUtility, run
-from core.examples.GaHeftExecutorExample import GaHeftExecutorExample
-from core.examples.CloudHeftExecutorExample import CloudHeftExecutorExample
-from core.examples.GAExecutorExample import GAExecutorExample
-from core.examples.HeftExecutorExample import HeftExecutorExample
+from core.examples.GaHeftExecutorExample import GaHeftExecutorRunner
+from core.examples.CloudHeftExecutorExample import CloudHeftExecutorRunner
+from core.examples.GAExecutorExample import GAExecutorRunner
+from core.examples.HeftExecutorExample import HeftExecutorRunner
 from core.executors.EventMachine import NodeFailed, NodeUp
 from environment.Utility import Utility
 
@@ -15,8 +15,8 @@ class CloudHeftVsHeft(VersusFunctor):
 
     def __init__(self, reliability):
         self.reliability = reliability
-        self.mainHeft = HeftExecutorExample().main
-        self.mainCloudHeft = CloudHeftExecutorExample().main
+        self.mainHeft = HeftExecutorRunner().main
+        self.mainCloudHeft = CloudHeftExecutorRunner().main
 
     @profit_print
     def __call__(self, wf_name):
@@ -40,8 +40,8 @@ class GAvsHeftGA(VersusFunctor):
 
     def __init__(self, reliability):
         self.reliability = reliability
-        self.mainHeft = HeftExecutorExample().main
-        self.mainGA = GAExecutorExample().main
+        self.mainHeft = HeftExecutorRunner().main
+        self.mainGA = GAExecutorRunner().main
 
     #@save_result
     @profit_print
@@ -50,6 +50,7 @@ class GAvsHeftGA(VersusFunctor):
         ## dedicated resource are the same for all bundles
         path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
         bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2))
+
 
         mainHEFTwithGA = partial(self.mainHeft, with_ga_initial=False, the_bundle=bundle)
         mainGAwithBundle = partial(self.mainGA, the_bundle=bundle)
@@ -76,9 +77,9 @@ class GAvsHeftGAvsHeftReXGA(VersusFunctor):
 
     def __init__(self, reliability):
         self.reliability = reliability
-        self.mainCloudHeft = CloudHeftExecutorExample().main
-        self.mainHeft = HeftExecutorExample().main
-        self.mainGA = GAExecutorExample().main
+        self.mainCloudHeft = CloudHeftExecutorRunner().main
+        self.mainHeft = HeftExecutorRunner().main
+        self.mainGA = GAExecutorRunner().main
 
     #@save_result
     @profit_print
@@ -121,8 +122,8 @@ class GaHeftvsHeft(VersusFunctor):
 
     def __init__(self, reliability, n=25):
         self.reliability = reliability
-        self.mainHeft = HeftExecutorExample().main
-        self.mainGaHeft = GaHeftExecutorExample().main
+        self.mainHeft = HeftExecutorRunner().main
+        self.mainGaHeft = GaHeftExecutorRunner().main
         self.n = n
 
     #@save_result
@@ -160,8 +161,8 @@ class GaHeftvsHeftWithWfAdding(VersusFunctor):
     HEFT = "heft"
 
     def __init__(self, n=25, time_koeff=0.1):
-        self.mainHeft = HeftExecutorExample().main
-        self.mainGaHeft = GaHeftExecutorExample().main
+        self.mainHeft = HeftExecutorRunner().main
+        self.mainGaHeft = GaHeftExecutorRunner().main
         self.n = n
         self.time_koeff = time_koeff
 

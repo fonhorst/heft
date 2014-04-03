@@ -1,16 +1,17 @@
 from collections import deque
 import random
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
+from core.CommonComponents.failers.FailOnce import FailOnce
 from core.comparisons.ComparisonBase import ResultSaver
-from core.examples.BaseExecutorExample import BaseExecutorExample
-from core.executors.EventMachine import EventMachine
-from core.executors.EventMachine import TaskStart, TaskFinished, NodeFailed, NodeUp
+from core.examples.ExecutorRunner import ExecutorRunner
+from core.executors.BaseExecutor import BaseExecutor
+from core.executors.EventMachine import TaskFinished, NodeFailed, NodeUp
 from environment.Resource import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 from environment.Utility import Utility
 
 
-class GaExecutor(EventMachine):
+class GaOldPopExecutor(FailOnce, BaseExecutor):
 
     def __init__(self,
                  workflow,
@@ -19,11 +20,9 @@ class GaExecutor(EventMachine):
                  ga_params,
                  base_fail_duration,
                  base_fail_dispersion,
-
                  wf_name,
                  stat_saver,
                  task_id_to_fail,
-
                  logger=None):
         self.queue = deque()
         self.current_time = 0
@@ -50,15 +49,11 @@ class GaExecutor(EventMachine):
     def init(self):
         ga_planner = self._create_ga()
         self.current_schedule = Schedule({node: [] for node in self.resource_manager.get_nodes()})
-
         (result, logbook) = ga_planner(self.current_schedule, None)
         self.past_pop = ga_planner.get_pop()
-
         print("Result makespan: " + str(Utility.get_the_last_time(result[2])))
-
         self.current_schedule = result[2]
         self._post_new_events()
-
         self.failed_once = False
         pass
 
@@ -69,49 +64,6 @@ class GaExecutor(EventMachine):
                                                    estimator=self.estimator,
                                                    ga_params=self.params)
         return ga_planner
-
-
-    #def _check_fail(self, task, node):
-    #    reliability = self.estimator.estimate_reliability(task, node)
-    #    res = random.random()
-    #    if res > reliability:
-    #        return True
-    #    return False
-
-    def _check_fail(self, task, node):
-        if self.failed_once is not True:
-            reliability = self.estimator.estimate_reliability(task, node)
-
-            failed = False
-            if self.task_id_to_fail is None:
-                res = random.random()
-                failed = res > reliability
-            elif self.task_id_to_fail == task.id:
-                failed = True
-
-            # r = self.task_id_to_fail == task.id
-            # print("Checking failed {0} == {1}: {2} ".format(self.task_id_to_fail, task.id, r))
-
-            if failed is True:
-                self.failed_once = True
-                return True
-        return False
-
-
-    def event_arrived(self, event):
-        if isinstance(event, TaskStart):
-            self._task_start_handler(event)
-            return
-        if isinstance(event, TaskFinished):
-            self._task_finished_handler(event)
-            return
-        if isinstance(event, NodeFailed):
-            self._node_failed_handler(event)
-            return
-        if isinstance(event, NodeUp):
-            self._node_up_handler(event)
-            return
-        pass
 
     def _task_start_handler(self, event):
         # check task as executing
@@ -165,36 +117,36 @@ class GaExecutor(EventMachine):
 
     def _clean_chromosome(self, chromosome, event, current_cleaned_schedule):
 
-            not_scheduled_tasks = [ item.job.id for (node, items) in current_cleaned_schedule.mapping.items() for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING]
+        not_scheduled_tasks = [ item.job.id for (node, items) in current_cleaned_schedule.mapping.items() for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING]
 
-            for (node_name, ids) in chromosome.items():
-                for_removing = []
-                for id in ids:
-                    if id in not_scheduled_tasks:
-                        for_removing.append(id)
-                    pass
-                for r in for_removing:
-                    ids.remove(r)
-                    pass
+        for (node_name, ids) in chromosome.items():
+            for_removing = []
+            for id in ids:
+                if id in not_scheduled_tasks:
+                    for_removing.append(id)
                 pass
+            for r in for_removing:
+                ids.remove(r)
+                pass
+            pass
 
-            if isinstance(event, NodeFailed):
-                tasks = chromosome[event.node.name]
-                ## TODO: here must be a procedure of getting currently alive nodes
-                working_nodes = list(chromosome.keys() - set([event.node.name]))
-                for t in tasks:
-                    lt = len(working_nodes) - 1
-                    new_node = 0 if lt == 0 else random.randint(0, lt )
-                    node_name = working_nodes[new_node]
-                    length = len(chromosome[node_name])
-                    # TODO: correct 0 and length
-                    new_place = 0 if length == 0 else random.randint(0, length)
-                    chromosome[node_name].insert(new_place, t)
-                chromosome[event.node.name] = []
-                return chromosome
-            if isinstance(event, NodeUp):
-                pass
+        if isinstance(event, NodeFailed):
+            tasks = chromosome[event.node.name]
+            ## TODO: here must be a procedure of getting currently alive nodes
+            working_nodes = list(chromosome.keys() - set([event.node.name]))
+            for t in tasks:
+                lt = len(working_nodes) - 1
+                new_node = 0 if lt == 0 else random.randint(0, lt )
+                node_name = working_nodes[new_node]
+                length = len(chromosome[node_name])
+                # TODO: correct 0 and length
+                new_place = 0 if length == 0 else random.randint(0, length)
+                chromosome[node_name].insert(new_place, t)
+            chromosome[event.node.name] = []
             return chromosome
+        if isinstance(event, NodeUp):
+            pass
+        return chromosome
 
     def _reschedule(self, event):
         current_cleaned_schedule = self._clean_events(event)
@@ -260,55 +212,10 @@ class GaExecutor(EventMachine):
         self._post_new_events()
         pass
 
-    def _post_new_events(self):
-        unstarted_items = set()
-        for (node, items) in self.current_schedule.mapping.items():
-            for item in items:
-                if item.state == ScheduleItem.UNSTARTED:
-                    unstarted_items.add(item)
-
-        for item in unstarted_items:
-            event_start = TaskStart(item.job)
-            event_start.time_happened = item.start_time
-
-            event_finish = TaskFinished(item.job)
-            event_finish.time_happened = item.end_time
-
-            self.post(event_start)
-            self.post(event_finish)
-        pass
-
-    def _clean_events(self, event):
-
-        # remove all unstarted tasks
-        cleaned_task = set()
-        if isinstance(event, NodeFailed):
-            cleaned_task = set([event.task])
-
-        new_mapping = dict()
-        for (node, items) in self.current_schedule.mapping.items():
-            new_mapping[node] = []
-            for item in items:
-                if item.state != ScheduleItem.UNSTARTED:
-                    new_mapping[node].append(item)
-                else:
-                    cleaned_task.add(item.job)
-        clean_schedule = Schedule(new_mapping)
-        # remove all events associated with these tasks
-        def check(event):
-            if isinstance(event, TaskStart) and event.task in cleaned_task:
-                return False
-            if isinstance(event, TaskFinished) and event.task in cleaned_task:
-                return False
-            return True
-        ##TODO: refactor it later
-        self.queue = deque([event for event in self.queue if check(event)])
-        return clean_schedule
-
     pass
 
 
-class GaExecutorExample(BaseExecutorExample):
+class GaOldPopExecutorRunner(ExecutorRunner):
 
     DEFAULT_SAVE_PATH = "../../results/GaRescheduleResults_{0}.json"
 
@@ -320,9 +227,9 @@ class GaExecutorExample(BaseExecutorExample):
         bundle = self.get_bundle(the_bundle)
         (estimator, resource_manager, initial_schedule) = self.get_infrastructure(bundle, reliability, False)
 
-        stat_saver = ResultSaver(GaExecutorExample.DEFAULT_SAVE_PATH.format(key_for_save))
+        stat_saver = ResultSaver(GaOldPopExecutorRunner.DEFAULT_SAVE_PATH.format(key_for_save))
 
-        ga_machine = GaExecutor(
+        ga_machine = GaOldPopExecutor(
                             workflow=wf,
                             resource_manager=resource_manager,
                             estimator=estimator,

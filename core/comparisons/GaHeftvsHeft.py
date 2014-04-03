@@ -3,9 +3,9 @@ from uuid import uuid4
 from core.comparisons.ComparisonBase import ResultSaver, ComparisonUtility
 from core.comparisons.VersusFunctors import GaHeftvsHeft
 
-reliability = 0.9
+reliability = 0.99
 
-wf_name = "Montage_50"
+wf_name = "Montage_25"
 
 save_file_name = ComparisonUtility.build_save_path(wf_name + '\\GaHeftvsHeft_['+str(uuid4())+']')
 result_saver = ResultSaver(save_file_name)
@@ -13,7 +13,7 @@ exp = GaHeftvsHeft(reliability, n=1)
 def calc(wf_name, out):
     return result_saver(exp(wf_name, out))
 
-print("fail_duration: 400")
+print("fail_duration: 40")
 print("reliability %s" % reliability)
 
 base_dir = "../../resources/experiment_1/"
