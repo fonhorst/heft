@@ -415,10 +415,12 @@ class GAComputationWrapper:
             t_ident = str(threading.current_thread().ident)
             t_name = str(threading.current_thread().name)
             print("Time: " + str(current_time) + " Running ga in isolated thread " + t_name + " " + t_ident)
-            self.ga(self.fixed_schedule_part,
+            # TODO: remove this hack later
+            (x, logbook) = self.ga(self.fixed_schedule_part,
                     self.initial_schedule,
                     current_time,
                     **kwargs)
+            self.logbook = logbook
             event.set()
             timer.cancel()
             pass

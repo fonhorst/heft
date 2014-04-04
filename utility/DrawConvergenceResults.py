@@ -43,7 +43,8 @@ def built_converged_data():
 
     # load data
     base_path = "../results/"
-    filename = "GaRescheduleResults_by_5.json"
+    #filename = "GaRescheduleResults_by_5.json"
+    filename = "small_run.json"
     path = base_path + filename
 
     with open(path, 'r') as f:

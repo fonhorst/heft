@@ -102,6 +102,7 @@ class ExtendedComputationManager(GAComputationManager):
         ## TODO: rethink this hack
         result = ga_calc.run(time_interval, current_time, initial_population=initial_pop)
         (best_op, pop_op, schedule_op, stopped_iteration_op) = ga_calc.ga.get_result()
+        logbook_op = ga_calc.logbook
         self.past_pop = pop_op
 
         ##=====================================
@@ -118,7 +119,7 @@ class ExtendedComputationManager(GAComputationManager):
                 "with_old_pop": {
                     "iter": stopped_iteration_op,
                     "makespan": Utility.get_the_last_time(schedule_op),
-                    "pop_aggr": None
+                    "pop_aggr":logbook_op
                 },
                 "with_random": {
                     "iter": stopped_iteration_r,
