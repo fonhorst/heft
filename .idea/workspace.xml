@@ -2,60 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="DELETED" beforePath="D:\wspace\heft\core\comparisons\GaHeftExecutorExampleRun.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\CloudHeftExecutorExample.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\ExecutorRunner.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\GAExecutorExample.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\GaHeftExecutorExample.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\HeftExecutorExample.py" afterPath="" />
-      <change type="DELETED" beforePath="D:\wspace\heft\core\examples\__init__.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py" afterPath="$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/AddingWFheftExample.py" afterPath="$PROJECT_DIR$/core/comparisons/AddingWFheftExample.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" afterPath="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/tests/FailExperiment.py" afterPath="$PROJECT_DIR$/core/tests/FailExperiment.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/tests/GaExecutorTests.py" afterPath="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/runners/ExecutorRunner.py" afterPath="$PROJECT_DIR$/core/runners/ExecutorRunner.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/CommonComponents/failers/FailRandom.py" afterPath="$PROJECT_DIR$/core/CommonComponents/failers/FailRandom.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" afterPath="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" afterPath="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/deap/__init__.py" afterPath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/deap/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/deap/__init__.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/deap/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/pytz/__init__.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/pytz/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/lib/_iotools.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/lib/_iotools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/add_newdocs.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/add_newdocs.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/argparse.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/argparse.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/axes.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/axes.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_cocoaagg.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_cocoaagg.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_pgf.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_pgf.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_template.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/backends/backend_template.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/cbook.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/cbook.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/collections.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/collections.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/f2py/crackfortran.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/f2py/crackfortran.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/deap/creator.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/deap/creator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/algorithms/centrality/current_flow_closeness.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/algorithms/centrality/current_flow_closeness.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/dates.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/dates.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/setuptools/tests/doctest.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/setuptools/tests/doctest.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/setuptools/command/easy_install.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/setuptools/command/easy_install.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/readwrite/edgelist.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/readwrite/edgelist.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/ma/extras.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/ma/extras.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/core/fromnumeric.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/core/fromnumeric.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/graph.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/graph.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/image.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/image.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/mlab.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/mlab.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/multidigraph.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/multidigraph.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/multigraph.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/classes/multigraph.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/testing/noseclasses.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/testing/noseclasses.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/drawing/nx_pylab.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/drawing/nx_pylab.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/pyplot.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/pyplot.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/utils/random_sequence.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/networkx/utils/random_sequence.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/rcsetup.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/rcsetup.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/sankey.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/sankey.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/f2py/docs/usersguide/setup_example.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/f2py/docs/usersguide/setup_example.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/lib/shape_base.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/numpy/lib/shape_base.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/zmq/eventloop/minitornado/stack_context.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/zmq/eventloop/minitornado/stack_context.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/ticker.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/matplotlib/ticker.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/deap/tools.py" afterPath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/deap/tools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/deap/tools.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/deap/tools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/pip-1.4.1-py3.3.egg/pip/vendor/distlib/util.py" afterPath="$PROJECT_DIR$/penv-home/heft/Lib/site-packages/pip-1.4.1-py3.3.egg/pip/vendor/distlib/util.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/penv/Lib/site-packages/pip/_vendor/distlib/util.py" afterPath="$PROJECT_DIR$/penv/Lib/site-packages/pip/_vendor/distlib/util.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -78,25 +30,55 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ExecutorRunner.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ExecutorsTest.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/tests/ExecutorsTest.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="0" selection-start="232" selection-end="232" vertical-scroll-proportion="0.4950495" vertical-offset="0" max-vertical-offset="950">
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+                <element signature="e#263#2166#0" expanded="false" />
+                <element signature="e#2202#2398#0" expanded="false" />
+                <element signature="e#2441#2469#0" expanded="false" />
+                <element signature="e#2513#2543#0" expanded="false" />
+                <element signature="e#2589#2621#0" expanded="false" />
+                <element signature="e#2670#2705#0" expanded="false" />
+                <element signature="e#2753#2787#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GaExecutorTests.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="38" selection-start="259" selection-end="489" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="1375">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventMachine.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/executors/EventMachine.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="58" column="0" selection-start="1389" selection-end="1389" vertical-scroll-proportion="0.0" vertical-offset="1136" max-vertical-offset="3250">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ExecutorRunner.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/runners/ExecutorRunner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="190" column="51" selection-start="7878" selection-end="7878" vertical-scroll-proportion="1.106576" vertical-offset="1787" max-vertical-offset="2650">
+            <state line="195" column="18" selection-start="7980" selection-end="7980" vertical-scroll-proportion="0.0" vertical-offset="2736" max-vertical-offset="3800">
               <folding>
                 <element signature="e#0#40#0" expanded="true" />
-                <element signature="e#881#1082#0" expanded="false" />
-                <element signature="e#1130#1292#0" expanded="false" />
-                <element signature="e#1387#2146#0" expanded="false" />
-                <element signature="e#2249#2253#0" expanded="false" />
-                <element signature="e#2318#2873#0" expanded="false" />
-                <element signature="e#4273#4410#0" expanded="false" />
-                <element signature="e#4488#4944#0" expanded="false" />
-                <element signature="e#5024#5725#0" expanded="false" />
-                <element signature="e#5807#6389#0" expanded="false" />
-                <element signature="e#6474#7805#0" expanded="false" />
-                <element signature="e#7887#8723#0" expanded="false" />
-                <element signature="e#8814#9680#0" expanded="false" />
-                <element signature="e#9773#10436#0" expanded="false" />
+                <element signature="e#794#995#0" expanded="false" />
+                <element signature="e#2162#2166#0" expanded="false" />
+                <element signature="e#2231#2994#0" expanded="false" />
+                <element signature="e#4395#4532#0" expanded="false" />
+                <element signature="e#5153#5854#0" expanded="false" />
+                <element signature="e#5938#6520#0" expanded="false" />
+                <element signature="e#6607#7938#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -120,9 +102,7 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/core/CommonComponents/failers/FailOnce.py" />
         <option value="$PROJECT_DIR$/core/CommonComponents/failers/RandomFail.py" />
-        <option value="$PROJECT_DIR$/core/CommonComponents/failers/FailRandom.py" />
         <option value="$PROJECT_DIR$/core/executors/BaseExecutor.py" />
         <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
         <option value="$PROJECT_DIR$/core/executors/HeftExecutor.py" />
@@ -131,11 +111,13 @@
         <option value="$PROJECT_DIR$/core/examples/CloudHeftExecutorExample.py" />
         <option value="$PROJECT_DIR$/core/examples/ExecutorRunner.py" />
         <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
         <option value="$PROJECT_DIR$/core/tests/GaExecutorTests.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
         <option value="$PROJECT_DIR$/core/tests/FailExperiment.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/VersusFunctors.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
         <option value="$PROJECT_DIR$/core/runners/ExecutorRunner.py" />
+        <option value="$PROJECT_DIR$/core/CommonComponents/failers/FailRandom.py" />
+        <option value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
       </list>
     </option>
   </component>
@@ -613,42 +595,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="runners" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="executors" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="comparisons" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -770,7 +716,7 @@
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.GaHeftvsHeft">
+  <component name="RunManager" selected="Python tests.Unittests in TestExecsExecutor (2)">
     <configuration default="false" name="GAvsHeftGA" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -788,42 +734,6 @@
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="GAvsHeftGAvsHeftRExGA" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/comparisons" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/comparisons/GAvsHeftGAvsHeftRExGA.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="ComparisonBase" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/comparisons" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -845,22 +755,76 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="HeftExecutorExample" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="Unittest TestExecsExecutor.test_ga_executor" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
+      <envs />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/examples" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/examples/HeftExecutorExample.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
+      <option name="CLASS_NAME" value="TestExecsExecutor" />
+      <option name="METHOD_NAME" value="test_ga_executor" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittests in TestExecsExecutor (1)" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
+      <option name="CLASS_NAME" value="TestExecsExecutor" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_CLASS" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittests in TestExecsExecutor (2)" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
+      <option name="CLASS_NAME" value="TestExecsExecutor" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_CLASS" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="py.test">
@@ -984,6 +948,30 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
+    <configuration default="false" name="Unittests in TestExecsExecutor" type="tests" factoryName="Unittests" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
+      <option name="CLASS_NAME" value="TestExecsExecutor" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_CLASS" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
     <configuration default="false" name="GAvsHEFT" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -1048,23 +1036,24 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <list size="8">
-      <item index="0" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
-      <item index="1" class="java.lang.String" itemvalue="Python.full_tree" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="3" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
-      <item index="4" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
-      <item index="5" class="java.lang.String" itemvalue="Python.ComparisonBase" />
-      <item index="6" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
-      <item index="7" class="java.lang.String" itemvalue="Python.HeftExecutorExample" />
+    <list size="9">
+      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in TestExecsExecutor" />
+      <item index="1" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
+      <item index="2" class="java.lang.String" itemvalue="Python.full_tree" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
+      <item index="4" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
+      <item index="5" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
+      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_ga_executor" />
+      <item index="7" class="java.lang.String" itemvalue="Python tests.Unittests in TestExecsExecutor (1)" />
+      <item index="8" class="java.lang.String" itemvalue="Python tests.Unittests in TestExecsExecutor (2)" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
-        <item index="1" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
-        <item index="2" class="java.lang.String" itemvalue="Python.HeftExecutorExample" />
-        <item index="3" class="java.lang.String" itemvalue="Python.ComparisonBase" />
-        <item index="4" class="java.lang.String" itemvalue="Python.GAvsHeftGAvsHeftRExGA" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in TestExecsExecutor (2)" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestExecsExecutor (1)" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_ga_executor" />
+        <item index="3" class="java.lang.String" itemvalue="Python.GaHeftvsHeft" />
+        <item index="4" class="java.lang.String" itemvalue="Python.GAvsHeftGA" />
       </list>
     </recent_temporary>
   </component>
@@ -1121,14 +1110,14 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4489093" sideWeight="0.497552" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.50057405" sideWeight="0.497552" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17258263" sideWeight="0.5510907" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17258263" sideWeight="0.6096441" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34098738" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21848226" sideWeight="0.5510907" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21848226" sideWeight="0.6096441" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4489093" sideWeight="0.50244796" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.048220437" sideWeight="0.77662176" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3903559" sideWeight="0.22337821" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3903559" sideWeight="0.77662176" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23650976" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1253,9 +1242,90 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftvsHeft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="825">
+          <folding>
+            <element signature="e#0#9#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/CloudHeftvsHeft.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1450">
+          <folding>
+            <element signature="e#0#74#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/GAvsHeftGA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="13" selection-start="276" selection-end="276" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
+          <folding>
+            <element signature="e#0#74#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="40" selection-start="1504" selection-end="1575" vertical-scroll-proportion="0.0" vertical-offset="675" max-vertical-offset="3425">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/environment/Utility.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="89" column="8" selection-start="2708" selection-end="2708" vertical-scroll-proportion="0.0" vertical-offset="1751" max-vertical-offset="15000">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/StopRescheduling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="39" selection-start="363" selection-end="363" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3725">
+          <folding>
+            <element signature="e#2312#3564#0" expanded="false" />
+            <element signature="e#3619#3740#0" expanded="false" />
+            <element signature="e#3793#4223#0" expanded="false" />
+            <element signature="e#4272#4376#0" expanded="false" />
+            <element signature="e#4465#5811#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/tests/FailExperiment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="6" selection-start="381" selection-end="381" vertical-scroll-proportion="0.0" vertical-offset="93" max-vertical-offset="2775">
+          <folding>
+            <element signature="e#37#46#0" expanded="true" />
+            <element signature="e#427#1084#0" expanded="false" />
+            <element signature="e#1134#1954#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="53" selection-start="1675" selection-end="1940" vertical-scroll-proportion="0.0" vertical-offset="476" max-vertical-offset="1600">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#267#1287#0" expanded="false" />
+            <element signature="e#2664#4544#0" expanded="false" />
+            <element signature="e#3121#4544#0" expanded="false" />
+            <element signature="e#4586#5862#0" expanded="false" />
+            <element signature="e#4963#5862#0" expanded="false" />
+            <element signature="e#6008#6203#0" expanded="false" />
+            <element signature="e#6294#7182#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/HeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="39" selection-start="1898" selection-end="1898" vertical-scroll-proportion="0.0" vertical-offset="222" max-vertical-offset="1700">
+        <state line="2" column="53" selection-start="97" selection-end="97" vertical-scroll-proportion="0.0" vertical-offset="525" max-vertical-offset="1875">
           <folding>
             <element signature="e#1666#1898#0" expanded="false" />
             <element signature="e#1950#3022#0" expanded="false" />
@@ -1264,29 +1334,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/GAExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="195" column="12" selection-start="8086" selection-end="8086" vertical-scroll-proportion="0.0" vertical-offset="2567" max-vertical-offset="3525">
-          <folding>
-            <element signature="e#640#1408#0" expanded="false" />
-            <element signature="e#1799#1892#0" expanded="false" />
-            <element signature="e#3312#3982#0" expanded="false" />
-            <element signature="e#4035#4600#0" expanded="false" />
-            <element signature="e#4649#5277#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="13" selection-start="647" selection-end="647" vertical-scroll-proportion="0.6432247" vertical-offset="0" max-vertical-offset="1900">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="119" column="0" selection-start="4907" selection-end="4907" vertical-scroll-proportion="0.6140652" vertical-offset="42" max-vertical-offset="1225">
+        <state line="5" column="53" selection-start="206" selection-end="206" vertical-scroll-proportion="0.0" vertical-offset="326" max-vertical-offset="1475">
           <folding>
             <element signature="e#768#1660#0" expanded="false" />
             <element signature="e#1691#3509#0" expanded="false" />
@@ -1302,93 +1352,71 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/BaseExecutor.py">
+    <entry file="file://$PROJECT_DIR$/core/CommonComponents/failers/FailRandom.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="31" selection-start="2639" selection-end="2639" vertical-scroll-proportion="0.0" vertical-offset="78" max-vertical-offset="725">
+        <state line="13" column="20" selection-start="491" selection-end="491" vertical-scroll-proportion="0.0" vertical-offset="25" max-vertical-offset="500">
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <element signature="e#271#736#0" expanded="false" />
-            <element signature="e#783#1774#0" expanded="false" />
-            <element signature="e#1816#2372#0" expanded="false" />
-            <element signature="e#2416#2639#0" expanded="false" />
-            <element signature="e#2691#2695#0" expanded="false" />
-            <element signature="e#2750#2754#0" expanded="false" />
-            <element signature="e#2807#2811#0" expanded="false" />
-            <element signature="e#2860#2864#0" expanded="false" />
+            <element signature="e#0#59#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/VersusFunctors.py">
+    <entry file="file://$PROJECT_DIR$/core/executors/GAExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="224" selection-end="224" vertical-scroll-proportion="0.22675736" vertical-offset="0" max-vertical-offset="1350">
+        <state line="11" column="8" selection-start="415" selection-end="415" vertical-scroll-proportion="0.0" vertical-offset="36" max-vertical-offset="3675">
           <folding>
             <element signature="e#0#29#0" expanded="true" />
-            <element signature="e#267#1261#0" expanded="false" />
-            <element signature="e#2596#4426#0" expanded="false" />
-            <element signature="e#4468#5744#0" expanded="false" />
-            <element signature="e#5798#7064#0" expanded="false" />
+            <element signature="e#640#1408#0" expanded="false" />
+            <element signature="e#1799#1892#0" expanded="false" />
+            <element signature="e#3312#3982#0" expanded="false" />
+            <element signature="e#4035#4600#0" expanded="false" />
+            <element signature="e#4649#5277#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
+    <entry file="file://$PROJECT_DIR$/core/executors/EventMachine.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="51" selection-start="1665" selection-end="1665" vertical-scroll-proportion="0.600907" vertical-offset="960" max-vertical-offset="3425">
+        <state line="58" column="0" selection-start="1389" selection-end="1389" vertical-scroll-proportion="0.0" vertical-offset="1136" max-vertical-offset="3250">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="26" selection-start="278" selection-end="278" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1400">
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/tests/FailExperiment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="131" column="34" selection-start="5369" selection-end="5369" vertical-scroll-proportion="0.1632653" vertical-offset="3053" max-vertical-offset="3500">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/StopRescheduling.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="17" selection-start="557" selection-end="557" vertical-scroll-proportion="0.64977974" vertical-offset="30" max-vertical-offset="575">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <element signature="e#593#8936#0" expanded="false" />
-            <element signature="e#2423#3675#0" expanded="false" />
-            <element signature="e#3730#3851#0" expanded="false" />
-            <element signature="e#3904#4334#0" expanded="false" />
-            <element signature="e#4383#4487#0" expanded="false" />
-            <element signature="e#4576#5922#0" expanded="false" />
-            <element signature="e#5966#8926#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/runners/ExecutorRunner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="190" column="51" selection-start="7878" selection-end="7878" vertical-scroll-proportion="1.106576" vertical-offset="1787" max-vertical-offset="2650">
+        <state line="195" column="18" selection-start="7980" selection-end="7980" vertical-scroll-proportion="0.0" vertical-offset="2736" max-vertical-offset="3800">
           <folding>
             <element signature="e#0#40#0" expanded="true" />
-            <element signature="e#881#1082#0" expanded="false" />
-            <element signature="e#1130#1292#0" expanded="false" />
-            <element signature="e#1387#2146#0" expanded="false" />
-            <element signature="e#2249#2253#0" expanded="false" />
-            <element signature="e#2318#2873#0" expanded="false" />
-            <element signature="e#4273#4410#0" expanded="false" />
-            <element signature="e#4488#4944#0" expanded="false" />
-            <element signature="e#5024#5725#0" expanded="false" />
-            <element signature="e#5807#6389#0" expanded="false" />
-            <element signature="e#6474#7805#0" expanded="false" />
-            <element signature="e#7887#8723#0" expanded="false" />
-            <element signature="e#8814#9680#0" expanded="false" />
-            <element signature="e#9773#10436#0" expanded="false" />
+            <element signature="e#794#995#0" expanded="false" />
+            <element signature="e#2162#2166#0" expanded="false" />
+            <element signature="e#2231#2994#0" expanded="false" />
+            <element signature="e#4395#4532#0" expanded="false" />
+            <element signature="e#5153#5854#0" expanded="false" />
+            <element signature="e#5938#6520#0" expanded="false" />
+            <element signature="e#6607#7938#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="38" selection-start="259" selection-end="489" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="1375">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/tests/ExecutorsTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="232" selection-end="232" vertical-scroll-proportion="0.4950495" vertical-offset="0" max-vertical-offset="950">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#263#2166#0" expanded="false" />
+            <element signature="e#2202#2398#0" expanded="false" />
+            <element signature="e#2441#2469#0" expanded="false" />
+            <element signature="e#2513#2543#0" expanded="false" />
+            <element signature="e#2589#2621#0" expanded="false" />
+            <element signature="e#2670#2705#0" expanded="false" />
+            <element signature="e#2753#2787#0" expanded="false" />
           </folding>
         </state>
       </provider>

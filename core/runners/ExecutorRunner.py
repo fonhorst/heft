@@ -6,7 +6,6 @@ from core.executors.CloudHeftExecutor import CloudHeftExecutor
 from core.executors.GAExecutor import GAExecutor
 from core.executors.GaHeftExecutor import GaHeftExecutor
 from core.executors.HeftExecutor import HeftExecutor
-from core.tests.FailExperiment import SingleFailGaHeftExecutor, SingleFailHeftExecutor
 from environment.Resource import ResourceGenerator
 from environment.Utility import Utility
 from core.HeftHelper import HeftHelper
@@ -65,6 +64,12 @@ class ExecutorRunner:
             print("              Makespan %s" % str(makespan))
             print("          Seq validaty %s" % str(seq_time_validaty))
             print("   Dependancy validaty %s" % str(dependency_validaty))
+
+        if seq_time_validaty is False:
+            raise Exception("Sequence validaty check failed")
+        if dependency_validaty is False:
+            raise Exception("Dependency validaty check failed")
+
         return (makespan, seq_time_validaty, dependency_validaty)
 
     def _get_executor(self):
@@ -79,7 +84,7 @@ class ExecutorRunner:
             is_silent = kwargs[     'is_silent'     ]
 
             the_bundle = kwargs.get(        'the_bundle', None)
-            with_ga_initial = kwargs.get(   'with_ga_initial', None)
+            with_ga_initial = kwargs.get(   'with_ga_initial', False)
             logger = kwargs.get(            'logger', None)
 
 
@@ -116,21 +121,21 @@ class ExecutorsFactory:
             ExecutorsFactory._default = ExecutorsFactory()
         return ExecutorsFactory._default
 
-    @ExecutorRunner
+    @ExecutorRunner()
     def run_ga_executor(self, *args, **kwargs):
         ga_machine = GAExecutor(kwargs["wf"],
                             kwargs["resource_manager"],
                             kwargs["estimator"],
                             base_fail_duration=40,
                             base_fail_dispersion=1,
-                            initial_schedule=kwargs["init_schedule"])
+                            initial_schedule=kwargs["initial_schedule"])
 
         ga_machine.init()
         ga_machine.run()
         resulted_schedule = ga_machine.current_schedule
         return resulted_schedule
 
-    @ExecutorRunner
+    @ExecutorRunner()
     def run_heft_executor(self, *args, **kwargs):
         ##TODO: look here ! I'm an idiot tasks of wf != tasks of initial_schedule
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
@@ -145,7 +150,7 @@ class ExecutorsFactory:
         resulted_schedule = heft_machine.current_schedule
         return resulted_schedule
 
-    @ExecutorRunner
+    @ExecutorRunner()
     def run_gaheft_executor(self, *args, **kwargs):
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
         ga_heft_machine = GaHeftExecutor(
@@ -161,7 +166,7 @@ class ExecutorsFactory:
         resulted_schedule = ga_heft_machine.current_schedule
         return resulted_schedule
 
-    @ExecutorRunner
+    @ExecutorRunner()
     def run_cloudheft_executor(self, *args, **kwargs):
         rgen = ResourceGenerator(min_res_count=1,
                                  max_res_count=1,
@@ -187,7 +192,7 @@ class ExecutorsFactory:
         resulted_schedule = cloud_heft_machine.current_schedule
         return resulted_schedule
 
-    @ExecutorRunner
+    @ExecutorRunner()
     def run_oldpop_executor(self, *args, **kwargs):
         stat_saver = ResultSaver(self.DEFAULT_SAVE_PATH.format(kwargs["key_for_save"]))
 
@@ -207,41 +212,6 @@ class ExecutorsFactory:
         ga_machine.run()
 
         resulted_schedule = ga_machine.current_schedule
-        return resulted_schedule
-
-    @ExecutorRunner
-    def run_singlefail_heft_executor(self, *args, **kwargs):
-        ##TODO: look here ! I'm an idiot tasks of wf != tasks of initial_schedule
-        dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
-        heft_machine = SingleFailHeftExecutor(heft_planner=dynamic_heft,
-                                    base_fail_duration=40,
-                                    base_fail_dispersion=1,
-                                    #initial_schedule=None)
-                                    initial_schedule=kwargs["initial_schedule"],
-                                    logger=kwargs["logger"],
-                                    task_id_to_fail=kwargs["task_id_to_fail"],
-                                    failure_coeff=kwargs["failure_coeff"])
-        heft_machine.init()
-        heft_machine.run()
-
-        resulted_schedule = heft_machine.current_schedule
-        return resulted_schedule
-
-    @ExecutorRunner
-    def run_singlefail_gaheft_executor(self, *args, **kwargs):
-        dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
-        ga_heft_machine = SingleFailGaHeftExecutor(
-                            heft_planner=dynamic_heft,
-                            base_fail_duration=40,
-                            base_fail_dispersion=1,
-                            fixed_interval_for_ga=kwargs["fixed_interval_for_ga"],
-                            logger=kwargs["logger"],
-                            task_id_to_fail=kwargs["task_id_to_fail"])
-
-        ga_heft_machine.init()
-        ga_heft_machine.run()
-
-        resulted_schedule = ga_heft_machine.current_schedule
         return resulted_schedule
 
     pass

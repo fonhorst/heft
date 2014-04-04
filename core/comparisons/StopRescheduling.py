@@ -2,8 +2,6 @@ from collections import deque
 import random
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from core.CommonComponents.failers.FailOnce import FailOnce
-from core.comparisons.ComparisonBase import ResultSaver
-from core.runners.ExecutorRunner import ExecutorRunner
 from core.executors.BaseExecutor import BaseExecutor
 from core.executors.EventMachine import TaskFinished, NodeFailed, NodeUp
 from environment.Resource import Node
