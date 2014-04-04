@@ -17,10 +17,32 @@ func = partial(ExecutorsFactory.default().run_gaheftoldpop_executor,
                                         "generations": 10
                                      })
 
-tasks_to_fail = ["ID00005_000", "ID00010_000", "ID00015_000"]
+tasks_to_fail = ["ID00005_000"]
+# tasks_to_fail = ["ID00010_000"]
+# tasks_to_fail = ["ID00015_000"]
+# tasks_to_fail = ["ID00020_000"]
+# tasks_to_fail = ["ID00025_000"]
+# tasks_to_fail = ["ID00030_000"]
+# tasks_to_fail = ["ID00035_000"]
+# tasks_to_fail = ["ID00040_000"]
+# tasks_to_fail = ["ID00045_000"]
+# tasks_to_fail = ["ID00049_000"]
 
+#==================================================
+# small run
+#==================================================
+# for t in tasks_to_fail:
+#     for i in range(3):
+#         func(task_id_to_fail=t)
+#         pass
+#     pass
+
+#==================================================
+# medium run
+#==================================================
 for t in tasks_to_fail:
-    for i in range(3):
+    for i in range(25):
         func(task_id_to_fail=t)
         pass
     pass
+

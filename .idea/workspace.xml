@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/comparisons/GaHeftOldPop.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utility/MergeFiles.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utility/DrawConvergenceResults.py" afterPath="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" afterPath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/GaHeftOldPopExecutor.py" afterPath="$PROJECT_DIR$/core/executors/GaHeftOldPopExecutor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/GaHeftOldPop.py" afterPath="$PROJECT_DIR$/core/comparisons/GaHeftOldPop.py" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,22 +37,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DrawConvergenceResults.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="DrawConvergenceResults.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="0" selection-start="2576" selection-end="2576" vertical-scroll-proportion="0.7354839" vertical-offset="1219" max-vertical-offset="4100">
+            <state line="152" column="0" selection-start="5289" selection-end="5289" vertical-scroll-proportion="0.0" vertical-offset="3375" max-vertical-offset="4100">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GaHeftOldPop.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="GaHeftOldPop.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftOldPop.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="22" selection-start="1108" selection-end="1108" vertical-scroll-proportion="0.0" vertical-offset="167" max-vertical-offset="800">
+            <state line="48" column="0" selection-start="1786" selection-end="1786" vertical-scroll-proportion="0.76303315" vertical-offset="717" max-vertical-offset="1350">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GaExecutorTests.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="6" column="59" selection-start="196" selection-end="196" vertical-scroll-proportion="0.0" vertical-offset="507" max-vertical-offset="1375">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -90,11 +95,11 @@
         <option value="$PROJECT_DIR$/core/runners/ExecutorRunner.py" />
         <option value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
         <option value="$PROJECT_DIR$/core/Experiments.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/GaHeftOldPop.py" />
-        <option value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
         <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
         <option value="$PROJECT_DIR$/core/executors/GaHeftOldPopExecutor.py" />
         <option value="$PROJECT_DIR$/utility/MergeFiles.py" />
+        <option value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/GaHeftOldPop.py" />
       </list>
     </option>
   </component>
@@ -1124,13 +1129,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="59" selection-start="196" selection-end="196" vertical-scroll-proportion="0.0" vertical-offset="507" max-vertical-offset="1375">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/ComparisonBase.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="128" column="22" selection-start="3623" selection-end="3754" vertical-scroll-proportion="0.0" vertical-offset="2822" max-vertical-offset="3550">
@@ -1181,15 +1179,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftOldPop.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="22" selection-start="1108" selection-end="1108" vertical-scroll-proportion="0.0" vertical-offset="167" max-vertical-offset="800">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utility/MergeFiles.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="0" selection-start="357" selection-end="357" vertical-scroll-proportion="0.0" vertical-offset="67" max-vertical-offset="850">
@@ -1201,8 +1190,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="0" selection-start="2576" selection-end="2576" vertical-scroll-proportion="0.7354839" vertical-offset="1219" max-vertical-offset="4100">
+        <state line="152" column="0" selection-start="5289" selection-end="5289" vertical-scroll-proportion="0.0" vertical-offset="3375" max-vertical-offset="4100">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="59" selection-start="196" selection-end="196" vertical-scroll-proportion="0.0" vertical-offset="507" max-vertical-offset="1375">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftOldPop.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="0" selection-start="1786" selection-end="1786" vertical-scroll-proportion="0.76303315" vertical-offset="717" max-vertical-offset="1350">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
