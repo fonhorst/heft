@@ -42,6 +42,7 @@ tasks_to_fail = ["ID00005_000"]
 #==================================================
 for t in tasks_to_fail:
     for i in range(25):
+        print("Task: {0} Iter: {1}".format(t, i))
         func(task_id_to_fail=t)
         pass
     pass
