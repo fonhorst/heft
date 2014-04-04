@@ -397,7 +397,7 @@ class GAComputationWrapper:
         self.creation_time = creation_time
         pass
 
-    def run(self, time_interval, current_time):
+    def run(self, time_interval, current_time, **kwargs):
 
         #TODO: remove it later
         time_interval = 1000
@@ -417,7 +417,8 @@ class GAComputationWrapper:
             print("Time: " + str(current_time) + " Running ga in isolated thread " + t_name + " " + t_ident)
             self.ga(self.fixed_schedule_part,
                     self.initial_schedule,
-                    current_time)
+                    current_time,
+                    **kwargs)
             event.set()
             timer.cancel()
             pass

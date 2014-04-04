@@ -1,17 +1,20 @@
-from functools import partial
 import random
+from core.CommonComponents.failers.FailOnce import FailOnce
 from core.executors.EventMachine import NodeFailed, NodeUp
 from core.executors.GaHeftExecutor import GaHeftExecutor, GAComputationManager, GA_PARAMS
-from environment.ResourceManager import ScheduleItem
+from environment.ResourceManager import ScheduleItem, Schedule
 from environment.Utility import Utility
 
 
-class GaHeftOldPopExecutor(GaHeftExecutor):
+class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
     def __init__(self,
                  heft_planner,
                  base_fail_duration,
                  base_fail_dispersion,
                  fixed_interval_for_ga,
+                 wf_name,
+                 task_id_to_fail,
+                 ga_params=GA_PARAMS,
                  logger=None,
                  stat_saver=None):
         super().__init__(heft_planner,
@@ -19,13 +22,33 @@ class GaHeftOldPopExecutor(GaHeftExecutor):
                           base_fail_dispersion,
                           fixed_interval_for_ga,
                           logger)
-        self.stat_saver = None
 
         self.past_pop = None
         self.failed_once = False
 
-        self.ga_computation_manager =
+        self.task_id_to_fail = task_id_to_fail
+        self.estimator = heft_planner.estimator
 
+        self.ga_computation_manager = ExtendedComputationManager(fixed_interval_for_ga,
+                                                                 heft_planner.workflow,
+                                                                 heft_planner.resource_manager,
+                                                                 heft_planner.estimator,
+                                                                 wf_name,
+                                                                 ga_params,
+                                                                 stat_saver)
+
+        pass
+
+    def init(self):
+
+        ## TODO: refactor this and base class too
+        self.current_schedule = Schedule({node: [] for node in self.heft_planner.get_nodes()})
+        result = self.ga_computation_manager._get_ga_alg()(self.current_schedule, None)
+        self.current_schedule = result[0][2]
+
+        self._post_new_events()
+
+        self.ga_computation_manager.past_pop = result[0][1]
         pass
 
     def _node_failed_handler(self, event):
@@ -66,17 +89,18 @@ class ExtendedComputationManager(GAComputationManager):
          ##=====================================
         ##Regular GA
         ##=====================================
+        print("GaHeft WITH NEW POP: ")
         ga = self._get_ga_alg()
-        ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, ga.initial_schedule, current_time)
+        ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, ga_calc.initial_schedule, current_time)
 
         ##=====================================
         ##Old pop GA
         ##=====================================
+        print("GaHeft WITH OLD POP: ")
         cleaned_schedule = ga_calc.fixed_schedule_part
-        initial_pop = [self._clean_chromosome(ind, None, cleaned_schedule) for ind in self.past_pop]
+        initial_pop = [self._clean_chromosome(ind, self.current_event, cleaned_schedule) for ind in self.past_pop]
         ## TODO: rethink this hack
-        ga_calc.ga = partial(ga_calc.ga, initial_population=initial_pop)
-        result = ga_calc.run(time_interval, current_time)
+        result = ga_calc.run(time_interval, current_time, initial_population=initial_pop)
         (best_op, pop_op, schedule_op, stopped_iteration_op) = ga_calc.ga.get_result()
         self.past_pop = pop_op
 
@@ -84,8 +108,9 @@ class ExtendedComputationManager(GAComputationManager):
         ##Save stat to stat_saver
         ##=====================================
         ## TODO: make exception here
-        task_id = self.current_event.task.id
+        task_id = "" if not hasattr(self.current_event, 'task') else " " + str(self.current_event.task.id)
         if self.stat_saver is not None:
+            ## TODO: correct pop_agr later
             stat_data = {
                 "wf_name": self.wf_name,
                 "event_name": self.current_event.__class__.__name__,
@@ -93,7 +118,7 @@ class ExtendedComputationManager(GAComputationManager):
                 "with_old_pop": {
                     "iter": stopped_iteration_op,
                     "makespan": Utility.get_the_last_time(schedule_op),
-                    "pop_aggr": logbook_old_pop
+                    "pop_aggr": None
                 },
                 "with_random": {
                     "iter": stopped_iteration_r,
@@ -124,7 +149,7 @@ class ExtendedComputationManager(GAComputationManager):
                 pass
             pass
 
-        def redistribute_tasks_from_failed_node():
+        if isinstance(event, NodeFailed):
             tasks = chromosome[event.node.name]
             ## TODO: here must be a procedure of getting currently alive nodes
             working_nodes = list(chromosome.keys() - set([event.node.name]))
@@ -138,13 +163,10 @@ class ExtendedComputationManager(GAComputationManager):
                 chromosome[node_name].insert(new_place, t)
             chromosome[event.node.name] = []
             return chromosome
-
-        if event is None:
-            return redistribute_tasks_from_failed_node()
-        if isinstance(event, NodeFailed):
-            return redistribute_tasks_from_failed_node()
-        if isinstance(event, NodeUp):
-            pass
-        return chromosome
+        elif isinstance(event, NodeUp):
+            return chromosome
+        else:
+            raise Exception("Unhandled event")
+        pass
 
     pass

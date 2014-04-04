@@ -1,6 +1,7 @@
 from datetime import datetime
 import json
 import os
+from uuid import uuid4
 from Tools.Scripts.ndiff import fopen
 #from filelock.filelock import FileLock
 
@@ -91,6 +92,10 @@ class ComparisonUtility:
         return common_time
 
     @staticmethod
+    def uuid():
+        return str(uuid4())
+
+    @staticmethod
     def build_save_path(name):
         path = ComparisonUtility.SAVE_PATH_TEMPLATE.format(name, ComparisonUtility.cur_time())
         return path
@@ -112,6 +117,7 @@ class ResultSaver:
 
         if os.path.exists(self.path):
             #with FileLock(self.path):
+            print("path: " + str(os.path.abspath(self.path)))
             a_save = open(self.path, 'r')
             result_arrays = json.load(a_save)
             a_save.close()
