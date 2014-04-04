@@ -24,11 +24,18 @@ class TestExecsExecutor(unittest.TestCase):
                                    is_silent=True,
                                    wf_name=self.DEFAULT_WF_NAME,
                                    logger=None,
-                                   fixed_interval_for_ga=15)
+                                   fixed_interval_for_ga=15,
+                                   ga_params={
+                                        "population": 50,
+                                        "crossover_probability": 0.8,
+                                        "replacing_mutation_probability": 0.5,
+                                        "sweep_mutation_probability": 0.4,
+                                        "generations": 10
+                                    })
         self.cloudheft_func = partial(ExecutorsFactory.default().run_cloudheft_executor,
                                       is_silent=True,
                                       wf_name=self.DEFAULT_WF_NAME,
-                                      logger=None)
+                                      logger=None,)
         self.oldpopga_func = partial(ExecutorsFactory.default().run_oldpop_executor,
                                      is_silent=True,
                                      wf_name=self.DEFAULT_WF_NAME,

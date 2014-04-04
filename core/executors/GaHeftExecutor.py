@@ -11,13 +11,22 @@ from environment.ResourceManager import ScheduleItem, Schedule
 from environment.Utility import Utility
 
 
+GA_PARAMS = {
+    "population": 1000,
+    "crossover_probability": 0.8,
+    "replacing_mutation_probability": 0.5,
+    "sweep_mutation_probability": 0.4,
+    "generations": 50
+}
+
 class GaHeftExecutor(FailRandom, BaseExecutor):
     def __init__(self,
                  heft_planner,
                  base_fail_duration,
                  base_fail_dispersion,
                  fixed_interval_for_ga,
-                 logger=None):
+                 logger=None,
+                 ga_params=GA_PARAMS):
         self.queue = deque()
         self.current_time = 0
         # DynamicHeft
@@ -34,7 +43,8 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self.ga_computation_manager = GAComputationManager(self.fixed_interval_for_ga,
                                                            heft_planner.workflow,
                                                            heft_planner.resource_manager,
-                                                           heft_planner.estimator)
+                                                           heft_planner.estimator,
+                                                           ga_params)
         self.logger = logger
 
         pass
@@ -200,13 +210,6 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 ##  - interrupting by timer or external event
 ##  - providing information about status of computation
 ##  - encapsulating some action - ? (for the sake of simplicity it must be responsibility of GaHeftExecutor)
-GA_PARAMS = {
-    "population": 1000,
-    "crossover_probability": 0.8,
-    "replacing_mutation_probability": 0.5,
-    "sweep_mutation_probability": 0.4,
-    "generations": 50
-}
 class GAComputationManager:
 
     def __init__(self,
@@ -429,6 +432,8 @@ class GAComputationWrapper:
         print("Time: " + str(current_time) + " thread finished " + str(t.name) + " " + str(t.ident))
 
         result = self.ga.get_result()
+
+        print("RESULT: " + str(result))
 
         resulted_schedule = result[2]
 

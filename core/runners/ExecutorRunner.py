@@ -4,7 +4,7 @@ from core.comparisons.ComparisonBase import ResultSaver
 from core.comparisons.StopRescheduling import GaOldPopExecutor
 from core.executors.CloudHeftExecutor import CloudHeftExecutor
 from core.executors.GAExecutor import GAExecutor
-from core.executors.GaHeftExecutor import GaHeftExecutor
+from core.executors.GaHeftExecutor import GaHeftExecutor, GA_PARAMS
 from core.executors.HeftExecutor import HeftExecutor
 from environment.Resource import ResourceGenerator
 from environment.Utility import Utility
@@ -158,7 +158,8 @@ class ExecutorsFactory:
                             base_fail_duration=40,
                             base_fail_dispersion=1,
                             fixed_interval_for_ga=kwargs["fixed_interval_for_ga"],
-                            logger=kwargs["logger"])
+                            logger=kwargs["logger"],
+                            ga_params=kwargs.get("ga_params", GA_PARAMS))
 
         ga_heft_machine.init()
         ga_heft_machine.run()
