@@ -351,7 +351,7 @@ class GAComputationManager:
             ##ga_calc = GACalculation(self.fixed_interval_for_ga, fixed_schedule)...
             ga = self._get_ga_alg()
 
-            ga_calc = GAComputationWrapper(ga, fixed_schedule, None, current_time)
+            ga_calc = self._create_comp_wrapper(ga, fixed_schedule, current_schedule,current_time)
 
             self.current_computation = (front_event, ga_calc, )
             pass
@@ -363,6 +363,10 @@ class GAComputationManager:
             self._clean_current_computation()
             run_ga(current_schedule)
         pass
+
+    def _create_comp_wrapper(self, ga, fixed_schedule, current_schedule, current_time):
+        wrapper = GAComputationWrapper(ga, fixed_schedule, None, current_time)
+        return wrapper
 
     def _get_ga_alg(self):
         ga = GAFactory.default().create_ga(silent=True,

@@ -64,6 +64,24 @@ class TestExecsExecutor(unittest.TestCase):
                                         "sweep_mutation_probability": 0.4,
                                         "generations": 10
                                      })
+
+        self.oldpopmpgaheft_func = partial(ExecutorsFactory.default().run_mpgaheftoldpop_executor,
+                                     is_silent=True,
+                                     wf_name=self.DEFAULT_WF_NAME,
+                                     logger=None,
+                                     key_for_save='test',
+                                     task_id_to_fail="ID00005_000",
+                                     fixed_interval_for_ga=15,
+                                     migrCount=5,
+                                     emigrant_selection=None,
+                                     all_iters_count=10,
+                                     ga_params={
+                                        "population": 50,
+                                        "crossover_probability": 0.8,
+                                        "replacing_mutation_probability": 0.5,
+                                        "sweep_mutation_probability": 0.4,
+                                        "generations": 2
+                                     })
         pass
 
     def _run(self, name):
@@ -97,6 +115,10 @@ class TestExecsExecutor(unittest.TestCase):
 
     def test_oldpopgaheft_executor(self):
         self._run("oldpopgaheft")
+        pass
+
+    def test_oldpopmpgaheft_executor(self):
+        self._run("oldpopmpgaheft")
         pass
 
     pass

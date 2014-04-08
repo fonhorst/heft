@@ -119,7 +119,7 @@ class ExtendedComputationManager(GAComputationManager):
                 "with_old_pop": {
                     "iter": stopped_iteration_op,
                     "makespan": Utility.get_the_last_time(schedule_op),
-                    "pop_aggr":logbook_op
+                    "pop_aggr": logbook_op
                 },
                 "with_random": {
                     "iter": stopped_iteration_r,

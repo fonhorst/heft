@@ -12,6 +12,66 @@ from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2
 from core.HeftHelper import HeftHelper
 from environment.ResourceManager import Schedule
 
+class SynchronizedCheckpointedGA:
+
+    def __init__(self):
+        self.current_result = None
+        self.lock = Lock()
+
+        self._is_stopped = False
+        self.stop_lock = Lock()
+        self._current_pop = None
+        pass
+
+    ## need to implement
+    def _construct_result(self, result):
+        return result
+
+
+    def _save_result(self, result):
+        self.lock.acquire()
+        self.current_result = result
+        self.lock.release()
+        pass
+
+    def _get_result(self):
+        self.lock.acquire()
+        result = self.current_result
+        self.lock.release()
+        return result
+
+    def _save_pop(self, pop):
+        self.lock.acquire()
+        self._current_pop = copy.deepcopy(pop)
+        self.lock.release()
+        pass
+
+
+
+    def get_result(self):
+        self.lock.acquire()
+        result = self.current_result
+        self.lock.release()
+        constructed = self._construct_result(result)
+        return constructed
+
+    def get_pop(self):
+        self.lock.acquire()
+        result = self._current_pop
+        self.lock.release()
+        return result
+
+    def stop(self):
+        self.stop_lock.acquire()
+        self._is_stopped = True
+        self.stop_lock.release()
+
+    def is_stopped(self):
+        self.stop_lock.acquire()
+        result = self._is_stopped
+        self.stop_lock.release()
+        return result
+
 
 class GAFactory:
 
@@ -40,28 +100,21 @@ class GAFactory:
         estimator = kwargs["estimator"]
         ga_params = kwargs["ga_params"]
 
+
         POPSIZE = ga_params.get("population", self.DEFAULT_POPULATION)
         CXPB = ga_params.get('crossover_probability', self.DEFAULT_CROSSOVER_PROBABILITY)
         MUTPB = ga_params.get('replacing_mutation_probability', self.DEFAULT_REPLACING_MUTATION_PROBABILITY)
         NGEN = ga_params.get('generations', self.DEFAULT_GENERATIONS)
         SWEEPMUTPB = ga_params.get('sweep_mutation_probability', self.DEFAULT_SWEEP_MUTATION_PROBABILITY)
 
-        nodes = list(HeftHelper.to_nodes(rm.get_resources()))
 
-        def compcost(job, agent):
-            return estimator.estimate_runtime(job, agent)
+        ga_functions = kwargs.get("ga_functions", GAFunctions2(wf, rm, estimator))
 
-        def commcost(ni, nj, A, B):
-            return estimator.estimate_transfer_time(A, B, ni, nj)
 
         def default_fixed_schedule_part(resource_manager):
             fix_schedule_part = Schedule({node: [] for node in HeftHelper.to_nodes(resource_manager.get_resources())})
             return fix_schedule_part
 
-        ranking = HeftHelper.build_ranking_func(nodes, compcost, commcost)
-        sorted_tasks = ranking(wf)
-
-        ga_functions = GAFunctions2(wf, nodes, sorted_tasks, rm, estimator, POPSIZE)
 
 
         ##================================
@@ -93,17 +146,12 @@ class GAFactory:
 
         repeated_best_count = 10
 
-        class GAComputation:
+        class GAComputation(SynchronizedCheckpointedGA):
 
             EVOLUTION_STOPPED_ITERATION_NUMBER = "EvoStpdIterNum"
 
             def __init__(self):
-                self.current_result = None
-                self.lock = Lock()
-
-                self._is_stopped = False
-                self.stop_lock = Lock()
-                self._current_pop = None
+                super().__init__()
                 pass
 
             def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None):
@@ -271,54 +319,11 @@ class GAFactory:
                 result = max(pop, key=lambda x: x.fitness.values[0])
                 return result
 
-            def _save_result(self, result):
-                self.lock.acquire()
-                self.current_result = result
-                self.lock.release()
-                pass
-
-            def _get_result(self):
-                self.lock.acquire()
-                result = self.current_result
-                self.lock.release()
-                return result
-
-            def _save_pop(self, pop):
-                self.lock.acquire()
-                self._current_pop = copy.deepcopy(pop)
-                self.lock.release()
-                pass
-
             def _construct_result(self, result):
                 (best, pop, fixed_schedule_part, current_time, stopped_iteration) = result
                 ## TODO: make additional structure to return elements
                 return best, pop, ga_functions.build_schedule(best, fixed_schedule_part, current_time), stopped_iteration
-
-            def get_result(self):
-                self.lock.acquire()
-                result = self.current_result
-                self.lock.release()
-                constructed = self._construct_result(result)
-                return constructed
-
-            def get_pop(self):
-                self.lock.acquire()
-                result = self._current_pop
-                self.lock.release()
-                return result
-
-            def stop(self):
-                self.stop_lock.acquire()
-                self._is_stopped = True
-                self.stop_lock.release()
-
-            def is_stopped(self):
-                self.stop_lock.acquire()
-                result = self._is_stopped
-                self.stop_lock.release()
-                return result
-
-        pass
+            pass
 
         return GAComputation()
     pass

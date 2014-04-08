@@ -2,6 +2,7 @@
 import random
 from GA.DEAPGA.GAImplementation.ScheduleBuilder import ScheduleBuilder
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
+from core.HeftHelper import HeftHelper
 from environment.Resource import Node
 from environment.ResourceManager import ScheduleItem
 from environment.Utility import Utility
@@ -17,25 +18,24 @@ class GAFunctions2:
     ## node_name: task1.id, task2.id, ... #(order of tasks is important)
     ## ...
     ##}
-    def __init__(self,
-                     workflow,
-                     nodes,
-                     sorted_tasks,
-                     resource_manager,
-                     estimator,
-                     size):
+    def __init__(self, workflow, resource_manager, estimator):
 
             self.counter = 0
             self.workflow = workflow
-            self.nodes = nodes
-            self.sorted_tasks = sorted_tasks
-            self.workflow_size = len(sorted_tasks)
 
             ##interface Estimator
 
             self.estimator = estimator
             self.resource_manager = resource_manager
-            self.size = size
+
+            nodes = list(HeftHelper.to_nodes(resource_manager.get_resources()))
+            ranking = HeftHelper.build_ranking_func(nodes, lambda job, agent: estimator.estimate_runtime(job, agent),
+                                                           lambda ni, nj, A, B: estimator.estimate_transfer_time(A, B, ni, nj))
+            sorted_tasks = ranking(self.workflow)
+
+            self.nodes = nodes
+            self.sorted_tasks = sorted_tasks
+            self.workflow_size = len(sorted_tasks)
 
             self.task_map = {task.id: task for task in sorted_tasks}
             self.node_map = {node.name: node for node in nodes}
@@ -119,7 +119,6 @@ class GAFunctions2:
         builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
         schedule = builder(chromo, current_time)
         return schedule
-
 
     def crossover(self, child1, child2):
 

@@ -3,7 +3,7 @@ from os import listdir
 import os
 from os.path import isfile, join
 
-dir = '../results/'
+dir = '../results/nresult/'
 key = 'small_run'
 united_file_name = "united.json"
 
