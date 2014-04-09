@@ -242,7 +242,10 @@ class ExecutorsFactory:
     def run_mpgaheftoldpop_executor(self, *args, **kwargs):
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
         stat_saver = ResultSaver(self.DEFAULT_SAVE_PATH.format(kwargs["key_for_save"], ComparisonUtility.cur_time(), ComparisonUtility.uuid()))
-        emigrant_selection = lambda pop, k: selRoulette(pop, k)
+
+        # emigrant_selection = lambda pop, k: selRoulette(pop, k)
+        emigrant_selection = lambda pop, k: [pop[i] for i in range(k)]
+
         ga_machine = MPGaHeftOldPopExecutor(heft_planner=dynamic_heft,
                                            base_fail_duration=40,
                                            base_fail_dispersion=1,

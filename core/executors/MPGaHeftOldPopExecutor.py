@@ -1,3 +1,4 @@
+from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from GA.DEAPGA.multipopGA.MPGA import create_mpga
 from core.executors.GaHeftExecutor import GA_PARAMS, GAComputationWrapper
@@ -103,7 +104,11 @@ class MPCm(ExtendedComputationManager):
          return result
 
     def _create_comp_wrapper(self, ga, fixed_schedule, current_schedule, current_time):
-        return GAComputationWrapper(ga, fixed_schedule, current_schedule, current_time)
+        heft_initial = GAFunctions2.schedule_to_chromosome(current_schedule)
+        heft_initial = self._clean_chromosome(heft_initial, self.current_event, fixed_schedule)
+
+        ## TODO: remake this stub. GAComputationWrapper must take cleaned current_schedule
+        return GAComputationWrapper(ga, fixed_schedule, heft_initial, current_time)
 
     def _get_result_until_current_time(self, current_time):
         ga_calc = self.current_computation[1]

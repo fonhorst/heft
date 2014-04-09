@@ -60,7 +60,9 @@ def create_mpga(*args, **kwargs):
             toolbox.register("population", tools.initRepeat, list, toolbox.individual)
             newpop = toolbox.population(n=POPSIZE)
 
-            heft_initial = GAFunctions2.schedule_to_chromosome(initial_schedule)
+            #heft_initial = GAFunctions2.schedule_to_chromosome(initial_schedule)
+            # TODO: this is a stub. Rearchitect information flows and entities responsibilities as soon as you will get the first positive results.
+            heft_initial = initial_schedule
             heft_initial = tools.initIterate(creator.Individual, lambda: heft_initial)
             heft_pop = [ga_functions.mutation(deepcopy(heft_initial)) for i in range(POPSIZE)]
 
@@ -76,17 +78,17 @@ def create_mpga(*args, **kwargs):
                 iter_map = {}
 
                 for pop in populations:
-                    ((best, pop, schedule, stopped_iteration), logbook) = ga_alg(fixed_schedule_part,
+                    ((best, npop, schedule, stopped_iteration), logbook) = ga_alg(fixed_schedule_part,
                            None,
                            current_time=current_time,
                            initial_population=pop)
-                    new_pops.append(pop)
+                    new_pops.append(npop)
                     for rec in logbook:
                         iter = k*GENERATIONS + rec["iter"]
                         mp = iter_map.get(iter, [])
                         mp.append({"worst": rec["worst"], "best": rec["best"], "avr": rec["avr"]})
                         iter_map[iter] = mp
-                    pass
+                        pass
                 for iter, items in iter_map.items():
                     best = max(it["best"] for it in items)
                     avr = sum(it["avr"] for it in items)/len(items)

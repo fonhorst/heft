@@ -157,6 +157,9 @@ class GAFunctions2:
         ch1 = chromo_to_seq(child1)
         ch2 = chromo_to_seq(child2)
 
+        if len(ch1) != size or len(ch2) != size:
+            raise Exception("Transformed chromosome is broken")
+
 
         window = dict()
         for i in range(index1, index2):

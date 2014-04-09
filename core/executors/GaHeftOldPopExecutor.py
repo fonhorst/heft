@@ -52,13 +52,13 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
         pass
 
     def _node_failed_handler(self, event):
-        super()._node_failed_handler(event)
         self.ga_computation_manager.current_event = event
+        super()._node_failed_handler(event)
         pass
 
     def _node_up_handler(self, event):
-        super()._node_up_handler(event)
         self.ga_computation_manager.current_event = event
+        super()._node_up_handler(event)
         pass
 
     pass
@@ -167,7 +167,7 @@ class ExtendedComputationManager(GAComputationManager):
         elif isinstance(event, NodeUp):
             return chromosome
         else:
-            raise Exception("Unhandled event")
+            raise Exception("Unhandled event: {0}".format(event))
         pass
 
     pass

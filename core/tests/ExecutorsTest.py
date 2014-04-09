@@ -76,7 +76,7 @@ class TestExecsExecutor(unittest.TestCase):
                                      emigrant_selection=None,
                                      all_iters_count=10,
                                      ga_params={
-                                        "population": 50,
+                                        "population": 10,
                                         "crossover_probability": 0.8,
                                         "replacing_mutation_probability": 0.5,
                                         "sweep_mutation_probability": 0.4,
