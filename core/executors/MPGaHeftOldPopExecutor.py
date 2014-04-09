@@ -20,6 +20,7 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
                  migrCount,
                  emigrant_selection,
                  all_iters_count,
+                 mixed_init_pop=False,
                  ga_params=GA_PARAMS,
                  logger=None,
                  stat_saver=None):
@@ -41,6 +42,7 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
                                                                  migrCount,
                                                                  emigrant_selection,
                                                                  all_iters_count,
+                                                                 mixed_init_pop,
                                                                  ga_params,
                                                                  stat_saver)
         pass
@@ -66,6 +68,7 @@ class MPCm(ExtendedComputationManager):
                    migrCount,
                    emigrant_selection,
                    all_iters_count,
+                   mixed_init_pop,
                    ga_params=GA_PARAMS,
                    stat_saver=None):
          super().__init__(fixed_interval_for_ga,
@@ -79,6 +82,7 @@ class MPCm(ExtendedComputationManager):
          self.migrCount = migrCount
          self.emigrant_selection = emigrant_selection
          self.all_iters_count = all_iters_count
+         self.mixed_init_pop=mixed_init_pop
          pass
 
     def _get_ga_alg(self):
@@ -148,18 +152,17 @@ class MPCm(ExtendedComputationManager):
         ## TODO: make here using of param to decide how to build initial population for regular gaheft
         ## TODO: self.mixed_init_pop doesn't exist and isn't setted anywhere
         ## TODO: need to refactor and merge with MPGA.py
-        # if self.mixed_init_pop is True:
-        #     heft_initial = ga_calc.initial_schedule
-        #     heft_initial = tools.initIterate(creator.Individual, lambda: heft_initial)
-        #     ga_functions = GAFunctions2(self.workflow, self.resource_manager, self.estimator)
-        #     heft_pop = [ga_functions.mutation(deepcopy(heft_initial)) for i in range(self.params["population"])]
-        #     initial_pop_gaheft = [deepcopy(p) for p in self.past_pop] + heft_pop
-
-        initial_pop_gaheft = None
+        if self.mixed_init_pop is True:
+            heft_initial = ga_calc.initial_schedule
+            heft_initial = tools.initIterate(creator.Individual, lambda: heft_initial)
+            ga_functions = GAFunctions2(self.workflow, self.resource_manager, self.estimator)
+            heft_pop = [ga_functions.mutation(deepcopy(heft_initial)) for i in range(self.params["population"])]
+            cleaned_schedule = ga_calc.fixed_schedule_part
+            initial_pop_gaheft = [self._clean_chromosome(deepcopy(p), self.current_event, cleaned_schedule) for p in self.past_pop] + heft_pop
 
         print("GaHeft WITH NEW POP: ")
         ga = self._get_simple_ga()
-        ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, initial_pop_gaheft, current_time)
+        ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, None, current_time, initial_population=initial_pop_gaheft)
 
 
 

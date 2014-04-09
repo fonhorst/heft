@@ -82,6 +82,8 @@ class TestExecsExecutor(unittest.TestCase):
                                         "sweep_mutation_probability": 0.4,
                                         "generations": 2
                                      })
+
+        self.oldpopmpgaheft_mixed_init_pop_func = partial(self.oldpopmpgaheft_func, mixed_init_pop=True)
         pass
 
     def _run(self, name):
@@ -119,6 +121,10 @@ class TestExecsExecutor(unittest.TestCase):
 
     def test_oldpopmpgaheft_executor(self):
         self._run("oldpopmpgaheft")
+        pass
+
+    def test_oldpopmpgaheft_mixed_init_pop_executor(self):
+        self._run("oldpopmpgaheft_mixed_init_pop")
         pass
 
     pass

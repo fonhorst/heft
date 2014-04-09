@@ -68,6 +68,21 @@ def create_mpga(*args, **kwargs):
 
             populations = [old_pop, newpop, heft_pop]
 
+            ## TODO: replace this more effective implementation
+            def quick_save():
+                whole_pop = reduce(lambda x, y: x+y, populations)
+                ## choose new old pop for the next run
+                sorted_whole_pop = sorted(whole_pop, key=lambda x: x.fitness.values, reverse=True)
+                best = sorted_whole_pop[0]
+                new_oldpop = sorted_whole_pop[0:POPSIZE]
+
+                ## construct final result
+                ## TODO: construct final result
+                result = ((best, new_oldpop, ga_functions.build_schedule(best, fixed_schedule_part, current_time), None), common_logbook)
+                self._save_result(result[0])
+                return result
+
+
 
             ##==========================
             ## run for several migration periods
@@ -97,18 +112,10 @@ def create_mpga(*args, **kwargs):
                     pass
                 populations = new_pops
                 migRing(populations, migrCount, emigrant_selection)
+                quick_save()
                 pass
 
-            whole_pop = reduce(lambda x, y: x+y, populations)
-            ## choose new old pop for the next run
-            sorted_whole_pop = sorted(whole_pop, key=lambda x: x.fitness.values, reverse=True)
-            best = sorted_whole_pop[0]
-            new_oldpop = sorted_whole_pop[0:POPSIZE]
-
-            ## construct final result
-            ## TODO: construct final result
-            result = ((best, new_oldpop, ga_functions.build_schedule(best, fixed_schedule_part, current_time), None), common_logbook)
-            self._save_result(result[0])
+            result = quick_save()
             return result
         pass
     return MPGAComputation()

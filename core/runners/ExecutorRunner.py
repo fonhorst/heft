@@ -267,6 +267,7 @@ class ExecutorsFactory:
                                            migrCount=kwargs["migrCount"],
                                            emigrant_selection=emigrant_selection,
                                            all_iters_count=kwargs["all_iters_count"],
+                                           mixed_init_pop=kwargs.get("mixed_init_pop", False),
                                            ga_params=kwargs.get("ga_params", GA_PARAMS),
                                            logger=kwargs.get("logger", None),
                                            stat_saver=kwargs.get("stat_saver", stat_saver))
