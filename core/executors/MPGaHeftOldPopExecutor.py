@@ -1,3 +1,5 @@
+from copy import deepcopy
+from deap import creator, tools
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from GA.DEAPGA.multipopGA.MPGA import create_mpga
@@ -143,9 +145,23 @@ class MPCm(ExtendedComputationManager):
         # ga = self._get_ga_alg()
         # ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, ga_calc.initial_schedule, current_time)
 
+        ## TODO: make here using of param to decide how to build initial population for regular gaheft
+        ## TODO: self.mixed_init_pop doesn't exist and isn't setted anywhere
+        ## TODO: need to refactor and merge with MPGA.py
+        # if self.mixed_init_pop is True:
+        #     heft_initial = ga_calc.initial_schedule
+        #     heft_initial = tools.initIterate(creator.Individual, lambda: heft_initial)
+        #     ga_functions = GAFunctions2(self.workflow, self.resource_manager, self.estimator)
+        #     heft_pop = [ga_functions.mutation(deepcopy(heft_initial)) for i in range(self.params["population"])]
+        #     initial_pop_gaheft = [deepcopy(p) for p in self.past_pop] + heft_pop
+
+        initial_pop_gaheft = None
+
         print("GaHeft WITH NEW POP: ")
         ga = self._get_simple_ga()
-        ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, None, current_time)
+        ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, initial_pop_gaheft, current_time)
+
+
 
         ##=====================================
         ##Old pop GA

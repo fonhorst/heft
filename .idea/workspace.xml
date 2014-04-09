@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utility/DrawConvergenceResults.py" afterPath="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utility/MergeFiles.py" afterPath="$PROJECT_DIR$/utility/MergeFiles.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py" afterPath="$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
@@ -28,13 +26,62 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MPGaHeftOldPop.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="MPGaHeftOldPop.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="78" column="0" selection-start="3409" selection-end="3409" vertical-scroll-proportion="-0.12826604" vertical-offset="2004" max-vertical-offset="2425">
+            <state line="91" column="0" selection-start="3833" selection-end="3833" vertical-scroll-proportion="0.0" vertical-offset="315" max-vertical-offset="2425">
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DrawConvergenceResults.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="151" column="8" selection-start="5288" selection-end="5288" vertical-scroll-proportion="0.0" vertical-offset="3553" max-vertical-offset="4150">
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MPGaHeftOldPopExecutor.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="154" column="30" selection-start="7085" selection-end="7085" vertical-scroll-proportion="0.43103448" vertical-offset="3625" max-vertical-offset="5250">
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GAImpl.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="156" column="64" selection-start="4666" selection-end="4666" vertical-scroll-proportion="0.0" vertical-offset="3476" max-vertical-offset="8250">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MPGA.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="27" column="4" selection-start="854" selection-end="900" vertical-scroll-proportion="0.0" vertical-offset="376" max-vertical-offset="2975">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://C:/Pro/Python33/Lib/site-packages/deap/tools/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="750">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -69,10 +116,10 @@
         <option value="$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py" />
         <option value="C:/Pro/Python33/Lib/site-packages/deap/tools/migration.py" />
         <option value="$PROJECT_DIR$/core/runners/ExecutorRunner.py" />
-        <option value="$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py" />
         <option value="$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py" />
         <option value="$PROJECT_DIR$/utility/MergeFiles.py" />
         <option value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
+        <option value="$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py" />
       </list>
     </option>
   </component>
@@ -1053,11 +1100,11 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17682558" sideWeight="0.5132032" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17682558" sideWeight="0.64408726" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4270953" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21993127" sideWeight="0.2238986" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4867968" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35591274" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23650976" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1208,16 +1255,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/deap/tools/support.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="116" column="0" selection-start="4459" selection-end="4459" vertical-scroll-proportion="0.0" vertical-offset="2606" max-vertical-offset="12575">
-          <folding>
-            <element signature="e#19621#23604#0" expanded="false" />
-            <element signature="e#23642#25888#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/AddingWFgaheftExample.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="48" column="13" selection-start="1852" selection-end="1852" vertical-scroll-proportion="0.0" vertical-offset="33" max-vertical-offset="1900">
@@ -1253,13 +1290,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="165" column="0" selection-start="5209" selection-end="5209" vertical-scroll-proportion="0.0" vertical-offset="1842" max-vertical-offset="8275">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="371" column="8" selection-start="15339" selection-end="15709" vertical-scroll-proportion="0.0" vertical-offset="8190" max-vertical-offset="10575">
@@ -1270,22 +1300,6 @@
     <entry file="file://$PROJECT_DIR$/core/tests/ExecutorsTest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="73" column="39" selection-start="3562" selection-end="4581" vertical-scroll-proportion="0.0" vertical-offset="1478" max-vertical-offset="3300">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="34" selection-start="916" selection-end="916" vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="4850">
-          <folding>
-            <element signature="e#0#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="28" selection-start="3622" selection-end="3622" vertical-scroll-proportion="0.0" vertical-offset="100" max-vertical-offset="2975">
           <folding />
         </state>
       </provider>
@@ -1304,15 +1318,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="157" column="0" selection-start="5442" selection-end="5442" vertical-scroll-proportion="0.44852942" vertical-offset="3742" max-vertical-offset="4150">
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utility/MergeFiles.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="0" selection-start="78" selection-end="78" vertical-scroll-proportion="0.2375297" vertical-offset="0" max-vertical-offset="850">
@@ -1322,11 +1327,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="156" column="64" selection-start="4666" selection-end="4666" vertical-scroll-proportion="0.0" vertical-offset="3476" max-vertical-offset="8250">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="0" selection-start="3409" selection-end="3409" vertical-scroll-proportion="-0.12826604" vertical-offset="2004" max-vertical-offset="2425">
+        <state line="91" column="0" selection-start="3833" selection-end="3833" vertical-scroll-proportion="0.0" vertical-offset="1890" max-vertical-offset="2425">
           <folding>
             <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="151" column="8" selection-start="5288" selection-end="5288" vertical-scroll-proportion="0.0" vertical-offset="3553" max-vertical-offset="4150">
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/deap/tools/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="750">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="4" selection-start="854" selection-end="900" vertical-scroll-proportion="0.0" vertical-offset="376" max-vertical-offset="2975">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="154" column="30" selection-start="7085" selection-end="7085" vertical-scroll-proportion="0.43103448" vertical-offset="3625" max-vertical-offset="5250">
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
