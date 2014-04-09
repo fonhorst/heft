@@ -94,11 +94,13 @@ class MPCm(ExtendedComputationManager):
 
     def run_init_ga(self, init_schedule):
 
-         ga = GAFactory.default().create_ga(silent=True,
-                                                 wf=self.workflow,
-                                                 resource_manager=self.resource_manager,
-                                                 estimator=self.estimator,
-                                                 ga_params=self.params)
+         # ga = GAFactory.default().create_ga(silent=True,
+         #                                         wf=self.workflow,
+         #                                         resource_manager=self.resource_manager,
+         #                                         estimator=self.estimator,
+         #                                         ga_params=self.params)
+
+         ga = self._get_simple_ga()
 
          result = ga(init_schedule, None)
          return result
@@ -109,6 +111,22 @@ class MPCm(ExtendedComputationManager):
 
         ## TODO: remake this stub. GAComputationWrapper must take cleaned current_schedule
         return GAComputationWrapper(ga, fixed_schedule, heft_initial, current_time)
+
+    def _get_simple_ga(self):
+        ga = GAFactory.default().create_ga(silent=True,
+                                                 wf=self.workflow,
+                                                 resource_manager=self.resource_manager,
+                                                 estimator=self.estimator,
+                                                 ga_params={
+                                        "population": self.params["population"] * self.migrCount,
+                                        "crossover_probability": self.params["crossover_probability"],
+                                        "replacing_mutation_probability": self.params["replacing_mutation_probability"],
+                                        "sweep_mutation_probability": self.params["sweep_mutation_probability"],
+                                        "generations": self.params["generations"]*self.all_iters_count
+                                     })
+
+        return ga
+
 
     def _get_result_until_current_time(self, current_time):
         ga_calc = self.current_computation[1]
@@ -122,6 +140,10 @@ class MPCm(ExtendedComputationManager):
         # print("GaHeft WITH NEW POP: ")
         # ga = self._get_ga_alg()
         # ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, ga_calc.initial_schedule, current_time)
+
+        print("GaHeft WITH NEW POP: ")
+        ga = self._get_simple_ga()
+        ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, None, current_time)
 
         ##=====================================
         ##Old pop GA
@@ -151,11 +173,11 @@ class MPCm(ExtendedComputationManager):
                     "makespan": Utility.get_the_last_time(schedule_op),
                     "pop_aggr": logbook_op
                 },
-                # "with_random": {
-                #     "iter": stopped_iteration_r,
-                #     "makespan": Utility.get_the_last_time(schedule_r),
-                #     "pop_aggr": logbook_r
-                # }
+                "with_random": {
+                    "iter": stopped_iteration_r,
+                    "makespan": Utility.get_the_last_time(schedule_r),
+                    "pop_aggr": logbook_r
+                }
             }
             self.stat_saver(stat_data)
 
