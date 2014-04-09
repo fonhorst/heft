@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="" />
+    <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utility/DrawConvergenceResults.py" afterPath="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utility/MergeFiles.py" afterPath="$PROJECT_DIR$/utility/MergeFiles.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,68 +28,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GaHeftOldPopExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/GaHeftOldPopExecutor.py">
+      <file leaf-file-name="MPGaHeftOldPop.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="41" selection-start="2462" selection-end="2462" vertical-scroll-proportion="0.0" vertical-offset="1625" max-vertical-offset="4475">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ExecutorsTest.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/tests/ExecutorsTest.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="94" column="0" selection-start="4828" selection-end="4828" vertical-scroll-proportion="0.56707317" vertical-offset="1928" max-vertical-offset="3300">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAFunctions2.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="0" selection-start="2116" selection-end="2116" vertical-scroll-proportion="0.0" vertical-offset="1400" max-vertical-offset="6250">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GAImpl.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="165" column="0" selection-start="5209" selection-end="5209" vertical-scroll-proportion="0.0" vertical-offset="4125" max-vertical-offset="8550">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GaHeftExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="371" column="8" selection-start="15339" selection-end="15709" vertical-scroll-proportion="0.0" vertical-offset="9275" max-vertical-offset="11525">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MPGaHeftOldPopExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="36" selection-start="779" selection-end="779" vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="4325">
+            <state line="78" column="0" selection-start="3409" selection-end="3409" vertical-scroll-proportion="-0.12826604" vertical-offset="2004" max-vertical-offset="2425">
               <folding>
-                <element signature="e#0#64#0" expanded="true" />
-                <element signature="e#925#2100#0" expanded="false" />
+                <element signature="e#0#29#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MPGA.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="22" selection-start="564" selection-end="589" vertical-scroll-proportion="0.0" vertical-offset="475" max-vertical-offset="3100">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -107,13 +57,10 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/core/comparisons/StopRescheduling.py" />
         <option value="$PROJECT_DIR$/core/CommonComponents/failers/FailRandom.py" />
         <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
         <option value="$PROJECT_DIR$/core/Experiments.py" />
         <option value="$PROJECT_DIR$/core/comparisons/GaHeftOldPop.py" />
-        <option value="$PROJECT_DIR$/utility/MergeFiles.py" />
-        <option value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
         <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py" />
         <option value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
@@ -123,6 +70,9 @@
         <option value="C:/Pro/Python33/Lib/site-packages/deap/tools/migration.py" />
         <option value="$PROJECT_DIR$/core/runners/ExecutorRunner.py" />
         <option value="$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py" />
+        <option value="$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py" />
+        <option value="$PROJECT_DIR$/utility/MergeFiles.py" />
+        <option value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
       </list>
     </option>
   </component>
@@ -693,7 +643,7 @@
       <recent name="D:\wspace\heft\reschedulingheft\comparisons" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Unittest TestExecsExecutor.test_oldpopmpgaheft_executor">
+  <component name="RunManager" selected="Python.DrawConvergenceResults">
     <configuration default="false" name="GaHeftOldPop" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="-m scoop" />
       <option name="PARENT_ENVS" value="true" />
@@ -743,6 +693,24 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="MPGaHeftOldPop" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="-m scoop" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/comparisons" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -893,32 +861,6 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittest TestExecsExecutor.test_oldpopmpgaheft_executor" type="tests" factoryName="Unittests" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
-      <option name="CLASS_NAME" value="TestExecsExecutor" />
-      <option name="METHOD_NAME" value="test_oldpopmpgaheft_executor" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
     <configuration default="false" name="GAvsHEFT" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -953,6 +895,32 @@
       <module name="heft" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/for_play/full_tree.py" />
       <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittest TestExecsExecutor.test_oldpopmpgaheft_executor" type="tests" factoryName="Unittests" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="heft" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
+      <option name="CLASS_NAME" value="TestExecsExecutor" />
+      <option name="METHOD_NAME" value="test_oldpopmpgaheft_executor" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
@@ -1009,23 +977,25 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <list size="9">
-      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopmpgaheft_executor" />
-      <item index="1" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
-      <item index="2" class="java.lang.String" itemvalue="Python.full_tree" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestExecsExecutor" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="5" class="java.lang.String" itemvalue="Python.GaHeftOldPop" />
-      <item index="6" class="java.lang.String" itemvalue="Python.MergeFiles" />
-      <item index="7" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
-      <item index="8" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopgaheft_executor" />
+    <list size="10">
+      <item index="0" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
+      <item index="1" class="java.lang.String" itemvalue="Python.full_tree" />
+      <item index="2" class="java.lang.String" itemvalue="Python.GaHeftOldPop" />
+      <item index="3" class="java.lang.String" itemvalue="Python.MergeFiles" />
+      <item index="4" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
+      <item index="5" class="java.lang.String" itemvalue="Python.MPGaHeftOldPop" />
+      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopmpgaheft_executor" />
+      <item index="7" class="java.lang.String" itemvalue="Python tests.Unittests in TestExecsExecutor" />
+      <item index="8" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
+      <item index="9" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopgaheft_executor" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopgaheft_executor" />
-        <item index="1" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
-        <item index="2" class="java.lang.String" itemvalue="Python.MergeFiles" />
-        <item index="3" class="java.lang.String" itemvalue="Python.GaHeftOldPop" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
+        <item index="1" class="java.lang.String" itemvalue="Python.MergeFiles" />
+        <item index="2" class="java.lang.String" itemvalue="Python.MPGaHeftOldPop" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopgaheft_executor" />
+        <item index="4" class="java.lang.String" itemvalue="Python.GaHeftOldPop" />
       </list>
     </recent_temporary>
   </component>
@@ -1083,11 +1053,11 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17682558" sideWeight="0.78300804" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17682558" sideWeight="0.5132032" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4270953" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21993127" sideWeight="0.2238986" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21699196" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4867968" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23650976" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1238,40 +1208,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/tests/GaExecutorTests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1400">
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/BaseExecutor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="411" selection-end="411" vertical-scroll-proportion="0.0" vertical-offset="43" max-vertical-offset="1100">
-          <folding>
-            <element signature="e#783#1774#0" expanded="false" />
-            <element signature="e#1816#2372#0" expanded="false" />
-            <element signature="e#2416#2639#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/deap/tools/init.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="0" selection-start="1921" selection-end="1921" vertical-scroll-proportion="0.0" vertical-offset="506" max-vertical-offset="2300">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/threading.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="593" column="0" selection-start="18516" selection-end="18516" vertical-scroll-proportion="0.0" vertical-offset="14617" max-vertical-offset="23950">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Pro/Python33/Lib/site-packages/deap/tools/support.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="116" column="0" selection-start="4459" selection-end="4459" vertical-scroll-proportion="0.0" vertical-offset="2606" max-vertical-offset="12575">
@@ -1299,13 +1235,6 @@
     <entry file="file://C:/Pro/Python33/Lib/random.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="706" column="19" selection-start="24935" selection-end="24935" vertical-scroll-proportion="0.0" vertical-offset="17323" max-vertical-offset="18150">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/runners/ExecutorRunner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="257" column="29" selection-start="11297" selection-end="11297" vertical-scroll-proportion="0.0" vertical-offset="1398" max-vertical-offset="2350">
           <folding />
         </state>
       </provider>
@@ -1338,27 +1267,67 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py">
+    <entry file="file://$PROJECT_DIR$/core/tests/ExecutorsTest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="22" selection-start="564" selection-end="589" vertical-scroll-proportion="0.0" vertical-offset="475" max-vertical-offset="3100">
+        <state line="73" column="39" selection-start="3562" selection-end="4581" vertical-scroll-proportion="0.0" vertical-offset="1478" max-vertical-offset="3300">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="36" selection-start="779" selection-end="779" vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="4325">
+        <state line="22" column="34" selection-start="916" selection-end="916" vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="4850">
           <folding>
             <element signature="e#0#64#0" expanded="true" />
-            <element signature="e#925#2100#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/tests/ExecutorsTest.py">
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="0" selection-start="4828" selection-end="4828" vertical-scroll-proportion="0.56707317" vertical-offset="1928" max-vertical-offset="3300">
+        <state line="90" column="28" selection-start="3622" selection-end="3622" vertical-scroll-proportion="0.0" vertical-offset="100" max-vertical-offset="2975">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/runners/ExecutorRunner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="0" selection-start="4215" selection-end="4215" vertical-scroll-proportion="0.0" vertical-offset="1914" max-vertical-offset="6775">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/GaHeftOldPop.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="54" selection-start="275" selection-end="292" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2150">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="157" column="0" selection-start="5442" selection-end="5442" vertical-scroll-proportion="0.44852942" vertical-offset="3742" max-vertical-offset="4150">
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utility/MergeFiles.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="0" selection-start="78" selection-end="78" vertical-scroll-proportion="0.2375297" vertical-offset="0" max-vertical-offset="850">
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="78" column="0" selection-start="3409" selection-end="3409" vertical-scroll-proportion="-0.12826604" vertical-offset="2004" max-vertical-offset="2425">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
