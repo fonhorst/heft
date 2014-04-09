@@ -1,3 +1,4 @@
+import random
 from deap.tools.selection import selRoulette
 from core.DSimpleHeft import DynamicHeft
 from core.PublicResourceManager import PublicResourceManager
@@ -244,7 +245,18 @@ class ExecutorsFactory:
         stat_saver = ResultSaver(self.DEFAULT_SAVE_PATH.format(kwargs["key_for_save"], ComparisonUtility.cur_time(), ComparisonUtility.uuid()))
 
         # emigrant_selection = lambda pop, k: selRoulette(pop, k)
-        emigrant_selection = lambda pop, k: [pop[i] for i in range(k)]
+        # emigrant_selection = lambda pop, k: [pop[i] for i in range(k)]
+        def emigrant_selection(pop, k):
+            size = len(pop)
+            if k > size:
+                raise Exception("Count of emigrants is greater than population: {0}>{1}".format(k, size))
+            res = []
+            for i in range(k):
+                r = random.randint(0, size - 1)
+                while r in res:
+                    r = random.randint(0, size - 1)
+                res.append(r)
+            return [pop[r] for r in res]
 
         ga_machine = MPGaHeftOldPopExecutor(heft_planner=dynamic_heft,
                                            base_fail_duration=40,
