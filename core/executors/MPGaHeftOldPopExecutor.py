@@ -118,7 +118,9 @@ class MPCm(ExtendedComputationManager):
                                                  resource_manager=self.resource_manager,
                                                  estimator=self.estimator,
                                                  ga_params={
-                                        "population": self.params["population"] * self.migrCount,
+                                        ## TODO: add a param to describe it
+                                        ## 3 is populations count
+                                        "population": self.params["population"] * 3,
                                         "crossover_probability": self.params["crossover_probability"],
                                         "replacing_mutation_probability": self.params["replacing_mutation_probability"],
                                         "sweep_mutation_probability": self.params["sweep_mutation_probability"],

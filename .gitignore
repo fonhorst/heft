@@ -2,3 +2,6 @@
 ./penv
 ./penv_home
 ./penv/*
+
+./backup
+./backup/*
