@@ -1,5 +1,6 @@
 from functools import partial
 from scoop import futures
+from core.comparisons.ComparisonBase import ComparisonUtility
 from core.runners.ExecutorRunner import ExecutorsFactory
 from environment.Utility import profile_decorator
 
@@ -93,6 +94,8 @@ to_exec = [t for i in range(repeat_count) for t in tasks_to_fail]
 
 if __name__ == "__main__":
     #res = list(futures.map_as_completed(fnc, to_exec))
+    print("Start: {0}".format(ComparisonUtility.cur_time()))
     fnc(to_exec[0])
+    print("End: {0}".format(ComparisonUtility.cur_time()))
     pass
 

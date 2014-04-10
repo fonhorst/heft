@@ -1,5 +1,6 @@
 ## from Buyya
 import random
+from GA.DEAPGA.GAImplementation.NewSchedulerBuilder import NewScheduleBuilder
 from GA.DEAPGA.GAImplementation.ScheduleBuilder import ScheduleBuilder
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from core.HeftHelper import HeftHelper
@@ -89,7 +90,8 @@ class GAFunctions2:
         return chromo
 
     def build_fitness(self, fixed_schedule_part, current_time):
-        builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
+        # builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
+        builder = NewScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
 
         def fitness(chromo):
 
@@ -116,7 +118,8 @@ class GAFunctions2:
         return fitness
 
     def build_schedule(self, chromo, fixed_schedule_part, current_time):
-        builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
+        # builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
+        builder = NewScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
         schedule = builder(chromo, current_time)
         return schedule
 
