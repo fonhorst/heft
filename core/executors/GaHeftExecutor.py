@@ -416,6 +416,7 @@ class GAComputationWrapper:
         timer = threading.Timer(time_interval, go)
 
         def run_func():
+            self.logbook = None
             t_ident = str(threading.current_thread().ident)
             t_name = str(threading.current_thread().name)
             print("Time: " + str(current_time) + " Running ga in isolated thread " + t_name + " " + t_ident)

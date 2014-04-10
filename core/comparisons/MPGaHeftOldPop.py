@@ -4,25 +4,25 @@ from core.runners.ExecutorRunner import ExecutorsFactory
 wf_name = "Montage_50"
 tsk_period = 10
 repeat_count = 1
-func = partial(ExecutorsFactory.default().run_mpgaheftoldpop_executor,
-                                     # for this experiment it doesn't matter at all
-                                     reliability=0.95,
-                                     is_silent=True,
-                                     wf_name=wf_name,
-                                     logger=None,
-                                     key_for_save='small_run',
-                                     #task_id_to_fail="ID00005_000",
-                                     fixed_interval_for_ga=15,
-                                     migrCount=5,
-                                     emigrant_selection=None,
-                                     all_iters_count=50,
-                                     ga_params={
-                                        "population": 50,
-                                        "crossover_probability": 0.8,
-                                        "replacing_mutation_probability": 0.5,
-                                        "sweep_mutation_probability": 0.4,
-                                        "generations": 10
-                                     })
+# func = partial(ExecutorsFactory.default().run_mpgaheftoldpop_executor,
+#                                      # for this experiment it doesn't matter at all
+#                                      reliability=0.95,
+#                                      is_silent=True,
+#                                      wf_name=wf_name,
+#                                      logger=None,
+#                                      key_for_save='small_run',
+#                                      #task_id_to_fail="ID00005_000",
+#                                      fixed_interval_for_ga=15,
+#                                      migrCount=5,
+#                                      emigrant_selection=None,
+#                                      all_iters_count=50,
+#                                      ga_params={
+#                                         "population": 50,
+#                                         "crossover_probability": 0.8,
+#                                         "replacing_mutation_probability": 0.5,
+#                                         "sweep_mutation_probability": 0.4,
+#                                         "generations": 10
+#                                      })
 
 def fnc(tsk):
     return ExecutorsFactory.default().run_mpgaheftoldpop_executor(

@@ -42,7 +42,7 @@ def _converge_aggr(data):
 def built_converged_data():
 
     # load data
-    base_path = "../results/"
+    base_path = "../results/results_m209_100iter_gaheft_oldpop/"
     #filename = "GaRescheduleResults_by_5.json"
     filename = "small_run.json"
     path = base_path + filename
@@ -153,7 +153,7 @@ def plot_variation_by_taskid():
 
 if __name__ == "__main__":
     data = built_converged_data()
-    # plot_avrs_by_taskid(data, _draw_task)
+    plot_avrs_by_taskid(data, _draw_task)
     plot_avrs_by_taskid(data, _draw_variation)
 
 
