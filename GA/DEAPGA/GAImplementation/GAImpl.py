@@ -174,11 +174,11 @@ class GAFactory:
                 history = History()
 
                 # Decorate the variation operators
-                toolbox.decorate("mate", history.decorator)
+                #toolbox.decorate("mate", history.decorator)
                 # toolbox.decorate("mutate", history.decorator)
 
                 # Create the population and populate the history
-                history.update(pop)
+                #history.update(pop)
                 #===================================================
 
                 hallOfFame = deap.tools.HallOfFame(5)

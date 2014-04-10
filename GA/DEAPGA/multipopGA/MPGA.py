@@ -4,6 +4,7 @@ from deap import base, tools, creator
 from deap.tools import migRing
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory, SynchronizedCheckpointedGA
+from environment.Utility import profile_decorator
 
 
 def create_mpga(*args, **kwargs):
@@ -39,6 +40,7 @@ def create_mpga(*args, **kwargs):
             super().__init__()
             pass
 
+        #@profile_decorator
         def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None):
 
 
@@ -77,9 +79,9 @@ def create_mpga(*args, **kwargs):
                 new_oldpop = sorted_whole_pop[0:POPSIZE]
 
                 ## construct final result
-                ## TODO: construct final result
-                result = ((best, new_oldpop, ga_functions.build_schedule(best, fixed_schedule_part, current_time), None), common_logbook)
-                self._save_result(result[0])
+                ## TODO: implement constructor of final result here
+                result = ((best, new_oldpop, None, None), common_logbook)
+                self._save_result(result)
                 return result
 
 
@@ -88,6 +90,7 @@ def create_mpga(*args, **kwargs):
             ## run for several migration periods
             ##==========================
             common_logbook = tools.Logbook()
+            result = None
             for k in range(MIGRATIONS):
                 new_pops = []
                 iter_map = {}
@@ -112,10 +115,11 @@ def create_mpga(*args, **kwargs):
                     pass
                 populations = new_pops
                 migRing(populations, migrCount, emigrant_selection)
-                quick_save()
+                result = quick_save()
                 pass
-
-            result = quick_save()
+            ((best, new_oldpop, x1, x2), x3) = result
+            result = ((best, new_oldpop, ga_functions.build_schedule(best, fixed_schedule_part, current_time), None), common_logbook)
+            self._save_result(result[0])
             return result
         pass
     return MPGAComputation()

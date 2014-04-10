@@ -3,9 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="54bda0b4-3de7-489f-b46f-8a18c0df2773" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utility/DrawConvergenceResults.py" afterPath="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/EventMachine.py" afterPath="$PROJECT_DIR$/core/executors/EventMachine.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" afterPath="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py" afterPath="$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py" afterPath="$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utility/MergeFiles.py" afterPath="$PROJECT_DIR$/utility/MergeFiles.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py" afterPath="$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="heft.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,84 +32,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DrawConvergenceResults.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
+      <file leaf-file-name="ScheduleBuilder.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/ScheduleBuilder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="154" column="33" selection-start="5385" selection-end="5385" vertical-scroll-proportion="0.0" vertical-offset="3471" max-vertical-offset="4150">
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MergeFiles.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utility/MergeFiles.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="23" selection-start="391" selection-end="391" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MPGaHeftOldPop.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="88" column="35" selection-start="3841" selection-end="3841" vertical-scroll-proportion="2.7456648" vertical-offset="300" max-vertical-offset="2425">
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="futures.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/futures.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="160" column="54" selection-start="6496" selection-end="6496" vertical-scroll-proportion="0.0" vertical-offset="4622" max-vertical-offset="11725">
+            <state line="71" column="35" selection-start="3058" selection-end="3058" vertical-scroll-proportion="0.6722151" vertical-offset="1200" max-vertical-offset="6500">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GaHeftExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="0" selection-start="2524" selection-end="2524" vertical-scroll-proportion="0.0" vertical-offset="7471" max-vertical-offset="11300">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Utility.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/environment/Utility.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="27" selection-start="749" selection-end="749" vertical-scroll-proportion="0.0" vertical-offset="571" max-vertical-offset="15275">
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MPGA.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="105" column="28" selection-start="4342" selection-end="4342" vertical-scroll-proportion="0.0" vertical-offset="453" max-vertical-offset="3150">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MPGaHeftOldPopExecutor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="120" column="29" selection-start="5093" selection-end="5093" vertical-scroll-proportion="0.0" vertical-offset="2850" max-vertical-offset="5325">
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -128,21 +59,21 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/core/CommonComponents/failers/FailRandom.py" />
-        <option value="$PROJECT_DIR$/core/comparisons/ComparisonBase.py" />
         <option value="$PROJECT_DIR$/core/Experiments.py" />
         <option value="$PROJECT_DIR$/core/comparisons/GaHeftOldPop.py" />
-        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py" />
         <option value="$PROJECT_DIR$/core/executors/GaHeftOldPopExecutor.py" />
         <option value="C:/Pro/Python33/Lib/site-packages/deap/tools/migration.py" />
         <option value="$PROJECT_DIR$/core/runners/ExecutorRunner.py" />
         <option value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
+        <option value="$PROJECT_DIR$/utility/MergeFiles.py" />
+        <option value="$PROJECT_DIR$/environment/Utility.py" />
+        <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
+        <option value="$PROJECT_DIR$/core/executors/EventMachine.py" />
         <option value="$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py" />
+        <option value="$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py" />
         <option value="$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py" />
         <option value="$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py" />
-        <option value="$PROJECT_DIR$/core/executors/GaHeftExecutor.py" />
-        <option value="$PROJECT_DIR$/utility/MergeFiles.py" />
         <option value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
       </list>
     </option>
@@ -186,7 +117,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+    <navigator proportions="" version="1" splitterProportion="0.5">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -197,450 +128,20 @@
       <autoscrollFromSource />
       <sortByType />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scoop" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scoop" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="launch" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scoop" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="discovery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scoop" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="broker" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scoop" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bootstrap" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scoop" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="_comm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="deap" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="deap" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tools" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.2 (C:/Pro/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Python33" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="utility" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="for_play" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="experiments" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="environment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="GA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="GA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DEAPGA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="GA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DEAPGA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="multipopGA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="GA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DEAPGA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="GAImplementation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="62" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="63" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="recentsLimit" value="5" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="63" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="recentsLimit" value="5" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="last_opened_file_path" value="C:/Pro/Python33/Lib/site-packages" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="62" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="597" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="608" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="597" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="59" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="54" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
@@ -703,7 +204,9 @@
       <module name="heft" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility/DrawConvergenceResults.py" />
       <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -725,53 +228,39 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittest TestExecsExecutor.test_oldpopgaheft_executor" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="MPGaHeftOldPopExecutor" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/executors" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
-      <option name="CLASS_NAME" value="TestExecsExecutor" />
-      <option name="METHOD_NAME" value="test_oldpopgaheft_executor" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py" />
+      <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittest TestExecsExecutor.test_oldpopmpgaheft_mixed_init_pop_executor" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="MPGA" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GA/DEAPGA/multipopGA" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="heft" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/tests/ExecutorsTest.py" />
-      <option name="CLASS_NAME" value="TestExecsExecutor" />
-      <option name="METHOD_NAME" value="test_oldpopmpgaheft_mixed_init_pop_executor" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py" />
+      <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -1015,22 +504,22 @@
     <list size="10">
       <item index="0" class="java.lang.String" itemvalue="Python.GAvsHEFT" />
       <item index="1" class="java.lang.String" itemvalue="Python.full_tree" />
-      <item index="2" class="java.lang.String" itemvalue="Python.MergeFiles" />
-      <item index="3" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
-      <item index="4" class="java.lang.String" itemvalue="Python.MPGaHeftOldPop" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopmpgaheft_executor" />
-      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittests in TestExecsExecutor" />
-      <item index="7" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
-      <item index="8" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopgaheft_executor" />
-      <item index="9" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopmpgaheft_mixed_init_pop_executor" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopmpgaheft_executor" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestExecsExecutor" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.test_core_unittests" />
+      <item index="5" class="java.lang.String" itemvalue="Python.MergeFiles" />
+      <item index="6" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
+      <item index="7" class="java.lang.String" itemvalue="Python.MPGaHeftOldPop" />
+      <item index="8" class="java.lang.String" itemvalue="Python.MPGaHeftOldPopExecutor" />
+      <item index="9" class="java.lang.String" itemvalue="Python.MPGA" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.DrawConvergenceResults" />
-        <item index="1" class="java.lang.String" itemvalue="Python.MergeFiles" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopmpgaheft_mixed_init_pop_executor" />
-        <item index="3" class="java.lang.String" itemvalue="Python.MPGaHeftOldPop" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestExecsExecutor.test_oldpopgaheft_executor" />
+        <item index="1" class="java.lang.String" itemvalue="Python.MPGaHeftOldPop" />
+        <item index="2" class="java.lang.String" itemvalue="Python.MPGA" />
+        <item index="3" class="java.lang.String" itemvalue="Python.MPGaHeftOldPopExecutor" />
+        <item index="4" class="java.lang.String" itemvalue="Python.MergeFiles" />
       </list>
     </recent_temporary>
   </component>
@@ -1087,17 +576,17 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1641791" sideWeight="0.49728426" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17682558" sideWeight="0.82433987" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17682558" sideWeight="0.6773823" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4270953" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21993127" sideWeight="0.2238986" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17566016" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.060710195" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23650976" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.45120552" sideWeight="0.49728426" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21848226" sideWeight="0.6750861" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1108,17 +597,17 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295063" sideWeight="0.49969825" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23367697" sideWeight="0.49728426" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34098738" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22962113" sideWeight="0.49728426" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4270953" sideWeight="0.89257693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21993127" sideWeight="0.2238986" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21993127" sideWeight="0.2238986" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23650976" sideWeight="0.49969825" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26980484" sideWeight="0.49969825" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5486827" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17199759" sideWeight="0.78006876" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21993127" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21848226" sideWeight="0.5889782" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17682558" sideWeight="0.6773823" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32261768" sideWeight="0.7761014" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21848226" sideWeight="0.6750861" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
@@ -1234,132 +723,115 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="489" />
+      <option name="time" value="490" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/deap/tools/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="750">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/executors/EventMachine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="0" selection-start="3113" selection-end="3113" vertical-scroll-proportion="0.0" vertical-offset="1851" max-vertical-offset="3250">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/tests/ExecutorsTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="0" selection-start="4779" selection-end="4779" vertical-scroll-proportion="0.5740741" vertical-offset="1797" max-vertical-offset="3450">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/runners/ExecutorRunner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="0" selection-start="4215" selection-end="4215" vertical-scroll-proportion="0.36139333" vertical-offset="1951" max-vertical-offset="6800">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/deap/tools/support.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="116" column="0" selection-start="4459" selection-end="4459" vertical-scroll-proportion="0.25356126" vertical-offset="2597" max-vertical-offset="12575">
-          <folding>
-            <element signature="e#19621#23604#0" expanded="false" />
-            <element signature="e#23642#25888#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="160" column="0" selection-start="6473" selection-end="6473" vertical-scroll-proportion="0.2525399" vertical-offset="3676" max-vertical-offset="6100">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="105" column="28" selection-start="4342" selection-end="4342" vertical-scroll-proportion="0.0" vertical-offset="453" max-vertical-offset="3150">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="236" column="0" selection-start="8109" selection-end="8109" vertical-scroll-proportion="-3.552783" vertical-offset="7451" max-vertical-offset="8250">
+        <state line="108" column="0" selection-start="4326" selection-end="4326" vertical-scroll-proportion="0.0" vertical-offset="1916" max-vertical-offset="6800">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/GaHeftOldPopExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="42" selection-start="370" selection-end="370" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4350">
+        <state line="8" column="6" selection-start="334" selection-end="334" vertical-scroll-proportion="0.0" vertical-offset="675" max-vertical-offset="4350">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/MPGaHeftOldPopExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="29" selection-start="5093" selection-end="5093" vertical-scroll-proportion="0.0" vertical-offset="2850" max-vertical-offset="5325">
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="80" column="67" selection-start="3522" selection-end="3522" vertical-scroll-proportion="0.0" vertical-offset="1697" max-vertical-offset="6350" />
       </provider>
     </entry>
-    <entry file="file://C:/Pro/Python33/Lib/site-packages/scoop/futures.py">
+    <entry file="file://C:/Pro/Python33/Lib/copy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="160" column="54" selection-start="6496" selection-end="6496" vertical-scroll-proportion="0.0" vertical-offset="4622" max-vertical-offset="11725">
+        <state line="66" column="6" selection-start="2044" selection-end="2044" vertical-scroll-proportion="0.0" vertical-offset="1360" max-vertical-offset="8200" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAFunctions2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="119" column="0" selection-start="5088" selection-end="5088" vertical-scroll-proportion="0.0" vertical-offset="2786" max-vertical-offset="6100">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/environment/Utility.py">
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/GAImpl.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="27" selection-start="749" selection-end="749" vertical-scroll-proportion="0.0" vertical-offset="571" max-vertical-offset="15275">
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state line="206" column="44" selection-start="6638" selection-end="6638" vertical-scroll-proportion="0.0" vertical-offset="3900" max-vertical-offset="8250">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="154" column="33" selection-start="5385" selection-end="5385" vertical-scroll-proportion="0.0" vertical-offset="3471" max-vertical-offset="4150">
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utility/MergeFiles.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="23" selection-start="391" selection-end="391" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
+        <state line="1510" column="52" selection-start="59791" selection-end="59791" vertical-scroll-proportion="0.0" vertical-offset="35893" max-vertical-offset="36800">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/executors/GaHeftExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="0" selection-start="2524" selection-end="2524" vertical-scroll-proportion="0.0" vertical-offset="7471" max-vertical-offset="11300">
+        <state line="485" column="0" selection-start="19045" selection-end="19045" vertical-scroll-proportion="0.0" vertical-offset="9490" max-vertical-offset="12300">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/multipopGA/MPGA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="30" selection-start="1249" selection-end="1249" vertical-scroll-proportion="0.0" vertical-offset="490" max-vertical-offset="3225">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/matplotlib/gridspec.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="175" column="0" selection-start="5254" selection-end="5254" vertical-scroll-proportion="0.0" vertical-offset="4220" max-vertical-offset="12025">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/matplotlib/axes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9283" column="0" selection-start="329879" selection-end="329879" vertical-scroll-proportion="0.0" vertical-offset="231670" max-vertical-offset="235925">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/matplotlib/figure.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="914" column="0" selection-start="29646" selection-end="29646" vertical-scroll-proportion="0.0" vertical-offset="21920" max-vertical-offset="41175">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Pro/Python33/Lib/site-packages/matplotlib/pyplot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="896" column="0" selection-start="28074" selection-end="28074" vertical-scroll-proportion="0.0" vertical-offset="21595" max-vertical-offset="91325">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utility/DrawConvergenceResults.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="167" column="0" selection-start="5720" selection-end="5720" vertical-scroll-proportion="0.0" vertical-offset="1758" max-vertical-offset="4400">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/comparisons/MPGaHeftOldPop.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="35" selection-start="3841" selection-end="3841" vertical-scroll-proportion="2.7456648" vertical-offset="300" max-vertical-offset="2425">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
+        <state line="38" column="72" selection-start="2005" selection-end="2005" vertical-scroll-proportion="0.0" vertical-offset="668" max-vertical-offset="2525">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/DEAPGA/GAImplementation/ScheduleBuilder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="35" selection-start="3058" selection-end="3058" vertical-scroll-proportion="0.6722151" vertical-offset="1200" max-vertical-offset="6500">
+          <folding />
         </state>
       </provider>
     </entry>

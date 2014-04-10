@@ -2,8 +2,19 @@ import json
 from matplotlib.patches import Rectangle
 import matplotlib.pyplot as plt
 
+##=========================================
+## Settings
+##=========================================
+
+ALL = None
+# tasks_to_draw = ALL
+tasks_to_draw = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00030_000"]
+
 # points = [10, 20, 30, 40, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500]
 points = [10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 85, 100, 150, 200, 250, 300, 350, 400, 450, 500]
+
+##========================================
+
 
 ### preprocess data
 def _converge_aggr(data):
@@ -63,7 +74,8 @@ def built_converged_data():
     for wf_name, tasks in transformed_data.items():
         convergence_results[wf_name] = dict()
         for task_id, (old_pop, random) in tasks.items():
-            convergence_results[wf_name][task_id] = (_converge_aggr(old_pop), _converge_aggr(random))
+            if tasks_to_draw == ALL or task_id.strip() in tasks_to_draw:
+                convergence_results[wf_name][task_id] = (_converge_aggr(old_pop), _converge_aggr(random))
             pass
         pass
     return convergence_results

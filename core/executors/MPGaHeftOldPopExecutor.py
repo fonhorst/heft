@@ -1,11 +1,14 @@
+from collections import deque
 from copy import deepcopy
+import random
 from deap import creator, tools
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from GA.DEAPGA.multipopGA.MPGA import create_mpga
-from core.executors.GaHeftExecutor import GA_PARAMS, GAComputationWrapper
+from core.executors.EventMachine import NodeFailed, TaskFinished
+from core.executors.GaHeftExecutor import GA_PARAMS, GAComputationWrapper, SimpleGAComputationWrapper
 from core.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor, ExtendedComputationManager
-from environment.ResourceManager import Schedule
+from environment.ResourceManager import Schedule, ScheduleItem
 from environment.Utility import Utility
 
 
@@ -57,6 +60,42 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
         self._post_new_events()
 
         self.ga_computation_manager.past_pop = result[0][1]
+
+    def _task_start_handler(self, event):
+
+        res = self._check_event_for_ga_result(event)
+        if res:
+            return
+
+
+        # check task as executing
+        # self.current_schedule.change_state(event.task, ScheduleItem.EXECUTING)
+        # try to find nodes in cloud
+        # check if failed and post
+        (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
+        item.state = ScheduleItem.EXECUTING
+
+        if self._check_fail(event.task, node):
+            # generate fail time, post it
+            duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
+            time_of_fail = (item.end_time - self.current_time)*random.random()
+            time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
+
+            event_failed = NodeFailed(node, event.task)
+            event_failed.time_happened = time_of_fail
+
+            # event_nodeup = NodeUp(node)
+            # event_nodeup.time_happened = time_of_fail + duration
+
+            self.post(event_failed)
+            # self.post(event_nodeup)
+
+            # remove TaskFinished event
+            ##TODO: make a function for this purpose in the base class
+            self.queue = deque([ev for ev in self.queue if not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id)])
+        pass
+
+    pass
 
 class MPCm(ExtendedComputationManager):
     def __init__(self,
@@ -116,7 +155,8 @@ class MPCm(ExtendedComputationManager):
         heft_initial = self._clean_chromosome(heft_initial, self.current_event, fixed_schedule)
 
         ## TODO: remake this stub. GAComputationWrapper must take cleaned current_schedule
-        return GAComputationWrapper(ga, fixed_schedule, heft_initial, current_time)
+        #return GAComputationWrapper(ga, fixed_schedule, heft_initial, current_time)
+        return SimpleGAComputationWrapper(ga, fixed_schedule, heft_initial, current_time)
 
     def _get_simple_ga(self):
         ga = GAFactory.default().create_ga(silent=True,
@@ -130,7 +170,7 @@ class MPCm(ExtendedComputationManager):
                                         "crossover_probability": self.params["crossover_probability"],
                                         "replacing_mutation_probability": self.params["replacing_mutation_probability"],
                                         "sweep_mutation_probability": self.params["sweep_mutation_probability"],
-                                        "generations": self.params["generations"]*self.all_iters_count
+                                        "generations": self.all_iters_count
                                      })
 
         return ga
@@ -152,6 +192,7 @@ class MPCm(ExtendedComputationManager):
         ## TODO: make here using of param to decide how to build initial population for regular gaheft
         ## TODO: self.mixed_init_pop doesn't exist and isn't setted anywhere
         ## TODO: need to refactor and merge with MPGA.py
+        initial_pop_gaheft = None
         if self.mixed_init_pop is True:
             heft_initial = ga_calc.initial_schedule
             heft_initial = tools.initIterate(creator.Individual, lambda: heft_initial)

@@ -454,3 +454,43 @@ class GAComputationWrapper:
 
     def is_running(self):
         return False
+
+
+class SimpleGAComputationWrapper:
+
+    def __init__(self, ga, fixed_schedule_part, initial_schedule, creation_time):
+        self.ga = ga
+        self.fixed_schedule_part = fixed_schedule_part
+        self.initial_schedule = initial_schedule
+        self.creation_time = creation_time
+        pass
+
+    def run(self, time_interval, current_time, **kwargs):
+
+        print("Run with: {0}".format(self.__class__.__name__))
+        self.logbook = None
+        t_ident = str(threading.current_thread().ident)
+        t_name = str(threading.current_thread().name)
+        print("Time: " + str(current_time) + " Running ga in isolated thread " + t_name + " " + t_ident)
+        # TODO: remove this hack later
+        (x, logbook) = self.ga(self.fixed_schedule_part,
+                    self.initial_schedule,
+                    current_time,
+                    **kwargs)
+        self.logbook = logbook
+
+        result = self.ga.get_result()
+
+        print("RESULT: " + str(result))
+
+        resulted_schedule = result[2]
+
+        Utility.check_and_raise_for_fixed_part(resulted_schedule, self.fixed_schedule_part, current_time)
+
+        return result
+
+    def stop(self):
+        pass
+
+    def is_running(self):
+        return False

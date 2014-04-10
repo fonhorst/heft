@@ -43,12 +43,19 @@ class EventMachine:
         self.current_time = 0
         self.logger = logger
 
+        self._stopped = False
+
     def run(self):
         count = 0
 
         taskStartCount = 0
         nodeFailedCount = 0
         while len(self.queue) > 0:
+
+            if hasattr(self, "_stopped") and self._stopped is True:
+                print("EventMachine has been stopped")
+                break
+
             event = self.queue.popleft()
 
             if self.current_time > event.time_happened:
@@ -109,6 +116,9 @@ class EventMachine:
         #for el in self.queue:
         #    st = st + str(el.time_happened) + ' '
         #print(' Queue: ' + st)
+
+    def stop(self):
+        self._stopped = True
 
     def event_arrived(self, event):
         pass
