@@ -96,7 +96,6 @@ class NewScheduleBuilder:
 
                     finished_tasks.add(task.id)
 
-                    #ready_children = [child for child in task.children if self._is_child_ready(finished_tasks, child)]
                     ready_children = self._get_ready_tasks(task.children, finished_tasks)
                     for child in ready_children:
                         ready_tasks.append(child.id)
@@ -109,9 +108,6 @@ class NewScheduleBuilder:
 
     def _get_ready_tasks(self, children, finished_tasks):
         def _is_child_ready(child):
-            # ids = [p.id for p in child.parents]
-            # result = False in [id in finished_tasks for id in ids]
-            # return not result
             for p in child.parents:
                 if p.id not in finished_tasks:
                     return False
@@ -174,6 +170,47 @@ class NewScheduleBuilder:
 
         schedule_mapping[node] = node_schedule
         return (st_time, end_time)
+
+
+    # def _find_and_place(self,
+    #                     schedule_mapping,
+    #                     task_to_node,
+    #                     chrmo_mapping,
+    #                     task,
+    #                     node,
+    #                     current_time):
+    #
+    #     runtime = self.estimator.estimate_runtime(task, node)
+    #     comm_ready = self._comm_ready_func(task_to_node,
+    #                                        chrmo_mapping,
+    #                                        task,
+    #                                        node)
+    #
+    #     def _check(st, end):
+    #         return (0.00001 < (st - current_time)) and st >= comm_ready and (0.00001 < (end - st) - runtime)
+    #
+    #     node_schedule = schedule_mapping.get(node, list())
+    #
+    #     size = len(node_schedule)
+    #     result = None
+    #     i = 0
+    #
+    #     free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
+    #     ## TODO: refactor it later
+    #     f_time = max(free_time, comm_ready)
+    #     f_time = max(f_time, current_time)
+    #     result = (f_time, f_time + runtime)
+    #     i = size - 1
+    #
+    #     previous_elt = i
+    #     st_time = result[0]
+    #     end_time = st_time + runtime
+    #     item = ScheduleItem(task, st_time, end_time)
+    #
+    #     node_schedule.insert(previous_elt + 1, item)
+    #
+    #     schedule_mapping[node] = node_schedule
+    #     return (st_time, end_time)
 
 
 
