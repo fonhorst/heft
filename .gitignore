@@ -7,3 +7,6 @@
 ./backup/*
 ./results/
 ./results/*
+
+./core/comparisons/debug
+./.idea
