@@ -95,7 +95,21 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
             self.queue = deque([ev for ev in self.queue if not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id)])
         pass
 
-    pass
+    def _check_event_for_ga_result(self, event):
+         # check for time to get result from GA running background
+        result = self.ga_computation_manager.check_result(event, self.current_time)
+        if result is not None:
+            resulted_schedule = result
+            t1 = Utility.get_the_last_time(resulted_schedule)
+            t2 = Utility.get_the_last_time(self.current_schedule)
+            ## TODO: uncomment it later.
+            ## TODO: we don't care about quality of result
+            ## generate new events
+            self._replace_current_schedule(event, resulted_schedule)
+            ## if event is TaskStarted event the return value means skip further processing
+            return True
+        return False
+
 
 class MPCm(ExtendedComputationManager):
     def __init__(self,
@@ -223,7 +237,7 @@ class MPCm(ExtendedComputationManager):
         ##Save stat to stat_saver
         ##=====================================
         ## TODO: make exception here
-        task_id = "" if not hasattr(self.current_event, 'task') else " " + str(self.current_event.task.id)
+        task_id = "" if not hasattr(self.current_event, 'task') else str(self.current_event.task.id)
         if self.stat_saver is not None:
             ## TODO: correct pop_agr later
             stat_data = {

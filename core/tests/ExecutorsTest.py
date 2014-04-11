@@ -3,6 +3,10 @@ import unittest
 from core.runners.ExecutorRunner import ExecutorsFactory
 
 
+## checking for absence of different exceptions.
+## due to checking procedures for validaty of resulted schedule
+## of simulation raise exception when it have found an error,
+## this test checks for schedule validaty too.
 class TestExecsExecutor(unittest.TestCase):
 
     RELIABLE = 1

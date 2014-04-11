@@ -115,7 +115,8 @@ class ExecutorRunner:
 
 class ExecutorsFactory:
 
-    DEFAULT_SAVE_PATH = "../../results/GaHeftRescheduleResults_[{0}]_[{1}]_[{2}].json"
+    DEFAULT_SAVE_PATH = "../../results/"
+    DEFAULT_TEMPLATE_NAME = "GaHeftRescheduleResults_[{0}]_[{1}]_[{2}].json"
 
     _default = None
 
@@ -242,7 +243,7 @@ class ExecutorsFactory:
     @ExecutorRunner()
     def run_mpgaheftoldpop_executor(self, *args, **kwargs):
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
-        stat_saver = ResultSaver(self.DEFAULT_SAVE_PATH.format(kwargs["key_for_save"], ComparisonUtility.cur_time(), ComparisonUtility.uuid()))
+        stat_saver = self.build_saver(*args, **kwargs)
 
         # emigrant_selection = lambda pop, k: selRoulette(pop, k)
         # emigrant_selection = lambda pop, k: [pop[i] for i in range(k)]
@@ -277,5 +278,10 @@ class ExecutorsFactory:
 
         resulted_schedule = ga_machine.current_schedule
         return resulted_schedule
+
+    def build_saver(self, *args, **kwargs):
+        path = kwargs.get("save_path", self.DEFAULT_SAVE_PATH)
+        stat_saver = ResultSaver(path + self.DEFAULT_TEMPLATE_NAME.format(kwargs["key_for_save"], ComparisonUtility.cur_time(), ComparisonUtility.uuid()))
+        return stat_saver
 
     pass
