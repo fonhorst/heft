@@ -28,7 +28,7 @@ repeat_count = 1
 #                                      })
 
 def fnc(tsk):
-    @profile_decorator
+    #@profile_decorator
     def decoratee(tsk):
         res = ExecutorsFactory.default().run_mpgaheftoldpop_executor(
                                          # for this experiment it doesn't matter at all
