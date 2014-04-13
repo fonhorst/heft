@@ -53,7 +53,7 @@ def _converge_aggr(data):
 def built_converged_data():
 
     # load data
-    base_path = "../results/results_m209_100iter_gaheft_oldpop/"
+    base_path = "../results/m100_10by10_1/"
     #filename = "GaRescheduleResults_by_5.json"
     filename = "small_run.json"
     path = base_path + filename
@@ -133,7 +133,7 @@ def plot_avrs_by_taskid(data, draw_func):
 
     i = 1
     for wf_name, tasks in data.items():
-        l = len(tasks) - 1
+        l = len(tasks) - 1 if "" in tasks.keys() else len(tasks)
         for task_id, (old_pop_results, random_results) in _sort_dict(tasks):
             if task_id is not "":
 

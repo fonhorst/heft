@@ -49,7 +49,7 @@ def fnc(tsk):
                                             "replacing_mutation_probability": 0.5,
                                             "sweep_mutation_probability": 0.4,
                                             "generations": 10
-                                         })
+                                         }, mixed_init_pop=True)
         return res
     return decoratee(tsk)
 
