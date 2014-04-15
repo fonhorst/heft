@@ -1,17 +1,21 @@
+from itertools import zip_longest
 import json
+import os
 from matplotlib.patches import Rectangle
 import matplotlib.pyplot as plt
 
 ##=========================================
 ## Settings
 ##=========================================
+from scoop import futures
 
 ALL = None
+# base_path = "../results/m_[30x3]/m100_[30x3]_10by10_tour4/"
 tasks_to_draw = ALL
 # tasks_to_draw = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00030_000"]
 
 # points = [10, 20, 30, 40, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500]
-points = [10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 85, 100, 150, 200, 250, 300, 350, 400, 450, 500]
+points = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 85, 100, 150, 200, 250, 300, 350, 400, 450, 500]
 
 ##========================================
 
@@ -50,10 +54,10 @@ def _converge_aggr(data):
         pass
     return aggr_dict
 
-def built_converged_data():
+def built_converged_data(base_path):
 
     # load data
-    base_path = "../results/m100_10by10_1/"
+
     #filename = "GaRescheduleResults_by_5.json"
     filename = "small_run.json"
     path = base_path + filename
@@ -124,12 +128,32 @@ def _draw_task(type, task_id, old_pop_results, random_results):
     plt.plot(best_avr_random, '-gD')
     pass
 
-def plot_avrs_by_taskid(data, draw_func):
+def _draw_pref_profit(type, task_id, old_pop_results, random_results):
+    plt.grid(True)
+    ax = plt.gca()
+    ax.set_xlim(0, len(points))
+    ax.set_xscale('linear')
+    plt.xticks(range(0, len(points)))
+    ax.set_xticklabels(points)
+    ax.set_title(str(task_id))
+
+    tp = type + "_avr"
+
+    best_avr_oldpop = [record[tp] for inum, record in _sort_dict(old_pop_results) if int(inum) in points]
+    best_avr_random = [record[tp] for inum, record in _sort_dict(random_results) if int(inum) in points]
+
+    f = lambda o, r: (1 - o/r)*100 if (o is not None) and (r is not None) else 0
+    data = [f(o, r) for (o, r) in zip_longest(best_avr_oldpop, best_avr_random)]
+    plt.plot(data, '-bx')
+    pass
+
+def plot_avrs_by_taskid(data, draw_func, base_path, filename):
     # test_json = "D:/wspace/heft/results/backup/convergence_results.json.test"
     # result_json = "D:/wspace/heft/results/convergence_results.json"
     # with open(result_json, 'r') as data_json:
     #     data = json.load(data_json)
 
+    plt.figure(figsize=(10, 10))
 
     i = 1
     for wf_name, tasks in data.items():
@@ -152,21 +176,57 @@ def plot_avrs_by_taskid(data, draw_func):
 
     h1 = Rectangle((0, 0), 1, 1, fc="r")
     h2 = Rectangle((0, 0), 1, 1, fc="g")
+    h3 = Rectangle((0, 0), 1, 1, fc="b")
+
+
 
     plt.suptitle('Average of Best vs Average of Avr', fontsize=20)
-    plt.figlegend([h1, h2], ['with old pop', 'random'], loc='lower center', ncol=10, labelspacing=0. )
+    plt.figlegend([h1, h2, h3], ['with old pop', 'random', 'perf profit'], loc='lower center', ncol=10, labelspacing=0. )
     plt.subplots_adjust(hspace=0.5)
-    # plt.savefig("D:/wspace/heft/results/convergence_results.png", dpi=128.0, format="png")
-    plt.show()
+    plt.savefig(base_path + filename, dpi=96.0, format="png")
+    plt.clf()
+    ##plt.show()
     pass
 
 def plot_variation_by_taskid():
     pass
 
+def visualize(path):
+    print("Processing path {0}...".format(path))
+    data = built_converged_data(path)
+    plot_avrs_by_taskid(data, _draw_task, path, "values.png")
+    plot_avrs_by_taskid(data, _draw_variation, path, "variation.png")
+    plot_avrs_by_taskid(data, _draw_pref_profit, path, "perf.png")
+
 if __name__ == "__main__":
-    data = built_converged_data()
-    plot_avrs_by_taskid(data, _draw_task)
-    plot_avrs_by_taskid(data, _draw_variation)
+
+
+    folder = "D:/wspace/heft/results/m_[50x3]/tournament/"
+
+    # folder = "D:/wspace/heft/results/m_[20x3]/tournament/m40(35)_[20x3]_5by10_tour4/"
+    def generate_pathes(folder):
+        pathes = []
+        for entry in os.listdir(folder):
+            p = folder + entry
+            if os.path.isdir(p):
+                pathes.extend(generate_pathes(p + "/"))
+            elif entry == "small_run.json":
+                pathes.append(folder)
+        return pathes
+
+    # pathes = generate_pathes(folder)
+
+    pathes = ["D:/wspace/heft/results/m_[50x3]/tournament/m100_[50x3]_10by35_tour4/",
+                "D:/wspace/heft/results/m_[30x3]/with_tournament/m50_[30x3]_10by60_tour4/",
+                "D:/wspace/heft/results/m_[30x3]/with_tournament/m40(35)_[30x3]_5by60_tour4/"]
+
+    list(futures.map(visualize, pathes))
+
+
+    #data = built_converged_data()
+    #plot_avrs_by_taskid(data, _draw_task, "values.png")
+    #plot_avrs_by_taskid(data, _draw_variation, "variation.png")
+    #plot_avrs_by_taskid(data, _draw_pref_profit, "perf.png")
 
 
 

@@ -1,12 +1,10 @@
 *.pyc
-./penv
-./penv_home
-./penv/*
 
-./backup
-./backup/*
-./results/
-./results/*
+penv_home/
+penv/
+backup
 
-./core/comparisons/debug
-./.idea
+results/
+core/comparisons/debug/
+utility/debug/
+.idea/

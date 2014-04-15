@@ -1,12 +1,15 @@
 from functools import partial
+import os
 from scoop import futures
 from core.comparisons.ComparisonBase import ComparisonUtility
 from core.runners.ExecutorRunner import ExecutorsFactory
 from environment.Utility import profile_decorator
 
-wf_name = "Montage_50"
-tsk_period = 30
-repeat_count = 1
+wf_name = "Montage_100"
+tsk_period = 10
+repeat_count = 5
+pop_size = 40
+save_path = "../../results/[{0}]_[{1}]_[{2}by{3}]/".format(wf_name, pop_size,tsk_period, repeat_count)
 # func = partial(ExecutorsFactory.default().run_mpgaheftoldpop_executor,
 #                                      # for this experiment it doesn't matter at all
 #                                      reliability=0.95,
@@ -27,7 +30,7 @@ repeat_count = 1
 #                                         "generations": 10
 #                                      })
 
-def fnc(tsk):
+def fnc(tsk, save_path):
     #@profile_decorator
     def decoratee(tsk):
         res = ExecutorsFactory.default().run_mpgaheftoldpop_executor(
@@ -44,12 +47,14 @@ def fnc(tsk):
                                          emigrant_selection=None,
                                          all_iters_count=200,
                                          ga_params={
-                                            "population": 50,
+                                            "population": pop_size,
                                             "crossover_probability": 0.8,
                                             "replacing_mutation_probability": 0.5,
                                             "sweep_mutation_probability": 0.4,
                                             "generations": 10
-                                         }, mixed_init_pop=True)
+                                         },
+                                         save_path=save_path,
+                                         mixed_init_pop=True)
         return res
     return decoratee(tsk)
 
@@ -92,10 +97,23 @@ tnum = int(wf_name.split("_")[1])
 tasks_to_fail = ["ID000{0}_000".format("0"+str(t) if t < 10 else str(t)) for t in range(0, tnum, tsk_period)]
 to_exec = [t for i in range(repeat_count) for t in tasks_to_fail]
 
+## TODO: make a dictionary to run
+def run_experiment(save_path):
+    if not os.path.exists(save_path):
+        print("create DIR: " + str(save_path))
+        os.makedirs(save_path)
+
+    with open(save_path + "timestamp.txt", "w") as f:
+        f.write("Start: {0}".format(ComparisonUtility.cur_time()))
+
+    fun = partial(fnc, save_path=save_path)
+    res = list(futures.map_as_completed(fun, to_exec))
+
+
+    with open(save_path + "timestamp.txt", "a") as f:
+        f.write("End: {0}".format(ComparisonUtility.cur_time()))
+
 if __name__ == "__main__":
-    #res = list(futures.map_as_completed(fnc, to_exec))
-    print("Start: {0}".format(ComparisonUtility.cur_time()))
-    fnc(to_exec[0])
-    print("End: {0}".format(ComparisonUtility.cur_time()))
+    run_experiment(save_path)
     pass
 
