@@ -223,7 +223,8 @@ class ExecutorsFactory:
     @ExecutorRunner()
     def run_gaheftoldpop_executor(self, *args, **kwargs):
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
-        stat_saver = ResultSaver(self.DEFAULT_SAVE_PATH.format(kwargs["key_for_save"], ComparisonUtility.cur_time(), ComparisonUtility.uuid()))
+        # stat_saver = ResultSaver(self.DEFAULT_SAVE_PATH.format(kwargs["key_for_save"], ComparisonUtility.cur_time(), ComparisonUtility.uuid()))
+        stat_saver = self.build_saver(*args, **kwargs)
         ga_machine = GaHeftOldPopExecutor(heft_planner=dynamic_heft,
                                            base_fail_duration=40,
                                            base_fail_dispersion=1,

@@ -61,39 +61,7 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
 
         self.ga_computation_manager.past_pop = result[0][1]
 
-    def _task_start_handler(self, event):
 
-        res = self._check_event_for_ga_result(event)
-        if res:
-            return
-
-
-        # check task as executing
-        # self.current_schedule.change_state(event.task, ScheduleItem.EXECUTING)
-        # try to find nodes in cloud
-        # check if failed and post
-        (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
-        item.state = ScheduleItem.EXECUTING
-
-        if self._check_fail(event.task, node):
-            # generate fail time, post it
-            duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
-            time_of_fail = (item.end_time - self.current_time)*random.random()
-            time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
-
-            event_failed = NodeFailed(node, event.task)
-            event_failed.time_happened = time_of_fail
-
-            # event_nodeup = NodeUp(node)
-            # event_nodeup.time_happened = time_of_fail + duration
-
-            self.post(event_failed)
-            # self.post(event_nodeup)
-
-            # remove TaskFinished event
-            ##TODO: make a function for this purpose in the base class
-            self.queue = deque([ev for ev in self.queue if not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id)])
-        pass
 
     def _check_event_for_ga_result(self, event):
          # check for time to get result from GA running background
