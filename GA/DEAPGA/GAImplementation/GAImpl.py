@@ -110,6 +110,8 @@ class GAFactory:
 
         ga_functions = kwargs.get("ga_functions", GAFunctions2(wf, rm, estimator))
 
+        check_evolution_for_stopping = kwargs.get("check_evolution_for_stopping", True)
+
 
         def default_fixed_schedule_part(resource_manager):
             fix_schedule_part = Schedule({node: [] for node in HeftHelper.to_nodes(resource_manager.get_resources())})
@@ -207,7 +209,8 @@ class GAFactory:
                     # logbook.record(pop=copy.deepcopy(pop))
 
                     # check if evolution process has stopped
-                    if len(previous_raised_avr_individuals) == repeated_best_count:
+
+                    if check_evolution_for_stopping is True and len(previous_raised_avr_individuals) == repeated_best_count:
                         length = len(previous_raised_avr_individuals)
                         whole_sum = sum(previous_raised_avr_individuals)
                         mean = whole_sum / length

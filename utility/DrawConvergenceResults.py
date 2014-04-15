@@ -220,7 +220,8 @@ if __name__ == "__main__":
     #             "D:/wspace/heft/results/m_[30x3]/with_tournament/m50_[30x3]_10by60_tour4/",
     #             "D:/wspace/heft/results/m_[30x3]/with_tournament/m40(35)_[30x3]_5by60_tour4/"]
 
-    pathes = ["D:/wspace/heft/results/"]
+    # pathes = ["D:/wspace/heft/results/"]
+    pathes = ["D:/wspace/heft/results/m50_gaheft_oldpop_10by5/"]
 
     list(futures.map(visualize, pathes))
 
