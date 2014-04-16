@@ -55,7 +55,7 @@ class TestExecsExecutor(unittest.TestCase):
                                         "generations": 10
                                      })
         self.oldpopgaheft_func = partial(ExecutorsFactory.default().run_gaheftoldpop_executor,
-                                     is_silent=True,
+                                     is_silent=False,
                                      wf_name=self.DEFAULT_WF_NAME,
                                      logger=None,
                                      key_for_save='test',
@@ -88,6 +88,7 @@ class TestExecsExecutor(unittest.TestCase):
                                      })
 
         self.oldpopmpgaheft_mixed_init_pop_func = partial(self.oldpopmpgaheft_func, mixed_init_pop=True)
+        self.oldpopmpgaheft_with_merge_pop_func = partial(self.oldpopmpgaheft_func, merged_pop_iters=2)
         pass
 
     def _run(self, name):
@@ -129,6 +130,10 @@ class TestExecsExecutor(unittest.TestCase):
 
     def test_oldpopmpgaheft_mixed_init_pop_executor(self):
         self._run("oldpopmpgaheft_mixed_init_pop")
+        pass
+
+    def test_oldpopmpgaheft_with_merge_pop_executor(self):
+        self._run("oldpopmpgaheft_with_merge_pop")
         pass
 
     pass

@@ -24,6 +24,8 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
                  emigrant_selection,
                  all_iters_count,
                  mixed_init_pop=False,
+                 merged_pop_iters=0,
+                 check_evolution_for_stopping=False,
                  ga_params=GA_PARAMS,
                  logger=None,
                  stat_saver=None):
@@ -46,6 +48,8 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
                                                                  emigrant_selection,
                                                                  all_iters_count,
                                                                  mixed_init_pop,
+                                                                 merged_pop_iters,
+                                                                 check_evolution_for_stopping,
                                                                  ga_params,
                                                                  stat_saver)
         pass
@@ -78,7 +82,7 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
             return True
         return False
 
-
+## TODO: replace all this params with context
 class MPCm(ExtendedComputationManager):
     def __init__(self,
                    fixed_interval_for_ga,
@@ -90,6 +94,8 @@ class MPCm(ExtendedComputationManager):
                    emigrant_selection,
                    all_iters_count,
                    mixed_init_pop,
+                   merged_pop_iters,
+                   check_evolution_for_stopping,
                    ga_params=GA_PARAMS,
                    stat_saver=None):
          super().__init__(fixed_interval_for_ga,
@@ -103,7 +109,9 @@ class MPCm(ExtendedComputationManager):
          self.migrCount = migrCount
          self.emigrant_selection = emigrant_selection
          self.all_iters_count = all_iters_count
-         self.mixed_init_pop=mixed_init_pop
+         self.mixed_init_pop = mixed_init_pop
+         self.merged_pop_iters = merged_pop_iters
+         self.check_evolution_for_stopping = check_evolution_for_stopping
          pass
 
     def _get_ga_alg(self):
@@ -114,7 +122,9 @@ class MPCm(ExtendedComputationManager):
                              ga_params=self.params,
                              migrCount=self.migrCount,
                              emigrant_selection=self.emigrant_selection,
-                             all_iters_count=self.all_iters_count
+                             all_iters_count=self.all_iters_count,
+                             merged_pop_iters=self.merged_pop_iters,
+                             check_evolution_for_stopping=self.check_evolution_for_stopping
                              )
 
          return ga

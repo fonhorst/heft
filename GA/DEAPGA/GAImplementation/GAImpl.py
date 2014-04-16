@@ -140,8 +140,8 @@ class GAFactory:
 
         toolbox.register("mate", ga_functions.crossover)
         toolbox.register("mutate", ga_functions.mutation)
-        # toolbox.register("select", tools.selTournament, tournsize=4)
-        toolbox.register("select", tools.selRoulette)
+        toolbox.register("select", tools.selTournament, tournsize=4)
+        # toolbox.register("select", tools.selRoulette)
         # toolbox.register("select", tools.selBest)
         # toolbox.register("select", tools.selTournamentDCD)
         # toolbox.register("select", tools.selNSGA2)
@@ -210,7 +210,7 @@ class GAFactory:
 
                     # check if evolution process has stopped
 
-                    if check_evolution_for_stopping is True and len(previous_raised_avr_individuals) == repeated_best_count:
+                    if (check_evolution_for_stopping is True) and len(previous_raised_avr_individuals) == repeated_best_count:
                         length = len(previous_raised_avr_individuals)
                         whole_sum = sum(previous_raised_avr_individuals)
                         mean = whole_sum / length

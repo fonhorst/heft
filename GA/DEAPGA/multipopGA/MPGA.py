@@ -1,7 +1,9 @@
 from copy import deepcopy
 from functools import reduce
+import functools
 from deap import base, tools, creator
 from deap.tools import migRing
+import operator
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory, SynchronizedCheckpointedGA
 from environment.Utility import profile_decorator
@@ -19,7 +21,8 @@ def create_mpga(*args, **kwargs):
     all_iters_count = kwargs["all_iters_count"]
     POPSIZE = ga_params["population"]
     GENERATIONS = ga_params["generations"]
-    MIGRATIONS = int(all_iters_count/GENERATIONS)
+    MERGED_POP = ga_params.get("merged_pop_iters", 0)
+    MIGRATIONS = int((all_iters_count - MERGED_POP)/GENERATIONS)
 
     is_silent = kwargs["silent"]
     wf = kwargs["wf"]
@@ -117,6 +120,23 @@ def create_mpga(*args, **kwargs):
                 migRing(populations, migrCount, emigrant_selection)
                 result = quick_save()
                 pass
+
+            # merge all populations in one and evaluate for some time
+            # TODO: test this changes
+            common_pop = functools.reduce(operator.add, populations, [])
+            for k in range(MERGED_POP):
+                ((best, npop, schedule, stopped_iteration), logbook) = ga_alg(fixed_schedule_part,
+                           None,
+                           current_time=current_time,
+                           initial_population=common_pop)
+                common_pop = npop
+                for rec in logbook:
+                    iter = (all_iters_count - MERGED_POP) + rec["iter"]
+                    common_logbook.record(iter=iter, worst=rec["worst"], best=rec["best"], avr=rec["avr"])
+                    pass
+                result = quick_save()
+                pass
+
             ((best, new_oldpop, x1, x2), x3) = result
             result = ((best, new_oldpop, ga_functions.build_schedule(best, fixed_schedule_part, current_time), None), common_logbook)
             self._save_result(result[0])

@@ -11,8 +11,10 @@ from scoop import futures
 
 ALL = None
 # base_path = "../results/m_[30x3]/m100_[30x3]_10by10_tour4/"
-tasks_to_draw = ALL
+# tasks_to_draw = ALL
 # tasks_to_draw = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00030_000"]
+# tasks_to_draw = ["ID00040_000", "ID00050_000", "ID00060_000", "ID00070_000"]
+tasks_to_draw = ["ID00080_000", "ID00090_000"]
 
 # points = [10, 20, 30, 40, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500]
 points = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 85, 100, 150, 200, 250, 300, 350, 400, 450, 500]
@@ -161,14 +163,21 @@ def plot_avrs_by_taskid(data, draw_func, base_path, filename):
         for task_id, (old_pop_results, random_results) in _sort_dict(tasks):
             if task_id is not "":
 
-                ## best:
-                plt.subplot(l, 2, i)
-                draw_func("best", task_id, old_pop_results, random_results)
-                i += 1
+                ## two column representation
 
-                ## avr:
-                plt.subplot(l, 2, i)
-                draw_func("avr", task_id, old_pop_results, random_results)
+                # ## best:
+                # plt.subplot(l, 2, i)
+                # draw_func("best", task_id, old_pop_results, random_results)
+                # i += 1
+                #
+                # ## avr:
+                # plt.subplot(l, 2, i)
+                # draw_func("avr", task_id, old_pop_results, random_results)
+                # i += 1
+
+                ## best:
+                plt.subplot(l, 1, i)
+                draw_func("best", task_id, old_pop_results, random_results)
                 i += 1
             pass
         pass
@@ -221,7 +230,7 @@ if __name__ == "__main__":
     #             "D:/wspace/heft/results/m_[30x3]/with_tournament/m40(35)_[30x3]_5by60_tour4/"]
 
     # pathes = ["D:/wspace/heft/results/"]
-    pathes = ["D:/wspace/heft/results/m50_gaheft_oldpop_10by5/"]
+    pathes = ["D:/wspace/heft/results/good_results/m100_gaheft_oldpop_10by10_2/"]
 
     list(futures.map(visualize, pathes))
 
