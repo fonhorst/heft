@@ -11,10 +11,10 @@ from scoop import futures
 
 ALL = None
 # base_path = "../results/m_[30x3]/m100_[30x3]_10by10_tour4/"
-# tasks_to_draw = ALL
+tasks_to_draw = ALL
 # tasks_to_draw = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00030_000"]
 # tasks_to_draw = ["ID00040_000", "ID00050_000", "ID00060_000", "ID00070_000"]
-tasks_to_draw = ["ID00080_000", "ID00090_000"]
+# tasks_to_draw = ["ID00080_000", "ID00090_000"]
 
 # points = [10, 20, 30, 40, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500]
 points = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 85, 100, 150, 200, 250, 300, 350, 400, 450, 500]
@@ -210,7 +210,7 @@ def visualize(path):
 if __name__ == "__main__":
 
 
-    folder = "D:/wspace/heft/results/m_[50x3]/tournament/"
+    folder = "D:/wspace/heft/results/100_mp_with_merge/"
 
     # folder = "D:/wspace/heft/results/m_[20x3]/tournament/m40(35)_[20x3]_5by10_tour4/"
     def generate_pathes(folder):
@@ -223,14 +223,14 @@ if __name__ == "__main__":
                 pathes.append(folder)
         return pathes
 
-    # pathes = generate_pathes(folder)
+    pathes = generate_pathes(folder)
 
     # pathes = ["D:/wspace/heft/results/m_[50x3]/tournament/m100_[50x3]_10by35_tour4/",
     #             "D:/wspace/heft/results/m_[30x3]/with_tournament/m50_[30x3]_10by60_tour4/",
     #             "D:/wspace/heft/results/m_[30x3]/with_tournament/m40(35)_[30x3]_5by60_tour4/"]
 
     # pathes = ["D:/wspace/heft/results/"]
-    pathes = ["D:/wspace/heft/results/good_results/m100_gaheft_oldpop_10by10_2/"]
+    # pathes = ["D:/wspace/heft/results/good_results/m100_gaheft_oldpop_10by10_2/"]
 
     list(futures.map(visualize, pathes))
 

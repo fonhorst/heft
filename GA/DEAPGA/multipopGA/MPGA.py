@@ -1,12 +1,13 @@
 from copy import deepcopy
 from functools import reduce
 import functools
+import operator
+
 from deap import base, tools, creator
 from deap.tools import migRing
-import operator
+
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory, SynchronizedCheckpointedGA
-from environment.Utility import profile_decorator
 
 
 def create_mpga(*args, **kwargs):
@@ -44,14 +45,14 @@ def create_mpga(*args, **kwargs):
             pass
 
         #@profile_decorator
-        def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None):
+        def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None, only_new_pops=False):
 
 
 
             ##==========================
             ## create populations
             ##==========================
-            old_pop = initial_population
+
 
             ##TODO: remake it
             creator.create("FitnessMax", base.Fitness, weights=(1.0,))
@@ -63,15 +64,21 @@ def create_mpga(*args, **kwargs):
             # Structure initializers
             toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.attr_bool)
             toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-            newpop = toolbox.population(n=POPSIZE)
 
-            #heft_initial = GAFunctions2.schedule_to_chromosome(initial_schedule)
-            # TODO: this is a stub. Rearchitect information flows and entities responsibilities as soon as you will get the first positive results.
-            heft_initial = initial_schedule
-            heft_initial = tools.initIterate(creator.Individual, lambda: heft_initial)
-            heft_pop = [ga_functions.mutation(deepcopy(heft_initial)) for i in range(POPSIZE)]
-
-            populations = [old_pop, newpop, heft_pop]
+            ## TODO: replace it with strategy and specilized builder
+            if only_new_pops is True:
+                ## TODO: replace this magic number with parameter
+                populations = [toolbox.population(n=POPSIZE) for i in range(3)]
+            else:
+                ## create populations
+                old_pop = initial_population
+                newpop = toolbox.population(n=POPSIZE)
+                #heft_initial = GAFunctions2.schedule_to_chromosome(initial_schedule)
+                # TODO: this is a stub. Rearchitect information flows and entities responsibilities as soon as you will get the first positive results.
+                heft_initial = initial_schedule
+                heft_initial = tools.initIterate(creator.Individual, lambda: heft_initial)
+                heft_pop = [ga_functions.mutation(deepcopy(heft_initial)) for i in range(POPSIZE)]
+                populations = [old_pop, newpop, heft_pop]
 
             ## TODO: replace this more effective implementation
             def quick_save():

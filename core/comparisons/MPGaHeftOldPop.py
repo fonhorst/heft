@@ -36,7 +36,8 @@ def fnc(tsk, save_path, wf_name=default_wf_name):
                                             "generations": 10
                                          },
                                          save_path=save_path,
-                                         mixed_init_pop=True)
+                                         mixed_init_pop=False,
+                                         mpnewVSmpoldmode=True)
         return res
     return decoratee(tsk)
 
@@ -51,7 +52,7 @@ def produce_queue_of_tasks(wf_name):
     return to_exec
 
 def run_experiment(wf_name):
-    save_path = "../../results/[{0}]_[{1}]_[{2}by{3}]/".format(wf_name, pop_size, tsk_period, repeat_count)
+    save_path = "../../results/[{0}]_[{1}]_[{2}by{3}]_[{4}]/".format(wf_name, pop_size, tsk_period, repeat_count, ComparisonUtility.cur_time())
 
     if not os.path.exists(save_path):
         print("create DIR: " + str(save_path))
@@ -70,6 +71,7 @@ def run_experiment(wf_name):
         f.write("End: {0}".format(ComparisonUtility.cur_time()))
 
 if __name__ == "__main__":
-    run_experiment(wf_name="Montage_100")
+    run_experiment(wf_name="Montage_75")
+    run_experiment(wf_name="Montage_50")
     pass
 

@@ -26,6 +26,7 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
                  mixed_init_pop=False,
                  merged_pop_iters=0,
                  check_evolution_for_stopping=False,
+                 mpnewVSmpoldmode=False,
                  ga_params=GA_PARAMS,
                  logger=None,
                  stat_saver=None):
@@ -50,6 +51,7 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
                                                                  mixed_init_pop,
                                                                  merged_pop_iters,
                                                                  check_evolution_for_stopping,
+                                                                 mpnewVSmpoldmode,
                                                                  ga_params,
                                                                  stat_saver)
         pass
@@ -96,6 +98,7 @@ class MPCm(ExtendedComputationManager):
                    mixed_init_pop,
                    merged_pop_iters,
                    check_evolution_for_stopping,
+                   mpnewVSmpoldmode=False,
                    ga_params=GA_PARAMS,
                    stat_saver=None):
          super().__init__(fixed_interval_for_ga,
@@ -112,6 +115,7 @@ class MPCm(ExtendedComputationManager):
          self.mixed_init_pop = mixed_init_pop
          self.merged_pop_iters = merged_pop_iters
          self.check_evolution_for_stopping = check_evolution_for_stopping
+         self.mpnewVSmpoldmode = mpnewVSmpoldmode
          pass
 
     def _get_ga_alg(self):
@@ -193,9 +197,16 @@ class MPCm(ExtendedComputationManager):
             cleaned_schedule = ga_calc.fixed_schedule_part
             initial_pop_gaheft = [self._clean_chromosome(deepcopy(p), self.current_event, cleaned_schedule) for p in self.past_pop] + heft_pop
 
+
         print("GaHeft WITH NEW POP: ")
-        ga = self._get_simple_ga()
-        ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, None, current_time, initial_population=initial_pop_gaheft)
+        if self.mpnewVSmpoldmode is True:
+            print("using multi population gaheft...")
+            ga = self._get_ga_alg()
+            ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, None, current_time, initial_population=None, only_new_pops=True)
+        else:
+            print("using single population gaheft...")
+            ga = self._get_simple_ga()
+            ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, None, current_time, initial_population=initial_pop_gaheft)
 
 
 

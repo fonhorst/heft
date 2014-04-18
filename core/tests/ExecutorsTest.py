@@ -89,6 +89,7 @@ class TestExecsExecutor(unittest.TestCase):
 
         self.oldpopmpgaheft_mixed_init_pop_func = partial(self.oldpopmpgaheft_func, mixed_init_pop=True)
         self.oldpopmpgaheft_with_merge_pop_func = partial(self.oldpopmpgaheft_func, merged_pop_iters=2)
+        self.oldpopmpgaheft_vs_mpgaheft_func = partial(self.oldpopmpgaheft_func, mpnewVSmpoldmode=True)
         pass
 
     def _run(self, name):
@@ -134,6 +135,10 @@ class TestExecsExecutor(unittest.TestCase):
 
     def test_oldpopmpgaheft_with_merge_pop_executor(self):
         self._run("oldpopmpgaheft_with_merge_pop")
+        pass
+
+    def test_oldpopmpgaheft_vs_mpgaheft(self):
+        self._run("oldpopmpgaheft_vs_mpgaheft")
         pass
 
     pass
