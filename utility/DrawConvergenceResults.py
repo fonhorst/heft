@@ -210,7 +210,7 @@ def visualize(path):
 if __name__ == "__main__":
 
 
-    folder = "D:/wspace/heft/results/100_mp_with_merge/"
+    folder = "D:/wspace/heft/results/[Montage_50]_[2]_[10by10]_[18_04_14_12_43_30]/"
 
     # folder = "D:/wspace/heft/results/m_[20x3]/tournament/m40(35)_[20x3]_5by10_tour4/"
     def generate_pathes(folder):

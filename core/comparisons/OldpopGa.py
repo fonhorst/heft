@@ -1,12 +1,9 @@
 from functools import partial
-import os
-from scoop import futures
 from core.CommonComponents.ExpRunner import run_experiment
-from core.comparisons.ComparisonBase import ComparisonUtility
 from core.runners.ExecutorRunner import ExecutorsFactory
-from environment.Utility import profile_decorator
 
-tsk_period = 10
+
+tsk_period = 5
 repeat_count = 10
 pop_size = 50
 
@@ -40,9 +37,12 @@ def fnc(tsk, save_path, wf_name, pop_size):
         return res
     return decoratee(tsk)
 
+
+
 if __name__ == "__main__":
     run = partial(run_experiment, fnc=fnc, tsk_period=tsk_period, repeat_count=repeat_count, pop_size=pop_size)
-    run(wf_name="Montage_75")
-    run(wf_name="Montage_50")
+    run_experiment(wf_name="Montage_100")
+    run_experiment(wf_name="Montage_50")
     pass
+
 

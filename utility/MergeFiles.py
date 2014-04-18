@@ -43,7 +43,7 @@ if __name__ == "__main__":
         result = functools.reduce(lambda x, y: x + y, seq, [dir])
         return result
 
-    dir = "D:/wspace/heft/results/100_mp_with_merge/"
+    dir = "D:/wspace/heft/results/[Montage_50]_[2]_[10by10]_[18_04_14_12_43_30]/"
     # dir = "D:/wspace/heft/results/"
     # dir = "D:/wspace/heft/results/m_[50x3]/tournament/"
     pathes = generate_pathes(dir, key)

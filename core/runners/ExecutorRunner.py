@@ -200,7 +200,7 @@ class ExecutorsFactory:
 
     @ExecutorRunner()
     def run_oldpop_executor(self, *args, **kwargs):
-        stat_saver = ResultSaver(self.DEFAULT_SAVE_PATH.format(kwargs["key_for_save"], ComparisonUtility.cur_time(), ComparisonUtility.uuid()))
+        stat_saver = self.build_saver(*args, **kwargs)
 
         ga_machine = GaOldPopExecutor(
                             workflow=kwargs["wf"],
