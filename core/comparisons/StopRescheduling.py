@@ -21,6 +21,7 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
                  wf_name,
                  stat_saver,
                  task_id_to_fail,
+                 check_evolution_for_stopping,
                  logger=None):
         self.queue = deque()
         self.current_time = 0
@@ -37,6 +38,7 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
         self.wf_name = wf_name
         self.stat_saver = stat_saver
         self.task_id_to_fail = task_id_to_fail
+        self.check_evolution_for_stopping = check_evolution_for_stopping
 
         self.logger = logger
 
@@ -60,7 +62,8 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
                                                    wf=self.workflow,
                                                    resource_manager=self.resource_manager,
                                                    estimator=self.estimator,
-                                                   ga_params=self.params)
+                                                   ga_params=self.params,
+                                                   check_evolution_for_stopping=self.check_evolution_for_stopping)
         return ga_planner
 
     def _task_start_handler(self, event):
@@ -80,11 +83,12 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
             event_failed = NodeFailed(node, event.task)
             event_failed.time_happened = time_of_fail
 
-            event_nodeup = NodeUp(node)
-            event_nodeup.time_happened = time_of_fail + duration
+            # event_nodeup = NodeUp(node)
+            # event_nodeup.time_happened = time_of_fail + duration
 
             self.post(event_failed)
-            self.post(event_nodeup)
+            # self.post(event_nodeup)
+
             # remove TaskFinished event
             ##TODO: make a function for this purpose in the base class
             self.queue = deque([ev for ev in self.queue if not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id)])

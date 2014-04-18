@@ -35,6 +35,7 @@ def fnc(tsk, save_path, wf_name, pop_size):
                                             "generations": 10
                                          },
                                          save_path=save_path,
+                                         check_evolution_for_stopping=False,
                                          mixed_init_pop=False,
                                          mpnewVSmpoldmode=True)
         return res

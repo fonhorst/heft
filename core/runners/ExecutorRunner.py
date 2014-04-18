@@ -212,6 +212,7 @@ class ExecutorsFactory:
                             wf_name=kwargs["wf_name"],
                             stat_saver=stat_saver,
                             task_id_to_fail=kwargs["task_id_to_fail"],
+                            check_evolution_for_stopping=kwargs["check_evolution_for_stopping"],
                             logger=kwargs["logger"])
 
         ga_machine.init()
