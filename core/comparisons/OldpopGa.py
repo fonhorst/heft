@@ -41,8 +41,8 @@ def fnc(tsk, save_path, wf_name, pop_size):
 
 if __name__ == "__main__":
     run = partial(run_experiment, fnc=fnc, tsk_period=tsk_period, repeat_count=repeat_count, pop_size=pop_size)
-    run_experiment(wf_name="Montage_100")
-    run_experiment(wf_name="Montage_50")
+    run(wf_name="Montage_100")
+    run(wf_name="Montage_50")
     pass
 
 
