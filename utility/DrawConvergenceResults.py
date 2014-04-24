@@ -13,18 +13,11 @@ ALL = None
 # base_path = "../results/m_[30x3]/m100_[30x3]_10by10_tour4/"
 tasks_to_draw = ALL
 # tasks_to_draw = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00030_000"]
-# tasks_to_draw = ["ID00000_000", "ID00010_000"]
-# tasks_to_draw = ["ID00020_000", "ID00030_000"]
-tasks_to_draw = ["ID00040_000", "ID00050_000", "ID00060_000", "ID00070_000"]
-# tasks_to_draw = ["ID00060_000", "ID00070_000", "ID00080_000", "ID00090_000"]
+# tasks_to_draw = ["ID00040_000", "ID00050_000", "ID00060_000", "ID00070_000"]
+# tasks_to_draw = ["ID00080_000", "ID00090_000"]
 
 # points = [10, 20, 30, 40, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500]
-points = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 99]
-# points = [0, 5, 10, 15, 20, 25, 30]
-# points = [1, 5, 10, 15, 20, 25, 30]
-# points = [i + 1 for i in range(30)]
-
-y_points = [500, 600, 700, 800, 900, 1000, 1100]
+points = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 85, 100, 150, 200, 250, 300, 350, 400, 450, 500]
 
 ##========================================
 
@@ -37,7 +30,7 @@ def _converge_aggr(data):
     for el in data:
         #iteration massive
         for record in el[2]:
-            iter_num = int(record["iter"])
+            iter_num = record["iter"] + 1
             if iter_num in interest_dict.keys():
                 interest_dict[iter_num].append(record)
                 pass
@@ -47,33 +40,13 @@ def _converge_aggr(data):
     aggr_dict = dict()
     for inum, items in interest_dict.items():
         if len(items) > 0:
-            # avr = [i["avr"] for i in items]
-            # avr_avr = sum(avr)/len(items)
-            # min_avr = min(avr)
-            # max_avr = max(avr)
-            #
-            # best = [i["best"] for i in items]
-            # best_avr = sum(best)/len(items)
-            # min_best = min(best)
-            # max_best = max(best)
-
             avr = [i["avr"] for i in items]
             avr_avr = sum(avr)/len(items)
             min_avr = min(avr)
             max_avr = max(avr)
 
             best = [i["best"] for i in items]
-            #TODO: remove it later
-            best = sorted(best)
-
-            # best = best[0:20] if len(best) > 20 else best
-            # m = sum(best)/len(best)
-            # sigma = math.sqrt(sum([math.pow((el - m), 2) for el in best]))/len(best)
-            # best = [el for el in best if abs(el - m) - 2*sigma < 0.0001]
-
-            #best = best[0:20] if len(best) > 20 else best
-            #best = best[0:10] + best[0:-10] if len(best) > 20 else best
-            best_avr = sum(best)/len(best)
+            best_avr = sum(best)/len(items)
             min_best = min(best)
             max_best = max(best)
 
@@ -128,11 +101,6 @@ def _draw_variation(type, task_id, old_pop_results, random_results):
     ax.set_xticklabels(points)
     ax.set_title(str(task_id))
 
-    # ax.set_yscale('linear')
-    # ax.set_ylim(500, 1100)
-    # ax.set_yticklabels(y_points)
-    # plt.xticks(range(0, len(y_points)))
-
     tp = type + "_items"
 
     # num to seqnum
@@ -154,11 +122,6 @@ def _draw_task(type, task_id, old_pop_results, random_results):
     ax.set_xticklabels(points)
     ax.set_title(str(task_id))
 
-    # ax.set_yscale('linear')
-    # ax.set_ylim(500, 1100)
-    # ax.set_yticklabels(y_points)
-    # plt.xticks(range(0, len(y_points)))
-
     tp = type + "_avr"
 
     best_avr_oldpop = [record[tp] for inum, record in _sort_dict(old_pop_results) if int(inum) in points]
@@ -175,14 +138,6 @@ def _draw_pref_profit(type, task_id, old_pop_results, random_results):
     plt.xticks(range(0, len(points)))
     ax.set_xticklabels(points)
     ax.set_title(str(task_id))
-
-    plt.xlabel("Iterations")
-    plt.ylabel("Makespan impr, %")
-
-    # ax.set_yscale('linear')
-    # ax.set_ylim(500, 1100)
-    # ax.set_yticklabels(y_points)
-    # plt.xticks(range(0, len(y_points)))
 
     tp = type + "_avr"
 
@@ -237,7 +192,7 @@ def plot_avrs_by_taskid(data, draw_func, base_path, filename):
     plt.suptitle('Average of Best vs Average of Avr', fontsize=20)
     plt.figlegend([h1, h2, h3], ['with old pop', 'random', 'perf profit'], loc='lower center', ncol=10, labelspacing=0. )
     plt.subplots_adjust(hspace=0.5)
-    plt.savefig(base_path + filename, dpi=300.0, format="png")
+    plt.savefig(base_path + filename, dpi=96.0, format="png")
     plt.clf()
     ##plt.show()
     pass
@@ -255,7 +210,8 @@ def visualize(path):
 if __name__ == "__main__":
 
 
-    folder = "C:/Users/nikolay/Documents/the_third_paper/good/good/m100_gaheft_oldpop_10by10/"
+    folder = "D:/wspace/heft/results/[Montage_50]_[2]_[10by10]_[18_04_14_12_43_30]/"
+
     # folder = "D:/wspace/heft/results/m_[20x3]/tournament/m40(35)_[20x3]_5by10_tour4/"
     def generate_pathes(folder):
         pathes = []

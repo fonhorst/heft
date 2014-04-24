@@ -1,4 +1,5 @@
 import random
+from deap.tools.selection import selRoulette
 from core.DSimpleHeft import DynamicHeft
 from core.PublicResourceManager import PublicResourceManager
 from core.comparisons.ComparisonBase import ResultSaver, ComparisonUtility
