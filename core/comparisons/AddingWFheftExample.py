@@ -24,7 +24,7 @@ heft = DynamicHeft(initial_wf, resource_manager, estimator)
 empty_schedule  = Schedule({node:[] for node in heft.get_nodes()})
 heft_schedule = heft.run(empty_schedule)
 
-all_initial_wf_time = Utility.get_the_last_time(heft_schedule)
+all_initial_wf_time = Utility.makespan(heft_schedule)
 print("Initial time: " + str(all_initial_wf_time))
 
 n = 1
@@ -51,7 +51,7 @@ def heft_reschedule(wf_added_time):
     if added_wf_validaty is not True:
         raise Exception("Check for added_wf_validaty didn't pass")
     #print("All Ok!")
-    result = Utility.get_the_last_time(heft_added_schedule)
+    result = Utility.makespan(heft_added_schedule)
     return result
 
 result = [[heft_reschedule(wf_added_time) for i in range(n)] for wf_added_time in wf_added_times]

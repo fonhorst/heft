@@ -51,7 +51,7 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
         self.current_schedule = Schedule({node: [] for node in self.resource_manager.get_nodes()})
         (result, logbook) = ga_planner(self.current_schedule, None)
         self.past_pop = ga_planner.get_pop()
-        print("Result makespan: " + str(Utility.get_the_last_time(result[2])))
+        print("Result makespan: " + str(Utility.makespan(result[2])))
         self.current_schedule = result[2]
         self._post_new_events()
         self.failed_once = False
@@ -171,7 +171,7 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
         ((v1, v2, resulted_schedule, iter_old_pop), logbook_old_pop) = ga_planner(current_cleaned_schedule, None, self.current_time, initial_population=cleaned_chromosomes)
         #checking
         Utility.check_and_raise_for_fixed_part(resulted_schedule, current_cleaned_schedule, self.current_time)
-        makespan_old_pop = Utility.get_the_last_time(resulted_schedule)
+        makespan_old_pop = Utility.makespan(resulted_schedule)
         print("Result makespan: " + str(makespan_old_pop))
 
 
@@ -185,9 +185,9 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
         ((v3, v4, schedule_with_random, iter_random), logbook_random) = ga_planner_with_random_init_population(current_cleaned_schedule, None, self.current_time, initial_population=None)
 
         Utility.check_and_raise_for_fixed_part(schedule_with_random, current_cleaned_schedule, self.current_time)
-        makespan_random = Utility.get_the_last_time(schedule_with_random)
+        makespan_random = Utility.makespan(schedule_with_random)
 
-        print("Result makespan: " + str(Utility.get_the_last_time(schedule_with_random)))
+        print("Result makespan: " + str(Utility.makespan(schedule_with_random)))
 
 
         # creating and writing some stat data

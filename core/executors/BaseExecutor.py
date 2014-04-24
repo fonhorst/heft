@@ -4,6 +4,10 @@ from environment.ResourceManager import ScheduleItem, Schedule
 
 
 class BaseExecutor(EventMachine):
+
+    def __init__(self):
+        super().__init__()
+
     def event_arrived(self, event):
         if isinstance(event, TaskStart):
             self._task_start_handler(event)
@@ -45,6 +49,10 @@ class BaseExecutor(EventMachine):
         ##TODO: refactor it later
         self.queue = deque([event for event in self.queue if check(event)])
         return clean_schedule
+
+    def _remove_events(self, check_func):
+        self.queue = deque([ev for ev in self.queue if check_func(ev)])
+        pass
 
     def _post_new_events(self):
         unstarted_items = set()

@@ -5,7 +5,7 @@ from environment.Utility import Utility
 def temp_fitness(triplet):
     (chromo, builder, current_time) = triplet
     schedule = builder(chromo, current_time)
-    time = Utility.get_the_last_time(schedule)
+    time = Utility.makespan(schedule)
     return (1/time,)
     # return (1,)
 

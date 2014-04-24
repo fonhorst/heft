@@ -64,6 +64,10 @@ class ScheduleItem:
         new_item.state = item.state
         return new_item
 
+    @staticmethod
+    def MIN_ITEM():
+        return ScheduleItem(None, 10000000, 10000000)
+
     def __str__(self):
         return str(self.job.id) + ":" + str(self.start_time) + ":" + str(self.end_time) + ":" + self.state
 

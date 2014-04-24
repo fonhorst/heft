@@ -105,7 +105,7 @@ class GAFunctions2:
             ## chromo is {Task:Node},{Task:Node},... - fixed length
 
             schedule = builder(chromo, current_time)
-            time = Utility.get_the_last_time(schedule)
+            time = Utility.makespan(schedule)
 
             # time = 1
             # ## TODO: remove it later.
@@ -133,6 +133,7 @@ class GAFunctions2:
         alive_nodes = [node for node in self.nodes if node.state != Node.Down]
         if len(alive_nodes) == 0:
             raise Exception(" There are only dead nodes!!!!!!!!!!!!!")
+
 
         # TODO: corner case when fixed schedule is complete. need to resolve this kind of case early.
         size = len([item for (node_name, items) in child1.items() for item in items])

@@ -38,18 +38,13 @@ class NodeUp(BaseEvent):
         return "NodeUp"
 
 class EventMachine:
-    def __init__(self, logger=None):
+    def __init__(self):
         self.queue = deque()
         self.current_time = 0
-        self.logger = logger
-
         self._stopped = False
 
     def run(self):
         count = 0
-
-        taskStartCount = 0
-        nodeFailedCount = 0
         while len(self.queue) > 0:
 
             if hasattr(self, "_stopped") and self._stopped is True:
@@ -62,60 +57,17 @@ class EventMachine:
                 raise Exception('current_time > event.time_happened: ' + str(self.current_time) + ' > ' + str(event.time_happened))
 
             self.current_time = event.time_happened
-
-            if self.logger is not None:
-                if isinstance(event, NodeUp):
-                    record = " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(event.node.name) + '\n'
-                    self.logger.write(record)
-                elif isinstance(event, NodeFailed):
-                    record = " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(event.node.name)+ ' ' + str(event.task.id) + '\n'
-                    self.logger.write(record)
-
-            # if isinstance(event, TaskStart):
-            #     taskStartCount += 1
-            # elif isinstance(event, NodeFailed):
-            #     nodeFailedCount += 1
-            # if isinstance(event, TaskStart):
-            #     print(str(count) + " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + ' ' + str(event.task.id) + ' ' + str(None if event.node is None else event.node.name))
-            # if isinstance(event, NodeUp):
-            #    print(str(count) + " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(event.node.name))
-            # if isinstance(event, NodeFailed):
-            #     print(str(count) + " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
-            # if isinstance(event, TaskFinished):
-            #     print(str(count) + " Curtime: " + str(event.time_happened) + " Event: " + str(event) + ' ' + str(None if event.node is None else event.node.name)+ ' ' + str(event.task.id))
-            # else:
-            #   print(str(count) + " Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
             count += 1
             self.event_arrived(event)
-
-        # print("===============EventMachine statistics==============")
-        # print("  TaskStart events: " + str(taskStartCount))
-        # print(" NodeFailed events: " + str(nodeFailedCount))
 
         pass
 
     def post(self, event):
         event.time_posted = self.current_time
-
-        # if isinstance(event, TaskStart):
-        #         print("Post Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
-        # elif isinstance(event, NodeUp):
-        #        print("Post Event: " + str(event) + ' '+ str(event.time_happened)+ ' ' + str(event.node.name))
-        # elif isinstance(event, NodeFailed):
-        #         print( "Post Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.node.name)+ ' ' + str(event.task.id))
-        # elif isinstance(event, TaskFinished):
-        #         print("Post Event: " + str(event) + ' '+ str(event.time_happened) + ' ' + str(event.task.id))
-
-
-        ## TODO: raise exception if event.time_happened < self.current_time
         if event.time_happened < self.current_time:
             raise Exception("happened time: " + str(event.time_happened) + " is earlier than current time: " + str(self.current_time))
         self.queue.append(event)
         self.queue = deque(sorted(self.queue, key=lambda x: x.time_happened))
-        #st = ''
-        #for el in self.queue:
-        #    st = st + str(el.time_happened) + ' '
-        #print(' Queue: ' + st)
 
     def stop(self):
         self._stopped = True

@@ -2,7 +2,7 @@ from collections import deque
 import random
 from core.CommonComponents.failers.FailOnce import FailOnce
 from core.executors.EventMachine import NodeFailed, NodeUp, TaskFinished
-from core.executors.GaHeftExecutor import GaHeftExecutor, GAComputationManager, GA_PARAMS
+from core.executors.GaHeftExecutor import GaHeftExecutor
 from environment.ResourceManager import ScheduleItem, Schedule
 from environment.Utility import Utility
 
@@ -15,7 +15,7 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
                  fixed_interval_for_ga,
                  wf_name,
                  task_id_to_fail,
-                 ga_params=GA_PARAMS,
+                 ga_params,
                  logger=None,
                  stat_saver=None):
         super().__init__(heft_planner,
@@ -98,14 +98,14 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
 
     pass
 
-class ExtendedComputationManager(GAComputationManager):
+class ExtendedComputationManager(object):
     def __init__(self,
                  fixed_interval_for_ga,
                  workflow,
                  resource_manager,
                  estimator,
                  wf_name,
-                 ga_params=GA_PARAMS,
+                 ga_params,
                  stat_saver=None):
         super().__init__(fixed_interval_for_ga, workflow, resource_manager, estimator, ga_params)
 
@@ -153,12 +153,12 @@ class ExtendedComputationManager(GAComputationManager):
                 "task_id": task_id,
                 "with_old_pop": {
                     "iter": stopped_iteration_op,
-                    "makespan": Utility.get_the_last_time(schedule_op),
+                    "makespan": Utility.makespan(schedule_op),
                     "pop_aggr": logbook_op
                 },
                 "with_random": {
                     "iter": stopped_iteration_r,
-                    "makespan": Utility.get_the_last_time(schedule_r),
+                    "makespan": Utility.makespan(schedule_r),
                     "pop_aggr": logbook_r
                 }
             }

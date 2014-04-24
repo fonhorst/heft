@@ -30,7 +30,7 @@ ga = GAComputationManager(15,
 
 ga_initial_schedule = ga._get_ga_alg()(empty_schedule, None)[2]
 
-all_initial_wf_time = Utility.get_the_last_time(ga_initial_schedule)
+all_initial_wf_time = Utility.makespan(ga_initial_schedule)
 
 print("Initial time: " + str(all_initial_wf_time))
 
@@ -65,7 +65,7 @@ def gaheft_reschedule(wf_added_time):
     if added_wf_validaty is not True:
         raise Exception("Check for added_wf_validaty didn't pass")
     #print("All Ok!")
-    result = Utility.get_the_last_time(gaheft_added_schedule)
+    result = Utility.makespan(gaheft_added_schedule)
     return result
 
 result = [[gaheft_reschedule(wf_added_time)for i in range(n)] for wf_added_time in wf_added_times]

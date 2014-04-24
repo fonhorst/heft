@@ -30,7 +30,7 @@ class TestExecsExecutor(unittest.TestCase):
                                    logger=None,
                                    fixed_interval_for_ga=15,
                                    ga_params={
-                                        "population": 50,
+                                        "population": 10,
                                         "crossover_probability": 0.8,
                                         "replacing_mutation_probability": 0.5,
                                         "sweep_mutation_probability": 0.4,
@@ -48,48 +48,48 @@ class TestExecsExecutor(unittest.TestCase):
                                      task_id_to_fail="ID00005_000",
                                      fixed_interval_for_ga=15,
                                      ga_params={
-                                        "population": 50,
-                                        "crossover_probability": 0.8,
-                                        "replacing_mutation_probability": 0.5,
-                                        "sweep_mutation_probability": 0.4,
-                                        "generations": 10
-                                     })
-        self.oldpopgaheft_func = partial(ExecutorsFactory.default().run_gaheftoldpop_executor,
-                                     is_silent=False,
-                                     wf_name=self.DEFAULT_WF_NAME,
-                                     logger=None,
-                                     key_for_save='test',
-                                     task_id_to_fail="ID00005_000",
-                                     fixed_interval_for_ga=15,
-                                     ga_params={
-                                        "population": 50,
-                                        "crossover_probability": 0.8,
-                                        "replacing_mutation_probability": 0.5,
-                                        "sweep_mutation_probability": 0.4,
-                                        "generations": 10
-                                     })
-
-        self.oldpopmpgaheft_func = partial(ExecutorsFactory.default().run_mpgaheftoldpop_executor,
-                                     is_silent=True,
-                                     wf_name=self.DEFAULT_WF_NAME,
-                                     logger=None,
-                                     key_for_save='test',
-                                     task_id_to_fail="ID00005_000",
-                                     fixed_interval_for_ga=15,
-                                     migrCount=5,
-                                     emigrant_selection=None,
-                                     all_iters_count=10,
-                                     ga_params={
                                         "population": 10,
                                         "crossover_probability": 0.8,
                                         "replacing_mutation_probability": 0.5,
                                         "sweep_mutation_probability": 0.4,
-                                        "generations": 2
+                                        "generations": 10
                                      })
-
-        self.oldpopmpgaheft_mixed_init_pop_func = partial(self.oldpopmpgaheft_func, mixed_init_pop=True)
-        self.oldpopmpgaheft_with_merge_pop_func = partial(self.oldpopmpgaheft_func, merged_pop_iters=2)
-        self.oldpopmpgaheft_vs_mpgaheft_func = partial(self.oldpopmpgaheft_func, mpnewVSmpoldmode=True)
+        # self.oldpopgaheft_func = partial(ExecutorsFactory.default().run_gaheftoldpop_executor,
+        #                              is_silent=False,
+        #                              wf_name=self.DEFAULT_WF_NAME,
+        #                              logger=None,
+        #                              key_for_save='test',
+        #                              task_id_to_fail="ID00005_000",
+        #                              fixed_interval_for_ga=15,
+        #                              ga_params={
+        #                                 "population": 50,
+        #                                 "crossover_probability": 0.8,
+        #                                 "replacing_mutation_probability": 0.5,
+        #                                 "sweep_mutation_probability": 0.4,
+        #                                 "generations": 10
+        #                              })
+        #
+        # self.oldpopmpgaheft_func = partial(ExecutorsFactory.default().run_mpgaheftoldpop_executor,
+        #                              is_silent=True,
+        #                              wf_name=self.DEFAULT_WF_NAME,
+        #                              logger=None,
+        #                              key_for_save='test',
+        #                              task_id_to_fail="ID00005_000",
+        #                              fixed_interval_for_ga=15,
+        #                              migrCount=5,
+        #                              emigrant_selection=None,
+        #                              all_iters_count=10,
+        #                              ga_params={
+        #                                 "population": 10,
+        #                                 "crossover_probability": 0.8,
+        #                                 "replacing_mutation_probability": 0.5,
+        #                                 "sweep_mutation_probability": 0.4,
+        #                                 "generations": 2
+        #                              })
+        #
+        # self.oldpopmpgaheft_mixed_init_pop_func = partial(self.oldpopmpgaheft_func, mixed_init_pop=True)
+        # self.oldpopmpgaheft_with_merge_pop_func = partial(self.oldpopmpgaheft_func, merged_pop_iters=2)
+        # self.oldpopmpgaheft_vs_mpgaheft_func = partial(self.oldpopmpgaheft_func, mpnewVSmpoldmode=True)
         pass
 
     def _run(self, name):

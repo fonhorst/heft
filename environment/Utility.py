@@ -301,7 +301,7 @@ class Utility:
 
 
     @staticmethod
-    def get_the_last_time(schedule):
+    def makespan(schedule):
         def get_last_time(node_items):
             return 0 if len(node_items) == 0 else node_items[-1].end_time
 

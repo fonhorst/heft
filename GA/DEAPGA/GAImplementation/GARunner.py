@@ -51,7 +51,7 @@ class BaseRunner:
         return (wf, resource_manager, estimator)
 
     def _validate(self, wf, estimator, schedule):
-         max_makespan = Utility.get_the_last_time(schedule)
+         max_makespan = Utility.makespan(schedule)
          seq_time_validaty = Utility.validateNodesSeq(schedule)
          mark_finished(schedule)
          dependency_validaty = Utility.validateParentsAndChildren(schedule, wf)
@@ -138,8 +138,8 @@ class MixRunner(BaseRunner):
 
 
         print("===========================================")
-        heft_makespan = Utility.get_the_last_time(heft_schedule)
-        ga_makespan = Utility.get_the_last_time(ga_schedule)
+        heft_makespan = Utility.makespan(heft_schedule)
+        ga_makespan = Utility.makespan(ga_schedule)
         print("Profit: " + str((1 - ga_makespan/heft_makespan)*100))
         print("===========================================")
         pass

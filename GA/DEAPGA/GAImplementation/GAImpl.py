@@ -294,6 +294,7 @@ class GAFactory:
                         previous_raised_avr_individuals = previous_raised_avr_individuals[1::]
                     previous_raised_avr_individuals.append(1/mean)
 
+
                     pass
                 #
                 # import matplotlib.pyplot as plt

@@ -6,54 +6,15 @@ from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from GA.DEAPGA.multipopGA.MPGA import create_mpga
 from core.executors.EventMachine import NodeFailed, TaskFinished
-from core.executors.GaHeftExecutor import GA_PARAMS, GAComputationWrapper, SimpleGAComputationWrapper
 from core.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor, ExtendedComputationManager
 from environment.ResourceManager import Schedule, ScheduleItem
 from environment.Utility import Utility
 
 
 class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
-    def __init__(self,
-                 heft_planner,
-                 base_fail_duration,
-                 base_fail_dispersion,
-                 fixed_interval_for_ga,
-                 wf_name,
-                 task_id_to_fail,
-                 migrCount,
-                 emigrant_selection,
-                 all_iters_count,
-                 mixed_init_pop=False,
-                 merged_pop_iters=0,
-                 check_evolution_for_stopping=False,
-                 mpnewVSmpoldmode=False,
-                 ga_params=GA_PARAMS,
-                 logger=None,
-                 stat_saver=None):
-        super().__init__(heft_planner,
-                         base_fail_duration,
-                         base_fail_dispersion,
-                         fixed_interval_for_ga,
-                         wf_name,
-                         task_id_to_fail,
-                         ga_params,
-                         logger,
-                         stat_saver)
-
-        self.ga_computation_manager = MPCm(fixed_interval_for_ga,
-                                                                 heft_planner.workflow,
-                                                                 heft_planner.resource_manager,
-                                                                 heft_planner.estimator,
-                                                                 wf_name,
-                                                                 migrCount,
-                                                                 emigrant_selection,
-                                                                 all_iters_count,
-                                                                 mixed_init_pop,
-                                                                 merged_pop_iters,
-                                                                 check_evolution_for_stopping,
-                                                                 mpnewVSmpoldmode,
-                                                                 ga_params,
-                                                                 stat_saver)
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+        self.ga_computation_manager = MPCm(**kwargs)
         pass
 
     def init(self):
@@ -67,55 +28,25 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
 
         self.ga_computation_manager.past_pop = result[0][1]
 
-
-
     def _check_event_for_ga_result(self, event):
-         # check for time to get result from GA running background
+        # check for time to get result from GA running background
         result = self.ga_computation_manager.check_result(event, self.current_time)
         if result is not None:
-            resulted_schedule = result
-            t1 = Utility.get_the_last_time(resulted_schedule)
-            t2 = Utility.get_the_last_time(self.current_schedule)
-            ## TODO: uncomment it later.
-            ## TODO: we don't care about quality of result
-            ## generate new events
-            self._replace_current_schedule(event, resulted_schedule)
-            ## if event is TaskStarted event the return value means skip further processing
+            self._replace_current_schedule(event, result)
             return True
         return False
 
 ## TODO: replace all this params with context
 class MPCm(ExtendedComputationManager):
-    def __init__(self,
-                   fixed_interval_for_ga,
-                   workflow,
-                   resource_manager,
-                   estimator,
-                   wf_name,
-                   migrCount,
-                   emigrant_selection,
-                   all_iters_count,
-                   mixed_init_pop,
-                   merged_pop_iters,
-                   check_evolution_for_stopping,
-                   mpnewVSmpoldmode=False,
-                   ga_params=GA_PARAMS,
-                   stat_saver=None):
-         super().__init__(fixed_interval_for_ga,
-                        workflow,
-                        resource_manager,
-                        estimator,
-                        wf_name,
-                        ga_params,
-                        stat_saver)
-
-         self.migrCount = migrCount
-         self.emigrant_selection = emigrant_selection
-         self.all_iters_count = all_iters_count
-         self.mixed_init_pop = mixed_init_pop
-         self.merged_pop_iters = merged_pop_iters
-         self.check_evolution_for_stopping = check_evolution_for_stopping
-         self.mpnewVSmpoldmode = mpnewVSmpoldmode
+    def __init__(self, *args, **kwargs):
+         super().__init__(**kwargs)
+         self.migrCount = kwargs["migrCount"]
+         self.emigrant_selection = kwargs["emigrant_selection"]
+         self.all_iters_count = kwargs["all_iters_count"]
+         self.mixed_init_pop = kwargs["mixed_init_pop"]
+         self.merged_pop_iters = kwargs["merged_pop_iters"]
+         self.check_evolution_for_stopping = kwargs["check_evolution_for_stopping"]
+         self.mpnewVSmpoldmode = kwargs["mpnewVSmpoldmode"]
          pass
 
     def _get_ga_alg(self):
@@ -135,12 +66,6 @@ class MPCm(ExtendedComputationManager):
 
     def run_init_ga(self, init_schedule):
 
-         # ga = GAFactory.default().create_ga(silent=True,
-         #                                         wf=self.workflow,
-         #                                         resource_manager=self.resource_manager,
-         #                                         estimator=self.estimator,
-         #                                         ga_params=self.params)
-
          ga = self._get_simple_ga()
 
          result = ga(init_schedule, None)
@@ -152,7 +77,8 @@ class MPCm(ExtendedComputationManager):
 
         ## TODO: remake this stub. GAComputationWrapper must take cleaned current_schedule
         #return GAComputationWrapper(ga, fixed_schedule, heft_initial, current_time)
-        return SimpleGAComputationWrapper(ga, fixed_schedule, heft_initial, current_time)
+        return None
+        #return SimpleGAComputationWrapper(ga, fixed_schedule, heft_initial, current_time)
 
     def _get_simple_ga(self):
         ga = GAFactory.default().create_ga(silent=True,
@@ -235,12 +161,12 @@ class MPCm(ExtendedComputationManager):
                 "task_id": task_id,
                 "with_old_pop": {
                     "iter": stopped_iteration_op,
-                    "makespan": Utility.get_the_last_time(schedule_op),
+                    "makespan": Utility.makespan(schedule_op),
                     "pop_aggr": logbook_op
                 },
                 "with_random": {
                     "iter": stopped_iteration_r,
-                    "makespan": Utility.get_the_last_time(schedule_r),
+                    "makespan": Utility.makespan(schedule_r),
                     "pop_aggr": logbook_r
                 }
             }

@@ -1,12 +1,14 @@
+from functools import partial
 import random
 from deap.tools.selection import selRoulette
+from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from core.DSimpleHeft import DynamicHeft
 from core.PublicResourceManager import PublicResourceManager
 from core.comparisons.ComparisonBase import ResultSaver, ComparisonUtility
 from core.comparisons.StopRescheduling import GaOldPopExecutor
 from core.executors.CloudHeftExecutor import CloudHeftExecutor
 from core.executors.GAExecutor import GAExecutor
-from core.executors.GaHeftExecutor import GaHeftExecutor, GA_PARAMS
+from core.executors.GaHeftExecutor import GaHeftExecutor
 from core.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
 from core.executors.HeftExecutor import HeftExecutor
 from core.executors.MPGaHeftOldPopExecutor import MPGaHeftOldPopExecutor
@@ -60,7 +62,7 @@ class ExecutorRunner:
         pass
 
     def extract_result(self, schedule, is_silent, wf):
-        makespan = Utility.get_the_last_time(schedule)
+        makespan = Utility.makespan(schedule)
         seq_time_validaty = Utility.validateNodesSeq(schedule)
         dependency_validaty = Utility.validateParentsAndChildren(schedule, wf)
         if not is_silent:
@@ -158,13 +160,15 @@ class ExecutorsFactory:
     @ExecutorRunner()
     def run_gaheft_executor(self, *args, **kwargs):
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
+        kwargs["silent"] = kwargs.get("silent", True)
         ga_heft_machine = GaHeftExecutor(
                             heft_planner=dynamic_heft,
+                            workflow=kwargs["wf"],
+                            resource_manager=kwargs["resource_manager"],
                             base_fail_duration=40,
                             base_fail_dispersion=1,
                             fixed_interval_for_ga=kwargs["fixed_interval_for_ga"],
-                            logger=kwargs["logger"],
-                            ga_params=kwargs.get("ga_params", GA_PARAMS))
+                            ga_builder=partial(GAFactory.default().create_ga, **kwargs))
 
         ga_heft_machine.init()
         ga_heft_machine.run()
@@ -261,20 +265,17 @@ class ExecutorsFactory:
                 res.append(r)
             return [pop[r] for r in res]
 
-        ga_machine = MPGaHeftOldPopExecutor(heft_planner=dynamic_heft,
-                                           base_fail_duration=40,
-                                           base_fail_dispersion=1,
-                                           fixed_interval_for_ga=kwargs["fixed_interval_for_ga"],
-                                           wf_name=kwargs["wf_name"],
-                                           task_id_to_fail=kwargs["task_id_to_fail"],
-                                           migrCount=kwargs["migrCount"],
-                                           emigrant_selection=emigrant_selection,
-                                           all_iters_count=kwargs["all_iters_count"],
-                                           mixed_init_pop=kwargs.get("mixed_init_pop", False),
-                                           mpnewVSmpoldmode=kwargs.get("mpnewVSmpoldmode", False),
-                                           ga_params=kwargs.get("ga_params", GA_PARAMS),
-                                           logger=kwargs.get("logger", None),
-                                           stat_saver=kwargs.get("stat_saver", stat_saver))
+        kwargs["heft_planner"] = dynamic_heft
+        kwargs["base_fail_duration"] = 40
+        kwargs["base_fail_dispersion"] = 1
+        kwargs["emigrant_selection"] = emigrant_selection
+        kwargs["mixed_init_pop"] = kwargs.get("mixed_init_pop", False)
+        kwargs["mpnewVSmpoldmode"] = kwargs.get("mpnewVSmpoldmode", False)
+        kwargs["ga_params"] = kwargs.get("ga_params", None)
+        kwargs["logger"] = kwargs.get("logger", None)
+        kwargs["stat_saver"] = kwargs.get("stat_saver", stat_saver)
+
+        ga_machine = MPGaHeftOldPopExecutor(kwargs)
 
         ga_machine.init()
         ga_machine.run()
