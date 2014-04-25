@@ -89,26 +89,27 @@ class Utility:
     @staticmethod
     def get_default_bundle():
         ## dedicated resource are the same for all bundles
-        dax2 = '../../resources/' + 'CyberShake_30' + '.xml'
+        wf_name = 'CyberShake_30'
+        dax2 = '../../resources/' + wf_name + '.xml'
         path = '../../resources/saved_schedules/' + 'CyberShake_30_bundle_backup' + '.json'
-        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2))
+        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_name))
         return bundle
 
     @staticmethod
-    def generateUrgentPipeline(dax_filepath, wf_start_id, task_postfix_id, deadline):
+    def generateUrgentPipeline(dax_filepath, wf_name, wf_start_id, task_postfix_id, deadline):
         parser = DAXParser()
         random = Random()
         pipelineSize = 1##random.randint(Utility.MIN_PIPELINE_SIZE,Utility.MAX_PIPELINE_SIZE)
-        wfs = [parser.parseXml(dax_filepath, wf_start_id + str(i), task_postfix_id + str(i)) for i in
+        wfs = [parser.parseXml(dax_filepath, wf_start_id + str(i), task_postfix_id + str(i), wf_name) for i in
                range(0, pipelineSize)]
         for wf in wfs:
             wf.deadline = deadline
         return wfs
 
     @staticmethod
-    def readWorkflow(dax_filepath, wf_start_id="00", task_postfix_id="00", deadline=1000):
+    def readWorkflow(dax_filepath, wf_name, wf_start_id="00", task_postfix_id="00", deadline=1000):
         parser = DAXParser()
-        wf = parser.parseXml(dax_filepath, wf_start_id + "0", task_postfix_id + "0")
+        wf = parser.parseXml(dax_filepath, wf_start_id + "0", task_postfix_id + "0", wf_name)
         wf.deadline = deadline
         return wf
 

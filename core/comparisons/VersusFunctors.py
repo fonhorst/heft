@@ -49,7 +49,7 @@ class GAvsHeftGA(VersusFunctor):
         dax2 = '..\\..\\resources\\' + wf_name + '.xml'
         ## dedicated resource are the same for all bundles
         path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
-        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2))
+        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_name))
 
 
         mainHEFTwithGA = partial(self.mainHeft, with_ga_initial=False, the_bundle=bundle)
@@ -88,7 +88,7 @@ class GAvsHeftGAvsHeftReXGA(VersusFunctor):
         dax2 = '..\\..\\resources\\' + wf_name + '.xml'
         ## dedicated resource are the same for all bundles
         path = '..\\..\\resources\\saved_schedules\\' + wf_name + '_bundle' + '.json'
-        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2))
+        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_name))
 
         mainCloudHEFTwithGA = partial(self.mainCloudHeft, with_ga_initial=True, the_bundle=bundle)
         mainHEFTwithGA = partial(self.mainHeft, with_ga_initial=True, the_bundle=bundle)

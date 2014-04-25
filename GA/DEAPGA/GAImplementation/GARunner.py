@@ -23,7 +23,7 @@ class BaseRunner:
         ideal_flops = kwargs.get("ideal_flops", 20)
 
         dax1 = '../../resources/' + wf_name + '.xml'
-        wf = Utility.readWorkflow(dax1)
+        wf = Utility.readWorkflow(dax1, wf_name)
 
         rgen = ResourceGenerator(min_res_count=1,
                                  max_res_count=1,

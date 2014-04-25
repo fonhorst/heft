@@ -1,17 +1,13 @@
-from collections import deque, namedtuple
-from functools import partial
+from collections import namedtuple
 import random
-from threading import Thread, Event
-import threading
-from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from core.CommonComponents.failers.FailRandom import FailRandom
 from core.executors.BaseExecutor import BaseExecutor
-from core.executors.EventMachine import EventMachine, TaskStart, TaskFinished, NodeFailed, NodeUp
+from core.executors.EventMachine import TaskFinished, NodeFailed, NodeUp
 from environment.Resource import Node
 from environment.ResourceManager import ScheduleItem, Schedule
 from environment.Utility import Utility
 
-BackCmp = namedtuple('BackCmp', ['fixed_schedule', 'initial_schedule', 'time_to_stop'])
+BackCmp = namedtuple('BackCmp', ['fixed_schedule', 'initial_schedule', 'creation_time', 'time_to_stop'])
 
 class GaHeftExecutor(FailRandom, BaseExecutor):
     def __init__(self,
@@ -50,6 +46,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self.current_schedule = result[0][2]
 
         self._post_new_events()
+        return result
 
     def _task_start_handler(self, event):
 
@@ -124,6 +121,16 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         pass
 
     def _actual_ga_run(self):
+
+        ## this way makes it possible to calculate what time
+        ## ga actually has to find solution
+        ## this value is important when you need account events between
+        ## planned start and stop points
+        # ga_interval = self.current_time - self.back_cmp.creation_time
+        ## TODO: error is here, we have to recalculate of
+        ## TODO: fixed_schedule and initial_schedule,
+        ## TODO: if there have been some rescheduling event
+        ## TODO: (for example if there have been yet another fault)
         result = self.ga_builder()(self.back_cmp.fixed_schedule,
                                    self.back_cmp.initial_schedule,
                                    self.current_time)
@@ -228,7 +235,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
                 print("Fixed schedule is complete. There is no use to run ga.")
                 return
 
-            self.back_cmp = BackCmp(fixed_schedule, None, front_event.end_time)
+            self.back_cmp = BackCmp(fixed_schedule, None, current_time, front_event.end_time)
             pass
 
         is_running = self.back_cmp is not None

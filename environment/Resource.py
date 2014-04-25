@@ -234,8 +234,9 @@ class PolicyChecker:
 
 
 class Workflow:
-    def __init__(self, id, head_task):
+    def __init__(self, id, name, head_task):
         self.id = id
+        self.name = name
         self.owner = None ## here must be a user
         self.head_task = head_task ## tasks here
         self.deadline = None ## deadline time

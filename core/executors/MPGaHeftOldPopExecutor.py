@@ -6,7 +6,7 @@ from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from GA.DEAPGA.multipopGA.MPGA import create_mpga
 from core.executors.EventMachine import NodeFailed, TaskFinished
-from core.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor, ExtendedComputationManager
+from core.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
 from environment.ResourceManager import Schedule, ScheduleItem
 from environment.Utility import Utility
 
@@ -37,7 +37,8 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
         return False
 
 ## TODO: replace all this params with context
-class MPCm(ExtendedComputationManager):
+# class MPCm(ExtendedComputationManager):
+class MPCm(object):
     def __init__(self, *args, **kwargs):
          super().__init__(**kwargs)
          self.migrCount = kwargs["migrCount"]

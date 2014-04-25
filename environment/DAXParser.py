@@ -17,7 +17,7 @@ class DAXParser:
         task.input_files = input_files
 
 
-    def parseXml(self, filepath, wfId, taskPostfixId):
+    def parseXml(self, filepath, wfId, taskPostfixId, wf_name):
         tree = ET.parse(filepath)
         root = tree.getroot()
         jobs = root.findall('./{http://pegasus.isi.edu/schema/DAX}job')
@@ -49,7 +49,7 @@ class DAXParser:
             head.parents = set([common_head])
         common_head.children = heads
 
-        wf = Workflow(wfId, common_head)
+        wf = Workflow(wfId, wf_name, common_head)
         return wf
 
 

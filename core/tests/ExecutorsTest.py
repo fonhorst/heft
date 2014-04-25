@@ -54,20 +54,20 @@ class TestExecsExecutor(unittest.TestCase):
                                         "sweep_mutation_probability": 0.4,
                                         "generations": 10
                                      })
-        # self.oldpopgaheft_func = partial(ExecutorsFactory.default().run_gaheftoldpop_executor,
-        #                              is_silent=False,
-        #                              wf_name=self.DEFAULT_WF_NAME,
-        #                              logger=None,
-        #                              key_for_save='test',
-        #                              task_id_to_fail="ID00005_000",
-        #                              fixed_interval_for_ga=15,
-        #                              ga_params={
-        #                                 "population": 50,
-        #                                 "crossover_probability": 0.8,
-        #                                 "replacing_mutation_probability": 0.5,
-        #                                 "sweep_mutation_probability": 0.4,
-        #                                 "generations": 10
-        #                              })
+        self.oldpopgaheft_func = partial(ExecutorsFactory.default().run_gaheftoldpop_executor,
+                                     is_silent=False,
+                                     wf_name=self.DEFAULT_WF_NAME,
+                                     logger=None,
+                                     key_for_save='test',
+                                     task_id_to_fail="ID00005_000",
+                                     fixed_interval_for_ga=15,
+                                     ga_params={
+                                        "population": 10,
+                                        "crossover_probability": 0.8,
+                                        "replacing_mutation_probability": 0.5,
+                                        "sweep_mutation_probability": 0.4,
+                                        "generations": 10
+                                     })
         #
         # self.oldpopmpgaheft_func = partial(ExecutorsFactory.default().run_mpgaheftoldpop_executor,
         #                              is_silent=True,

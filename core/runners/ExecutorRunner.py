@@ -27,7 +27,7 @@ class ExecutorRunner:
     def get_wf(wf_name, task_postfix_id="00"):
         ## TODO: make check for valid path in wf_name variable
         dax1 = '..\\..\\resources\\' + wf_name + '.xml'
-        wf = Utility.readWorkflow(dax1, task_postfix_id=task_postfix_id)
+        wf = Utility.readWorkflow(dax1, wf_name, task_postfix_id=task_postfix_id)
         return wf
 
     def get_bundle(self, the_bundle):
@@ -230,15 +230,17 @@ class ExecutorsFactory:
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
         # stat_saver = ResultSaver(self.DEFAULT_SAVE_PATH.format(kwargs["key_for_save"], ComparisonUtility.cur_time(), ComparisonUtility.uuid()))
         stat_saver = self.build_saver(*args, **kwargs)
+        kwargs["silent"] = kwargs.get("silent", True)
         ga_machine = GaHeftOldPopExecutor(heft_planner=dynamic_heft,
-                                           base_fail_duration=40,
-                                           base_fail_dispersion=1,
-                                           fixed_interval_for_ga=kwargs["fixed_interval_for_ga"],
-                                           wf_name=kwargs["wf_name"],
-                                           task_id_to_fail=kwargs["task_id_to_fail"],
-                                           ga_params=kwargs.get("ga_params", GA_PARAMS),
-                                           logger=kwargs.get("logger", None),
-                                           stat_saver=kwargs.get("stat_saver", stat_saver))
+                                          workflow=kwargs["wf"],
+                                          resource_manager=kwargs["resource_manager"],
+                                          estimator=kwargs["estimator"],
+                                          base_fail_duration=40,
+                                          base_fail_dispersion=1,
+                                          fixed_interval_for_ga=kwargs["fixed_interval_for_ga"],
+                                          task_id_to_fail=kwargs["task_id_to_fail"],
+                                          ga_builder=partial(GAFactory.default().create_ga, **kwargs),
+                                          stat_saver=kwargs.get("stat_saver", stat_saver))
 
         ga_machine.init()
         ga_machine.run()
