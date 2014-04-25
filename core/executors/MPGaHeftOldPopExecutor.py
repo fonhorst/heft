@@ -1,109 +1,31 @@
-from collections import deque
 from copy import deepcopy
-import random
 from deap import creator, tools
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2
-from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
-from GA.DEAPGA.multipopGA.MPGA import create_mpga
-from core.executors.EventMachine import NodeFailed, TaskFinished
 from core.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
-from environment.ResourceManager import Schedule, ScheduleItem
 from environment.Utility import Utility
 
 
 class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
-        self.ga_computation_manager = MPCm(**kwargs)
+        self.mpga_builder = kwargs["mpga_builder"]
+
+        self.migrCount = kwargs["migrCount"]
+        self.emigrant_selection = kwargs["emigrant_selection"]
+        self.all_iters_count = kwargs["all_iters_count"]
+        self.mixed_init_pop = kwargs["mixed_init_pop"]
+        self.merged_pop_iters = kwargs["merged_pop_iters"]
+        self.check_evolution_for_stopping = kwargs["check_evolution_for_stopping"]
+        self.mpnewVSmpoldmode = kwargs["mpnewVSmpoldmode"]
+        self.params = kwargs["ga_params"]
+
+        self.replace_anyway = True
+        # self.ga_computation_manager = MPCm(**kwargs)
         pass
 
-    def init(self):
-        ## TODO: refactor this and base class too
-        self.current_schedule = Schedule({node: [] for node in self.heft_planner.get_nodes()})
-        result = self.ga_computation_manager.run_init_ga(self.current_schedule)
-
-        self.current_schedule = result[0][2]
-
-        self._post_new_events()
-
-        self.ga_computation_manager.past_pop = result[0][1]
-
-    def _check_event_for_ga_result(self, event):
-        # check for time to get result from GA running background
-        result = self.ga_computation_manager.check_result(event, self.current_time)
-        if result is not None:
-            self._replace_current_schedule(event, result)
-            return True
-        return False
-
-## TODO: replace all this params with context
-# class MPCm(ExtendedComputationManager):
-class MPCm(object):
-    def __init__(self, *args, **kwargs):
-         super().__init__(**kwargs)
-         self.migrCount = kwargs["migrCount"]
-         self.emigrant_selection = kwargs["emigrant_selection"]
-         self.all_iters_count = kwargs["all_iters_count"]
-         self.mixed_init_pop = kwargs["mixed_init_pop"]
-         self.merged_pop_iters = kwargs["merged_pop_iters"]
-         self.check_evolution_for_stopping = kwargs["check_evolution_for_stopping"]
-         self.mpnewVSmpoldmode = kwargs["mpnewVSmpoldmode"]
-         pass
-
-    def _get_ga_alg(self):
-         ga = create_mpga(silent=True,
-                             wf=self.workflow,
-                             resource_manager=self.resource_manager,
-                             estimator=self.estimator,
-                             ga_params=self.params,
-                             migrCount=self.migrCount,
-                             emigrant_selection=self.emigrant_selection,
-                             all_iters_count=self.all_iters_count,
-                             merged_pop_iters=self.merged_pop_iters,
-                             check_evolution_for_stopping=self.check_evolution_for_stopping
-                             )
-
-         return ga
-
-    def run_init_ga(self, init_schedule):
-
-         ga = self._get_simple_ga()
-
-         result = ga(init_schedule, None)
-         return result
-
-    def _create_comp_wrapper(self, ga, fixed_schedule, current_schedule, current_time):
-        heft_initial = GAFunctions2.schedule_to_chromosome(current_schedule)
-        heft_initial = self._clean_chromosome(heft_initial, self.current_event, fixed_schedule)
-
-        ## TODO: remake this stub. GAComputationWrapper must take cleaned current_schedule
-        #return GAComputationWrapper(ga, fixed_schedule, heft_initial, current_time)
-        return None
-        #return SimpleGAComputationWrapper(ga, fixed_schedule, heft_initial, current_time)
-
-    def _get_simple_ga(self):
-        ga = GAFactory.default().create_ga(silent=True,
-                                                 wf=self.workflow,
-                                                 resource_manager=self.resource_manager,
-                                                 estimator=self.estimator,
-                                                 ga_params={
-                                        ## TODO: add a param to describe it
-                                        ## 3 is populations count
-                                        "population": self.params["population"] * 3,
-                                        "crossover_probability": self.params["crossover_probability"],
-                                        "replacing_mutation_probability": self.params["replacing_mutation_probability"],
-                                        "sweep_mutation_probability": self.params["sweep_mutation_probability"],
-                                        "generations": self.all_iters_count
-                                     })
-
-        return ga
-
-
-    def _get_result_until_current_time(self, current_time):
-        ga_calc = self.current_computation[1]
-        ## TODO: blocking call with complete calculation
-        time_interval = current_time - ga_calc.creation_time
-
+    def _actual_ga_run(self):
+        heft_initial = GAFunctions2.schedule_to_chromosome(self.back_cmp.current_schedule)
+        heft_initial = self._clean_chromosome(heft_initial, self.back_cmp.event, self.back_cmp.fixed_schedule)
 
          ##=====================================
         ##Regular GA
@@ -117,23 +39,22 @@ class MPCm(object):
         ## TODO: need to refactor and merge with MPGA.py
         initial_pop_gaheft = None
         if self.mixed_init_pop is True:
-            heft_initial = ga_calc.initial_schedule
             heft_initial = tools.initIterate(creator.Individual, lambda: heft_initial)
             ga_functions = GAFunctions2(self.workflow, self.resource_manager, self.estimator)
             heft_pop = [ga_functions.mutation(deepcopy(heft_initial)) for i in range(self.params["population"])]
-            cleaned_schedule = ga_calc.fixed_schedule_part
-            initial_pop_gaheft = [self._clean_chromosome(deepcopy(p), self.current_event, cleaned_schedule) for p in self.past_pop] + heft_pop
+            cleaned_schedule = self.back_cmp.fixed_schedule
+            initial_pop_gaheft = [self._clean_chromosome(deepcopy(p), self.back_cmp.event, cleaned_schedule) for p in self.past_pop] + heft_pop
 
 
         print("GaHeft WITH NEW POP: ")
         if self.mpnewVSmpoldmode is True:
             print("using multi population gaheft...")
-            ga = self._get_ga_alg()
-            ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, None, current_time, initial_population=None, only_new_pops=True)
+            ga = self.mpga_builder()
+            ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(self.back_cmp.fixed_schedule, None, self.current_time, initial_population=None, only_new_pops=True)
         else:
             print("using single population gaheft...")
-            ga = self._get_simple_ga()
-            ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(ga_calc.fixed_schedule_part, None, current_time, initial_population=initial_pop_gaheft)
+            ga = self.ga_builder()
+            ((best_r, pop_r, schedule_r, stopped_iteration_r), logbook_r) = ga(self.back_cmp.fixed_schedule, None, self.current_time, initial_population=initial_pop_gaheft)
 
 
 
@@ -141,12 +62,16 @@ class MPCm(object):
         ##Old pop GA
         ##=====================================
         print("GaHeft WITH OLD POP: ")
-        cleaned_schedule = ga_calc.fixed_schedule_part
-        initial_pop = [self._clean_chromosome(ind, self.current_event, cleaned_schedule) for ind in self.past_pop]
-        ## TODO: rethink this hack
-        result = ga_calc.run(time_interval, current_time, initial_population=initial_pop)
-        (best_op, pop_op, schedule_op, stopped_iteration_op) = ga_calc.ga.get_result()
-        logbook_op = ga_calc.logbook
+        cleaned_schedule = self.back_cmp.fixed_schedule
+        initial_pop = [self._clean_chromosome(ind, self.back_cmp.event, cleaned_schedule) for ind in self.past_pop]
+
+
+        result = self.mpga_builder()(self.back_cmp.fixed_schedule,
+                                     heft_initial,
+                                     self.current_time,
+                                     initial_population=initial_pop)
+        ((best_op, pop_op, schedule_op, stopped_iteration_op), logbook_op) = result
+
         self.past_pop = pop_op
 
         ##=====================================
@@ -157,7 +82,7 @@ class MPCm(object):
         if self.stat_saver is not None:
             ## TODO: correct pop_agr later
             stat_data = {
-                "wf_name": self.wf_name,
+                "wf_name": self.workflow.name,
                 "event_name": self.current_event.__class__.__name__,
                 "task_id": task_id,
                 "with_old_pop": {
@@ -175,5 +100,5 @@ class MPCm(object):
 
 
 
-        self._clean_current_computation()
+        self._stop_ga()
         return result

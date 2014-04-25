@@ -7,32 +7,24 @@ from environment.Resource import Node
 from environment.ResourceManager import ScheduleItem, Schedule
 from environment.Utility import Utility
 
-BackCmp = namedtuple('BackCmp', ['fixed_schedule', 'initial_schedule', 'creation_time', 'time_to_stop'])
+BackCmp = namedtuple('BackCmp', ['fixed_schedule', 'initial_schedule', 'current_schedule', 'event', 'creation_time', 'time_to_stop'])
 
 class GaHeftExecutor(FailRandom, BaseExecutor):
-    def __init__(self,
-                 heft_planner,
-                 workflow,
-                 resource_manager,
-                 base_fail_duration,
-                 base_fail_dispersion,
-                 fixed_interval_for_ga,
-                 ga_builder
-                 #ga_params=GA_PARAMS,
-                 ):
+    def __init__(self, **kwargs):
 
         super().__init__()
 
-        self.workflow = workflow
-        self.resource_manager = resource_manager
+        self.workflow = kwargs["wf"]
+        self.resource_manager = kwargs["resource_manager"]
         # DynamicHeft
         # both planners have acess to resource manager and estimator
-        self.heft_planner = heft_planner
-        self.base_fail_duration = base_fail_duration
-        self.base_fail_dispersion = base_fail_dispersion
+        self.heft_planner = kwargs["heft_planner"]
+        self.base_fail_duration = kwargs["base_fail_duration"]
+        self.base_fail_dispersion = kwargs["base_fail_dispersion"]
         self.current_schedule = None
-        self.fixed_interval_for_ga = fixed_interval_for_ga
-        self.ga_builder = ga_builder
+        self.fixed_interval_for_ga = kwargs["fixed_interval_for_ga"]
+        self.ga_builder = kwargs["ga_builder"]
+        self.replace_anyway = kwargs.get("replace_anyway", False)
 
         self.back_cmp = None
 
@@ -103,7 +95,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         # run HEFT
         self._reschedule(event)
         #run GA
-        self._run_ga_in_background()
+        self._run_ga_in_background(event)
         pass
 
     def _node_up_handler(self, event):
@@ -113,7 +105,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
         self._reschedule(event)
         #run GA
-        self._run_ga_in_background()
+        self._run_ga_in_background(event)
         pass
 
     def _stop_ga(self):
@@ -127,10 +119,12 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         ## this value is important when you need account events between
         ## planned start and stop points
         # ga_interval = self.current_time - self.back_cmp.creation_time
-        ## TODO: error is here, we have to recalculate of
-        ## TODO: fixed_schedule and initial_schedule,
-        ## TODO: if there have been some rescheduling event
-        ## TODO: (for example if there have been yet another fault)
+
+        ## fixed_schedule is actual because
+        ## we can be here only if there haven't been any invalidate events
+        ## such as node failures
+        ## in other case current ga background computation would be dropped
+        ## and we wouldn't get here at all
         result = self.ga_builder()(self.back_cmp.fixed_schedule,
                                    self.back_cmp.initial_schedule,
                                    self.current_time)
@@ -138,7 +132,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
     def _check_event_for_ga_result(self, event):
         # check for time to get result from GA running background
-        if self.back_cmp is None or self.back_cmp.time_to_stop == self.current_time:
+        if self.back_cmp is None or self.back_cmp.time_to_stop != self.current_time:
             return False
         else:
             result = self._actual_ga_run()
@@ -146,7 +140,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         if result is not None:
             t1 = Utility.makespan(result[0][2])
             t2 = Utility.makespan(self.current_schedule)
-            if t1 < t2:
+            if self.replace_anyway is True or t1 < t2:
                 ## generate new events
                 self._replace_current_schedule(event, result[0][2])
                 ## if event is TaskStarted event the return value means skip further processing
@@ -154,7 +148,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
             else:
                 ## TODO: run_ga_yet_another_with_old_genome
                 # self.ga_computation_manager.run(self.current_schedule, self.current_time)
-                self._run_ga_in_background()
+                self._run_ga_in_background(event)
         return False
 
     def _replace_current_schedule(self, event, new_schedule):
@@ -167,7 +161,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self._post_new_events()
         pass
 
-    def _run_ga_in_background(self):
+    def _run_ga_in_background(self, event):
         current_schedule = self.current_schedule
         current_time = self.current_time
         ## TODO: replace by log call
@@ -235,7 +229,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
                 print("Fixed schedule is complete. There is no use to run ga.")
                 return
 
-            self.back_cmp = BackCmp(fixed_schedule, None, current_time, front_event.end_time)
+            self.back_cmp = BackCmp(fixed_schedule, None, self.current_schedule, event, current_time, front_event.end_time)
             pass
 
         is_running = self.back_cmp is not None

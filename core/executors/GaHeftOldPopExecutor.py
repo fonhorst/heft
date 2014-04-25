@@ -7,33 +7,16 @@ from environment.Utility import Utility
 
 
 class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
-    def __init__(self,
-                 heft_planner,
-                 workflow,
-                 resource_manager,
-                 estimator,
-                 base_fail_duration,
-                 base_fail_dispersion,
-                 fixed_interval_for_ga,
-                 task_id_to_fail,
-                 ga_builder,
-                 stat_saver):
-        super().__init__(heft_planner,
-                          workflow,
-                          resource_manager,
-                          base_fail_duration,
-                          base_fail_dispersion,
-                          fixed_interval_for_ga,
-                          ga_builder)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.past_pop = None
         ## TODO: move to constructor of FailOnce
         self.failed_once = False
-        self.task_id_to_fail = task_id_to_fail
 
-        self.estimator = estimator
-
-        self.stat_saver = stat_saver
+        self.task_id_to_fail = kwargs["task_id_to_fail"]
+        self.estimator = kwargs["estimator"]
+        self.stat_saver = kwargs["stat_saver"]
 
         pass
 
@@ -113,7 +96,7 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
         ##Save stat to stat_saver
         ##=====================================
         ## TODO: make exception here
-        task_id = "" if not hasattr(self.current_event, 'task') else " " + str(self.current_event.task.id)
+        task_id = "" if not hasattr(self.current_event, 'task') else str(self.current_event.task.id)
         if self.stat_saver is not None:
             ## TODO: correct pop_agr later
             stat_data = {

@@ -2,6 +2,7 @@ from functools import partial
 import random
 from deap.tools.selection import selRoulette
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
+from GA.DEAPGA.multipopGA.MPGA import create_mpga
 from core.DSimpleHeft import DynamicHeft
 from core.PublicResourceManager import PublicResourceManager
 from core.comparisons.ComparisonBase import ResultSaver, ComparisonUtility
@@ -163,7 +164,7 @@ class ExecutorsFactory:
         kwargs["silent"] = kwargs.get("silent", True)
         ga_heft_machine = GaHeftExecutor(
                             heft_planner=dynamic_heft,
-                            workflow=kwargs["wf"],
+                            wf=kwargs["wf"],
                             resource_manager=kwargs["resource_manager"],
                             base_fail_duration=40,
                             base_fail_dispersion=1,
@@ -232,7 +233,7 @@ class ExecutorsFactory:
         stat_saver = self.build_saver(*args, **kwargs)
         kwargs["silent"] = kwargs.get("silent", True)
         ga_machine = GaHeftOldPopExecutor(heft_planner=dynamic_heft,
-                                          workflow=kwargs["wf"],
+                                          wf=kwargs["wf"],
                                           resource_manager=kwargs["resource_manager"],
                                           estimator=kwargs["estimator"],
                                           base_fail_duration=40,
@@ -267,6 +268,7 @@ class ExecutorsFactory:
                 res.append(r)
             return [pop[r] for r in res]
 
+        kwargs["silent"] = kwargs.get("silent", True)
         kwargs["heft_planner"] = dynamic_heft
         kwargs["base_fail_duration"] = 40
         kwargs["base_fail_dispersion"] = 1
@@ -276,8 +278,13 @@ class ExecutorsFactory:
         kwargs["ga_params"] = kwargs.get("ga_params", None)
         kwargs["logger"] = kwargs.get("logger", None)
         kwargs["stat_saver"] = kwargs.get("stat_saver", stat_saver)
+        kwargs["ga_builder"] = partial(GAFactory.default().create_ga, **kwargs)
+        kwargs["mpga_builder"] = partial(create_mpga, **kwargs)
+        kwargs["merged_pop_iters"] = kwargs.get("merged_pop_iters", 0)
+        kwargs["check_evolution_for_stopping"] = kwargs.get("check_evolution_for_stopping", True)
 
-        ga_machine = MPGaHeftOldPopExecutor(kwargs)
+
+        ga_machine = MPGaHeftOldPopExecutor(**kwargs)
 
         ga_machine.init()
         ga_machine.run()
