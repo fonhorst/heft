@@ -6,7 +6,7 @@ from GA.DEAPGA.multipopGA.MPGA import create_mpga
 from core.DSimpleHeft import DynamicHeft
 from core.PublicResourceManager import PublicResourceManager
 from core.comparisons.ComparisonBase import ResultSaver, ComparisonUtility
-from core.comparisons.StopRescheduling import GaOldPopExecutor
+from core.comparisons.GaOldPopExecutor import GaOldPopExecutor
 from core.executors.CloudHeftExecutor import CloudHeftExecutor
 from core.executors.GAExecutor import GAExecutor
 from core.executors.GaHeftExecutor import GaHeftExecutor
@@ -207,18 +207,13 @@ class ExecutorsFactory:
     def run_oldpop_executor(self, *args, **kwargs):
         stat_saver = self.build_saver(*args, **kwargs)
 
-        ga_machine = GaOldPopExecutor(
-                            workflow=kwargs["wf"],
-                            resource_manager=kwargs["resource_manager"],
-                            estimator=kwargs["estimator"],
-                            ga_params=kwargs["ga_params"],
-                            base_fail_duration=40,
-                            base_fail_dispersion=1,
-                            wf_name=kwargs["wf_name"],
-                            stat_saver=stat_saver,
-                            task_id_to_fail=kwargs["task_id_to_fail"],
-                            check_evolution_for_stopping=kwargs["check_evolution_for_stopping"],
-                            logger=kwargs["logger"])
+        kwargs["silent"] = kwargs.get("silent", True)
+        kwargs["base_fail_duration"] = 40
+        kwargs["base_fail_dispersion"] = 1
+        kwargs["stat_saver"] = stat_saver
+        kwargs["ga_builder"] = partial(GAFactory.default().create_ga, **kwargs)
+
+        ga_machine = GaOldPopExecutor(**kwargs)
 
         ga_machine.init()
         ga_machine.run()

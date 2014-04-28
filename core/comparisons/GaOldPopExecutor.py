@@ -1,5 +1,6 @@
 from collections import deque
 import random
+import math
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from core.CommonComponents.failers.FailOnce import FailOnce
 from core.executors.BaseExecutor import BaseExecutor
@@ -11,60 +12,34 @@ from environment.Utility import Utility
 
 class GaOldPopExecutor(FailOnce, BaseExecutor):
 
-    def __init__(self,
-                 workflow,
-                 resource_manager,
-                 estimator,
-                 ga_params,
-                 base_fail_duration,
-                 base_fail_dispersion,
-                 wf_name,
-                 stat_saver,
-                 task_id_to_fail,
-                 check_evolution_for_stopping,
-                 logger=None):
-        self.queue = deque()
-        self.current_time = 0
+    def __init__(self, **kwargs):
 
-        self.base_fail_duration = base_fail_duration
-        self.base_fail_dispersion = base_fail_dispersion
+        super().__init__()
+
+        self.estimator = kwargs["estimator"]
+        self.base_fail_duration = kwargs["base_fail_duration"]
+        self.base_fail_dispersion = kwargs["base_fail_dispersion"]
+        self.workflow = kwargs["wf"]
+        self.resource_manager = kwargs["resource_manager"]
+        self.stat_saver = kwargs["stat_saver"]
+        self.task_id_to_fail = kwargs["task_id_to_fail"]
+        self.ga_builder = kwargs["ga_builder"]
+
         self.current_schedule = None
-
-        self.workflow = workflow
-        self.resource_manager = resource_manager
-        self.estimator = estimator
-        self.params = ga_params
-
-        self.wf_name = wf_name
-        self.stat_saver = stat_saver
-        self.task_id_to_fail = task_id_to_fail
-        self.check_evolution_for_stopping = check_evolution_for_stopping
-
-        self.logger = logger
-
-
         self.past_pop = None
         pass
 
     def init(self):
-        ga_planner = self._create_ga()
+        ga_planner = self.ga_builder()
         self.current_schedule = Schedule({node: [] for node in self.resource_manager.get_nodes()})
         (result, logbook) = ga_planner(self.current_schedule, None)
         self.past_pop = ga_planner.get_pop()
         print("Result makespan: " + str(Utility.makespan(result[2])))
         self.current_schedule = result[2]
         self._post_new_events()
+
         self.failed_once = False
         pass
-
-    def _create_ga(self):
-        ga_planner = GAFactory.default().create_ga(silent=True,
-                                                   wf=self.workflow,
-                                                   resource_manager=self.resource_manager,
-                                                   estimator=self.estimator,
-                                                   ga_params=self.params,
-                                                   check_evolution_for_stopping=self.check_evolution_for_stopping)
-        return ga_planner
 
     def _task_start_handler(self, event):
         # check task as executing
@@ -156,7 +131,7 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
         task_id = "" if not hasattr(event, 'task') else " " + str(event.task.id)
         ## scheduling with initial population created of the previous population by moving elements from a downed node
         print("Scheduling with the old pop: " + str(event.__class__.__name__) + task_id )
-        ga_planner = self._create_ga()
+        ga_planner = self.ga_builder()
 
         cleaned_chromosomes = [self._clean_chromosome(ch, event, current_cleaned_schedule) for ch in self.past_pop]
         def is_empty(ch):
@@ -181,7 +156,7 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
 
         ## scheduling with random initial population
         print("Scheduling with a random pop: " + str(event.__class__.__name__)+ task_id)
-        ga_planner_with_random_init_population = self._create_ga()
+        ga_planner_with_random_init_population = self.ga_builder()
         ((v3, v4, schedule_with_random, iter_random), logbook_random) = ga_planner_with_random_init_population(current_cleaned_schedule, None, self.current_time, initial_population=None)
 
         Utility.check_and_raise_for_fixed_part(schedule_with_random, current_cleaned_schedule, self.current_time)
@@ -194,7 +169,7 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
         # Note: it can be rewritten with using of events
         if self.stat_saver is not None:
             stat_data = {
-                "wf_name": self.wf_name,
+                "wf_name": self.workflow.name,
                 "event_name": event.__class__.__name__,
                 "task_id": task_id,
                 "with_old_pop": {
