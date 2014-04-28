@@ -3,6 +3,7 @@ import random
 from deap.tools.selection import selRoulette
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from GA.DEAPGA.multipopGA.MPGA import create_mpga
+from core.CommonComponents.failers.ConcreteNodeFailOnce import WeakestFailOnce
 from core.DSimpleHeft import DynamicHeft
 from core.PublicResourceManager import PublicResourceManager
 from core.comparisons.ComparisonBase import ResultSaver, ComparisonUtility
@@ -215,6 +216,29 @@ class ExecutorsFactory:
 
         ga_machine = GaOldPopExecutor(**kwargs)
 
+        ga_machine.init()
+        ga_machine.run()
+
+        resulted_schedule = ga_machine.current_schedule
+        return resulted_schedule
+
+    @ExecutorRunner()
+    def run_oldpop_executor_with_weakestfailonce(self, *args, **kwargs):
+        stat_saver = self.build_saver(*args, **kwargs)
+
+        kwargs["silent"] = kwargs.get("silent", True)
+        kwargs["base_fail_duration"] = 40
+        kwargs["base_fail_dispersion"] = 1
+        kwargs["stat_saver"] = stat_saver
+        kwargs["ga_builder"] = partial(GAFactory.default().create_ga, **kwargs)
+
+        class weakest(WeakestFailOnce, GaOldPopExecutor):
+            def __init__(self, **kwargs):
+                super().__init__(**kwargs)
+                self.fail_percent = kwargs.get("fail_percent", 0.1)
+            pass
+
+        ga_machine = weakest(**kwargs)
         ga_machine.init()
         ga_machine.run()
 
