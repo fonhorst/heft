@@ -13,7 +13,7 @@ def produce_queue_of_tasks(wf_name, tsk_period, repeat_count):
     to_exec = [t for i in range(repeat_count) for t in tasks_to_fail]
     return to_exec
 
-def run_experiment(fnc, wf_name, tsk_period, repeat_count, pop_size):
+def run_experiment(fnc, wf_name, tsk_period, repeat_count, pop_size, produce_queue=produce_queue_of_tasks):
     save_path = "../../results/[{0}]_[{1}]_[{2}by{3}]_[{4}]/".format(wf_name, pop_size, tsk_period, repeat_count, ComparisonUtility.cur_time())
 
     if not os.path.exists(save_path):
@@ -25,7 +25,7 @@ def run_experiment(fnc, wf_name, tsk_period, repeat_count, pop_size):
 
     ## TODO: replace it with normal ticket description
     fun = partial(fnc, save_path=save_path, wf_name=wf_name, pop_size=pop_size)
-    to_exec = produce_queue_of_tasks(wf_name, tsk_period, repeat_count)
+    to_exec = produce_queue(wf_name, tsk_period, repeat_count)
     res = list(futures.map_as_completed(fun, to_exec))
 
 

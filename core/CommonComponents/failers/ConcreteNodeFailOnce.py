@@ -10,7 +10,18 @@ class ConcreteNodeFailOnce(FailBase):
         if self.failed_once is not True:
 
             node_to_fail = self._OP(self.current_schedule.mapping.keys(), key=lambda x: x.flops)
-            l = math.floor(len(self.current_schedule.mapping[node_to_fail]) * self.fail_percent)
+            length = len(self.current_schedule.mapping[node_to_fail])
+
+            if length == 0:
+                # we couldn't fail in this circumstances
+                # so, we just miss it
+                print("Fail on target node cannot be performed due to there is no tasks")
+                self.failed_once = True
+                return False
+
+                #raise Exception("Target node for fail hasn't any task")
+
+            l = math.floor(length * self.fail_percent)
             task_id_to_fail = self.current_schedule.mapping[node_to_fail][l].job.id
 
             if node.name == node_to_fail.name and task.id == task_id_to_fail:
