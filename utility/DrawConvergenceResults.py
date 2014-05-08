@@ -256,6 +256,7 @@ def visualize2(path):
     plt.xticks(range(0, len(points)))
     ax.set_xticklabels(points)
     ax.set_title("Overall")
+    plt.yticks([i/5 for i in range(0, 100)])
 
     data = [v for (i, v) in _sort_dict(result)]
     plt.plot(data, '-bx')
@@ -278,7 +279,7 @@ def visualize2(path):
 if __name__ == "__main__":
 
 
-    folder = "D:/wspace/heft/results/new_experiments_for_ECTA/m100_weakest/"
+    folder = "D:/wspace/heft/results/new_experiments_for_ECTA/sw2/additional_strongest/"
 
     # folder = "D:/wspace/heft/results/m_[20x3]/tournament/m40(35)_[20x3]_5by10_tour4/"
     def generate_pathes(folder):
