@@ -28,6 +28,8 @@ def fitness_mapping_and_ordering(solution):
     ms = {t: n for t, n in ms}
     ## TODO: implement procedure for building schedule
     raise NotImplementedError()
+
+
     pass
 
 def fitness_ordering_resourceconf(solution):
@@ -84,24 +86,17 @@ class Ordering(Specie):
         result = [self.mutation(deepcopy(sorted_tasks)) for i in range(size)]
         return result
 
-    ## TODO: crossover can violate parent-child relations, so it will have to be reconsidered
+    """
+    TODO: crossover can violate parent-child relations,
+    so it will have to be reconsidered - solved, need to be checked
+    """
     @staticmethod
     def crossover(child1, child2):
         def cutby(p1, p2, k):
             d = set(p1[0:k]) - set(p2[0:k])
             f = set(p1[0:k]) - set(p2[0:k])
-
-            i = 0
-            res = []
-            for s in child2[0:k]:
-                if s in d:
-                    res.append(f[i])
-                    i += 1
-                else:
-                    res.append(s)
-
-            assert i == len(d), "There are unsetted elements"
-            return p1[0:k] + res
+            rest = set(p2[k:]) - f
+            return p1[0:k] + list(f) + list(rest)
 
         k = random.randint(1, len(child1) - 1)
         first = cutby(child1, child2, k)

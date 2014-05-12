@@ -2,6 +2,89 @@ from core.HeftHelper import HeftHelper
 from environment.Resource import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 
+def _comm_ready_func(workflow,
+                     estimator,
+                     task_to_node,
+                     chrmo_mapping,
+                     task,
+                     node):
+        estimate = estimator.estimate_transfer_time
+        ##TODO: remake this stub later.
+        if len(task.parents) == 1 and workflow.head_task.id == list(task.parents)[0].id:
+            return 0
+
+        ## TODO: replace it with commented string below later
+        res_list = []
+        for p in task.parents:
+            c1 = task_to_node[p.id][2]
+            c2 = estimate(node, chrmo_mapping[p.id], task, p)
+            res_list.append(c1 + c2)
+
+        return max(res_list)
+## chrmo_mapping: task-node mapping
+def place_task_to_schedule(workflow,
+                           estimator,
+                           schedule_mapping,
+                           task_to_node,
+                           chrmo_mapping,
+                           task,
+                           node,
+                           current_time):
+
+        runtime = estimator.estimate_runtime(task, node)
+        comm_ready = _comm_ready_func(workflow,
+                                      estimator,
+                                      task_to_node,
+                                      chrmo_mapping,
+                                      task,
+                                      node)
+
+        def _check(st, end):
+            return (0.00001 < (st - current_time)) \
+                       and st >= comm_ready and (0.00001 < (end - st) - runtime)
+
+        node_schedule = schedule_mapping.get(node, list())
+
+
+        ## TODO: add case for inserting between nothing and first element
+        size = len(node_schedule)
+        result = None
+        i = 0
+        if size > 0 and _check(0, node_schedule[0]):
+            i = -1
+            result = (0, node_schedule[0].start_time)
+        else:
+            while i < size - 1:
+                st = node_schedule[i].end_time
+                end = node_schedule[i + 1].start_time
+                if _check(st, end):
+                    break
+                i += 1
+            if i < size - 1:
+                result = (st, end)
+            else:
+                free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
+                ## TODO: refactor it later
+                f_time = max(free_time, comm_ready)
+                f_time = max(f_time, current_time)
+                result = (f_time, f_time + runtime)
+                i = size - 1
+                pass
+            pass
+
+        previous_elt = i
+        st_time = result[0]
+        end_time = st_time + runtime
+        item = ScheduleItem(task, st_time, end_time)
+
+        node_schedule.insert(previous_elt + 1, item)
+
+        schedule_mapping[node] = node_schedule
+        return (st_time, end_time)
+
+
+
+
 class NewScheduleBuilder:
 
     def __init__(self,
@@ -85,12 +168,14 @@ class NewScheduleBuilder:
                     chromo_copy[node.name].remove(tsk_id)
                     ready_tasks.remove(tsk_id)
 
-                    (start_time, end_time) = self._find_and_place(schedule_mapping,
-                                                    task_to_node,
-                                                    chrmo_mapping,
-                                                    task,
-                                                    node,
-                                                    current_time)
+                    (start_time, end_time) = place_task_to_schedule(self.workflow,
+                                                                    self.estimator,
+                                                                    schedule_mapping,
+                                                                    task_to_node,
+                                                                    chrmo_mapping,
+                                                                    task,
+                                                                    node,
+                                                                    current_time)
 
                     task_to_node[task.id] = (node, start_time, end_time)
 
@@ -99,8 +184,6 @@ class NewScheduleBuilder:
                     ready_children = self._get_ready_tasks(task.children, finished_tasks)
                     for child in ready_children:
                         ready_tasks.append(child.id)
-
-
         schedule = Schedule(schedule_mapping)
         return schedule
 
@@ -114,126 +197,6 @@ class NewScheduleBuilder:
             return True
         ready_children = [child for child in children if _is_child_ready(child)]
         return ready_children
-
-    def _find_and_place(self,
-                        schedule_mapping,
-                        task_to_node,
-                        chrmo_mapping,
-                        task,
-                        node,
-                        current_time):
-
-        runtime = self.estimator.estimate_runtime(task, node)
-        comm_ready = self._comm_ready_func(task_to_node,
-                                           chrmo_mapping,
-                                           task,
-                                           node)
-
-        def _check(st, end):
-            return (0.00001 < (st - current_time)) and st >= comm_ready and (0.00001 < (end - st) - runtime)
-
-        node_schedule = schedule_mapping.get(node, list())
-
-
-        ## TODO: add case for inserting between nothing and first element
-        size = len(node_schedule)
-        result = None
-        i = 0
-        if size > 0 and _check(0, node_schedule[0]):
-            i = -1
-            result = (0, node_schedule[0].start_time)
-        else:
-            while i < size - 1:
-                st = node_schedule[i].end_time
-                end = node_schedule[i + 1].start_time
-                if _check(st, end):
-                    break
-                i += 1
-            if i < size - 1:
-                result = (st, end)
-            else:
-                free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
-                ## TODO: refactor it later
-                f_time = max(free_time, comm_ready)
-                f_time = max(f_time, current_time)
-                result = (f_time, f_time + runtime)
-                i = size - 1
-                pass
-            pass
-
-        previous_elt = i
-        st_time = result[0]
-        end_time = st_time + runtime
-        item = ScheduleItem(task, st_time, end_time)
-
-        node_schedule.insert(previous_elt + 1, item)
-
-        schedule_mapping[node] = node_schedule
-        return (st_time, end_time)
-
-
-    # def _find_and_place(self,
-    #                     schedule_mapping,
-    #                     task_to_node,
-    #                     chrmo_mapping,
-    #                     task,
-    #                     node,
-    #                     current_time):
-    #
-    #     runtime = self.estimator.estimate_runtime(task, node)
-    #     comm_ready = self._comm_ready_func(task_to_node,
-    #                                        chrmo_mapping,
-    #                                        task,
-    #                                        node)
-    #
-    #     def _check(st, end):
-    #         return (0.00001 < (st - current_time)) and st >= comm_ready and (0.00001 < (end - st) - runtime)
-    #
-    #     node_schedule = schedule_mapping.get(node, list())
-    #
-    #     size = len(node_schedule)
-    #     result = None
-    #     i = 0
-    #
-    #     free_time = 0 if len(node_schedule) == 0 else node_schedule[-1].end_time
-    #     ## TODO: refactor it later
-    #     f_time = max(free_time, comm_ready)
-    #     f_time = max(f_time, current_time)
-    #     result = (f_time, f_time + runtime)
-    #     i = size - 1
-    #
-    #     previous_elt = i
-    #     st_time = result[0]
-    #     end_time = st_time + runtime
-    #     item = ScheduleItem(task, st_time, end_time)
-    #
-    #     node_schedule.insert(previous_elt + 1, item)
-    #
-    #     schedule_mapping[node] = node_schedule
-    #     return (st_time, end_time)
-
-
-
-    def _comm_ready_func(self,
-                         task_to_node,
-                         chrmo_mapping,
-                         task,
-                         node):
-        estimate = self.estimator.estimate_transfer_time
-        ##TODO: remake this stub later.
-        if len(task.parents) == 1 and self.workflow.head_task.id == list(task.parents)[0].id:
-            return 0
-
-        ## TODO: replace it with commented string below later
-        res_list = []
-        for p in task.parents:
-            c1 = task_to_node[p.id][2]
-            c2 = estimate(node, chrmo_mapping[p.id], task, p)
-            res_list.append(c1 + c2)
-
-        return max(res_list)
-        ##return max([task_to_node[p.id][2] + estimate(node, chrmo_mapping[p.id], task, p) for p in task.parents])
-
 
     pass
 
