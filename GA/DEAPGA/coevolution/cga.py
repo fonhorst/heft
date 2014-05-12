@@ -1,13 +1,111 @@
 import random
 
+from deap import base
+
+SPECIES = "species"
+OPERATORS = "operators"
+DEFAULT = "default"
+
+# def TBX(**kwargs):
+#     toolbox = base.Toolbox()
+#     species = kwargs[SPECIES]
+#     for k, v in kwargs.items():
+#         if k != OPERATORS:
+#             toolbox.register(k, v)
+#     for k, v in kwargs[OPERATORS].items():
+#         if isinstance(v, dict):
+#             base_value = v.get(DEFAULT, None)
+#             for s in species:
+#                 value = v.get(s, None)
+#                 value = base_value if value is None else value
+#                 assert value is not None, "Cannot find default or provided value for " + OPERATORS + "." + str(k) + "." + str(s)
+#                 toolbox.register(k, value)
+#         # elif isinstance(v, list):
+#         #     assert len(v) > 0, "List param isn't right"
+#         #     value = v[0]
+#         #     # make partial application
+#         else:
+#             assert value is not None, "Cannot find default or provided value for " + OPERATORS + "." + str(k)
+#             toolbox.register(k, value)
+#     return toolbox
+
+"""
+The algorithm have to satisfy the next requirements:
+ - arbitrary count of species
+ - arbitrary species, so using of operators provided with toolbox interface
+ - unit-testing
+ - gathering statistics
+ - logging
+
+Optional:
+ - tools for checking of pareto-front characteristics
+ - tools for checking of diversity in population
+
+ Optional 2:
+ - different schemes of credit assignments
+ - different schemes of interactions between populations
+ - different schemes of credit inheritance(local fitness inheritance)
+
+
+
+It is supposed that DSL of the algorithm looks like somehow below:
+{
+    Species(
+
+    )
+    SPECIES = toolbox.species,
+    INTERACT_INDIVIDUALS_COUNT = toolbox.interact_individuals_count,
+    GENERATIONS = toolbox.generations,
+    CXB[s] = toolbox.crossover_probability,
+    MUTATION[s] = toolbox.mutation_probability,
+    toolbox.initialize(s, s.pop_size),
+    toolbox.choose(pop),
+    toolbox.fitness(solution),
+    toolbox.select(s, pop),
+    toolbox.clone
+    toolbox.mate(s, child1, child2)
+    toolbox.mutate(s, mutant)
+}
+toolbox = TBX(
+{
+    "species": [s1=Specie(),s2=Specie(),...]
+    INTERACT_INDIVIDUALS_COUNT: ...,
+    GENERATIONS: ...,
+    CXB: {
+        s1: ...,
+        s2: ...,
+        s3: ...,
+    },
+    MUTATION: {
+        s1: ...,
+        s2: ...,
+    },
+    "operators":{
+        "initialize": {
+            "base": ...,
+            s1: ...,
+            s2: ...,
+            s3: ...,
+        }
+    }
+
+})
+"""
+
+
 class Specie:
     def __init__(self, name, pop_size, fixed=False, representative_individual=None):
         self.name = name
+        ## TODO: reconsider, should It be here?
         self.pop_size = pop_size
         self.fixed = fixed
         self.representative_individual = representative_individual
     pass
 
+"""
+Toolbox need to implement functions:
+
+"""
 def create_cooperative_ga(toolbox):
     def func():
         ## TODO: add ability to determine if evolution has stopped
@@ -54,7 +152,7 @@ def create_cooperative_ga(toolbox):
         for gen in GENERATIONS:
             solutions = []
             for i in range(INTERACT_INDIVIDUALS_COUNT):
-                solution = {s: decrease_k(toolbox.select(pop)) for s, pop in pops if not s.fixed}
+                solution = {s: decrease_k(toolbox.choose(pop)) for s, pop in pops if not s.fixed}
                 solutions.append(solution)
 
             for sol in solutions:
@@ -70,7 +168,7 @@ def create_cooperative_ga(toolbox):
 
             ## TODO: remake it in a more generic way
             ## TODO: add archive and corresponding updating and mixing
-            best = min(solution, key=lambda x: x.fitness)
+            best = min(solutions, key=lambda x: x.fitness)
 
             for ind, values in inds_credit.items():
                 ind.credit = values[0] / values[1]
