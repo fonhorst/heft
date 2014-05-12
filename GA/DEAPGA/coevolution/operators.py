@@ -4,6 +4,38 @@ from deap import tools
 from GA.DEAPGA.coevolution.cga import Specie
 from core.HeftHelper import HeftHelper
 
+def default_choose(pop):
+    while True:
+        i = random.randint(0, len(pop) - 1)
+        if pop[i].k > 0:
+            pop[i].k -= 1
+            return pop[i]
+
+"""
+the solution consists all parts necessary to build whole solution
+For the moment, it is mentioned that all species taking part in algorithm
+are necessary to build complete solution
+solution = {
+    s1: val1,
+    s2: val2,
+    ....
+}
+"""
+def fitness_mapping_and_ordering(solution):
+    ms = solution[filter(lambda k: isinstance(k, Mapping), solution)]
+    os = solution[filter(lambda k: isinstance(k, Ordering), solution)]
+
+    ms = {t: n for t, n in ms}
+    ## TODO: implement procedure for building schedule
+    raise NotImplementedError()
+    pass
+
+def fitness_ordering_resourceconf(solution):
+    os = solution[filter(lambda k: isinstance(k, Ordering), solution)]
+    rcs = solution[filter(lambda k: isinstance(k, ResourceConfig), solution)]
+    ## TODO: implement procedure for building schedule
+    raise NotImplementedError()
+    pass
 """
 chromosome = [(Task(), Node()), ...]
 """
@@ -52,6 +84,7 @@ class Ordering(Specie):
         result = [self.mutation(deepcopy(sorted_tasks)) for i in range(size)]
         return result
 
+    ## TODO: crossover can violate parent-child relations, so it will have to be reconsidered
     @staticmethod
     def crossover(child1, child2):
         def cutby(p1, p2, k):

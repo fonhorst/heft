@@ -152,7 +152,9 @@ def create_cooperative_ga(toolbox):
         for gen in GENERATIONS:
             solutions = []
             for i in range(INTERACT_INDIVIDUALS_COUNT):
-                solution = {s: decrease_k(toolbox.choose(pop)) for s, pop in pops if not s.fixed}
+                solution = {s: decrease_k(toolbox.choose(pop)) if not s.fixed
+                            else s.representative_individual
+                            for s, pop in pops}
                 solutions.append(solution)
 
             for sol in solutions:
@@ -172,8 +174,11 @@ def create_cooperative_ga(toolbox):
 
             for ind, values in inds_credit.items():
                 ind.credit = values[0] / values[1]
+                ## TODO: check out it is possible to replace this with alias or not
+                ind.fitness = ind.credit
 
             items = [(s, pop) for s, pop in pops.items() if not s.fixed]
+
             for s, pop in items:
                 offspring = toolbox.select(s, pop)
                 offspring = list(map(toolbox.clone, offspring))
@@ -196,12 +201,14 @@ def create_cooperative_ga(toolbox):
                     if random.random() < MUTATION[s]:
                         toolbox.mutate(s, mutant)
                     pass
+                pops[s] = offspring
                 pass
 
             for s, pop in pops:
                 credit_to_k(pop)
                 for ind in pop:
                     del ind.credit
+                    del ind.fitness
             pass
         return best
     return func
