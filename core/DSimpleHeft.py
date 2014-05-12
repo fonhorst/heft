@@ -15,7 +15,7 @@ class DynamicHeft(StaticHeftPlanner):
         nodes = HeftHelper.to_nodes(resources)
         return nodes
 
-    def __init__(self, workflow, resource_manager, estimator):
+    def __init__(self, workflow, resource_manager, estimator, ranking=None):
         self.current_schedule = Schedule(dict())
         self.workflow = workflow
         self.resource_manager = resource_manager
@@ -25,7 +25,7 @@ class DynamicHeft(StaticHeftPlanner):
 
         nodes = self.get_nodes()
 
-        self.wf_jobs = self.make_ranking(self.workflow, nodes)
+        self.wf_jobs = self.make_ranking(self.workflow, nodes) if ranking is None else ranking
 
         # print("A: " + str(self.wf_jobs))
 
