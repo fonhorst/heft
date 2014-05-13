@@ -19,7 +19,7 @@ class CoevolutionTest(unittest.TestCase):
         toolbox = create_simple_toolbox(wf, estimator, manager,
                                         pop_size=10,
                                         interact_individuals_count=22,
-                                        generations=10,
+                                        generations=5,
                                         mutation_probability=0.5,
                                         crossover_probability=0.8)
         solution = run_cooperative_ga(toolbox)

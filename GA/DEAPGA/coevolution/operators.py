@@ -8,7 +8,6 @@ from GA.DEAPGA.coevolution.cga import Specie
 from core.DSimpleHeft import DynamicHeft
 from core.HeftHelper import HeftHelper
 from core.concrete_realization import ExperimentResourceManager
-from core.runners.ExecutorRunner import ExecutorRunner
 from environment.ResourceGenerator import ResourceGenerator
 from environment.ResourceManager import Schedule
 from environment.Utility import Utility
@@ -17,10 +16,7 @@ creator.create("Individual", list)
 ListBasedIndividual = creator.Individual
 
 
-class VMConfig:
-    def __init__(self, flops):
-        self.flops = flops
-    pass
+
 
 def default_choose(pop):
     while True:
@@ -43,7 +39,7 @@ def _check_precedence(workflow, seq):
         for j in range(i + 1, len(seq)):
             if seq[j] in pids:
                 return False
-        return True
+    return True
 
 
 def build_schedule(workflow, estimator, resource_manager, solution):
@@ -69,11 +65,14 @@ def build_schedule(workflow, estimator, resource_manager, solution):
     for t in os:
         node = ms[t]
         t = workflow.byId(t)
-        (start_time, end_time) = place_task_to_schedule(workflow,
+        try:
+            (start_time, end_time) = place_task_to_schedule(workflow,
                                                         estimator,
                                                         schedule_mapping,
                                                         task_to_node,
                                                         ms, t, node, 0)
+        except Exception as ex:
+            raise ex
 
         task_to_node[t.id] = (node, start_time, end_time)
     schedule = Schedule(schedule_mapping)
@@ -158,29 +157,30 @@ class Ordering(Specie):
     """
 
     def crossover(self, child1, child2):
-        # def cutby(p1, p2, k):
-        #     d = set(p1[0:k]) - set(p2[0:k])
-        #     f = set(p1[0:k]) - set(p2[0:k])
-        #     rest = set(p2[k:]) - f
-        #     return p1[0:k] + list(f) + list(rest)
-        #
-        # k = random.randint(1, len(child1) - 1)
-        # first = cutby(child1, child2, k)
-        # second = cutby(child2, child1, k)
-        # ## TODO: remake it
-        # child1.clear()
-        # child1.extend(first)
-        # child2.clear()
-        # child2.extend(second)
+        def cutby(p1, p2, k):
+            d = set(p1[0:k]) - set(p2[0:k])
+            f = set(p2[0:k]) - set(p1[0:k])
+            migr = [p for p in p2[0:k] if p in f]
+            rest = [p for p in p2[k:] if p not in d]
+            return p1[0:k] + migr + rest
+
+        k = random.randint(1, len(child1) - 1)
+        first = cutby(child1, child2, k)
+        second = cutby(child2, child1, k)
+        ## TODO: remake it
+        child1.clear()
+        child1.extend(first)
+        child2.clear()
+        child2.extend(second)
         pass
 
     def mutate(self, mutant):
-        while True:
-            k1 = random.randint(0, len(mutant) - 1)
-            k2 = random.randint(0, len(mutant) - 1)
-            if k1 != k2 and not self.wf.is_parent_child(mutant[k1], mutant[k2]):
-                break
-        mutant[k1], mutant[k2] = mutant[k2], mutant[k1]
+        # while True:
+        #     k1 = random.randint(0, len(mutant) - 1)
+        #     k2 = random.randint(0, len(mutant) - 1)
+        #     if k1 != k2 and not self.wf.is_parent_child(mutant[k1], mutant[k2]):
+        #         break
+        # mutant[k1], mutant[k2] = mutant[k2], mutant[k1]
         return mutant
 
 class ResourceConfig(Specie):
@@ -214,6 +214,11 @@ class ResourceConfig(Specie):
         c = random.randint(0, len(cfgs) - 1)
         mutant[k] = cfgs[c]
         pass
+    pass
+
+class VMConfig:
+    def __init__(self, flops):
+        self.flops = flops
     pass
 
 class VMResourceManager(ExperimentResourceManager):
