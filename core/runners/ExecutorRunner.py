@@ -14,11 +14,10 @@ from core.executors.GaHeftExecutor import GaHeftExecutor
 from core.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
 from core.executors.HeftExecutor import HeftExecutor
 from core.executors.MPGaHeftOldPopExecutor import MPGaHeftOldPopExecutor
-from environment.Resource import ResourceGenerator
+from environment.ResourceGenerator import ResourceGenerator
 from environment.Utility import Utility
 from core.HeftHelper import HeftHelper
 from core.concrete_realization import ExperimentEstimator, ExperimentResourceManager
-
 
 
 class ExecutorRunner:
@@ -63,7 +62,8 @@ class ExecutorRunner:
     def main(self, reliability, is_silent, wf_name, with_ga_initial=False, the_bundle=None):
         pass
 
-    def extract_result(self, schedule, is_silent, wf):
+    @staticmethod
+    def extract_result(schedule, is_silent, wf):
         makespan = Utility.makespan(schedule)
         seq_time_validaty = Utility.validateNodesSeq(schedule)
         dependency_validaty = Utility.validateParentsAndChildren(schedule, wf)

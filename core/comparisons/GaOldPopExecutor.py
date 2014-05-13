@@ -5,7 +5,7 @@ from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from core.CommonComponents.failers.FailOnce import FailOnce
 from core.executors.BaseExecutor import BaseExecutor
 from core.executors.EventMachine import TaskFinished, NodeFailed, NodeUp
-from environment.Resource import Node
+from environment.BaseElements import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 from environment.Utility import Utility
 

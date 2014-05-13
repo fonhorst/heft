@@ -2,7 +2,7 @@ from collections import deque
 import random
 from core.CommonComponents.failers.FailRandom import FailRandom
 from core.executors.BaseExecutor import BaseExecutor
-from environment.Resource import Node
+from environment.BaseElements import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 from core.HeftHelper import HeftHelper
 from core.executors.EventMachine import EventMachine, TaskStart, NodeFailed, NodeUp, TaskFinished

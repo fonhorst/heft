@@ -1,6 +1,6 @@
 from functools import partial
 
-from environment.Resource import Node, SoftItem
+from environment.BaseElements import Node, SoftItem
 from environment.ResourceManager import Algorithm, Schedule, ScheduleItem
 from environment.Utility import reverse_dict
 from core.HeftHelper import HeftHelper

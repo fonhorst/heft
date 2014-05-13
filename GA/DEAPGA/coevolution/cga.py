@@ -1,6 +1,6 @@
 import random
 
-from deap import base
+from deap import creator
 
 SPECIES = "species"
 OPERATORS = "operators"
@@ -92,6 +92,8 @@ toolbox = TBX(
 })
 """
 
+creator.create("DictBasedIndividual", dict)
+DictBasedIndividual = creator.DictBasedIndividual
 
 class Specie:
     def __init__(self, name, pop_size, fixed=False, representative_individual=None):
@@ -110,7 +112,7 @@ def create_cooperative_ga(toolbox):
     def func():
         ## TODO: add ability to determine if evolution has stopped
         ## TODO: add archive
-        ## TODO: add generating and collecting differnt statistics
+        ## TODO: add generating and collecting different statistics
         # create initial populations of all species
         # taking part in coevolution
 
@@ -126,7 +128,7 @@ def create_cooperative_ga(toolbox):
             for ind in pop:
                 ind.k = base_k
 
-            for slot in free_slots:
+            for slot in range(free_slots):
                 i = random.randint(0, len(pop) - 1)
                 pop[i].k += 1
             return pop
@@ -136,64 +138,90 @@ def create_cooperative_ga(toolbox):
             return ind
 
         def credit_to_k(pop):
-            norma = INTERACT_INDIVIDUALS_COUNT / sum(el.credit for el in pop)
+            norma = INTERACT_INDIVIDUALS_COUNT / sum(el.fitness for el in pop)
             for c in pop:
-                c.k = int(c.credit * norma)
+                c.k = int(c.fitness * norma)
             left_part = INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
-            sorted_pop = sorted(pop, key=lambda x: x.credit, reverse=True)
+            sorted_pop = sorted(pop, key=lambda x: x.fitness, reverse=True)
             for i in range(left_part):
                 sorted_pop[i].k += 1
             return pop
 
         pops = {s: generate_k(toolbox.initialize(s, s.pop_size)) for s in SPECIES if not s.fixed}
 
-        best = None
+        ## checking correctness
+        for s, pop in pops.items():
+           sm = sum(p.k for p in pop)
+           assert sm == INTERACT_INDIVIDUALS_COUNT, \
+               "For specie {0} count doesn't equal to {1}. Actual value {2}".format(s, INTERACT_INDIVIDUALS_COUNT, sm)
 
-        for gen in GENERATIONS:
+        print("Initialization finished")
+
+        best = None
+        for gen in range(GENERATIONS):
+
+            # assign id for every elements in every population
+            # create dictionary for all individuals in all pop
+            i = 0
+            for s, pop in pops.items():
+                for p in pop:
+                    p.id = i
+                    i += 1
+            ind_maps = {p.id: p for s, pop in pops.items() for p in pop}
+
+            print("Gen: " + str(gen))
+            ## constructing set of possible solutions
             solutions = []
             for i in range(INTERACT_INDIVIDUALS_COUNT):
-                solution = {s: decrease_k(toolbox.choose(pop)) if not s.fixed
-                            else s.representative_individual
-                            for s, pop in pops}
+                solution = DictBasedIndividual({s: decrease_k(toolbox.choose(pop)) if not s.fixed
+                                                else s.representative_individual
+                                                for s, pop in pops.items()})
                 solutions.append(solution)
 
+            print("Solutions have been built")
+            ## estimate fitness
             for sol in solutions:
                 sol.fitness = toolbox.fitness(solution)
 
+            print("Fitness have been evaluated")
+
+            ## determine and distribute credits between participants of solutions
+            ## TODO: perhaps it should be reconsidered
             inds_credit = dict()
             for sol in solutions:
                 for s, ind in sol.items():
-                    values = inds_credit.get(ind, [0, 0])
+                    values = inds_credit.get(ind.id, [0, 0])
                     values[0] += sol.fitness / len(sol)
                     values[1] += 1
-                    inds_credit[ind] = values
+                    inds_credit[ind.id] = values
+            for id, values in inds_credit.items():
+                ## assign credit to every individual
+                ind_maps[id].fitness = values[0] / values[1]
 
+            print("Credit have been estimated")
+
+            ## select best solution as a result
             ## TODO: remake it in a more generic way
             ## TODO: add archive and corresponding updating and mixing
             best = min(solutions, key=lambda x: x.fitness)
 
-            for ind, values in inds_credit.items():
-                ind.credit = values[0] / values[1]
-                ## TODO: check out it is possible to replace this with alias or not
-                ind.fitness = ind.credit
-
+            ## produce offsprings
             items = [(s, pop) for s, pop in pops.items() if not s.fixed]
-
             for s, pop in items:
                 offspring = toolbox.select(s, pop)
                 offspring = list(map(toolbox.clone, offspring))
                 # Apply crossover and mutation on the offspring
                 for child1, child2 in zip(offspring[::2], offspring[1::2]):
                     if random.random() < CXB[s]:
-                        c1 = child1.credit
-                        c2 = child2.credit
+                        c1 = child1.fitness
+                        c2 = child2.fitness
                         toolbox.mate(s, child1, child2)
                         ## TODO: make credit inheritance here
                         ## TODO: toolbox.inherit_credit(pop, child1, child2)
                         ## TODO: perhaps, this operation should be done after all crossovers in the pop
                         ## default implementation
-                        child1.credit = (c1 + c2) / 2
-                        child2.credit = (c1 + c2) / 2
+                        child1.fitness = (c1 + c2) / 2
+                        child2.fitness = (c1 + c2) / 2
                         pass
                     pass
 
@@ -203,13 +231,13 @@ def create_cooperative_ga(toolbox):
                     pass
                 pops[s] = offspring
                 pass
-
-            for s, pop in pops:
+            for s, pop in pops.items():
                 credit_to_k(pop)
                 for ind in pop:
-                    del ind.credit
                     del ind.fitness
+                    del ind.id
             pass
+            print("Offsprings have been generated")
         return best
     return func
 

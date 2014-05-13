@@ -1,10 +1,11 @@
+from environment.ResourceGenerator import ResourceGenerator
+
 __author__ = 'Николай'
 
 import unittest
 from unittest import TestCase
 from environment.Utility import Utility
 from core.simple_heft import StaticHeftPlanner
-from environment.Resource import ResourceGenerator
 from core.concrete_realization import ExperimentEstimator
 from core.concrete_realization import ExperimentResourceManager
 import cProfile, pstats, io

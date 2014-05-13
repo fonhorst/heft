@@ -3,7 +3,7 @@ from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from core.DSimpleHeft import DynamicHeft
 from core.HeftHelper import HeftHelper
 from core.concrete_realization import ExperimentEstimator, ExperimentResourceManager
-from environment.Resource import ResourceGenerator
+from environment.ResourceGenerator import ResourceGenerator
 from environment.ResourceManager import Schedule
 from environment.Utility import Utility, profile_decorator
 from environment.Utility import GraphVisualizationUtility as viz

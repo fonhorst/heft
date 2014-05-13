@@ -1,5 +1,5 @@
 import random
-from environment.Resource import Node
+from environment.BaseElements import Node
 from environment.ResourceManager import Scheduler, ScheduleItem, Schedule
 from core.HeftHelper import HeftHelper
 

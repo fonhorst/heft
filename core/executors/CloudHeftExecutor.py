@@ -1,6 +1,6 @@
 from collections import deque
 import random
-from environment.Resource import Node
+from environment.BaseElements import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 from core.executors.EventMachine import EventMachine, TaskStart, NodeFailed, NodeUp, TaskFinished
 from core.HeftHelper import HeftHelper

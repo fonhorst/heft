@@ -52,6 +52,7 @@ class ExperimentResourceManager(ResourceManager):
     def __init__(self, resources):
         self.resources = resources
         self.resources_map = {res.name: res for res in self.resources}
+        self._name_to_node = None
 
     ## TODO: fix problem with id
     def node(self, node):
@@ -67,5 +68,11 @@ class ExperimentResourceManager(ResourceManager):
     def change_performance(self, node, performance):
         ##TODO: rethink it
         self.resources[node.resource][node].flops = performance
+
+    def byName(self, name):
+        if self._name_to_node is None:
+            self._name_to_node = {n.name: n for n in self.get_nodes()}
+        return self._name_to_node.get(name, None)
+
 
 

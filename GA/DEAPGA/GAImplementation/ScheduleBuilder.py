@@ -1,5 +1,5 @@
 from core.HeftHelper import HeftHelper
-from environment.Resource import Node
+from environment.BaseElements import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 
 class ScheduleBuilder:

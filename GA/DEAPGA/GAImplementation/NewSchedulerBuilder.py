@@ -1,5 +1,5 @@
 from core.HeftHelper import HeftHelper
-from environment.Resource import Node
+from environment.BaseElements import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 
 def _comm_ready_func(workflow,

@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
-from environment.Resource import Task
-from environment.Resource import File
-from environment.Resource import Workflow
+from environment.BaseElements import Task
+from environment.BaseElements import File
+from environment.BaseElements import Workflow
 
 class DAXParser:
     def __init__(self):

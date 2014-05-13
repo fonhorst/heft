@@ -3,7 +3,7 @@ import random
 from core.CommonComponents.failers.FailRandom import FailRandom
 from core.executors.BaseExecutor import BaseExecutor
 from core.executors.EventMachine import TaskFinished, NodeFailed, NodeUp
-from environment.Resource import Node
+from environment.BaseElements import Node
 from environment.ResourceManager import ScheduleItem, Schedule
 from environment.Utility import Utility
 

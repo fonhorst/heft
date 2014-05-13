@@ -7,7 +7,7 @@ import io
 from core.comparisons.ComparisonBase import ComparisonUtility
 from environment.DAXParser import DAXParser
 from random import Random
-from environment.Resource import Node, Resource
+from environment.BaseElements import Node, Resource
 from environment.ResourceManager import ScheduleItem, Schedule
 import xml.etree.ElementTree as ET
 

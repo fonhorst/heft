@@ -1,10 +1,9 @@
 ## from Buyya
 import random
 from GA.DEAPGA.GAImplementation.NewSchedulerBuilder import NewScheduleBuilder
-from GA.DEAPGA.GAImplementation.ScheduleBuilder import ScheduleBuilder
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from core.HeftHelper import HeftHelper
-from environment.Resource import Node
+from environment.BaseElements import Node
 from environment.ResourceManager import ScheduleItem
 from environment.Utility import Utility
 

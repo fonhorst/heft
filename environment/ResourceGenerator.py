@@ -1,41 +1,9 @@
-from random import Random
-
-##just an enum
 import math
+from random import Random
 from core.HeftHelper import HeftHelper
+from environment.BaseElements import Resource, Node, SoftItem
 
-
-class SoftItem:
-    windows = "windows"
-    unix = "unix"
-    matlab = "matlab"
-    ANY_SOFT = "any_soft"
-
-
-class Resource:
-    def __init__(self, name):
-        self.name = name
-        self.nodes = set()
-
-
-class Node:
-    Down = "down"
-    Unknown = "unknown"
-    Static = "static"
-    Busy = "busy"
-    def __init__(self, name, resource, soft):
-        self.name = name
-        self.soft = soft
-        self.resource = resource
-        self.flops = 0
-        self.state = Node.Unknown
-
-    def __str__(self):
-        return self.name
-
-    def __repr__(self):
-        return self.name
-
+__author__ = 'nikolay'
 
 
 class ResourceGenerator:
@@ -213,86 +181,6 @@ class ResourceGenerator:
              transferMx[node.name] = {nd.name: gen(node, nd) for nd in allNodes}
          return transferMx
 
-class User:
-    def __init__(self):
-        self.name = ""
 
 
-##just an enum  now
-class AccessMode:
-    monopolic = "monopolic"
-    common = "common"
-    restricted = "restricted"
 
-##interface
-class PolicyChecker:
-    def __init__(self):
-        pass
-
-    def get_access_mode(self, wf):
-        pass
-
-
-class Workflow:
-    def __init__(self, id, name, head_task):
-        self.id = id
-        self.name = name
-        self.owner = None ## here must be a user
-        self.head_task = head_task ## tasks here
-        self.deadline = None ## deadline time
-        self.deadline_type = None ## deadline type
-        self.priority = None ## priority of wf
-        self.unique_tasks = None
-
-    def get_task_count(self):
-        unique_tasks =self.get_all_unique_tasks()
-        result = len(unique_tasks)
-        return result
-
-    def get_all_unique_tasks(self):
-        if self.unique_tasks is None:
-            def add_tasks(unique_tasks, task):
-                unique_tasks.update(task.children)
-                for child in task.children:
-                    add_tasks(unique_tasks, child)
-            unique_tasks = set()
-            if self.head_task is None:
-                result = []
-            else:
-                add_tasks(unique_tasks, self.head_task)
-                result = unique_tasks
-            self.unique_tasks = result
-        return self.unique_tasks
-
-    ## TODO: for one-time use. Remove it later.
-    def avr_runtime(self, package_name):
-        tsks = [tsk for tsk in HeftHelper.get_all_tasks(self) if package_name in tsk.soft_reqs]
-        common_sum = sum([tsk.runtime for tsk in tsks])
-        return common_sum/len(tsks)
-
-
-class Task:
-    def __init__(self, id, internal_wf_id):
-        self.id = id
-        self.internal_wf_id = internal_wf_id
-        self.wf = None
-        self.parents = set() ## set of parents tasks
-        self.children = set() ## set of children tasks
-        self.soft_reqs = set() ## set of soft requirements
-        self.runtime = None ## flops for calculating
-        self.input_files = None ##
-        self.output_files = None
-
-    def __str__(self):
-        return self.id
-
-    def __repr__(self):
-        return self.id
-
-class File:
-     def __init__(self, name, size):
-         self.name = name
-         self.size = size
-
-UP_JOB = Task("up_job","up_job")
-DOWN_JOB = Task("down_job", "down_job")

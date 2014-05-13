@@ -1,6 +1,6 @@
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
-from environment.Resource import ResourceGenerator
+from environment.ResourceGenerator import ResourceGenerator
 from environment.ResourceManager import ResourceManager, Schedule
 from environment.Utility import Utility, profile_decorator
 
