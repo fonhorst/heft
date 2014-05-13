@@ -42,6 +42,10 @@ def _check_precedence(workflow, seq):
     return True
 
 
+
+
+
+
 def build_schedule(workflow, estimator, resource_manager, solution):
     """
     the solution consists all parts necessary to build whole solution
@@ -175,13 +179,31 @@ class Ordering(Specie):
         pass
 
     def mutate(self, mutant):
-        # while True:
-        #     k1 = random.randint(0, len(mutant) - 1)
-        #     k2 = random.randint(0, len(mutant) - 1)
-        #     if k1 != k2 and not self.wf.is_parent_child(mutant[k1], mutant[k2]):
-        #         break
-        # mutant[k1], mutant[k2] = mutant[k2], mutant[k1]
+        m = deepcopy(mutant)
+        while True:
+            k1 = random.randint(0, len(mutant) - 1)
+            k2 = random.randint(0, len(mutant) - 1)
+            mx, mn = max(k1, k2), min(k1, k2)
+            pids = [p.id for p in self.wf.byId(mutant[mx]).parents]
+            cids = self.wf.ancestors(mutant[mn])
+            if not any(el in pids or el in cids for el in mutant[mn: mx + 1]):
+                break
+        mutant[k1], mutant[k2] = mutant[k2], mutant[k1]
+
+        assert _check_precedence(self.wf, mutant), "Precedence is violated"
         return mutant
+
+def ordering_mutate(wf, mutant):
+    while True:
+        k1 = random.randint(0, len(mutant) - 1)
+        k2 = random.randint(0, len(mutant) - 1)
+        mx, mn = max(k1, k2), min(k1, k2)
+        pids = [p.id for p in wf.byId(mutant[mx]).parents]
+        if not any(el in pids for el in mutant[mn + 1: mx]):
+            break
+    mutant[k1], mutant[k2] = mutant[k2], mutant[k1]
+    return mutant
+
 
 class ResourceConfig(Specie):
     """

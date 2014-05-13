@@ -74,26 +74,36 @@ class Workflow:
 
     def is_parent_child(self, id1, id2):
         if self._parent_child_dict is None:
-            self._parent_child_dict = dict()
-            def build(el):
-                if el.id in self._parent_child_dict:
-                    return self._parent_child_dict[el.id]
-                if len(el.children) == 0:
-                    res = []
-                else:
-                    all_ancestors = [[c.id for c in el.children]] + [build(c) for c in el.children]
-                    res = functools.reduce(lambda seed, x: seed + x, all_ancestors, [])
-                self._parent_child_dict[el.id] = res
-                return res
-            build(self.head_task)
-            self._parent_child_dict = {k: set(v) for k, v in self._parent_child_dict.items()}
+            self._build_ancestors_map()
         return (id2 in self._parent_child_dict[id1]) or (id1 in self._parent_child_dict[id2])
+
+    def ancestors(self, id):
+        if self._parent_child_dict is None:
+            self._build_ancestors_map()
+        return self._parent_child_dict[id]
+
 
     ## TODO: for one-time use. Remove it later.
     def avr_runtime(self, package_name):
         tsks = [tsk for tsk in HeftHelper.get_all_tasks(self) if package_name in tsk.soft_reqs]
         common_sum = sum([tsk.runtime for tsk in tsks])
         return common_sum/len(tsks)
+
+
+    def _build_ancestors_map(self):
+        self._parent_child_dict = {}
+        def build(el):
+            if el.id in self._parent_child_dict:
+                return self._parent_child_dict[el.id]
+            if len(el.children) == 0:
+                res = []
+            else:
+                all_ancestors = [[c.id for c in el.children]] + [build(c) for c in el.children]
+                res = functools.reduce(lambda seed, x: seed + x, all_ancestors, [])
+            self._parent_child_dict[el.id] = res
+            return res
+        build(self.head_task)
+        self._parent_child_dict = {k: set(v) for k, v in self._parent_child_dict.items()}
 
 
 class Task:
