@@ -1,10 +1,11 @@
 from copy import deepcopy
+from functools import partial
 import random
 from deap import tools
 from deap import base
 from deap import creator
 from GA.DEAPGA.GAImplementation.NewSchedulerBuilder import place_task_to_schedule
-from GA.DEAPGA.coevolution.cga import Specie
+from GA.DEAPGA.coevolution.cga import Specie, Env
 from core.DSimpleHeft import DynamicHeft
 from core.HeftHelper import HeftHelper
 from core.concrete_realization import ExperimentResourceManager
@@ -15,7 +16,9 @@ from environment.Utility import Utility
 creator.create("Individual", list)
 ListBasedIndividual = creator.Individual
 
-
+MAPPING_SPECIE = "MappingSpecie"
+ORDERING_SPECIE = "OrderingSpecie"
+RESOURCE_CONFIG_SPECIE = "ResourceConfigSpecie"
 
 
 def default_choose(pop):
@@ -23,13 +26,6 @@ def default_choose(pop):
         i = random.randint(0, len(pop) - 1)
         if pop[i].k > 0:
             return pop[i]
-
-
-
-
-def _find_by_type(s, arr, default=None):
-    l = list(filter(lambda k: isinstance(k, s), arr))
-    return l[0] if len(l) > 0 else default
 
 
 def _check_precedence(workflow, seq):
@@ -42,62 +38,53 @@ def _check_precedence(workflow, seq):
     return True
 
 
-
-
-
-
 def build_schedule(workflow, estimator, resource_manager, solution):
     """
     the solution consists all parts necessary to build whole solution
     For the moment, it is mentioned that all species taking part in algorithm
     are necessary to build complete solution
     solution = {
-        s1: val1,
-        s2: val2,
+        s1.name: val1,
+        s2.name: val2,
         ....
     }
     """
-    ms = solution[_find_by_type(Mapping, solution)]
-    os = solution[_find_by_type(Ordering, solution)]
+    ms = solution[MAPPING_SPECIE]
+    os = solution[ORDERING_SPECIE]
 
     assert _check_precedence(workflow, os), "Precedence is violated"
 
     ms = {t: resource_manager.byName(n) for t, n in ms}
-    ## TODO: implement procedure for building schedule
     schedule_mapping = {n: [] for n in set(ms.values())}
     task_to_node = {}
     for t in os:
         node = ms[t]
         t = workflow.byId(t)
-        try:
-            (start_time, end_time) = place_task_to_schedule(workflow,
+        (start_time, end_time) = place_task_to_schedule(workflow,
                                                         estimator,
                                                         schedule_mapping,
                                                         task_to_node,
                                                         ms, t, node, 0)
-        except Exception as ex:
-            raise ex
 
         task_to_node[t.id] = (node, start_time, end_time)
     schedule = Schedule(schedule_mapping)
     return schedule
 
 
-def fitness_mapping_and_ordering(workflow,
-                                 estimator,
-                                 resource_manager,
+def fitness_mapping_and_ordering(env,
                                  solution):
-    schedule = build_schedule(workflow, estimator, resource_manager, solution)
+    schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
     result = Utility.makespan(schedule)
     #result = ExecutorRunner.extract_result(schedule, True, workflow)
     return result
+
 
 ## TODO: very simple version, As a ResourceConfig specie It will have to be extended to apply deeper analysis of situations
 def fitness_ordering_resourceconf(workflow,
                                   estimator,
                                   solution):
-    os = solution[_find_by_type(Ordering, solution)]
-    rcs = solution[_find_by_type(ResourceConfig, solution)]
+    os = solution[ORDERING_SPECIE]
+    rcs = solution[RESOURCE_CONFIG_SPECIE]
     ## TODO: refactor this
     flops_set = [conf.flops for conf in rcs if conf is not None]
     resources = ResourceGenerator.r(flops_set)
@@ -107,108 +94,93 @@ def fitness_ordering_resourceconf(workflow,
     result = Utility.makespan(schedule)
     return result
 
-class Mapping(Specie):
-    """
-    chromosome = [(Task(), Node()), ...]
-    """
-    def __init__(self, nodes, tasks, name, pop_size, fixed=False, representative_individual=None):
-        super().__init__(name, pop_size, fixed, representative_individual)
-        self.nodes = list(nodes)
-        self.tasks = list(tasks)
-        pass
+##====================================
+##Mapping specie
+##====================================
+"""
+chromosome = [(Task(), Node()), ...]
+"""
 
 
-    def initialize(self, size):
-        rnd = lambda: random.randint(0, len(self.nodes) - 1)
-        result = [ListBasedIndividual((t.id, self.nodes[rnd()].name) for t in self.tasks)
-                  for i in range(size)]
-        return result
+def mapping_default_initialize(env, size):
+    nodes = list(env.rm.get_nodes())
+    tasks = list(env.wf.get_all_unique_tasks())
+    rnd = lambda: random.randint(0, len(nodes) - 1)
+    result = [ListBasedIndividual((t.id, nodes[rnd()].name) for t in tasks)
+              for i in range(size)]
+    return result
 
-    def crossover(self, child1, child2):
-        tools.cxOnePoint(child1, child2)
 
-    def mutate(self, nodes, mutant):
-        k = random.randint(0, len(mutant) - 1)
-        (t, n) = mutant[k]
-        mutant[k] = (t, nodes[random.randint(0, len(nodes) - 1)])
-    pass
+def mapping_default_mutate(env, mutant):
+    nodes = list(env.rm.get_nodes())
+    k = random.randint(0, len(mutant) - 1)
+    (t, n) = mutant[k]
+    mutant[k] = (t, nodes[random.randint(0, len(nodes) - 1)].name)
 
-class Ordering(Specie):
-    """
-    chromosome = [Task(), Task(), ...]
-    """
+##===================================
+## Ordering specie
+##==================================
 
-    def __init__(self, nodes, estimator, wf, name, pop_size, fixed=False, representative_individual=None):
-        super().__init__(name, pop_size, fixed, representative_individual)
-        self.nodes = list(nodes)
-        self.estimator = estimator
-        self.wf = wf
-        pass
 
-    def initialize(self, size):
-        ranking = HeftHelper.build_ranking_func(self.nodes, lambda job, agent: self.estimator.estimate_runtime(job, agent),
-                                                           lambda ni, nj, A, B: self.estimator.estimate_transfer_time(A, B, ni, nj))
-        sorted_tasks = [t.id for t in ranking(self.wf)]
+def ordering_default_initialize(env, size):
+    estimator = env.estimator
+    nodes = env.rm.get_nodes()
+    wf = env.wf
+    ranking = HeftHelper.build_ranking_func(nodes,
+                                            lambda job, agent: estimator.estimate_runtime(job, agent),
+                                            lambda ni, nj, A, B: estimator.estimate_transfer_time(A, B, ni, nj))
+    sorted_tasks = [t.id for t in ranking(wf)]
 
-        assert _check_precedence(self.wf, sorted_tasks), "Check precedence failed"
+    assert _check_precedence(wf, sorted_tasks), "Check precedence failed"
 
-        result = [ListBasedIndividual(self.mutate(deepcopy(sorted_tasks))) for i in range(size)]
-        return result
+    result = [ListBasedIndividual(ordering_default_mutate(env, deepcopy(sorted_tasks))) for i in range(size)]
+    return result
 
-    """
-    TODO: crossover can violate parent-child relations,
-    so it will have to be reconsidered - solved, need to be checked
-    """
 
-    def crossover(self, child1, child2):
-        def cutby(p1, p2, k):
-            d = set(p1[0:k]) - set(p2[0:k])
-            f = set(p2[0:k]) - set(p1[0:k])
-            migr = [p for p in p2[0:k] if p in f]
-            rest = [p for p in p2[k:] if p not in d]
-            return p1[0:k] + migr + rest
-
-        k = random.randint(1, len(child1) - 1)
-        first = cutby(child1, child2, k)
-        second = cutby(child2, child1, k)
-        ## TODO: remake it
-        child1.clear()
-        child1.extend(first)
-        child2.clear()
-        child2.extend(second)
-        pass
-
-    def mutate(self, mutant):
-        m = deepcopy(mutant)
-        while True:
-            k1 = random.randint(0, len(mutant) - 1)
-            k2 = random.randint(0, len(mutant) - 1)
-            mx, mn = max(k1, k2), min(k1, k2)
-            pids = [p.id for p in self.wf.byId(mutant[mx]).parents]
-            cids = self.wf.ancestors(mutant[mn])
-            if not any(el in pids or el in cids for el in mutant[mn: mx + 1]):
-                break
-        mutant[k1], mutant[k2] = mutant[k2], mutant[k1]
-
-        assert _check_precedence(self.wf, mutant), "Precedence is violated"
-        return mutant
-
-def ordering_mutate(wf, mutant):
+def ordering_default_mutate(env, mutant):
+    wf = env.wf
     while True:
         k1 = random.randint(0, len(mutant) - 1)
         k2 = random.randint(0, len(mutant) - 1)
         mx, mn = max(k1, k2), min(k1, k2)
         pids = [p.id for p in wf.byId(mutant[mx]).parents]
-        if not any(el in pids for el in mutant[mn + 1: mx]):
+        cids = wf.ancestors(mutant[mn])
+        if not any(el in pids or el in cids for el in mutant[mn: mx + 1]):
             break
     mutant[k1], mutant[k2] = mutant[k2], mutant[k1]
+    #assert _check_precedence(self.wf, mutant), "Precedence is violated"
     return mutant
+
+
+def ordering_default_crossover(env, child1, child2):
+    def cutby(p1, p2, k):
+        d = set(p1[0:k]) - set(p2[0:k])
+        f = set(p2[0:k]) - set(p1[0:k])
+        migr = [p for p in p2[0:k] if p in f]
+        rest = [p for p in p2[k:] if p not in d]
+        return p1[0:k] + migr + rest
+
+    k = random.randint(1, len(child1) - 1)
+    first = cutby(child1, child2, k)
+    second = cutby(child2, child1, k)
+    ## TODO: remake it
+    child1.clear()
+    child1.extend(first)
+    child2.clear()
+    child2.extend(second)
+    pass
+
+##===========================================
+## ResourceConfig specie
+##==========================================
+
 
 
 class ResourceConfig(Specie):
     """
     chromosome = [Config, NONE ,...]
     """
+
     def __init__(self, resource_manager, name, pop_size, fixed=False, representative_individual=None):
         super().__init__(name, pop_size, fixed, representative_individual)
         self.resource_manager = resource_manager
@@ -236,12 +208,16 @@ class ResourceConfig(Specie):
         c = random.randint(0, len(cfgs) - 1)
         mutant[k] = cfgs[c]
         pass
+
     pass
+
 
 class VMConfig:
     def __init__(self, flops):
         self.flops = flops
+
     pass
+
 
 class VMResourceManager(ExperimentResourceManager):
     def __init__(self, slots_count, resources=[]):
@@ -253,45 +229,82 @@ class VMResourceManager(ExperimentResourceManager):
         MEDIUM = VMConfig(30)
         HIGH = VMConfig(50)
         return [SMALL, MEDIUM, HIGH]
+
     pass
 
-## TODO: replace Task and node instances with dictionary(due to deepcopy)
+##=====================================
+## Default configs
+##=====================================
 
-def create_simple_toolbox(workflow, estimator, resource_manager, **kwargs):
-    pop_size = kwargs["pop_size"]
-    interact_individuals_count = kwargs["interact_individuals_count"]
-    generations = kwargs["generations"]
-    mutation_probability = kwargs["mutation_probability"]
-    crossover_probability = kwargs["crossover_probability"]
+def default_config(wf, rm, estimator):
+    selector = lambda env, pop: tools.selTournament(pop, len(pop), 4)
+    return {
+        "interact_individuals_count": 22,
+        "generations": 5,
+        "env": Env(wf, rm, estimator),
+        "species": [Specie(name=MAPPING_SPECIE, pop_size=10,
+                           cxb=0.8, mb=0.5,
+                           mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
+                           mutate=mapping_default_mutate,
+                           select=selector,
+                           initialize=mapping_default_initialize
+                    ),
+                    Specie(name=ORDERING_SPECIE, pop_size=10,
+                           cxb=0.8, mb=0.5,
+                           mate=ordering_default_crossover,
+                           mutate=ordering_default_mutate,
+                           select=selector,
+                           initialize=ordering_default_initialize,
+                    )
+        ],
 
-    toolbox = base.Toolbox()
-
-    MAPPING = Mapping(resource_manager.get_nodes(), workflow.get_all_unique_tasks(), "MappingSpecie", pop_size)
-    ORDERING = Ordering(resource_manager.get_nodes(), estimator, workflow, "OrderingSpecie", pop_size)
-
-    toolbox.species = [MAPPING, ORDERING]
-    toolbox.interact_individuals_count = interact_individuals_count
-    toolbox.generations = generations
-    toolbox.mutation_probability = {
-        MAPPING: mutation_probability,
-        ORDERING: mutation_probability,
+        "operators": {
+            "choose": default_choose,
+            "fitness": fitness_mapping_and_ordering
+        }
     }
-    toolbox.crossover_probability = {
-        MAPPING: crossover_probability,
-        ORDERING: crossover_probability,
-    }
 
-    operators_impl = {
-        MAPPING: MAPPING,
-        ORDERING: ORDERING,
-    }
-    toolbox.register("initialize", lambda s, size: operators_impl[s].initialize(size))
-    toolbox.register("choose", default_choose)
-    toolbox.register("fitness", lambda s: fitness_mapping_and_ordering(workflow, estimator, resource_manager, s))
-    toolbox.register("select", lambda s, pop: tools.selTournament(pop, len(pop), 4))
-    toolbox.register("mate", lambda s, child1, child2: operators_impl[s].crossover(child1, child2))
-    toolbox.register("mutate", lambda s, mutant: operators_impl[s].mutate)
-    return toolbox
+# ## TODO: replace Task and node instances with dictionary(due to deepcopy)
+# def create_simple_toolbox(workflow, estimator, resource_manager, **kwargs):
+#     pop_size = kwargs["pop_size"]
+#     interact_individuals_count = kwargs["interact_individuals_count"]
+#     generations = kwargs["generations"]
+#     mutation_probability = kwargs["mutation_probability"]
+#     crossover_probability = kwargs["crossover_probability"]
+#
+#     toolbox = base.Toolbox()
+#
+#     MAPPING = Mapping(name="MappingSpecie", pop_size=pop_size, cxb=crossover_probability, mb=mutation_probability)
+#     ORDERING = Ordering(name="OrderingSpecie", pop_size=pop_size, cxb=crossover_probability, mb=mutation_probability)
+#
+#     toolbox.species = [MAPPING, ORDERING]
+#     toolbox.interact_individuals_count = interact_individuals_count
+#     toolbox.generations = generations
+#
+#
+#     init_op = {
+#         MAPPING: partial(Mapping.default_initialize, resource_manager.get_nodes()),
+#         ORDERING: partial(Ordering.default_initialize),
+#     }
+#
+#     mate_op = {
+#         MAPPING: tools.cxOnePoint,
+#         ORDERING: Ordering.default_crossover,
+#     }
+#
+#     mutate_op = {
+#         MAPPING: partial(Mapping.default_mutate, resource_manager.get_nodes()),
+#         ORDERING: partial(Ordering.default_mutate, workflow)
+#     }
+#
+#     toolbox.register("initialize", lambda s, size: init_op[s](size))
+#     toolbox.register("choose", default_choose)
+#     toolbox.register("fitness", lambda s: fitness_mapping_and_ordering(workflow, estimator, resource_manager, s))
+#     toolbox.register("select", lambda s, pop: tools.selTournament(pop, len(pop), 4))
+#     toolbox.register("mate", lambda s, child1, child2: mate_op[s](child1, child2))
+#     toolbox.register("mutate", lambda s, mutant: mutate_op[s](mutant))
+#     return toolbox
+
 
 
 

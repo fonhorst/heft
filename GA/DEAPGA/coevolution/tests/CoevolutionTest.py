@@ -1,6 +1,6 @@
 import unittest
 from GA.DEAPGA.coevolution.cga import run_cooperative_ga
-from GA.DEAPGA.coevolution.operators import VMResourceManager, create_simple_toolbox, build_schedule
+from GA.DEAPGA.coevolution.operators import build_schedule, default_config
 from core.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 from core.runners.ExecutorRunner import ExecutorRunner
 from environment.ResourceGenerator import ResourceGenerator
@@ -16,13 +16,8 @@ class CoevolutionTest(unittest.TestCase):
         manager = ExperimentResourceManager(ResourceGenerator.r([10, 15, 15, 25]))
         estimator = ExperimentEstimator(None, 20, 1.0, transfer_time=100)
 
-        toolbox = create_simple_toolbox(wf, estimator, manager,
-                                        pop_size=10,
-                                        interact_individuals_count=22,
-                                        generations=5,
-                                        mutation_probability=0.5,
-                                        crossover_probability=0.8)
-        solution = run_cooperative_ga(toolbox)
+        config = default_config(wf, manager, estimator)
+        solution = run_cooperative_ga(**config)
         schedule = build_schedule(wf, estimator, manager, solution)
 
         for k, items in schedule.mapping.items():

@@ -78,7 +78,6 @@ class GraphVisualizationUtility:
         draw_graph()
         pass
 
-
 class Utility:
     MIN_PIPELINE_SIZE = 10
     MAX_PIPELINE_SIZE = 40

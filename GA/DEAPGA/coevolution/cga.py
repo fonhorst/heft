@@ -1,11 +1,13 @@
+from collections import namedtuple
+from copy import deepcopy
 import random
 
-from deap import creator
+from deap import creator, base
 
 SPECIES = "species"
 OPERATORS = "operators"
 DEFAULT = "default"
-
+#
 # def TBX(**kwargs):
 #     toolbox = base.Toolbox()
 #     species = kwargs[SPECIES]
@@ -71,44 +73,65 @@ toolbox = TBX(
     "species": [s1=Specie(),s2=Specie(),...]
     INTERACT_INDIVIDUALS_COUNT: ...,
     GENERATIONS: ...,
-    CXB: {
-        s1: ...,
-        s2: ...,
-        s3: ...,
-    },
-    MUTATION: {
-        s1: ...,
-        s2: ...,
-    },
     "operators":{
-        "initialize": {
-            "base": ...,
-            s1: ...,
-            s2: ...,
-            s3: ...,
-        }
+        "fitness",
+        "choose"
     }
 
 })
 """
 
+
+
 creator.create("DictBasedIndividual", dict)
 DictBasedIndividual = creator.DictBasedIndividual
 
 class Specie:
-    def __init__(self, name, pop_size, fixed=False, representative_individual=None):
-        self.name = name
+    def __init__(self, **kwargs):
+        self.name = kwargs["name"]
         ## TODO: reconsider, should It be here?
-        self.pop_size = pop_size
-        self.fixed = fixed
-        self.representative_individual = representative_individual
+        self.pop_size = kwargs["pop_size"]
+        ## crossover probability
+        self.cxb = kwargs["cxb"]
+        ## mutation probability
+        self.mb = kwargs["mb"]
+
+        self.fixed = kwargs.get("fixed", None)
+        self.representative_individual = kwargs.get("representative_individual", None)
     pass
 
 """
 Toolbox need to implement functions:
 
 """
-def create_cooperative_ga(toolbox):
+
+Env = namedtuple('Env', ['wf', 'rm', 'estimator'])
+
+class Specie:
+    def __init__(self, **kwargs):
+        if kwargs.get("fixed", False):
+            self.fixed = True
+            self.representative_individual = kwargs["representative_individual"]
+        else:
+            self.fixed = False
+            self.name = kwargs["name"]
+            self.pop_size = kwargs["pop_size"]
+            self.mate = kwargs["mate"]
+            self.mutate = kwargs["mutate"]
+            self.select = kwargs["select"]
+            self.initialize = kwargs["initialize"]
+            self.cxb = kwargs["cxb"]
+            self.mb = kwargs["mb"]
+        pass
+
+
+
+
+def create_cooperative_ga(**kwargs):
+    """
+    DSL example:
+    workflow, resource_manager, estimator
+    """
     def func():
         ## TODO: add ability to determine if evolution has stopped
         ## TODO: add archive
@@ -116,11 +139,13 @@ def create_cooperative_ga(toolbox):
         # create initial populations of all species
         # taking part in coevolution
 
-        SPECIES = toolbox.species
-        INTERACT_INDIVIDUALS_COUNT = toolbox.interact_individuals_count
-        GENERATIONS = toolbox.generations
-        CXB = toolbox.crossover_probability
-        MUTATION = toolbox.mutation_probability
+        ENV = kwargs["env"]
+        SPECIES = kwargs["species"]
+        INTERACT_INDIVIDUALS_COUNT = kwargs["interact_individuals_count"]
+        GENERATIONS = kwargs["generations"]
+
+        choose = kwargs["operators"]["choose"]
+        fitness = kwargs["operators"]["fitness"]
 
         def generate_k(pop):
             base_k = int(INTERACT_INDIVIDUALS_COUNT / len(pop))
@@ -147,7 +172,7 @@ def create_cooperative_ga(toolbox):
                 sorted_pop[i].k += 1
             return pop
 
-        pops = {s: generate_k(toolbox.initialize(s, s.pop_size)) for s in SPECIES if not s.fixed}
+        pops = {s: generate_k(s.initialize(ENV, s.pop_size)) for s in SPECIES if not s.fixed}
 
         ## checking correctness
         for s, pop in pops.items():
@@ -173,7 +198,7 @@ def create_cooperative_ga(toolbox):
             ## constructing set of possible solutions
             solutions = []
             for i in range(INTERACT_INDIVIDUALS_COUNT):
-                solution = DictBasedIndividual({s: decrease_k(toolbox.choose(pop)) if not s.fixed
+                solution = DictBasedIndividual({s.name: decrease_k(choose(pop)) if not s.fixed
                                                 else s.representative_individual
                                                 for s, pop in pops.items()})
                 solutions.append(solution)
@@ -181,7 +206,7 @@ def create_cooperative_ga(toolbox):
             print("Solutions have been built")
             ## estimate fitness
             for sol in solutions:
-                sol.fitness = toolbox.fitness(solution)
+                sol.fitness = fitness(ENV, solution)
 
             print("Fitness have been evaluated")
 
@@ -208,14 +233,14 @@ def create_cooperative_ga(toolbox):
             ## produce offsprings
             items = [(s, pop) for s, pop in pops.items() if not s.fixed]
             for s, pop in items:
-                offspring = toolbox.select(s, pop)
-                offspring = list(map(toolbox.clone, offspring))
+                offspring = s.select(ENV, pop)
+                offspring = list(map(deepcopy, offspring))
                 # Apply crossover and mutation on the offspring
                 for child1, child2 in zip(offspring[::2], offspring[1::2]):
-                    if random.random() < CXB[s]:
+                    if random.random() < s.cxb:
                         c1 = child1.fitness
                         c2 = child2.fitness
-                        toolbox.mate(s, child1, child2)
+                        s.mate(ENV, child1, child2)
                         ## TODO: make credit inheritance here
                         ## TODO: toolbox.inherit_credit(pop, child1, child2)
                         ## TODO: perhaps, this operation should be done after all crossovers in the pop
@@ -226,8 +251,8 @@ def create_cooperative_ga(toolbox):
                     pass
 
                 for mutant in offspring:
-                    if random.random() < MUTATION[s]:
-                        toolbox.mutate(s, mutant)
+                    if random.random() < s.mb:
+                        s.mutate(ENV, mutant)
                     pass
                 pops[s] = offspring
                 pass
@@ -241,5 +266,5 @@ def create_cooperative_ga(toolbox):
         return best
     return func
 
-def run_cooperative_ga(toolbox):
-    return create_cooperative_ga(toolbox)()
+def run_cooperative_ga(**kwargs):
+    return create_cooperative_ga(**kwargs)()
