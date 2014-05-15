@@ -136,6 +136,7 @@ def create_cooperative_ga(**kwargs):
         ## TODO: add ability to determine if evolution has stopped
         ## TODO: add archive
         ## TODO: add generating and collecting different statistics
+        ## TODO: add logging
         # create initial populations of all species
         # taking part in coevolution
 

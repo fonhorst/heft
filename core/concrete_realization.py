@@ -3,7 +3,7 @@ from environment.ResourceManager import Estimator
 
 
 class ExperimentEstimator(Estimator):
-    def __init__(self, transferMx, ideal_flops, reliability, transfer_time=100):
+    def __init__(self, transferMx, ideal_flops, reliability=1.0, transfer_time=100):
         self.transfer_matrix = transferMx
         self.cache = dict()
         self.ideal_flops = ideal_flops
