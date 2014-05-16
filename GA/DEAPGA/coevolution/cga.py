@@ -2,7 +2,7 @@ from collections import namedtuple
 from copy import deepcopy
 import random
 
-from deap import creator, base
+from deap import creator, tools
 
 SPECIES = "species"
 OPERATORS = "operators"
@@ -125,6 +125,15 @@ class Specie:
         pass
 
 
+def logpops(logbook, gen, pops):
+    for s, pop in pops.items():
+        
+
+    pass
+
+def logsolutions(logbook, gen, solutions):
+    pass
+
 
 
 def create_cooperative_ga(**kwargs):
@@ -147,6 +156,8 @@ def create_cooperative_ga(**kwargs):
 
         choose = kwargs["operators"]["choose"]
         fitness = kwargs["operators"]["fitness"]
+
+        logbook = tools.Logbook()
 
         def generate_k(pop):
             base_k = int(INTERACT_INDIVIDUALS_COUNT / len(pop))
@@ -175,6 +186,9 @@ def create_cooperative_ga(**kwargs):
 
         pops = {s: generate_k(s.initialize(ENV, s.pop_size)) for s in SPECIES if not s.fixed}
 
+
+
+
         ## checking correctness
         for s, pop in pops.items():
            sm = sum(p.k for p in pop)
@@ -185,6 +199,7 @@ def create_cooperative_ga(**kwargs):
 
         best = None
         for gen in range(GENERATIONS):
+
 
             # assign id for every elements in every population
             # create dictionary for all individuals in all pop
@@ -205,6 +220,9 @@ def create_cooperative_ga(**kwargs):
                 solutions.append(solution)
 
             print("Solutions have been built")
+
+            logsolutions(logbook, gen, solutions)
+
             ## estimate fitness
             for sol in solutions:
                 sol.fitness = fitness(ENV, solution)
@@ -225,6 +243,8 @@ def create_cooperative_ga(**kwargs):
                 ind_maps[id].fitness = values[0] / values[1]
 
             print("Credit have been estimated")
+
+            logpops(logbook, gen, pops)
 
             ## select best solution as a result
             ## TODO: remake it in a more generic way

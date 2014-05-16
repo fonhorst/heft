@@ -12,22 +12,22 @@ rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 selector = lambda env, pop: tools.selTournament(pop, len(pop), 4)
 config = {
-        "interact_individuals_count": 1000,
-        "generations": 300,
+        "interact_individuals_count": 200,
+        "generations": 500,
         "env": Env(_wf, rm, estimator),
-        "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
+        "species": [Specie(name=MAPPING_SPECIE, pop_size=100,
                            cxb=0.8, mb=0.5,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            mutate=mapping_default_mutate,
                            select=selector,
                            initialize=mapping_default_initialize
                     ),
-                    Specie(name=ORDERING_SPECIE, pop_size=50,
+                    Specie(name=ORDERING_SPECIE, pop_size=100,
                            cxb=0.8, mb=0.5,
                            mate=ordering_default_crossover,
                            mutate=ordering_default_mutate,
                            select=selector,
-                           initialize=ordering_default_initialize,
+                           initialize=ordering_default_initialize
                     )
         ],
 

@@ -2,7 +2,7 @@ import functools
 from scoop import futures
 from GA.DEAPGA.GAImplementation.GARunner import MixRunner
 
-wf_names = ['Montage_50']
+wf_names = ['Montage_25']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
 # wf_names = ['Epigenomics_100']
@@ -17,7 +17,7 @@ PARAMS = {
         "crossover_probability": 0.8,
         "replacing_mutation_probability": 0.5,
         "sweep_mutation_probability": 0.4,
-        "generations": 200
+        "generations": 300
     },
     "nodes_conf": [10, 15, 25, 30]
 }
@@ -26,7 +26,9 @@ if __name__ == '__main__':
     print("Population size: " + str(PARAMS["ga_params"]["population"]))
     run = functools.partial(MixRunner(), **PARAMS)
 
-    [run(wf_name) for wf_name in wf_names]
+    res = [run(wf_name) for wf_name in wf_names for i in range(10)]
+
+    print("RESULT: " + str([gam for gam, hm in res]))
     # list(futures.map(run, wf_names))
     # for i in range(5):
     #     print("ITERATION: " + str(i))

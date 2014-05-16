@@ -142,6 +142,6 @@ class MixRunner(BaseRunner):
         ga_makespan = Utility.makespan(ga_schedule)
         print("Profit: " + str((1 - ga_makespan/heft_makespan)*100))
         print("===========================================")
-        pass
+        return (ga_makespan, heft_makespan)
 
 
