@@ -1,4 +1,4 @@
-from environment.Resource import SoftItem, Node
+from environment.BaseElements import SoftItem, Node
 from core.HeftHelper import HeftHelper
 
 

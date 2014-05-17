@@ -1,9 +1,10 @@
 ## from Buyya
 import random
-from GA.DEAPGA.GAImplementation.ScheduleBuilder import ScheduleBuilder
+from GA.DEAPGA.GAImplementation.NewSchedulerBuilder import NewScheduleBuilder
 from GA.DEAPGA.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
-from environment.Resource import Node
-from environment.ResourceManager import ScheduleItem, Schedule
+from core.HeftHelper import HeftHelper
+from environment.BaseElements import Node
+from environment.ResourceManager import ScheduleItem
 from environment.Utility import Utility
 
 def mark_finished(schedule):
@@ -17,25 +18,24 @@ class GAFunctions2:
     ## node_name: task1.id, task2.id, ... #(order of tasks is important)
     ## ...
     ##}
-    def __init__(self,
-                     workflow,
-                     nodes,
-                     sorted_tasks,
-                     resource_manager,
-                     estimator,
-                     size):
+    def __init__(self, workflow, resource_manager, estimator):
 
             self.counter = 0
             self.workflow = workflow
-            self.nodes = nodes
-            self.sorted_tasks = sorted_tasks
-            self.workflow_size = len(sorted_tasks)
 
             ##interface Estimator
 
             self.estimator = estimator
             self.resource_manager = resource_manager
-            self.size = size
+
+            nodes = list(HeftHelper.to_nodes(resource_manager.get_resources()))
+            ranking = HeftHelper.build_ranking_func(nodes, lambda job, agent: estimator.estimate_runtime(job, agent),
+                                                           lambda ni, nj, A, B: estimator.estimate_transfer_time(A, B, ni, nj))
+            sorted_tasks = ranking(self.workflow)
+
+            self.nodes = nodes
+            self.sorted_tasks = sorted_tasks
+            self.workflow_size = len(sorted_tasks)
 
             self.task_map = {task.id: task for task in sorted_tasks}
             self.node_map = {node.name: node for node in nodes}
@@ -61,10 +61,11 @@ class GAFunctions2:
 
     def random_chromo(self, fixed_schedule_part, current_time):
 
-        # res = random.random()
+        res = random.random()
         # # # TODO:
-        # if res > 0.8 and self.initial_chromosome is not None:
-        #     return self.initial_chromosome
+        if res > 0.95 and self.initial_chromosome is not None:
+             return self.initial_chromosome
+
         ##return [self.random_chromo() for j in range(self.size)]
         sched = self.initializing_alg.schedule(fixed_schedule_part, current_time)
         #TODO: remove it later
@@ -88,7 +89,8 @@ class GAFunctions2:
         return chromo
 
     def build_fitness(self, fixed_schedule_part, current_time):
-        builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
+        # builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
+        builder = NewScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
 
         def fitness(chromo):
 
@@ -102,7 +104,7 @@ class GAFunctions2:
             ## chromo is {Task:Node},{Task:Node},... - fixed length
 
             schedule = builder(chromo, current_time)
-            time = Utility.get_the_last_time(schedule)
+            time = Utility.makespan(schedule)
 
             # time = 1
             # ## TODO: remove it later.
@@ -115,10 +117,10 @@ class GAFunctions2:
         return fitness
 
     def build_schedule(self, chromo, fixed_schedule_part, current_time):
-        builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
+        # builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
+        builder = NewScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
         schedule = builder(chromo, current_time)
         return schedule
-
 
     def crossover(self, child1, child2):
 
@@ -130,6 +132,7 @@ class GAFunctions2:
         alive_nodes = [node for node in self.nodes if node.state != Node.Down]
         if len(alive_nodes) == 0:
             raise Exception(" There are only dead nodes!!!!!!!!!!!!!")
+
 
         # TODO: corner case when fixed schedule is complete. need to resolve this kind of case early.
         size = len([item for (node_name, items) in child1.items() for item in items])
@@ -157,6 +160,9 @@ class GAFunctions2:
         ch1 = chromo_to_seq(child1)
         ch2 = chromo_to_seq(child2)
 
+        if len(ch1) != size or len(ch2) != size:
+            raise Exception("Transformed chromosome is broken")
+
 
         window = dict()
         for i in range(index1, index2):
@@ -172,7 +178,7 @@ class GAFunctions2:
 
         fill_chromo(child1, ch1)
         fill_chromo(child2, ch2)
-        pass
+        return child1, child2
 
     # def swap_mutation(self, chromo):
     #     node_index = random.randint(0, len(self.nodes) - 1)

@@ -1,0 +1,47 @@
+===============
+=== HEFT Run
+===============
+Run heft 0
+	 Curtime: 42.256357615151465 Event: NodeFailed res_0_node_2 ID00012_000
+	 Curtime: 134.5289328655776 Event: NodeFailed res_0_node_3 ID00011_000
+	 Curtime: 162.8821794284662 Event: NodeUp res_0_node_2
+	 Curtime: 195.9122633341656 Event: NodeFailed res_0_node_0 ID00023_000
+	 Curtime: 219.1960179681179 Event: NodeFailed res_0_node_2 ID00027_000
+	 Curtime: 254.90334192942436 Event: NodeUp res_0_node_3
+	 Curtime: 274.9379703090995 Event: NodeFailed res_0_node_3 ID00024_000
+	 Curtime: 316.4121857210347 Event: NodeUp res_0_node_0
+	 Curtime: 339.50168048943215 Event: NodeUp res_0_node_2
+	 Curtime: 379.0708342884296 Event: NodeFailed res_0_node_1 ID00038_000
+	 Curtime: 395.12374322999125 Event: NodeUp res_0_node_3
+	 Curtime: 499.1692049515833 Event: NodeUp res_0_node_1
+	====RESULT====
+	612.070008596091
+max: 612.070008596091
+min: 612.070008596091
+avr: 612.070008596091
+===============
+=== GAHEFT Run
+===============
+Run gaHeft 0
+	 Curtime: 16.807041077579353 Event: NodeFailed res_0_node_2 ID00000_000
+	 Curtime: 32.22219745129899 Event: NodeFailed res_0_node_3 ID00002_000
+	 Curtime: 52.4347325602896 Event: NodeFailed res_0_node_1 ID00002_000
+	 Curtime: 87.24357371108289 Event: NodeFailed res_0_node_0 ID00002_000
+	 Curtime: 137.18919907660285 Event: NodeUp res_0_node_2
+	 Curtime: 152.4290245533265 Event: NodeUp res_0_node_3
+	 Curtime: 158.47385380432792 Event: NodeFailed res_0_node_2 ID00014_000
+	 Curtime: 173.10501875056002 Event: NodeUp res_0_node_1
+	 Curtime: 191.6125197799297 Event: NodeFailed res_0_node_1 ID00024_000
+	 Curtime: 207.90564617469028 Event: NodeUp res_0_node_0
+	 Curtime: 279.4287835872307 Event: NodeUp res_0_node_2
+	 Curtime: 311.74483949743365 Event: NodeUp res_0_node_1
+	 Curtime: 450.83379027459995 Event: NodeFailed res_0_node_2 ID00044_000
+	 Curtime: 523.9247665794492 Event: NodeFailed res_0_node_1 ID00041_000
+	 Curtime: 571.42346635874 Event: NodeUp res_0_node_2
+	 Curtime: 643.993442114594 Event: NodeUp res_0_node_1
+	====RESULT====
+	652.725707744246
+max: 652.725707744246
+min: 652.725707744246
+avr: 652.725707744246
+GaHeft vs Heft: -6.6423282593779165

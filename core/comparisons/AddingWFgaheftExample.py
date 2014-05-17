@@ -4,7 +4,7 @@ from GA.DEAPGA.GAImplementation.GAFunctions2 import mark_finished
 
 from core.DSimpleHeft import DynamicHeft
 ## reliability doesn't matter anything here
-from core.examples.BaseExecutorExample import BaseExecutorExample
+from core.runners.ExecutorRunner import ExecutorRunner
 from core.executors.GaHeftExecutor import GAComputationManager
 from environment.ResourceManager import Schedule
 from environment.Utility import Utility
@@ -15,10 +15,10 @@ wf_added_times = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 initial_wf_name = "Montage_30"
 added_wf_name = "Montage_25"
 
-initial_wf = BaseExecutorExample.get_wf(initial_wf_name, "00")
-added_wf = BaseExecutorExample.get_wf(added_wf_name, "10")
-bundle = BaseExecutorExample.get_default_bundle()
-(estimator, resource_manager, initial_schedule) = BaseExecutorExample.get_infrastructure(bundle, 1.0, False)
+initial_wf = ExecutorRunner.get_wf(initial_wf_name, "00")
+added_wf = ExecutorRunner.get_wf(added_wf_name, "10")
+bundle = Utility.get_default_bundle()
+(estimator, resource_manager, initial_schedule) = ExecutorRunner.get_infrastructure(bundle, 1.0, False)
 
 ## planning for initial wf
 heft = DynamicHeft(initial_wf, resource_manager, estimator)
@@ -30,7 +30,7 @@ ga = GAComputationManager(15,
 
 ga_initial_schedule = ga._get_ga_alg()(empty_schedule, None)[2]
 
-all_initial_wf_time = Utility.get_the_last_time(ga_initial_schedule)
+all_initial_wf_time = Utility.makespan(ga_initial_schedule)
 
 print("Initial time: " + str(all_initial_wf_time))
 
@@ -65,7 +65,7 @@ def gaheft_reschedule(wf_added_time):
     if added_wf_validaty is not True:
         raise Exception("Check for added_wf_validaty didn't pass")
     #print("All Ok!")
-    result = Utility.get_the_last_time(gaheft_added_schedule)
+    result = Utility.makespan(gaheft_added_schedule)
     return result
 
 result = [[gaheft_reschedule(wf_added_time)for i in range(n)] for wf_added_time in wf_added_times]

@@ -3,7 +3,7 @@
 import os
 from core.DSimpleHeft import DynamicHeft
 from core.comparisons.ComparisonBase import ComparisonUtility
-from core.examples.BaseExecutorExample import BaseExecutorExample
+from core.runners.ExecutorRunner import ExecutorRunner, ExecutorsFactory
 from core.executors.GaHeftExecutor import GaHeftExecutor
 from core.executors.HeftExecutor import HeftExecutor
 from environment.Utility import Utility
@@ -48,7 +48,7 @@ class SingleFailHeftExecutor(HeftExecutor):
         return (failtime, self.base_fail_duration)
     pass
 
-class SingleFailHeftExecutorExample(BaseExecutorExample):
+class SingleFailHeftExecutorRunner(ExecutorRunner):
     def __init__(self):
         pass
 
@@ -90,32 +90,6 @@ class SingleFailHeftExecutorExample(BaseExecutorExample):
         (makespan, vl1, vl2) = self.extract_result(heft_machine.current_schedule, is_silent, wf)
         return makespan
 
-class SingleFailGaHeftExecutorExample(BaseExecutorExample):
-    def __init__(self, fixed_interval_for_ga=15, logger=None):
-        self.fixed_interval_for_ga = fixed_interval_for_ga
-        pass
-
-    def main(self, reliability, is_silent, wf_name, logger=None, task_id_to_fail=None):
-        wf = self.get_wf(wf_name)
-        bundle = self.get_bundle(None)
-        (estimator, resource_manager, initial_schedule) = self.get_infrastructure(bundle, reliability, False)
-
-        dynamic_heft = DynamicHeft(wf, resource_manager, estimator)
-        ga_heft_machine = SingleFailGaHeftExecutor(
-                            heft_planner=dynamic_heft,
-                            base_fail_duration=40,
-                            base_fail_dispersion=1,
-                            fixed_interval_for_ga=self.fixed_interval_for_ga,
-                            logger=logger,
-                            task_id_to_fail=task_id_to_fail)
-
-        ga_heft_machine.init()
-        ga_heft_machine.run()
-
-        resulted_schedule = ga_heft_machine.current_schedule
-        (makespan, vl1, vl2) = self.extract_result(resulted_schedule, is_silent, wf)
-        return makespan
-
 def save_result(f, list_results, id):
     f.write("task_id: " + str(id) + "\n")
     for res in list_results:
@@ -152,7 +126,7 @@ failure_coeffs = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
 
 
 ## reliability 0.95 doesn't matter anything in this case
-heft_makespans = [SingleFailHeftExecutorExample().main(0.95, True, wf_name, None, ids[6], coeff) for coeff in failure_coeffs]
+heft_makespans = [ExecutorsFactory.default().run_singlefail_heft_executor(0.95, True, wf_name, None, ids[6], coeff) for coeff in failure_coeffs]
 save_result(heft_f, heft_makespans, id)
 
 #     heft_makespans = [SingleFailHeftExecutorExample().main(0.95, True, wf_name, None, id) for i in range(n)]

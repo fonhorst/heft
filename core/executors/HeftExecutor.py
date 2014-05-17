@@ -1,12 +1,14 @@
 from collections import deque
 import random
-from environment.Resource import Node
+from core.CommonComponents.failers.FailRandom import FailRandom
+from core.executors.BaseExecutor import BaseExecutor
+from environment.BaseElements import Node
 from environment.ResourceManager import Schedule, ScheduleItem
 from core.HeftHelper import HeftHelper
 from core.executors.EventMachine import EventMachine, TaskStart, NodeFailed, NodeUp, TaskFinished
 
 
-class HeftExecutor(EventMachine):
+class HeftExecutor(FailRandom, BaseExecutor):
 
     def __init__(self, heft_planner, base_fail_duration, base_fail_dispersion ,
                  initial_schedule = None, logger=None):
@@ -32,12 +34,7 @@ class HeftExecutor(EventMachine):
             self.current_schedule = Schedule(mapping)
         self._post_new_events()
 
-    def _check_fail(self, task, node):
-            reliability = self.heft_planner.estimator.estimate_reliability(task, node)
-            res = random.random()
-            if res > reliability:
-                return True
-            return False
+
 
     def _generate_failtime_and_duration(self, item):
         # generate fail time, post it
@@ -45,28 +42,7 @@ class HeftExecutor(EventMachine):
         time_of_fail = (item.end_time - self.current_time)*random.random()
         return (time_of_fail, duration)
 
-    def event_arrived(self, event):
-        if isinstance(event, TaskStart):
-            self._task_start_event(event)
-            return
-        if isinstance(event, TaskFinished):
-            self._task_finished_event(event)
-            return
-        if isinstance(event, NodeFailed):
-            self._node_failed(event)
-            return
-        if isinstance(event, NodeUp):
-            self._node_up(event)
-            return
-        raise Exception("Unknown event: " + str(event))
-
-    def _reschedule(self,event):
-        self.heft_planner.current_time = self.current_time
-        current_cleaned_schedule = self._clean_events(event)
-        self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
-        self._post_new_events()
-
-    def _task_start_event(self, event):
+    def _task_start_handler(self, event):
         # check task as executing
         # self.current_schedule.change_state(event.task, ScheduleItem.EXECUTING)
 
@@ -96,12 +72,12 @@ class HeftExecutor(EventMachine):
 
         pass
 
-    def _task_finished_event(self, event):
+    def _task_finished_handler(self, event):
         # check task finished
         self.current_schedule.change_state_executed(event.task, ScheduleItem.FINISHED)
         pass
 
-    def _node_failed(self, event):
+    def _node_failed_handler(self, event):
         # check node down
         self.heft_planner.resource_manager.node(event.node).state = Node.Down
         # check failed event in schedule
@@ -118,52 +94,11 @@ class HeftExecutor(EventMachine):
         self._reschedule(event)
         pass
 
-    def _node_up(self, event):
+    def _node_up_handler(self, event):
         # check node up
         self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
         self._reschedule(event)
         pass
 
-    def _post_new_events(self):
-        unstarted_items = set()
-        for (node, items) in self.current_schedule.mapping.items():
-            for item in items:
-                if item.state == ScheduleItem.UNSTARTED:
-                    unstarted_items.add(item)
+    pass
 
-        for item in unstarted_items:
-            event_start = TaskStart(item.job)
-            event_start.time_happened = item.start_time
-
-            event_finish = TaskFinished(item.job)
-            event_finish.time_happened = item.end_time
-
-            self.post(event_start)
-            self.post(event_finish)
-        pass
-
-    def _clean_events(self, event):
-
-        # remove all unstarted tasks
-        cleaned_task = set()
-        if isinstance(event, NodeFailed):
-            cleaned_task = set([event.task])
-
-        new_mapping = dict()
-        for (node, items) in self.current_schedule.mapping.items():
-            new_mapping[node] = []
-            for item in items:
-                if item.state != ScheduleItem.UNSTARTED:
-                    new_mapping[node].append(item)
-                else:
-                    cleaned_task.add(item.job)
-        clean_schedule = Schedule(new_mapping)
-        # remove all events associated with these tasks
-        def check(event):
-            if isinstance(event, TaskStart) and event.task in cleaned_task:
-                return False
-            if isinstance(event, TaskFinished) and event.task in cleaned_task:
-                return False
-            return True
-        self.queue = deque([event for event in self.queue if check(event)])
-        return clean_schedule

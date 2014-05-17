@@ -1,12 +1,12 @@
 from functools import partial
 from environment.Utility import reverse_dict
 from environment.ResourceManager import Scheduler
-from environment.Resource import Node
-from environment.Resource import SoftItem
+from environment.BaseElements import Node
+from environment.BaseElements import SoftItem
 from environment.ResourceManager import ScheduleItem
 from environment.ResourceManager import Schedule
-from environment.Resource import UP_JOB
-from environment.Resource import DOWN_JOB
+from environment.BaseElements import UP_JOB
+from environment.BaseElements import DOWN_JOB
 
 ##HEFT with management of virtual machine and full rescheduling in dynamic
 from core.HeftHelper import HeftHelper

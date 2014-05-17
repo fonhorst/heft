@@ -1,13 +1,31 @@
+import cProfile
 import json
 import os
+import pstats
 import subprocess
+import io
 from core.comparisons.ComparisonBase import ComparisonUtility
 from environment.DAXParser import DAXParser
 from random import Random
-from environment.Resource import Node, Resource
+from environment.BaseElements import Node, Resource
 from environment.ResourceManager import ScheduleItem, Schedule
 import xml.etree.ElementTree as ET
 
+def profile_decorator(func):
+    def wrap_func(*args, **kwargs):
+        pr = cProfile.Profile()
+        pr.enable()
+        #=============
+        result = func(*args, **kwargs)
+        #=============
+        pr.disable()
+        s = io.StringIO()
+        sortby = 'cumulative'
+        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+        ps.print_stats()
+        print(s.getvalue())
+        return result
+    return wrap_func
 
 def reverse_dict(d):
     """ Reverses direction of dependence dict
@@ -21,6 +39,44 @@ def reverse_dict(d):
             result[val] = result.get(val, tuple()) + (key, )
     return result
 
+class GraphVisualizationUtility:
+    @staticmethod
+    def visualize_task_node_mapping(wf, schedule):
+        import matplotlib.pyplot as plt
+        import networkx
+
+        def extract_edges_and_vertex(parent, edge_set, vertex_set):
+            for child in parent.children:
+                vertex_set.add(child.id)
+                edge_set.add((parent.id, child.id))
+                extract_edges_and_vertex(child, edge_set, vertex_set)
+                pass
+            pass
+
+        def get_task_node_mapping(schedule):
+            result = {i.job.id: node.name for node, items in schedule.mapping.items() for i in items}
+            return result
+
+        def draw_graph():
+            graph = networkx.DiGraph()
+            edge_set = set()
+            vertex_set = set()
+            extract_edges_and_vertex(wf.head_task, edge_set, vertex_set)
+            edge_set = filter(lambda x: False if x[0] == wf.head_task.id else True, edge_set)
+            vertex_set = filter(lambda x: x == wf.head_task.id, vertex_set)
+            tnmap = get_task_node_mapping(schedule)
+            for v in vertex_set:
+                graph.add_node(v)
+            for v1, v2 in edge_set:
+                graph.add_edge(v1, v2)
+            labels = dict((t, str(t)+"/"+str(n)) for t, n in tnmap.items())
+            # networkx.draw(graph)
+            networkx.draw(graph, labels=labels)
+            plt.show()
+            pass
+
+        draw_graph()
+        pass
 
 class Utility:
     MIN_PIPELINE_SIZE = 10
@@ -30,20 +86,29 @@ class Utility:
         pass
 
     @staticmethod
-    def generateUrgentPipeline(dax_filepath, wf_start_id, task_postfix_id, deadline):
+    def get_default_bundle():
+        ## dedicated resource are the same for all bundles
+        wf_name = 'CyberShake_30'
+        dax2 = '../../resources/' + wf_name + '.xml'
+        path = '../../resources/saved_schedules/' + 'CyberShake_30_bundle_backup' + '.json'
+        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_name))
+        return bundle
+
+    @staticmethod
+    def generateUrgentPipeline(dax_filepath, wf_name, wf_start_id, task_postfix_id, deadline):
         parser = DAXParser()
         random = Random()
         pipelineSize = 1##random.randint(Utility.MIN_PIPELINE_SIZE,Utility.MAX_PIPELINE_SIZE)
-        wfs = [parser.parseXml(dax_filepath, wf_start_id + str(i), task_postfix_id + str(i)) for i in
+        wfs = [parser.parseXml(dax_filepath, wf_start_id + str(i), task_postfix_id + str(i), wf_name) for i in
                range(0, pipelineSize)]
         for wf in wfs:
             wf.deadline = deadline
         return wfs
 
     @staticmethod
-    def readWorkflow(dax_filepath, wf_start_id="00", task_postfix_id="00", deadline=1000):
+    def readWorkflow(dax_filepath, wf_name, wf_start_id="00", task_postfix_id="00", deadline=1000):
         parser = DAXParser()
-        wf = parser.parseXml(dax_filepath, wf_start_id + "0", task_postfix_id + "0")
+        wf = parser.parseXml(dax_filepath, wf_start_id + "0", task_postfix_id + "0", wf_name)
         wf.deadline = deadline
         return wf
 
@@ -236,7 +301,7 @@ class Utility:
 
 
     @staticmethod
-    def get_the_last_time(schedule):
+    def makespan(schedule):
         def get_last_time(node_items):
             return 0 if len(node_items) == 0 else node_items[-1].end_time
 

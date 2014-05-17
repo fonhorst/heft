@@ -1,10 +1,11 @@
+from environment.ResourceGenerator import ResourceGenerator
+
 __author__ = 'Николай'
 
 import unittest
 from unittest import TestCase
 from environment.Utility import Utility
 from core.simple_heft import StaticHeftPlanner
-from environment.Resource import ResourceGenerator
 from core.concrete_realization import ExperimentEstimator
 from core.concrete_realization import ExperimentResourceManager
 import cProfile, pstats, io
@@ -14,7 +15,8 @@ def wrap():
     ##Preparing
     ut = Utility()
 
-    dax1 = '..\\resources\\Montage_25.xml'
+    wf_name = 'Montage_25'
+    dax1 = '..\\resources\\' + wf_name + '.xml'
     dax2 = '..\\resources\\CyberShake_30.xml'
 
     wf_start_id_1 = "00"
@@ -27,6 +29,7 @@ def wrap():
     deadline_2 = 3000
 
     pipeline_1 = ut.generateUrgentPipeline(dax1,
+                                           wf_name,
                                            wf_start_id_1,
                                            task_postfix_id_1,
                                            deadline_1)

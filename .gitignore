@@ -1,1 +1,11 @@
 *.pyc
+
+penv_home/
+penv/
+backup
+
+results/
+core/comparisons/debug/
+utility/debug/
+.idea/
+experiments/cga/debug

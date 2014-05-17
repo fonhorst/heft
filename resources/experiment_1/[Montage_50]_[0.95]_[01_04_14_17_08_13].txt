@@ -1,0 +1,29 @@
+===============
+=== HEFT Run
+===============
+Run heft 0
+	 Curtime: 32.97303401521243 Event: NodeFailed res_0_node_3 ID00017_000
+	 Curtime: 73.38780528671381 Event: NodeUp res_0_node_3
+	 Curtime: 139.67287061117463 Event: NodeFailed res_0_node_1 ID00020_000
+	 Curtime: 146.90251824131246 Event: NodeFailed res_0_node_2 ID00020_000
+	 Curtime: 180.66819909000063 Event: NodeUp res_0_node_1
+	 Curtime: 184.16165199851065 Event: NodeFailed res_0_node_3 ID00015_000
+	 Curtime: 187.65591972183108 Event: NodeUp res_0_node_2
+	 Curtime: 224.42205110526194 Event: NodeUp res_0_node_3
+	 Curtime: 338.4865582269414 Event: NodeFailed res_0_node_2 ID00041_000
+	 Curtime: 379.3581534794385 Event: NodeUp res_0_node_2
+	====RESULT====
+	513.9168201461052
+max: 513.9168201461052
+min: 513.9168201461052
+avr: 513.9168201461052
+===============
+=== GAHEFT Run
+===============
+Run gaHeft 0
+	====RESULT====
+	323.3586666666667
+max: 323.3586666666667
+min: 323.3586666666667
+avr: 323.3586666666667
+GaHeft vs Heft: 37.079571247592824

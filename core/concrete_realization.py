@@ -3,11 +3,12 @@ from environment.ResourceManager import Estimator
 
 
 class ExperimentEstimator(Estimator):
-    def __init__(self, transferMx, ideal_flops, reliability):
+    def __init__(self, transferMx, ideal_flops, reliability=1.0, transfer_time=100):
         self.transfer_matrix = transferMx
         self.cache = dict()
         self.ideal_flops = ideal_flops
         self.reliability = reliability
+        self.transfer_time = transfer_time
 
     ##get estimated time of running the task on the node
     def estimate_runtime(self, task, node):
@@ -20,7 +21,7 @@ class ExperimentEstimator(Estimator):
         ##TODO: remake it later
         if node1 == node2:
             return 0
-        return 100
+        return self.transfer_time
         ##TODO: repair it later
         ##per_unit_of_time = 1##self.transfer_matrix[node1][node2]
         ##return self.get_or_estimate(task1, task2)/per_unit_of_time
@@ -51,6 +52,7 @@ class ExperimentResourceManager(ResourceManager):
     def __init__(self, resources):
         self.resources = resources
         self.resources_map = {res.name: res for res in self.resources}
+        self._name_to_node = None
 
     ## TODO: fix problem with id
     def node(self, node):
@@ -66,5 +68,11 @@ class ExperimentResourceManager(ResourceManager):
     def change_performance(self, node, performance):
         ##TODO: rethink it
         self.resources[node.resource][node].flops = performance
+
+    def byName(self, name):
+        if self._name_to_node is None:
+            self._name_to_node = {n.name: n for n in self.get_nodes()}
+        return self._name_to_node.get(name, None)
+
 
 

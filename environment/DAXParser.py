@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
-from environment.Resource import Task
-from environment.Resource import File
-from environment.Resource import Workflow
+from environment.BaseElements import Task
+from environment.BaseElements import File
+from environment.BaseElements import Workflow
 
 class DAXParser:
     def __init__(self):
@@ -17,7 +17,7 @@ class DAXParser:
         task.input_files = input_files
 
 
-    def parseXml(self, filepath, wfId, taskPostfixId):
+    def parseXml(self, filepath, wfId, taskPostfixId, wf_name):
         tree = ET.parse(filepath)
         root = tree.getroot()
         jobs = root.findall('./{http://pegasus.isi.edu/schema/DAX}job')
@@ -42,14 +42,14 @@ class DAXParser:
             for parent in parents:
                 parent.children.add(child)
 
-        heads = [task for (name,task) in internal_id2Task.items() if len(task.parents) == 0 ]
+        heads = [task for (name, task) in internal_id2Task.items() if len(task.parents) == 0 ]
 
         common_head = Task("000_" + taskPostfixId, "000")
         for head in heads:
             head.parents = set([common_head])
         common_head.children = heads
 
-        wf = Workflow(wfId, common_head)
+        wf = Workflow(wfId, wf_name, common_head)
         return wf
 
 

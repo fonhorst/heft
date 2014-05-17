@@ -1,7 +1,9 @@
 from datetime import datetime
 import json
 import os
+from uuid import uuid4
 from Tools.Scripts.ndiff import fopen
+#from filelock.filelock import FileLock
 
 
 class VersusFunctor:
@@ -29,12 +31,12 @@ def output(f):
     return inner_func
 
 @output
-def run(run_name, mainFunc, wf_name, reliability, output_file=None, n=100):
+def run(run_name, mainFunc, wf_name, reliability, output_file=None, n=1000):
 
     result = []
     for i in range(n):
         iter_str = "Run " + str(run_name) + " " + str(i) + '\n'
-        # print(iter_str)
+        #print(iter_str)
 
         if output_file is not None:
             output_file.write(iter_str)
@@ -46,7 +48,7 @@ def run(run_name, mainFunc, wf_name, reliability, output_file=None, n=100):
                 output_file.flush()
         logger = None if output_file is None else wrt()
 
-        res = mainFunc(reliability, True, wf_name, logger=logger)
+        res = mainFunc(reliability=reliability, is_silent=True, wf_name=wf_name, logger=logger)
 
         if output_file is not None:
             output_file.write("\t====RESULT====\n")
@@ -74,7 +76,7 @@ def run(run_name, mainFunc, wf_name, reliability, output_file=None, n=100):
 
 class ComparisonUtility:
 
-    SAVE_PATH_TEMPLATE = '..\\..\\resources\\saved_simulation_results\\{0}_{1}.json'
+    SAVE_PATH_TEMPLATE = '..\\..\\resources\\saved_simulation_results\\{0}_[{1}].json'
 
     @staticmethod
     def get_dict(result):
@@ -90,6 +92,10 @@ class ComparisonUtility:
         return common_time
 
     @staticmethod
+    def uuid():
+        return str(uuid4())
+
+    @staticmethod
     def build_save_path(name):
         path = ComparisonUtility.SAVE_PATH_TEMPLATE.format(name, ComparisonUtility.cur_time())
         return path
@@ -99,19 +105,30 @@ class ResultSaver:
     def __init__(self, path):
         # path to save result of function
         self.path = path
+        self.dir = os.path.dirname(self.path)
 
     def __call__(self, result):
         result_arrays = []
+
+        if not os.path.exists(self.dir):
+            ## TODO: remove it later.
+            print("dir to create: " + str(self.dir))
+            os.makedirs(self.dir)
+
         if os.path.exists(self.path):
+            #with FileLock(self.path):
+            print("path: " + str(os.path.abspath(self.path)))
             a_save = open(self.path, 'r')
             result_arrays = json.load(a_save)
             a_save.close()
 
+        #with FileLock(self.path):
         a_save = open(self.path, 'w')
         result_arrays.append(result)
         json.dump(result_arrays, a_save)
         a_save.close()
 
+        print("results saved")
         return result
 
 
