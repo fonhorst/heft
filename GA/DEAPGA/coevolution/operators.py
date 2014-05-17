@@ -76,7 +76,7 @@ def fitness_mapping_and_ordering(env,
     schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
     result = Utility.makespan(schedule)
     #result = ExecutorRunner.extract_result(schedule, True, workflow)
-    return result
+    return -result
 
 
 ## TODO: very simple version, As a ResourceConfig specie It will have to be extended to apply deeper analysis of situations
@@ -98,7 +98,7 @@ def fitness_ordering_resourceconf(workflow,
 ##Mapping specie
 ##====================================
 """
-chromosome = [(Task(), Node()), ...]
+chromosome = [(task_id, node_name), ...]
 """
 
 

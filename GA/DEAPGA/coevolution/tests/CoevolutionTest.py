@@ -10,14 +10,14 @@ from environment.Utility import Utility
 
 class CoevolutionTest(unittest.TestCase):
     def test_mapping_and_ordering(self):
-        wf_path = "D:/wspace/heft/resources/Montage_25.xml"
+        wf_path = "../../../../resources/Montage_25.xml"
         wf_name = "Montage_25"
         wf = Utility.readWorkflow(wf_path, wf_name)
         manager = ExperimentResourceManager(ResourceGenerator.r([10, 15, 15, 25]))
         estimator = ExperimentEstimator(None, 20, 1.0, transfer_time=100)
 
         config = default_config(wf, manager, estimator)
-        solution = run_cooperative_ga(**config)
+        solution, pops, logbook = run_cooperative_ga(**config)
         schedule = build_schedule(wf, estimator, manager, solution)
 
         for k, items in schedule.mapping.items():

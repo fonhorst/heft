@@ -3,6 +3,7 @@ from copy import deepcopy
 import random
 
 from deap import creator, tools
+import numpy
 
 SPECIES = "species"
 OPERATORS = "operators"
@@ -122,17 +123,11 @@ class Specie:
             self.initialize = kwargs["initialize"]
             self.cxb = kwargs["cxb"]
             self.mb = kwargs["mb"]
+        self.stat = kwargs.get("stat", lambda pop: {})
         pass
 
 
-def logpops(logbook, gen, pops):
-    for s, pop in pops.items():
-        
 
-    pass
-
-def logsolutions(logbook, gen, solutions):
-    pass
 
 
 
@@ -157,7 +152,16 @@ def create_cooperative_ga(**kwargs):
         choose = kwargs["operators"]["choose"]
         fitness = kwargs["operators"]["fitness"]
 
-        logbook = tools.Logbook()
+        stat = tools.Statistics(key=lambda x: x.fitness)
+        #solstat = tools.Statistics(key=lambda x: x.fitness)
+        #stat = tools.MultiStatistics(popstat=pstat, solstat=solstat)
+        stat.register("best", numpy.max)
+        stat.register("min", numpy.min)
+        stat.register("avg", numpy.average)
+        stat.register("std", numpy.std)
+
+
+
 
         def generate_k(pop):
             base_k = int(INTERACT_INDIVIDUALS_COUNT / len(pop))
@@ -184,10 +188,25 @@ def create_cooperative_ga(**kwargs):
                 sorted_pop[i].k += 1
             return pop
 
+        #def _logpops(logbook, gen, pops, solutions):
+        #    logbook.record(gen=gen,
+        #                   pops=deepcopy({s.name:p for s, p in pops.items()}),
+        #                   solutions=deepcopy(solutions))
+        #    pass
+
+
+        #def _log_metainfo(logbook):
+        #    logbook.record(name="metainfo", species=[s.name for s in SPECIES],
+        #                   generations=GENERATIONS, interact_individuals_count=INTERACT_INDIVIDUALS_COUNT,
+        #                   ## TODO: It is hack. This info shouldn't be known by algorithm itself
+        #                   nodes=[(n.name,n.flops) for n in ENV.rm.get_nodes()])
+        #    pass
+
+        logbook = tools.Logbook()
+
+        #_log_metainfo(logbook)
+
         pops = {s: generate_k(s.initialize(ENV, s.pop_size)) for s in SPECIES if not s.fixed}
-
-
-
 
         ## checking correctness
         for s, pop in pops.items():
@@ -221,7 +240,7 @@ def create_cooperative_ga(**kwargs):
 
             print("Solutions have been built")
 
-            logsolutions(logbook, gen, solutions)
+
 
             ## estimate fitness
             for sol in solutions:
@@ -244,7 +263,14 @@ def create_cooperative_ga(**kwargs):
 
             print("Credit have been estimated")
 
-            logpops(logbook, gen, pops)
+
+            #{s:distance.hamming() for s, pop in pops.items()}
+
+            logbook.record(gen=gen,
+                           popsstat=({s.name: stat.compile(pop).update(s.stat(pop)) for s, pop in pops.items()},),
+                           solsstat=(stat.compile(solutions),))
+
+            #_logpops(logbook, gen, pops, solutions)
 
             ## select best solution as a result
             ## TODO: remake it in a more generic way
@@ -284,7 +310,7 @@ def create_cooperative_ga(**kwargs):
                     del ind.id
             pass
             print("Offsprings have been generated")
-        return best
+        return best, pops, logbook
     return func
 
 def run_cooperative_ga(**kwargs):
