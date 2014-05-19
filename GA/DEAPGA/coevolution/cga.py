@@ -155,10 +155,29 @@ def create_cooperative_ga(**kwargs):
         stat = tools.Statistics(key=lambda x: x.fitness)
         #solstat = tools.Statistics(key=lambda x: x.fitness)
         #stat = tools.MultiStatistics(popstat=pstat, solstat=solstat)
-        stat.register("best", numpy.max)
-        stat.register("min", numpy.min)
-        stat.register("avg", numpy.average)
-        stat.register("std", numpy.std)
+        def rounddec(func):
+            def wrapper(*args, **kwargs):
+                res = func(*args, **kwargs)
+                res = int(res*100)/100
+                return res
+            return wrapper
+
+        stat.register("best", rounddec(numpy.max))
+        stat.register("min", rounddec(numpy.min))
+        stat.register("avg", rounddec(numpy.average))
+        stat.register("std", rounddec(numpy.std))
+
+        class Wrapper:
+            def __init__(self, dictionary):
+                if not isinstance(dictionary, dict):
+                    raise ValueError("Arg dictionary isn't a dictionary")
+                self.dictionary = dictionary
+
+            def __str__(self):
+                return self.dictionary.__str__()
+
+            def __repr__(self):
+                return self.dictionary.__repr__()
 
 
 
@@ -267,7 +286,7 @@ def create_cooperative_ga(**kwargs):
             #{s:distance.hamming() for s, pop in pops.items()}
 
             logbook.record(gen=gen,
-                           popsstat=({s.name: stat.compile(pop).update(s.stat(pop)) for s, pop in pops.items()},),
+                           popsstat=({s.name: dict(list(stat.compile(pop).items()) + list(s.stat(pop).items())) for s, pop in pops.items()},),
                            solsstat=(stat.compile(solutions),))
 
             #_logpops(logbook, gen, pops, solutions)
