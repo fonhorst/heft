@@ -20,6 +20,7 @@ MAPPING_SPECIE = "MappingSpecie"
 ORDERING_SPECIE = "OrderingSpecie"
 RESOURCE_CONFIG_SPECIE = "ResourceConfigSpecie"
 
+## TODO: move it to experiments/cga_exp/
 
 def default_choose(pop):
     while True:
