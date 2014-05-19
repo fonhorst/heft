@@ -39,26 +39,28 @@ os_ideal_ind = build_os_ideal_ind()
 
 ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
+
+
 config = {
-        "interact_individuals_count": 20,
-        "generations": 3,
+        "interact_individuals_count": 200,
+        "generations": 300,
         "env": Env(_wf, rm, estimator),
-        "species": [Specie(name=MAPPING_SPECIE, pop_size=5,
+        "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.8, mb=0.5,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            mutate=mapping_default_mutate,
                            select=selector,
                            initialize=mapping_default_initialize,
-                           stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], ms_ideal_ind), "hamming_ideal_ind": ms_str_repr}
+                           stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], ms_ideal_ind)}
                            # stat=lambda pop: {"hamming_distances": "", "hamming_ideal_ind": ""}
                     ),
-                    Specie(name=ORDERING_SPECIE, pop_size=5,
+                    Specie(name=ORDERING_SPECIE, pop_size=50,
                            cxb=0.8, mb=0.5,
                            mate=ordering_default_crossover,
                            mutate=ordering_default_mutate,
                            select=selector,
                            initialize=ordering_default_initialize,
-                           stat=lambda pop: {"hamming_distances": hamming_distances(pop, os_ideal_ind), "hamming_ideal_ind": os_ideal_ind}
+                           stat=lambda pop: {"hamming_distances": hamming_distances(pop, os_ideal_ind)}
                            # stat=lambda pop: {"hamming_distances": "", "hamming_ideal_ind": ""}
                     )
         ],
@@ -80,7 +82,13 @@ def do_experiment(saver):
             "interact_individuals_count": config["interact_individuals_count"],
             "generations": config["generations"],
             "species": [s.name for s in config["species"]],
-            "nodes": {n.name: n.flops for n in config["env"].rm.get_nodes()}
+            "pop_sizes": [s.pop_size for s in config["species"]],
+            "nodes": {n.name: n.flops for n in config["env"].rm.get_nodes()},
+            "ideal_inds": {
+                MAPPING_SPECIE: ms_str_repr,
+                ORDERING_SPECIE: os_ideal_ind
+            }
+
         },
         "iterations": logbook
     }
@@ -88,14 +96,14 @@ def do_experiment(saver):
     return m
 
 def repeat(func, n):
-    # fs = [futures.submit(func) for i in range(n)]
-    # futures.wait(fs)
-    # return [f.result() for f in fs]
-    return [func() for i in range(n)]
+    fs = [futures.submit(func) for i in range(n)]
+    futures.wait(fs)
+    return [f.result() for f in fs]
+    # return [func() for i in range(n)]
 
 
 if __name__ == "__main__":
-    saver = UniqueNameSaver("../../temp/cga_exp")
+    saver = UniqueNameSaver("../../temp/five_runs")
     res = repeat(partial(do_experiment, saver), 5)
     print("RESULTS: ")
     print(res)
