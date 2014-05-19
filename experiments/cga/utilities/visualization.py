@@ -1,3 +1,4 @@
+import os
 from matplotlib.patches import Rectangle
 from experiments.cga.utilities.common import load_data
 import matplotlib.pyplot as plt
@@ -84,7 +85,7 @@ def _draw_solutions_diversity(data):
 
 
 
-def visualize(data):
+def visualize(data, path_to_save=None):
     plt.figure(figsize=(10, 10))
 
 
@@ -101,7 +102,11 @@ def visualize(data):
     sp = plt.subplot(3, 1, 3)
     _draw_solutions_diversity(data)
 
-    plt.show()
+    if path_to_save is None:
+        plt.show()
+    else:
+        plt.savefig(path_to_save, dpi=96.0, format="png")
+        plt.clf()
     pass
 
 
@@ -109,7 +114,9 @@ def visualize(data):
 
 
 if __name__ == "__main__":
-     # path = "../../../temp/vis_test.json"
-     path = "../../../temp/five_runs/1.json"
-     data = load_data(path)
-     visualize(data)
+    # path = "../../../temp/vis_test.json"
+    names = ["1.json", "2.json", "3.json", "4.json", "5.json"]
+    path = "../../../temp/five_runs/"
+
+    for n in names:
+        visualize(load_data(path + n), path + n + ".png")
