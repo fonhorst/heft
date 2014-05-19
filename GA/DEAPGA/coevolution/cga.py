@@ -87,6 +87,21 @@ toolbox = TBX(
 creator.create("DictBasedIndividual", dict)
 DictBasedIndividual = creator.DictBasedIndividual
 
+
+def rounddec(func):
+    def wrapper(*args, **kwargs):
+        res = func(*args, **kwargs)
+        res = int(res*100)/100
+        return res
+    return wrapper
+
+def rounddeciter(func):
+    def wrapper(*args, **kwargs):
+        results = func(*args, **kwargs)
+        res = [int(res*100)/100 for res in results]
+        return res
+    return wrapper
+
 class Specie:
     def __init__(self, **kwargs):
         self.name = kwargs["name"]
@@ -155,12 +170,6 @@ def create_cooperative_ga(**kwargs):
         stat = tools.Statistics(key=lambda x: x.fitness)
         #solstat = tools.Statistics(key=lambda x: x.fitness)
         #stat = tools.MultiStatistics(popstat=pstat, solstat=solstat)
-        def rounddec(func):
-            def wrapper(*args, **kwargs):
-                res = func(*args, **kwargs)
-                res = int(res*100)/100
-                return res
-            return wrapper
 
         stat.register("best", rounddec(numpy.max))
         stat.register("min", rounddec(numpy.min))
@@ -263,7 +272,7 @@ def create_cooperative_ga(**kwargs):
 
             ## estimate fitness
             for sol in solutions:
-                sol.fitness = fitness(ENV, solution)
+                sol.fitness = fitness(ENV, sol)
 
             print("Fitness have been evaluated")
 

@@ -116,7 +116,9 @@ def mapping_default_mutate(env, mutant):
     nodes = list(env.rm.get_nodes())
     k = random.randint(0, len(mutant) - 1)
     (t, n) = mutant[k]
-    mutant[k] = (t, nodes[random.randint(0, len(nodes) - 1)].name)
+    names = [node.name for node in nodes if node.name != n]
+    mutant[k] = (t, nodes[random.randint(0, len(names) - 1)].name)
+    pass
 
 ##===================================
 ## Ordering specie

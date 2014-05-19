@@ -13,7 +13,7 @@ if not os.path.exists(path_dir):
     os.makedirs(path_dir)
 
 # seq = range(250, 510, 10)
-seq = [250]
+seq = [1]
 for n in seq:
     path = path_dir + wf_name + "_" + str(n) + ".xml"
     out = open(path, "w")

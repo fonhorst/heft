@@ -115,8 +115,22 @@ def visualize(data, path_to_save=None):
 
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
-    names = ["1.json", "2.json", "3.json", "4.json", "5.json"]
-    path = "../../../temp/five_runs/"
 
-    for n in names:
-        visualize(load_data(path + n), path + n + ".png")
+    path = "../../../temp/cga_exp/"
+
+    def generate_pathes(folder):
+        pathes = []
+        for entry in os.listdir(folder):
+            p = os.path.join(folder, entry)
+            if os.path.isdir(p):
+                pathes.append(generate_pathes(p))
+            elif entry.endswith(".json"):
+                pathes.append(p)
+        return pathes
+
+    pathes = generate_pathes(path)
+
+    #names = ["d53fc071-ad6a-409f-9809-db948d1cd1b6.json"]
+
+    for n in pathes:
+        visualize(load_data(n), n + ".png")
