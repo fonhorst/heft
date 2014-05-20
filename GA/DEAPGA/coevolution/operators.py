@@ -77,7 +77,7 @@ def fitness_mapping_and_ordering(env,
     schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
     result = Utility.makespan(schedule)
     #result = ExecutorRunner.extract_result(schedule, True, workflow)
-    return -result
+    return 1/result
 
 
 ## TODO: very simple version, As a ResourceConfig specie It will have to be extended to apply deeper analysis of situations
@@ -93,7 +93,7 @@ def fitness_ordering_resourceconf(workflow,
     heft = DynamicHeft(workflow, resource_manager, estimator, os)
     schedule = heft.run({n: [] for n in resource_manager.get_nodes()})
     result = Utility.makespan(schedule)
-    return result
+    return 1/result
 
 ##====================================
 ##Mapping specie

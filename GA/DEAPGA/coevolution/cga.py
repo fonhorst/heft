@@ -91,7 +91,7 @@ DictBasedIndividual = creator.DictBasedIndividual
 def rounddec(func):
     def wrapper(*args, **kwargs):
         res = func(*args, **kwargs)
-        res = int(res*100)/100
+        res = int(res*100.0)/100.0
         return res
     return wrapper
 
@@ -167,9 +167,9 @@ def create_cooperative_ga(**kwargs):
         choose = kwargs["operators"]["choose"]
         fitness = kwargs["operators"]["fitness"]
 
-        assert INTERACT_INDIVIDUALS_COUNT >= min(s.pop_size for s in SPECIES), \
-            "Count of interacting individuals cannot be lower than size of any population." \
-            " This restriction will be removed in future releases"
+        # assert INTERACT_INDIVIDUALS_COUNT >= min(s.pop_size for s in SPECIES), \
+        #     "Count of interacting individuals cannot be lower than size of any population." \
+        #     " This restriction will be removed in future releases"
 
 
         stat = tools.Statistics(key=lambda x: x.fitness)
@@ -181,17 +181,17 @@ def create_cooperative_ga(**kwargs):
         stat.register("avg", rounddec(numpy.average))
         stat.register("std", rounddec(numpy.std))
 
-        class Wrapper:
-            def __init__(self, dictionary):
-                if not isinstance(dictionary, dict):
-                    raise ValueError("Arg dictionary isn't a dictionary")
-                self.dictionary = dictionary
-
-            def __str__(self):
-                return self.dictionary.__str__()
-
-            def __repr__(self):
-                return self.dictionary.__repr__()
+        # class Wrapper:
+        #     def __init__(self, dictionary):
+        #         if not isinstance(dictionary, dict):
+        #             raise ValueError("Arg dictionary isn't a dictionary")
+        #         self.dictionary = dictionary
+        #
+        #     def __str__(self):
+        #         return self.dictionary.__str__()
+        #
+        #     def __repr__(self):
+        #         return self.dictionary.__repr__()
 
 
 
@@ -281,18 +281,25 @@ def create_cooperative_ga(**kwargs):
 
             print("Fitness have been evaluated")
 
+            for s, pop in pops.items():
+                for p in pop:
+                    p.fitness = 0.0
+
             ## determine and distribute credits between participants of solutions
             ## TODO: perhaps it should be reconsidered
             inds_credit = dict()
             for sol in solutions:
                 for s, ind in sol.items():
                     values = inds_credit.get(ind.id, [0, 0])
-                    values[0] += sol.fitness / len(sol)
+                    values[0] += float(sol.fitness) / len(sol)
                     values[1] += 1
                     inds_credit[ind.id] = values
             for id, values in inds_credit.items():
                 ## assign credit to every individual
-                ind_maps[id].fitness = values[0] / values[1]
+                ind_maps[id].fitness = float(values[0]) / float(values[1])
+
+            assert all([sum(p.fitness for p in pop) != 0 for s, pop in pops.items()]), \
+                "Error. Some population has individuals only with zero fitness"
 
             print("Credit have been estimated")
 
@@ -331,8 +338,8 @@ def create_cooperative_ga(**kwargs):
                         ## TODO: toolbox.inherit_credit(pop, child1, child2)
                         ## TODO: perhaps, this operation should be done after all crossovers in the pop
                         ## default implementation
-                        child1.fitness = (c1 + c2) / 2
-                        child2.fitness = (c1 + c2) / 2
+                        child1.fitness = (c1 + c2) / 2.0
+                        child2.fitness = (c1 + c2) / 2.0
                         pass
                     pass
 
@@ -342,8 +349,12 @@ def create_cooperative_ga(**kwargs):
                     pass
                 pops[s] = offspring
                 pass
+
+            ## assign credits for every individuals of all pops
             for s, pop in pops.items():
                 credit_to_k(pop)
+
+            for s, pop in pops.items():
                 for ind in pop:
                     del ind.fitness
                     del ind.id

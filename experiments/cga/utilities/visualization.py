@@ -18,7 +18,7 @@ def _draw_best_solution_evolution(data):
 
 
     gens = sorted(data["iterations"], key=lambda x: x["gen"])
-    bests = [(points.index(gen["gen"]), -1*gen["solsstat"][0]["best"]) for gen in gens if gen["gen"] in points]
+    bests = [(points.index(gen["gen"]), 1/gen["solsstat"][0]["best"]) for gen in gens if gen["gen"] in points]
 
     plt.plot([x[0] for x in bests], [x[1] for x in bests], '-gD')
     pass
@@ -75,7 +75,7 @@ def _draw_solutions_diversity(data):
 
 
     gens = sorted(data["iterations"], key=lambda x: x["gen"])
-    values = [(points.index(gen["gen"]), -1*fit) for gen in gens if gen["gen"] in points
+    values = [(points.index(gen["gen"]), 1/fit) for gen in gens if gen["gen"] in points
              for fit in gen["solsstat"][0]["fitnesses"]]
 
 
