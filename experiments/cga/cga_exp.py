@@ -3,17 +3,39 @@ from deap import tools
 import distance
 from scoop import futures
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits, bonus_assign_credits
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
 from environment.ResourceGenerator import ResourceGenerator as rg
 from experiments.cga import wf
-from experiments.cga.utilities.common import UniqueNameSaver
+from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
 
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 selector = lambda env, pop: tools.selTournament(pop, len(pop), 4)
+## TODO: remove this hack later
+# class Fitness(ComparableMixin):
+#     def __init__(self, fitness):
+#         self.values = [fitness]
+#
+#     def _cmpkey(self):
+#         return self.values[0]
+#
+#
+# ## TODO: remake this stub later
+# def roulette(env, pop):
+#
+#     for p in pop:
+#         p.fitness = Fitness((1/-1*p.fitness)*100)
+#
+#     result = tools.selRoulette(pop, len(pop))
+#
+#     for p in pop:
+#         p.fitness = (1/(p.fitness.values[0]/100)*-1)
+#     return result
+#
+# selector = roulette
 
 @rounddeciter
 def hamming_distances(pop, ideal_ind):
@@ -77,6 +99,7 @@ config = {
     }
 
 
+
 def do_experiment(saver, config):
     solution, pops, logbook = run_cooperative_ga(**config)
     schedule = build_schedule(_wf, estimator, rm, solution)
@@ -101,15 +124,19 @@ def do_experiment(saver, config):
     return m
 
 def repeat(func, n):
-    fs = [futures.submit(func) for i in range(n)]
-    futures.wait(fs)
-    return [f.result() for f in fs]
-    # return [func() for i in range(n)]
+    # fs = [futures.submit(func) for i in range(n)]
+    # futures.wait(fs)
+    # return [f.result() for f in fs]
+    return [func() for i in range(n)]
 
+saver = UniqueNameSaver("../../temp/cga_exp_with_roulette")
+
+def do_exp():
+    return do_experiment(saver, config)
 
 if __name__ == "__main__":
-    saver = UniqueNameSaver("../../temp/cga_exp")
-    res = repeat(partial(do_experiment, saver, config), 1)
+
+    res = repeat(do_exp, 10)
     print("RESULTS: ")
     print(res)
 
