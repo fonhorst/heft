@@ -167,6 +167,11 @@ def create_cooperative_ga(**kwargs):
         choose = kwargs["operators"]["choose"]
         fitness = kwargs["operators"]["fitness"]
 
+        assert INTERACT_INDIVIDUALS_COUNT >= min(s.pop_size for s in SPECIES), \
+            "Count of interacting individuals cannot be lower than size of any population." \
+            " This restriction will be removed in future releases"
+
+
         stat = tools.Statistics(key=lambda x: x.fitness)
         #solstat = tools.Statistics(key=lambda x: x.fitness)
         #stat = tools.MultiStatistics(popstat=pstat, solstat=solstat)
@@ -290,7 +295,6 @@ def create_cooperative_ga(**kwargs):
                 ind_maps[id].fitness = values[0] / values[1]
 
             print("Credit have been estimated")
-
 
             #{s:distance.hamming() for s, pop in pops.items()}
 

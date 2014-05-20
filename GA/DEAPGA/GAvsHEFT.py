@@ -13,7 +13,7 @@ PARAMS = {
     "is_silent": True,
     "is_visualized": False,
     "ga_params": {
-        "population": 50,
+        "population": 200,
         "crossover_probability": 0.8,
         "replacing_mutation_probability": 0.5,
         "sweep_mutation_probability": 0.4,
@@ -26,9 +26,16 @@ if __name__ == '__main__':
     print("Population size: " + str(PARAMS["ga_params"]["population"]))
     run = functools.partial(MixRunner(), **PARAMS)
 
-    res = [run(wf_name) for wf_name in wf_names for i in range(10)]
+    res = [run(wf_name) for wf_name in wf_names for i in range(1000)]
 
     print("RESULT: " + str([gam for gam, hm in res]))
+
+    ## TODO: remove it later
+    ## pop size equal to 200 is determined by the fact that cga uses 200 constructing of solutions
+    ## So, We takes the same size for ga pop to be honest.
+    ## TODO: need to implement ga operators as exacly as in "Science in the Cloud: Allocation and Execution of Data-Intesive Scientific Workflows."
+    with open("D:/wspace/heft/temp", "w") as f:
+        f.write(str(res))
     # list(futures.map(run, wf_names))
     # for i in range(5):
     #     print("ITERATION: " + str(i))
