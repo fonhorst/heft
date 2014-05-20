@@ -29,6 +29,36 @@ def default_choose(pop):
             return pop[i]
 
 
+def default_assign_credits(solutions):
+    # assign id for every elements in every population
+    # create dictionary for all individuals in all pop
+    inds_credit = dict()
+    for sol in solutions:
+        for s, ind in sol.items():
+            values = inds_credit.get(ind.id, [0, 0])
+            values[0] += float(sol.fitness) / len(sol)
+            values[1] += 1
+            inds_credit[ind.id] = values
+
+    result = {ind_id: float(all_fit) / float(count) for ind_id, (all_fit, count) in inds_credit.items()}
+    return result
+
+
+def result_assign_credits(solutions):
+    # assign id for every elements in every population
+    # create dictionary for all individuals in all pop
+    inds_credit = dict()
+    for sol in solutions:
+        for s, ind in sol.items():
+            values = inds_credit.get(ind.id, [0, 0])
+            values[0] += float(sol.fitness) / len(sol)
+            values[1] += 1
+            inds_credit[ind.id] = values
+
+    result = {ind_id: float(all_fit) / float(count) for ind_id, (all_fit, count) in inds_credit.items()}
+    return result
+
+
 def _check_precedence(workflow, seq):
     for i in range(len(seq)):
         task = workflow.byId(seq[i])
@@ -77,7 +107,7 @@ def fitness_mapping_and_ordering(env,
     schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
     result = Utility.makespan(schedule)
     #result = ExecutorRunner.extract_result(schedule, True, workflow)
-    return 1/result
+    return -result
 
 
 ## TODO: very simple version, As a ResourceConfig specie It will have to be extended to apply deeper analysis of situations
@@ -263,50 +293,10 @@ def default_config(wf, rm, estimator):
 
         "operators": {
             "choose": default_choose,
-            "fitness": fitness_mapping_and_ordering
+            "fitness": fitness_mapping_and_ordering,
+            "assign_credits": default_assign_credits
         }
     }
-
-# ## TODO: replace Task and node instances with dictionary(due to deepcopy)
-# def create_simple_toolbox(workflow, estimator, resource_manager, **kwargs):
-#     pop_size = kwargs["pop_size"]
-#     interact_individuals_count = kwargs["interact_individuals_count"]
-#     generations = kwargs["generations"]
-#     mutation_probability = kwargs["mutation_probability"]
-#     crossover_probability = kwargs["crossover_probability"]
-#
-#     toolbox = base.Toolbox()
-#
-#     MAPPING = Mapping(name="MappingSpecie", pop_size=pop_size, cxb=crossover_probability, mb=mutation_probability)
-#     ORDERING = Ordering(name="OrderingSpecie", pop_size=pop_size, cxb=crossover_probability, mb=mutation_probability)
-#
-#     toolbox.species = [MAPPING, ORDERING]
-#     toolbox.interact_individuals_count = interact_individuals_count
-#     toolbox.generations = generations
-#
-#
-#     init_op = {
-#         MAPPING: partial(Mapping.default_initialize, resource_manager.get_nodes()),
-#         ORDERING: partial(Ordering.default_initialize),
-#     }
-#
-#     mate_op = {
-#         MAPPING: tools.cxOnePoint,
-#         ORDERING: Ordering.default_crossover,
-#     }
-#
-#     mutate_op = {
-#         MAPPING: partial(Mapping.default_mutate, resource_manager.get_nodes()),
-#         ORDERING: partial(Ordering.default_mutate, workflow)
-#     }
-#
-#     toolbox.register("initialize", lambda s, size: init_op[s](size))
-#     toolbox.register("choose", default_choose)
-#     toolbox.register("fitness", lambda s: fitness_mapping_and_ordering(workflow, estimator, resource_manager, s))
-#     toolbox.register("select", lambda s, pop: tools.selTournament(pop, len(pop), 4))
-#     toolbox.register("mate", lambda s, child1, child2: mate_op[s](child1, child2))
-#     toolbox.register("mutate", lambda s, mutant: mutate_op[s](mutant))
-#     return toolbox
 
 
 

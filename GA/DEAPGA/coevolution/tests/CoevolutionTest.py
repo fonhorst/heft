@@ -1,3 +1,4 @@
+from copy import deepcopy
 import unittest
 from GA.DEAPGA.coevolution.cga import run_cooperative_ga
 from GA.DEAPGA.coevolution.operators import build_schedule, default_config
@@ -25,7 +26,23 @@ class CoevolutionTest(unittest.TestCase):
                 item.state = ScheduleItem.FINISHED
         ## TODO: refactor this
         ExecutorRunner.extract_result(schedule, True, wf)
+
+        config_2 = deepcopy(config)
+        config_2["interact_individuals_count"] = 4
+
+        solution, pops, logbook = run_cooperative_ga(**config)
+        schedule = build_schedule(wf, estimator, manager, solution)
+
+        for k, items in schedule.mapping.items():
+            for item in items:
+                item.state = ScheduleItem.FINISHED
+        ## TODO: refactor this
+        ExecutorRunner.extract_result(schedule, True, wf)
+
+
         pass
+
+
 
     pass
 if __name__ == "main":

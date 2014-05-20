@@ -3,7 +3,7 @@ from deap import tools
 import distance
 from scoop import futures
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
 from environment.ResourceGenerator import ResourceGenerator as rg
@@ -58,7 +58,6 @@ config = {
                            select=selector,
                            initialize=mapping_default_initialize,
                            stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], to_seq(ms_ideal_ind))}
-                           # stat=lambda pop: {"hamming_distances": "", "hamming_ideal_ind": ""}
                     ),
                     Specie(name=ORDERING_SPECIE, pop_size=50,
                            cxb=0.8, mb=0.5,
@@ -67,13 +66,13 @@ config = {
                            select=selector,
                            initialize=ordering_default_initialize,
                            stat=lambda pop: {"hamming_distances": hamming_distances(pop, os_ideal_ind)}
-                           # stat=lambda pop: {"hamming_distances": "", "hamming_ideal_ind": ""}
                     )
         ],
 
         "operators": {
             "choose": default_choose,
-            "fitness": fitness_mapping_and_ordering
+            "fitness": fitness_mapping_and_ordering,
+            "assign_credits": default_assign_credits
         }
     }
 

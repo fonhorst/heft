@@ -166,6 +166,9 @@ def create_cooperative_ga(**kwargs):
 
         choose = kwargs["operators"]["choose"]
         fitness = kwargs["operators"]["fitness"]
+        assign_credits = kwargs["operators"]["assign_credits"]
+
+        USE_CREDIT_INHERITANCE = kwargs.get("use_credit_inheritance", False)
 
         # assert INTERACT_INDIVIDUALS_COUNT >= min(s.pop_size for s in SPECIES), \
         #     "Count of interacting individuals cannot be lower than size of any population." \
@@ -173,25 +176,10 @@ def create_cooperative_ga(**kwargs):
 
 
         stat = tools.Statistics(key=lambda x: x.fitness)
-        #solstat = tools.Statistics(key=lambda x: x.fitness)
-        #stat = tools.MultiStatistics(popstat=pstat, solstat=solstat)
-
         stat.register("best", rounddec(numpy.max))
         stat.register("min", rounddec(numpy.min))
         stat.register("avg", rounddec(numpy.average))
         stat.register("std", rounddec(numpy.std))
-
-        # class Wrapper:
-        #     def __init__(self, dictionary):
-        #         if not isinstance(dictionary, dict):
-        #             raise ValueError("Arg dictionary isn't a dictionary")
-        #         self.dictionary = dictionary
-        #
-        #     def __str__(self):
-        #         return self.dictionary.__str__()
-        #
-        #     def __repr__(self):
-        #         return self.dictionary.__repr__()
 
 
 
@@ -221,24 +209,9 @@ def create_cooperative_ga(**kwargs):
                 sorted_pop[i].k += 1
             return pop
 
-        #def _logpops(logbook, gen, pops, solutions):
-        #    logbook.record(gen=gen,
-        #                   pops=deepcopy({s.name:p for s, p in pops.items()}),
-        #                   solutions=deepcopy(solutions))
-        #    pass
-
-
-        #def _log_metainfo(logbook):
-        #    logbook.record(name="metainfo", species=[s.name for s in SPECIES],
-        #                   generations=GENERATIONS, interact_individuals_count=INTERACT_INDIVIDUALS_COUNT,
-        #                   ## TODO: It is hack. This info shouldn't be known by algorithm itself
-        #                   nodes=[(n.name,n.flops) for n in ENV.rm.get_nodes()])
-        #    pass
-
         logbook = tools.Logbook()
 
-        #_log_metainfo(logbook)
-
+        ## generate initial population
         pops = {s: generate_k(s.initialize(ENV, s.pop_size)) for s in SPECIES if not s.fixed}
 
         ## checking correctness
@@ -252,16 +225,6 @@ def create_cooperative_ga(**kwargs):
         best = None
         for gen in range(GENERATIONS):
 
-
-            # assign id for every elements in every population
-            # create dictionary for all individuals in all pop
-            i = 0
-            for s, pop in pops.items():
-                for p in pop:
-                    p.id = i
-                    i += 1
-            ind_maps = {p.id: p for s, pop in pops.items() for p in pop}
-
             print("Gen: " + str(gen))
             ## constructing set of possible solutions
             solutions = []
@@ -273,8 +236,6 @@ def create_cooperative_ga(**kwargs):
 
             print("Solutions have been built")
 
-
-
             ## estimate fitness
             for sol in solutions:
                 sol.fitness = fitness(ENV, sol)
@@ -283,20 +244,19 @@ def create_cooperative_ga(**kwargs):
 
             for s, pop in pops.items():
                 for p in pop:
-                    p.fitness = 0.0
+                    p.fitness = -1000000000.0
 
-            ## determine and distribute credits between participants of solutions
-            ## TODO: perhaps it should be reconsidered
-            inds_credit = dict()
-            for sol in solutions:
-                for s, ind in sol.items():
-                    values = inds_credit.get(ind.id, [0, 0])
-                    values[0] += float(sol.fitness) / len(sol)
-                    values[1] += 1
-                    inds_credit[ind.id] = values
-            for id, values in inds_credit.items():
+            ## assign id, calculate credits and save it
+            i = 0
+            for s, pop in pops.items():
+                for p in pop:
+                    p.id = i
+                    i += 1
+            ind_maps = {p.id: p for s, pop in pops.items() for p in pop}
+            ind_to_credits = assign_credits(solutions)
+            for ind_id, credit in ind_to_credits.items():
                 ## assign credit to every individual
-                ind_maps[id].fitness = float(values[0]) / float(values[1])
+                ind_maps[ind_id].fitness = credit
 
             assert all([sum(p.fitness for p in pop) != 0 for s, pop in pops.items()]), \
                 "Error. Some population has individuals only with zero fitness"
@@ -321,7 +281,7 @@ def create_cooperative_ga(**kwargs):
             ## select best solution as a result
             ## TODO: remake it in a more generic way
             ## TODO: add archive and corresponding updating and mixing
-            best = min(solutions, key=lambda x: x.fitness)
+            best = max(solutions, key=lambda x: x.fitness)
 
             ## produce offsprings
             items = [(s, pop) for s, pop in pops.items() if not s.fixed]
@@ -356,7 +316,8 @@ def create_cooperative_ga(**kwargs):
 
             for s, pop in pops.items():
                 for ind in pop:
-                    del ind.fitness
+                    if not USE_CREDIT_INHERITANCE:
+                        del ind.fitness
                     del ind.id
             pass
             print("Offsprings have been generated")
