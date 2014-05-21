@@ -87,6 +87,9 @@ toolbox = TBX(
 creator.create("DictBasedIndividual", dict)
 DictBasedIndividual = creator.DictBasedIndividual
 
+creator.create("Individual", list)
+ListBasedIndividual = creator.Individual
+
 
 def rounddec(func):
     def wrapper(*args, **kwargs):
@@ -128,6 +131,7 @@ class Specie:
         if kwargs.get("fixed", False):
             self.fixed = True
             self.representative_individual = kwargs["representative_individual"]
+            self.name = kwargs["name"]
         else:
             self.fixed = False
             self.name = kwargs["name"]
@@ -211,8 +215,11 @@ def create_cooperative_ga(**kwargs):
 
         logbook = tools.Logbook()
 
+        ## TODO: make processing of population consisting of 1 element uniform
         ## generate initial population
-        pops = {s: generate_k(s.initialize(kwargs, s.pop_size)) for s in SPECIES if not s.fixed}
+        pops = {s: generate_k(s.initialize(kwargs, s.pop_size)) if not s.fixed
+        else generate_k([s.representative_individual])
+                for s in SPECIES}
         ## make a copy for logging. TODO: remake it with logbook later.
         initial_pops = {s.name: deepcopy(pop) for s, pop in pops.items()}
 
@@ -288,6 +295,8 @@ def create_cooperative_ga(**kwargs):
             ## produce offsprings
             items = [(s, pop) for s, pop in pops.items() if not s.fixed]
             for s, pop in items:
+                if s.fixed:
+                    continue
                 offspring = s.select(kwargs, pop)
                 offspring = list(map(deepcopy, offspring))
                 # Apply crossover and mutation on the offspring

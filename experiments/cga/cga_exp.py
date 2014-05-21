@@ -4,6 +4,7 @@ import distance
 from scoop import futures
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter
 from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits, bonus_assign_credits
+from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
 from environment.ResourceGenerator import ResourceGenerator as rg
@@ -49,22 +50,10 @@ def to_seq(mapping):
     srted = sorted(mapping, key=lambda x: x[0])
     return [n for t, n in srted]
 
-def build_ms_ideal_ind():
-    ## TODO: reconsider and make this procedure more stable
-    res = []
-    i = 0
-    _nodes = sorted(rm.get_nodes(), key=lambda x: x.flops)
-    for t in sorted(_wf.get_all_unique_tasks(), key=lambda x: x.id):
-        res.append((t.id, _nodes[i].name))
-        i = (i + 1 )%len(_nodes)
-    return res
 
-def build_os_ideal_ind():
-    ## TODO: reconsider and make this procedure more stable
-    return [t.id for t in sorted(_wf.get_all_unique_tasks(), key=lambda x: x.id)]
 
-ms_ideal_ind = build_ms_ideal_ind()
-os_ideal_ind = build_os_ideal_ind()
+ms_ideal_ind = build_ms_ideal_ind(_wf, rm)
+os_ideal_ind = build_os_ideal_ind(_wf)
 
 ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 

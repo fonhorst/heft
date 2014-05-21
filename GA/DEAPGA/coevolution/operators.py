@@ -5,7 +5,7 @@ from deap import tools
 from deap import base
 from deap import creator
 from GA.DEAPGA.GAImplementation.NewSchedulerBuilder import place_task_to_schedule
-from GA.DEAPGA.coevolution.cga import Specie, Env
+from GA.DEAPGA.coevolution.cga import Specie, Env, ListBasedIndividual
 from core.DSimpleHeft import DynamicHeft
 from core.HeftHelper import HeftHelper
 from core.concrete_realization import ExperimentResourceManager
@@ -13,8 +13,7 @@ from environment.ResourceGenerator import ResourceGenerator
 from environment.ResourceManager import Schedule
 from environment.Utility import Utility
 
-creator.create("Individual", list)
-ListBasedIndividual = creator.Individual
+
 
 MAPPING_SPECIE = "MappingSpecie"
 ORDERING_SPECIE = "OrderingSpecie"

@@ -3,7 +3,8 @@ from matplotlib.patches import Rectangle
 from experiments.cga.utilities.common import load_data
 import matplotlib.pyplot as plt
 
-points = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 200, 299]
+# points = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 200, 299]
+points = [0, 1, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 120, 140, 150, 170, 190, 200, 220, 240, 250, 270, 290, 299, 350, 400, 450, 499]
 
 def _draw_best_solution_evolution(data):
     ## TODO: remake it with acquaring figure and subplot from the function arguments
@@ -116,7 +117,7 @@ def visualize(data, path_to_save=None):
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
-    path = "../../../temp/cga_exp"
+    path = "../../../temp/cga_exp_500_500_200_roulette"
     # path = "../../../temp/cga_exp_with_roulette/"
     # path = "../../../temp/cga_partial_experiments/"
 
