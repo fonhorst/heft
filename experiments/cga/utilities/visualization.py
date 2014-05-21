@@ -65,7 +65,7 @@ def _draw_species_diversity(data):
 
 
     best_values = [(points.index(gen["gen"]), gen["solsstat"][0].get("best_components", {})) for gen in gens if gen["gen"] in points]
-    best_values = filter(lambda x: len(x[1]) == len(species), best_values)
+    best_values = list(filter(lambda x: len(x[1]) == len(species), best_values))
     best_values = {s: sorted([(n, bvals[s]) for n, bvals in best_values]) for s in species}
 
     shift = 0.0
@@ -129,8 +129,8 @@ def visualize(data, path_to_save=None):
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
-    # path = "../../../temp/cga_exp/"
-    path = "../../../temp/cga_exp_200_50_tr_2/"
+    path = "../../../temp/cga_exp/"
+    # path = "../../../temp/cga_exp_200_50_torn2_transf10_ideal20/"
     # path = "../../../temp/cga_fixed_mapping/"
     # path = "../../../temp/cga_exp_200interact_50popsize_transfer_10/"
     # path = "../../../temp/cga_exp_with_roulette/"
