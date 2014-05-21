@@ -129,14 +129,14 @@ def repeat(func, n):
     # return [f.result() for f in fs]
     return [func() for i in range(n)]
 
-saver = UniqueNameSaver("../../temp/cga_exp_with_roulette")
+saver = UniqueNameSaver("../../temp/cga_exp")
 
 def do_exp():
     return do_experiment(saver, config)
 
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 10)
+    res = repeat(do_exp, 20)
     print("RESULTS: ")
     print(res)
 

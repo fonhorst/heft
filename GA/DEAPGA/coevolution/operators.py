@@ -22,14 +22,14 @@ RESOURCE_CONFIG_SPECIE = "ResourceConfigSpecie"
 
 ## TODO: move it to experiments/five_runs/
 
-def default_choose(pop):
+def default_choose(ctx, pop):
     while True:
         i = random.randint(0, len(pop) - 1)
         if pop[i].k > 0:
             return pop[i]
 
 
-def default_assign_credits(solutions):
+def default_assign_credits(ctx, solutions):
     # assign id for every elements in every population
     # create dictionary for all individuals in all pop
     inds_credit = dict()
@@ -44,7 +44,7 @@ def default_assign_credits(solutions):
     return result
 
 
-def bonus_assign_credits(solutions):
+def bonus_assign_credits(ctx, solutions):
     mn = min(solutions, key=lambda x: x.fitness).fitness
     k = 0.1
 
@@ -62,6 +62,9 @@ def bonus_assign_credits(solutions):
     return result
 
 
+def initialize_from_defined(ctx, name):
+    pop = kwargs[name]
+    return pop
 
 
 def _check_precedence(workflow, seq):
@@ -107,8 +110,9 @@ def build_schedule(workflow, estimator, resource_manager, solution):
     return schedule
 
 
-def fitness_mapping_and_ordering(env,
+def fitness_mapping_and_ordering(ctx,
                                  solution):
+    env = ctx['env']
     schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
     result = Utility.makespan(schedule)
     #result = ExecutorRunner.extract_result(schedule, True, workflow)
@@ -138,7 +142,8 @@ chromosome = [(task_id, node_name), ...]
 """
 
 
-def mapping_default_initialize(env, size):
+def mapping_default_initialize(ctx, size):
+    env = ctx['env']
     nodes = list(env.rm.get_nodes())
     tasks = list(env.wf.get_all_unique_tasks())
     rnd = lambda: random.randint(0, len(nodes) - 1)
@@ -147,7 +152,8 @@ def mapping_default_initialize(env, size):
     return result
 
 
-def mapping_default_mutate(env, mutant):
+def mapping_default_mutate(ctx, mutant):
+    env = ctx['env']
     nodes = list(env.rm.get_nodes())
     k = random.randint(0, len(mutant) - 1)
     (t, n) = mutant[k]
@@ -160,7 +166,8 @@ def mapping_default_mutate(env, mutant):
 ##==================================
 
 
-def ordering_default_initialize(env, size):
+def ordering_default_initialize(ctx, size):
+    env = ctx['env']
     estimator = env.estimator
     nodes = env.rm.get_nodes()
     wf = env.wf
@@ -171,11 +178,12 @@ def ordering_default_initialize(env, size):
 
     assert _check_precedence(wf, sorted_tasks), "Check precedence failed"
 
-    result = [ListBasedIndividual(ordering_default_mutate(env, deepcopy(sorted_tasks))) for i in range(size)]
+    result = [ListBasedIndividual(ordering_default_mutate(ctx, deepcopy(sorted_tasks))) for i in range(size)]
     return result
 
 
-def ordering_default_mutate(env, mutant):
+def ordering_default_mutate(ctx, mutant):
+    env = ctx['env']
     wf = env.wf
     while True:
         k1 = random.randint(0, len(mutant) - 1)
@@ -190,7 +198,7 @@ def ordering_default_mutate(env, mutant):
     return mutant
 
 
-def ordering_default_crossover(env, child1, child2):
+def ordering_default_crossover(ctx, child1, child2):
     def cutby(p1, p2, k):
         d = set(p1[0:k]) - set(p2[0:k])
         f = set(p2[0:k]) - set(p1[0:k])

@@ -212,7 +212,7 @@ def create_cooperative_ga(**kwargs):
         logbook = tools.Logbook()
 
         ## generate initial population
-        pops = {s: generate_k(s.initialize(ENV, s.pop_size)) for s in SPECIES if not s.fixed}
+        pops = {s: generate_k(s.initialize(kwargs, s.pop_size)) for s in SPECIES if not s.fixed}
 
         ## checking correctness
         for s, pop in pops.items():
@@ -229,7 +229,7 @@ def create_cooperative_ga(**kwargs):
             ## constructing set of possible solutions
             solutions = []
             for i in range(INTERACT_INDIVIDUALS_COUNT):
-                solution = DictBasedIndividual({s.name: decrease_k(choose(pop)) if not s.fixed
+                solution = DictBasedIndividual({s.name: decrease_k(choose(kwargs, pop)) if not s.fixed
                                                 else s.representative_individual
                                                 for s, pop in pops.items()})
                 solutions.append(solution)
@@ -238,7 +238,7 @@ def create_cooperative_ga(**kwargs):
 
             ## estimate fitness
             for sol in solutions:
-                sol.fitness = fitness(ENV, sol)
+                sol.fitness = fitness(kwargs, sol)
 
             print("Fitness have been evaluated")
 
@@ -253,7 +253,7 @@ def create_cooperative_ga(**kwargs):
                     p.id = i
                     i += 1
             ind_maps = {p.id: p for s, pop in pops.items() for p in pop}
-            ind_to_credits = assign_credits(solutions)
+            ind_to_credits = assign_credits(kwargs, solutions)
             for ind_id, credit in ind_to_credits.items():
                 ## assign credit to every individual
                 ind_maps[ind_id].fitness = credit
@@ -286,14 +286,14 @@ def create_cooperative_ga(**kwargs):
             ## produce offsprings
             items = [(s, pop) for s, pop in pops.items() if not s.fixed]
             for s, pop in items:
-                offspring = s.select(ENV, pop)
+                offspring = s.select(kwargs, pop)
                 offspring = list(map(deepcopy, offspring))
                 # Apply crossover and mutation on the offspring
                 for child1, child2 in zip(offspring[::2], offspring[1::2]):
                     if random.random() < s.cxb:
                         c1 = child1.fitness
                         c2 = child2.fitness
-                        s.mate(ENV, child1, child2)
+                        s.mate(kwargs, child1, child2)
                         ## TODO: make credit inheritance here
                         ## TODO: toolbox.inherit_credit(pop, child1, child2)
                         ## TODO: perhaps, this operation should be done after all crossovers in the pop
@@ -305,7 +305,7 @@ def create_cooperative_ga(**kwargs):
 
                 for mutant in offspring:
                     if random.random() < s.mb:
-                        s.mutate(ENV, mutant)
+                        s.mutate(kwargs, mutant)
                     pass
                 pops[s] = offspring
                 pass
