@@ -12,7 +12,7 @@ wf_names = ['Montage_25']
 # wf_names = ["CyberShake_50"]
 
 PARAMS = {
-    "ideal_flops": 10,
+    "ideal_flops": 20,
     "is_silent": True,
     "is_visualized": False,
     "ga_params": {
@@ -20,10 +20,10 @@ PARAMS = {
         "crossover_probability": 0.8,
         "replacing_mutation_probability": 0.5,
         "sweep_mutation_probability": 0.4,
-        "generations": 300
+        "generations": 3
     },
     "nodes_conf": [10, 15, 25, 30],
-    "transfer_time": 20
+    "transfer_time": 10
 }
 
 run = functools.partial(MixRunner(), **PARAMS)
@@ -39,7 +39,7 @@ def do_exp():
 if __name__ == '__main__':
     print("Population size: " + str(PARAMS["ga_params"]["population"]))
 
-    repeat(do_exp, 2)
+    repeat(do_exp, 1)
 
     result = []
     for entry in os.listdir(directory):

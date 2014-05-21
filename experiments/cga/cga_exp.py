@@ -109,6 +109,7 @@ def do_experiment(saver, config, _wf, rm, estimator):
         },
         "initial_pops": initial_pops,
         "final_solution": solution,
+        "final_makespan": m,
         "iterations": logbook
     }
     saver(data)
