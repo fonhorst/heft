@@ -132,6 +132,7 @@ class Specie:
             self.fixed = True
             self.representative_individual = kwargs["representative_individual"]
             self.name = kwargs["name"]
+            self.pop_size = 1
         else:
             self.fixed = False
             self.name = kwargs["name"]

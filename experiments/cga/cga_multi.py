@@ -1,8 +1,7 @@
 from copy import deepcopy
-from functools import partial
 import os
 from scoop import futures
-from experiments.cga.cga_exp import config, repeat, do_experiment
+from experiments.cga.cga_exp import config, do_experiment, _wf, rm, estimator
 from experiments.cga.utilities.common import UniqueNameSaver
 
 
@@ -54,7 +53,7 @@ tasks = [(cfg_50_interact, 'cga_exp_50_interact'),
 def do_exp(arg):
     config, name = tasks[arg]
     saver = UniqueNameSaver(os.path.join(base_path, name))
-    return do_experiment(saver, config)
+    return do_experiment(saver, config, _wf, rm, estimator)
 
 REPEAT_COUNT = 10
 
