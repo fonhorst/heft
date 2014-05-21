@@ -62,9 +62,11 @@ def bonus_assign_credits(ctx, solutions):
     return result
 
 
-def initialize_from_defined(ctx, name):
-    pop = kwargs[name]
-    return pop
+# def initialize_from_predefined(ctx, name, size):
+#     pop = ctx[name]
+#     assert len(pop) == size, "Size of predefined population doesn't match to required size: {0} vs {1}"\
+#         .format(len(pop), size)
+#     return pop
 
 
 def _check_precedence(workflow, seq):

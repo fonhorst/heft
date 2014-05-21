@@ -101,7 +101,7 @@ config = {
 
 
 def do_experiment(saver, config):
-    solution, pops, logbook = run_cooperative_ga(**config)
+    solution, pops, logbook, initial_pops = run_cooperative_ga(**config)
     schedule = build_schedule(_wf, estimator, rm, solution)
     m = Utility.makespan(schedule)
 
@@ -115,19 +115,21 @@ def do_experiment(saver, config):
             "ideal_inds": {
                 MAPPING_SPECIE: ms_str_repr,
                 ORDERING_SPECIE: os_ideal_ind
-            }
-
+            },
+            "wf_name": _wf.name
         },
+        "initial_pops": initial_pops,
+        "final_solution": solution,
         "iterations": logbook
     }
     saver(data)
     return m
 
 def repeat(func, n):
-    # fs = [futures.submit(func) for i in range(n)]
-    # futures.wait(fs)
-    # return [f.result() for f in fs]
-    return [func() for i in range(n)]
+    fs = [futures.submit(func) for i in range(n)]
+    futures.wait(fs)
+    return [f.result() for f in fs]
+    # return [func() for i in range(n)]
 
 saver = UniqueNameSaver("../../temp/cga_exp")
 
@@ -136,7 +138,7 @@ def do_exp():
 
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 20)
+    res = repeat(do_exp, 18)
     print("RESULTS: ")
     print(res)
 

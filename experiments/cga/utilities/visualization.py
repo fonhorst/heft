@@ -116,7 +116,8 @@ def visualize(data, path_to_save=None):
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
-    path = "../../../temp/cga_exp_with_roulette/"
+    path = "../../../temp/cga_exp"
+    # path = "../../../temp/cga_exp_with_roulette/"
     # path = "../../../temp/cga_partial_experiments/"
 
     def generate_pathes(folder):

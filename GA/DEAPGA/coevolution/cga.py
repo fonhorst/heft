@@ -213,6 +213,8 @@ def create_cooperative_ga(**kwargs):
 
         ## generate initial population
         pops = {s: generate_k(s.initialize(kwargs, s.pop_size)) for s in SPECIES if not s.fixed}
+        ## make a copy for logging. TODO: remake it with logbook later.
+        initial_pops = {s.name: deepcopy(pop) for s, pop in pops.items()}
 
         ## checking correctness
         for s, pop in pops.items():
@@ -321,7 +323,7 @@ def create_cooperative_ga(**kwargs):
                     del ind.id
             pass
             print("Offsprings have been generated")
-        return best, pops, logbook
+        return best, pops, logbook, initial_pops
     return func
 
 def run_cooperative_ga(**kwargs):
