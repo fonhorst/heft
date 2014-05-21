@@ -22,6 +22,18 @@ def load_data(path):
         result = json.load(f)
     return result
 
+def generate_pathes(folder):
+    pathes = []
+    for entry in os.listdir(folder):
+        p = os.path.join(folder, entry)
+        # p = folder + ("" if folder.endswith('/') else "/") + entry
+        if os.path.isdir(p):
+            pths = generate_pathes(p)
+            pathes.extend(pths)
+        elif entry.endswith(".json"):
+            pathes.append(p)
+    return pathes
+
 
 class ComparableMixin(object):
     def _compare(self, other, method):
@@ -49,5 +61,7 @@ class ComparableMixin(object):
 
     def __ne__(self, other):
         return self._compare(other, lambda s, o: s != o)
+
+
 
 

@@ -10,7 +10,7 @@ from experiments.cga.utilities.common import UniqueNameSaver
 
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
-estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
+estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=10)
 selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
 ## TODO: remove this hack later
 # class Fitness(ComparableMixin):
@@ -43,7 +43,7 @@ def extract_mapping_from_file(path, wf, estimator, rm):
     ind = [(item.job.id, node.name) for node, items in schedule.mapping.items() for item in items]
     return ind
 
-ms_representative = extract_mapping_from_file("../../temp/cga_exp_example/97c9a4e7-817b-4059-9005-03dc89d32276.json",
+ms_representative = extract_mapping_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
                                               _wf, estimator, rm)
 
 config = {
@@ -74,7 +74,7 @@ def do_exp():
     return do_experiment(saver, config, _wf, rm, estimator)
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 20)
+    res = repeat(do_exp, 30)
     print("RESULTS: ")
     print(res)
 

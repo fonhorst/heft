@@ -1,6 +1,6 @@
 import os
 from matplotlib.patches import Rectangle
-from experiments.cga.utilities.common import load_data
+from experiments.cga.utilities.common import load_data, generate_pathes
 import matplotlib.pyplot as plt
 
 # points = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 200, 299]
@@ -117,21 +117,12 @@ def visualize(data, path_to_save=None):
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
-    path = "../../../temp/cga_exp_200_50_transfer_10"
+    path = "../../../temp/cga_fixed_mapping/"
+    # path = "../../../temp/cga_exp_200interact_50popsize_transfer_10/"
     # path = "../../../temp/cga_exp_with_roulette/"
     # path = "../../../temp/cga_partial_experiments/"
 
-    def generate_pathes(folder):
-        pathes = []
-        for entry in os.listdir(folder):
-            p = os.path.join(folder, entry)
-            # p = folder + ("" if folder.endswith('/') else "/") + entry
-            if os.path.isdir(p):
-                pths = generate_pathes(p)
-                pathes.extend(pths)
-            elif entry.endswith(".json"):
-                pathes.append(p)
-        return pathes
+
 
     pathes = generate_pathes(path)
 
