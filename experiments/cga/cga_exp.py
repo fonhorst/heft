@@ -52,8 +52,14 @@ def to_seq(mapping):
 
 
 
+
 ms_ideal_ind = build_ms_ideal_ind(_wf, rm)
 os_ideal_ind = build_os_ideal_ind(_wf)
+
+def hamming_for_best_components(sols):
+    result = {s_name: hamming_distances([ind], ms_ideal_ind if s_name == MAPPING_SPECIE else os_ideal_ind)[0]
+              for s_name, ind in max(sols, key=lambda x: x.fitness).items()}
+    return result
 
 ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
@@ -69,6 +75,7 @@ config = {
                            select=selector,
                            initialize=mapping_default_initialize,
                            stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], to_seq(ms_ideal_ind))}
+
                     ),
                     Specie(name=ORDERING_SPECIE, pop_size=50,
                            cxb=0.8, mb=0.5,
@@ -79,7 +86,7 @@ config = {
                            stat=lambda pop: {"hamming_distances": hamming_distances(pop, os_ideal_ind)}
                     )
         ],
-
+        "solstat": lambda sols: {"best_components": hamming_for_best_components(sols)},
         "operators": {
             "choose": default_choose,
             "fitness": fitness_mapping_and_ordering,
@@ -128,7 +135,7 @@ def do_exp():
 
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 18)
+    res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)
 

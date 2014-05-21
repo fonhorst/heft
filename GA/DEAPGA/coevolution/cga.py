@@ -169,6 +169,8 @@ def create_cooperative_ga(**kwargs):
         INTERACT_INDIVIDUALS_COUNT = kwargs["interact_individuals_count"]
         GENERATIONS = kwargs["generations"]
 
+        solstat = kwargs.get("solstat", lambda sols: {})
+
         choose = kwargs["operators"]["choose"]
         fitness = kwargs["operators"]["fitness"]
         assign_credits = kwargs["operators"]["assign_credits"]
@@ -275,7 +277,7 @@ def create_cooperative_ga(**kwargs):
 
             #{s:distance.hamming() for s, pop in pops.items()}
 
-            solsstat_dict = stat.compile(solutions)
+            solsstat_dict = dict(list(stat.compile(solutions).items()) + list(solstat(solutions).items()))
             solsstat_dict["fitnesses"] = [sol.fitness for sol in solutions]
 
             popsstat_dict = {s.name: dict(list(stat.compile(pop).items()) + list(s.stat(pop).items())) for s, pop in pops.items()}

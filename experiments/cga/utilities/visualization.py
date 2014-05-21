@@ -56,11 +56,23 @@ def _draw_species_diversity(data):
     labels = []
     for s, vals in values.items():
         plt.plot([x[0] + shift for x in vals], [x[1] for x in vals], "{0}x".format(pcolors[s]))
+
         shift += 0.2
         plotted.append(Rectangle((0, 0), 1, 1, fc=pcolors[s]))
         labels.append(s)
 
     plt.legend(plotted, labels)
+
+
+    best_values = [(points.index(gen["gen"]), gen["solsstat"][0].get("best_components", {})) for gen in gens if gen["gen"] in points]
+    best_values = filter(lambda x: len(x[1]) == len(species), best_values)
+    best_values = {s: sorted([(n, bvals[s]) for n, bvals in best_values]) for s in species}
+
+    shift = 0.0
+    for s, vals in best_values.items():
+        plt.plot([x[0] + shift for x in vals], [x[1] for x in vals], "-mD")
+        shift += 0.2
+
     pass
 
 def _draw_solutions_diversity(data):
@@ -117,7 +129,9 @@ def visualize(data, path_to_save=None):
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
-    path = "../../../temp/cga_fixed_mapping/"
+    # path = "../../../temp/cga_exp/"
+    path = "../../../temp/cga_exp_200_50_tr_2/"
+    # path = "../../../temp/cga_fixed_mapping/"
     # path = "../../../temp/cga_exp_200interact_50popsize_transfer_10/"
     # path = "../../../temp/cga_exp_with_roulette/"
     # path = "../../../temp/cga_partial_experiments/"
