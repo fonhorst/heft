@@ -115,10 +115,10 @@ def do_experiment(saver, config, _wf, rm, estimator):
     return m
 
 def repeat(func, n):
-    # fs = [futures.submit(func) for i in range(n)]
-    # futures.wait(fs)
-    # return [f.result() for f in fs]
-    return [func() for i in range(n)]
+    fs = [futures.submit(func) for i in range(n)]
+    futures.wait(fs)
+    return [f.result() for f in fs]
+    # return [func() for i in range(n)]
 
 saver = UniqueNameSaver("../../temp/cga_exp")
 

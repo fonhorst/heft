@@ -21,6 +21,7 @@ class BaseRunner:
         wf_name = kwargs["wf_name"]
         nodes_conf = kwargs.get("nodes_conf", None)
         ideal_flops = kwargs.get("ideal_flops", 20)
+        transfer_time = kwargs.get("transfer_time", 100)
 
         dax1 = '../../resources/' + wf_name + '.xml'
         wf = Utility.readWorkflow(dax1, wf_name)
@@ -46,7 +47,7 @@ class BaseRunner:
             transferMx = rgen.generateTransferMatrix(resources)
             ##
 
-        estimator = ExperimentEstimator(transferMx, ideal_flops, dict())
+        estimator = ExperimentEstimator(transferMx, ideal_flops, dict(), transfer_time)
         resource_manager = ExperimentResourceManager(resources)
         return (wf, resource_manager, estimator)
 
@@ -68,11 +69,11 @@ class BaseRunner:
 
 
 class MixRunner(BaseRunner):
-    def __call__(self, wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEFAULT_GA_PARAMS, nodes_conf = None):
+    def __call__(self, wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEFAULT_GA_PARAMS, nodes_conf = None, transfer_time=100):
 
         print("Proccessing " + str(wf_name))
 
-        (wf, resource_manager, estimator) = self._construct_environment(wf_name=wf_name, nodes_conf=nodes_conf, ideal_flops=ideal_flops)
+        (wf, resource_manager, estimator) = self._construct_environment(wf_name=wf_name, nodes_conf=nodes_conf, ideal_flops=ideal_flops,transfer_time=transfer_time)
 
         alg_func = GAFactory.default().create_ga(silent=is_silent,
                                                  wf=wf,
@@ -136,6 +137,7 @@ class MixRunner(BaseRunner):
         # ga_schedule = _run_ga(heft_schedule)
         ga_schedule = _run_ga(None)
 
+        #print("Count of nodes: " + str(sum(1 if len(items) > 0 else 0 for n, items in ga_schedule.mapping.items())))
 
         print("===========================================")
         heft_makespan = Utility.makespan(heft_schedule)

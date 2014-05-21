@@ -46,7 +46,7 @@ def _draw_species_diversity(data):
 
 
     values = {s: [(points.index(gen["gen"]), v) for gen in gens if gen["gen"] in points
-                  for v in gen["popsstat"][0][s]["hamming_distances"]] for s in species}
+                  for v in gen["popsstat"][0][s].get("hamming_distances", [0.0])] for s in species}
 
 
     pcolors = {s: c for s, c in zip(species, colors)}
@@ -117,7 +117,7 @@ def visualize(data, path_to_save=None):
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
-    path = "../../../temp/cga_exp_example"
+    path = "../../../temp/cga_fixed_mapping"
     # path = "../../../temp/cga_exp_with_roulette/"
     # path = "../../../temp/cga_partial_experiments/"
 
