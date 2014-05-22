@@ -60,22 +60,23 @@ def bonus_assign_credits(ctx, solutions):
     result = {ind_id: float(all_fit) / float(count) for ind_id, (all_fit, count) in inds_credit.items()}
     return result
 
-# def bonus_assign_credits(ctx, solutions):
-#     mn = min(solutions, key=lambda x: x.fitness).fitness
-#     k = 0.1
-#
-#     # assign id for every elements in every population
-#     # create dictionary for all individuals in all pop
-#     inds_credit = dict()
-#     for sol in solutions:
-#         for s, ind in sol.items():
-#             values = inds_credit.get(ind.id, [0, 0])
-#             values[0] += float((sol.fitness - mn)*k + sol.fitness) / len(sol)
-#             values[1] += 1
-#             inds_credit[ind.id] = values
-#
-#     result = {ind_id: float(all_fit) / float(count) for ind_id, (all_fit, count) in inds_credit.items()}
-#     return result
+def bonus2_assign_credits(ctx, solutions):
+    mn = min(solutions, key=lambda x: x.fitness).fitness
+    mx = max(solutions, key=lambda x: x.fitness).fitness
+    k = 0.1
+
+    # assign id for every elements in every population
+    # create dictionary for all individuals in all pop
+    inds_credit = dict()
+    for sol in solutions:
+        for s, ind in sol.items():
+            values = inds_credit.get(ind.id, [0, 0])
+            values[0] += float(((sol.fitness - mn)/(mx - mn) + k) * sol.fitness) / len(sol)
+            values[1] += 1
+            inds_credit[ind.id] = values
+
+    result = {ind_id: float(all_fit) / float(count) for ind_id, (all_fit, count) in inds_credit.items()}
+    return result
 
 
 # def initialize_from_predefined(ctx, name, size):
