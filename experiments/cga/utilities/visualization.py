@@ -1,11 +1,13 @@
-import os
 import distance
 from matplotlib.patches import Rectangle
-from experiments.cga.utilities.common import load_data, generate_pathes
 import matplotlib.pyplot as plt
 
+from experiments.cga.utilities.common import load_data, generate_pathes
+
+
 # points = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 200, 299]
-points = [0, 1, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 120, 140, 150, 170, 190, 200, 220, 240, 250, 270, 290, 299, 350, 400, 450, 499]
+# points = [0, 1, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 120, 140, 150, 170, 190, 200, 220, 240, 250, 270, 290, 299, 350, 400, 450, 499]
+points = [0, 1, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 120, 140, 150, 170, 190, 200, 220, 240, 250, 270, 290, 299, 350, 400, 450, 499, 600, 700, 800, 900, 999]
 
 
 def _draw_best_solution_evolution(data):
@@ -18,6 +20,7 @@ def _draw_best_solution_evolution(data):
     ax.set_xticklabels(points)
     ax.set_title("Evolution of best")
     ax.set_ylabel("makespan")
+    plt.setp(plt.xticks()[1], rotation=30, ha='right')
 
 
     gens = sorted(data["iterations"], key=lambda x: x["gen"])
@@ -38,6 +41,7 @@ def _draw_species_diversity(data):
     ax.set_xticklabels(points)
     ax.set_title("Diversity of species")
     ax.set_ylabel("normalized distance")
+    plt.setp(plt.xticks()[1], rotation=30, ha='right')
 
 
     species = sorted(data["metainfo"]["species"])
@@ -87,6 +91,7 @@ def _draw_solutions_diversity(data):
     ax.set_xticklabels(points)
     ax.set_title("Diversity of solutions")
     ax.set_ylabel("makespan")
+    plt.setp(plt.xticks()[1], rotation=30, ha='right')
 
 
     gens = sorted(data["iterations"], key=lambda x: x["gen"])
@@ -109,6 +114,7 @@ def _draw_uniques_inds_count(data):
     ax.set_xticklabels(points)
     ax.set_title("Count of uniques individuals in populations")
     ax.set_ylabel("count")
+    plt.setp(plt.xticks()[1], rotation=30, ha='right')
 
     species = sorted(data["metainfo"]["species"])
     pcolors = {s: c for s, c in zip(species, colors)}
@@ -140,6 +146,7 @@ def _draw_diff_between_bests(data):
     ax.set_xticklabels(points)
     ax.set_title("Difference between best individuals in pops")
     ax.set_ylabel("distance")
+    plt.setp(plt.xticks()[1], rotation=30, ha='right')
 
     species = sorted(data["metainfo"]["species"])
     pcolors = {s: c for s, c in zip(species, colors)}
@@ -193,6 +200,11 @@ def visualize(data, path_to_save=None):
     sp = plt.subplot(5, 1, 5)
     _draw_diff_between_bests(data)
 
+    # it is useful feature, but not for case of multiple subplots
+    #plt.gcf().autofmt_xdate()
+
+    plt.tight_layout()
+
     if path_to_save is None:
         plt.show()
     else:
@@ -208,6 +220,7 @@ if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
     path = "../../../temp/cga_exp/"
+    # path = "D:/FTP/cga_exp_1000_50pop_20_10/"
     # path = "../../../temp/cga_exp_200_50_torn2_transf10_ideal20/"
     # path = "../../../temp/cga_fixed_mapping/"
     # path = "../../../temp/cga_exp_200interact_50popsize_transfer_10/"

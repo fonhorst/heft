@@ -15,7 +15,7 @@ from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=10)
-selector = lambda env, pop: tools.selTournament(pop, len(pop), 4)
+selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
 ## TODO: remove this hack later
 # class Fitness(ComparableMixin):
 #     def __init__(self, fitness):
@@ -77,7 +77,7 @@ ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
 config = {
         "interact_individuals_count": 200,
-        "generations": 300,
+        "generations": 3,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.8, mb=0.5,
