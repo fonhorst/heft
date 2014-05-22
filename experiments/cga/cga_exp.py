@@ -61,6 +61,11 @@ def hamming_for_best_components(sols):
               for s_name, ind in max(sols, key=lambda x: x.fitness).items()}
     return result
 
+def unique_individuals(pop):
+    unique_hashes = set(hash(tuple(p)) for p in pop)
+    return len(unique_hashes)
+
+
 ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
 
@@ -74,7 +79,8 @@ config = {
                            mutate=mapping_default_mutate,
                            select=selector,
                            initialize=mapping_default_initialize,
-                           stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], to_seq(ms_ideal_ind))}
+                           stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], to_seq(ms_ideal_ind)),
+                                             "unique_inds_count": unique_individuals(pop)}
 
                     ),
                     Specie(name=ORDERING_SPECIE, pop_size=50,
@@ -83,7 +89,8 @@ config = {
                            mutate=ordering_default_mutate,
                            select=selector,
                            initialize=ordering_default_initialize,
-                           stat=lambda pop: {"hamming_distances": hamming_distances(pop, os_ideal_ind)}
+                           stat=lambda pop: {"hamming_distances": hamming_distances(pop, os_ideal_ind),
+                                             "unique_inds_count": unique_individuals(pop)}
                     )
         ],
         "solstat": lambda sols: {"best_components": hamming_for_best_components(sols)},

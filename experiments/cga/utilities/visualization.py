@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 # points = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 200, 299]
 points = [0, 1, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 120, 140, 150, 170, 190, 200, 220, 240, 250, 270, 290, 299, 350, 400, 450, 499]
 
+
 def _draw_best_solution_evolution(data):
     ## TODO: remake it with acquaring figure and subplot from the function arguments
     plt.grid(True)
@@ -95,6 +96,37 @@ def _draw_solutions_diversity(data):
     plt.plot([x[0] for x in values], [x[1] for x in values], 'gx')
     pass
 
+def _draw_uniques_inds_count(data):
+    ## TODO: remake it with acquaring figure and subplot from the function arguments
+    colors = ['r', 'g', 'b']
+
+    plt.grid(True)
+    ax = plt.gca()
+    ax.set_xlim(0, len(points))
+    ax.set_xscale('linear')
+    plt.xticks(range(0, len(points)))
+    ax.set_xticklabels(points)
+    ax.set_title("Count of uniques individuals in populations")
+    ax.set_ylabel("count")
+
+    species = sorted(data["metainfo"]["species"])
+    pcolors = {s: c for s, c in zip(species, colors)}
+
+    gens = sorted(data["iterations"], key=lambda x: x["gen"])
+    values = {s: [(points.index(gen["gen"]), gen["popsstat"][0][s].get("unique_inds_count", -1))
+                  for gen in gens if gen["gen"] in points]
+              for s in species}
+
+    plotted = []
+    labels = []
+    for s, vals in values.items():
+        plt.plot([x[0] for x in vals], [x[1] for x in vals], "-{0}x".format(pcolors[s]))
+        plotted.append(Rectangle((0, 0), 1, 1, fc=pcolors[s]))
+        labels.append(s)
+
+    plt.legend(plotted, labels)
+    pass
+
 
 
 
@@ -103,17 +135,20 @@ def visualize(data, path_to_save=None):
 
 
     ## create diversity plot for species
-    sp = plt.subplot(3, 1, 1)
+    sp = plt.subplot(4, 1, 1)
     _draw_best_solution_evolution(data)
 
 
     ## create solutions diversity plot
-    sp = plt.subplot(3, 1, 2)
+    sp = plt.subplot(4, 1, 2)
     _draw_species_diversity(data)
 
     ## create best solution evolution
-    sp = plt.subplot(3, 1, 3)
+    sp = plt.subplot(4, 1, 3)
     _draw_solutions_diversity(data)
+
+    sp = plt.subplot(4, 1, 4)
+    _draw_uniques_inds_count(data)
 
     if path_to_save is None:
         plt.show()
