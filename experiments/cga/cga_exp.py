@@ -77,7 +77,7 @@ ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
 config = {
         "interact_individuals_count": 200,
-        "generations": 3,
+        "generations": 300,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.8, mb=0.5,
