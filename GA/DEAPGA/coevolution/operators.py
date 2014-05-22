@@ -71,7 +71,8 @@ def bonus2_assign_credits(ctx, solutions):
     for sol in solutions:
         for s, ind in sol.items():
             values = inds_credit.get(ind.id, [0, 0])
-            values[0] += float(((sol.fitness - mn)/(mx - mn) + k) * sol.fitness) / len(sol)
+            # values[0] += float((pow((sol.fitness - mn)/(mx - mn), 2) + k) * sol.fitness) / len(sol)
+            values[0] += 0.1 * sol.fitness / len(sol)
             values[1] += 1
             inds_credit[ind.id] = values
 

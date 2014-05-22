@@ -15,29 +15,29 @@ from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=10)
-selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
+# selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
 ## TODO: remove this hack later
-# class Fitness(ComparableMixin):
-#     def __init__(self, fitness):
-#         self.values = [fitness]
-#
-#     def _cmpkey(self):
-#         return self.values[0]
-#
-#
-# ## TODO: remake this stub later
-# def roulette(env, pop):
-#
-#     for p in pop:
-#         p.fitness = Fitness((1/-1*p.fitness)*100)
-#
-#     result = tools.selRoulette(pop, len(pop))
-#
-#     for p in pop:
-#         p.fitness = (1/(p.fitness.values[0]/100)*-1)
-#     return result
-#
-# selector = roulette
+class Fitness(ComparableMixin):
+    def __init__(self, fitness):
+        self.values = [fitness]
+
+    def _cmpkey(self):
+        return self.values[0]
+
+
+## TODO: remake this stub later
+def roulette(env, pop):
+
+    for p in pop:
+        p.fitness = Fitness((1/-1*p.fitness)*100)
+
+    result = tools.selRoulette(pop, len(pop))
+
+    for p in pop:
+        p.fitness = (1/(p.fitness.values[0]/100)*-1)
+    return result
+
+selector = roulette
 
 @rounddeciter
 def hamming_distances(pop, ideal_ind):
@@ -104,8 +104,8 @@ config = {
         "operators": {
             "choose": default_choose,
             "fitness": fitness_mapping_and_ordering,
-            # "assign_credits": default_assign_credits
-            "assign_credits": bonus2_assign_credits
+            "assign_credits": default_assign_credits
+            # "assign_credits": bonus2_assign_credits
         }
     }
 

@@ -219,7 +219,8 @@ def visualize(data, path_to_save=None):
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
-    path = "../../../temp/cga_exp/"
+    # path = "../../../temp/cga_exp/"
+    path = "../../../temp/cga_fixed_ordering/"
     # path = "D:/FTP/cga_exp_1000_50pop_20_10/"
     # path = "../../../temp/cga_exp_200_50_torn2_transf10_ideal20/"
     # path = "../../../temp/cga_fixed_mapping/"
