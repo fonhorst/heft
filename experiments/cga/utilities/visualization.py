@@ -1,4 +1,5 @@
 import os
+import distance
 from matplotlib.patches import Rectangle
 from experiments.cga.utilities.common import load_data, generate_pathes
 import matplotlib.pyplot as plt
@@ -127,6 +128,46 @@ def _draw_uniques_inds_count(data):
     plt.legend(plotted, labels)
     pass
 
+def _draw_diff_between_bests(data):
+    ## TODO: remake it with acquaring figure and subplot from the function arguments
+    colors = ['r', 'g', 'b']
+
+    plt.grid(True)
+    ax = plt.gca()
+    ax.set_xlim(0, len(points))
+    ax.set_xscale('linear')
+    plt.xticks(range(0, len(points)))
+    ax.set_xticklabels(points)
+    ax.set_title("Difference between best individuals in pops")
+    ax.set_ylabel("distance")
+
+    species = sorted(data["metainfo"]["species"])
+    pcolors = {s: c for s, c in zip(species, colors)}
+
+    gens = sorted(data["iterations"], key=lambda x: x["gen"])
+
+    best_values = [(points.index(gen["gen"]), gen["solsstat"][0].get("best_components_itself", {})) for gen in gens if gen["gen"] in points]
+    best_values = list(filter(lambda x: len(x[1]) == len(species), best_values))
+
+    diffs = {s: [] for s in species}
+    if len(best_values) > 0:
+        for s in species:
+            previous = best_values[0][1][s]
+            for n, bvals in best_values:
+                d = distance.hamming(bvals[s], previous, normalized=True)
+                previous = bvals[s]
+                diffs[s].append((n, d))
+
+    plotted = []
+    labels = []
+    for s, vals in diffs.items():
+        plt.plot([x[0] for x in vals], [x[1] for x in vals], "-{0}x".format(pcolors[s]))
+        plotted.append(Rectangle((0, 0), 1, 1, fc=pcolors[s]))
+        labels.append(s)
+
+    plt.legend(plotted, labels)
+    pass
+
 
 
 
@@ -135,20 +176,22 @@ def visualize(data, path_to_save=None):
 
 
     ## create diversity plot for species
-    sp = plt.subplot(4, 1, 1)
+    sp = plt.subplot(5, 1, 1)
     _draw_best_solution_evolution(data)
 
-
     ## create solutions diversity plot
-    sp = plt.subplot(4, 1, 2)
+    sp = plt.subplot(5, 1, 2)
     _draw_species_diversity(data)
 
     ## create best solution evolution
-    sp = plt.subplot(4, 1, 3)
+    sp = plt.subplot(5, 1, 3)
     _draw_solutions_diversity(data)
 
-    sp = plt.subplot(4, 1, 4)
+    sp = plt.subplot(5, 1, 4)
     _draw_uniques_inds_count(data)
+
+    sp = plt.subplot(5, 1, 5)
+    _draw_diff_between_bests(data)
 
     if path_to_save is None:
         plt.show()

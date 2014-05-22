@@ -1,3 +1,4 @@
+from copy import deepcopy
 from functools import partial
 from deap import tools
 import distance
@@ -13,7 +14,7 @@ from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
 
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
-estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
+estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=10)
 selector = lambda env, pop: tools.selTournament(pop, len(pop), 4)
 ## TODO: remove this hack later
 # class Fitness(ComparableMixin):
@@ -65,6 +66,11 @@ def unique_individuals(pop):
     unique_hashes = set(hash(tuple(p)) for p in pop)
     return len(unique_hashes)
 
+def best_components_itself(sols):
+    result = {s_name: deepcopy(ind)
+              for s_name, ind in max(sols, key=lambda x: x.fitness).items()}
+    return result
+
 
 ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
@@ -93,7 +99,8 @@ config = {
                                              "unique_inds_count": unique_individuals(pop)}
                     )
         ],
-        "solstat": lambda sols: {"best_components": hamming_for_best_components(sols)},
+        "solstat": lambda sols: {"best_components": hamming_for_best_components(sols),
+                                 "best_components_itself": best_components_itself(sols)},
         "operators": {
             "choose": default_choose,
             "fitness": fitness_mapping_and_ordering,
