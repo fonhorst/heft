@@ -83,16 +83,20 @@ def pcm(pop):
     ## loglp(x) = ln(1 + x)
     sm = lambda arr: sum(math.log1p(math.fabs(p1 - p2)) for p1, p2 in zip(arr[1:len(arr) - 1], arr[2:]))
     numerator = sm(sorted([p.fitness for p in pop]))
-    uniform_dist = math.fabs(mx - mn)/len(pop) - 1
 
-    i = mn
-    arr = []
-    while i <= mx:
-        arr.append(i)
-        i += uniform_dist
+    if mx != mn:
+        uniform_dist = math.fabs(mx - mn)/(len(pop) - 1)
 
-    vmd = sm(arr)
-    measure = 1 - numerator/vmd
+        i = mn
+        arr = []
+        while i <= mx:
+            arr.append(i)
+            i += uniform_dist
+
+        vmd = sm(arr)
+        measure = 1 - numerator/vmd
+    else:
+        measure = 1
     return measure
 
 ## genotype diversity measure
@@ -119,8 +123,8 @@ config = {
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.8, mb=0.5,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
-                           # mutate=mapping_default_mutate,
-                           mutate=MappingArchiveMutate(),
+                           mutate=mapping_default_mutate,
+                           # mutate=MappingArchiveMutate(),
                            select=selector,
                            initialize=mapping_default_initialize,
                            stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], to_seq(ms_ideal_ind)),
@@ -193,7 +197,7 @@ def do_exp():
 
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 20)
+    res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)
 
