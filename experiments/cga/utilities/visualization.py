@@ -102,8 +102,8 @@ def _draw_solutions_diversity(data):
     plt.plot([x[0] for x in values], [x[1] for x in values], 'gx')
     pass
 
-def _draw_uniques_inds_count(data):
-    ## TODO: remake it with acquaring figure and subplot from the function arguments
+def _draw_popsstat_component(data, name, title, ylabel, default_value=-1):
+     ## TODO: remake it with acquaring figure and subplot from the function arguments
     colors = ['r', 'g', 'b']
 
     plt.grid(True)
@@ -112,15 +112,15 @@ def _draw_uniques_inds_count(data):
     ax.set_xscale('linear')
     plt.xticks(range(0, len(points)))
     ax.set_xticklabels(points)
-    ax.set_title("Count of uniques individuals in populations")
-    ax.set_ylabel("count")
+    ax.set_title(title)
+    ax.set_ylabel(ylabel)
     plt.setp(plt.xticks()[1], rotation=30, ha='right')
 
     species = sorted(data["metainfo"]["species"])
     pcolors = {s: c for s, c in zip(species, colors)}
 
     gens = sorted(data["iterations"], key=lambda x: x["gen"])
-    values = {s: [(points.index(gen["gen"]), gen["popsstat"][0][s].get("unique_inds_count", -1))
+    values = {s: [(points.index(gen["gen"]), gen["popsstat"][0][s].get(name, default_value))
                   for gen in gens if gen["gen"] in points]
               for s in species}
 
@@ -133,6 +133,11 @@ def _draw_uniques_inds_count(data):
 
     plt.legend(plotted, labels)
     pass
+
+def _draw_uniques_inds_count(data):
+    _draw_popsstat_component(data, "unique_inds_count",
+                             "Count of uniques individuals in populations", "count")
+
 
 def _draw_diff_between_bests(data):
     ## TODO: remake it with acquaring figure and subplot from the function arguments
@@ -175,33 +180,35 @@ def _draw_diff_between_bests(data):
     plt.legend(plotted, labels)
     pass
 
+def _draw_pcm(data):
+    _draw_popsstat_component(data, "pcm", "Phenotype convergence measure", "measure")
+    pass
 
+def _draw_gdm(data):
+    _draw_popsstat_component(data, "gdm", "Genotype diversity measure", "measure")
+    pass
 
 
 def visualize(data, path_to_save=None):
     plt.figure(figsize=(10, 10))
 
+    # functions = [_draw_best_solution_evolution,
+    #              _draw_species_diversity,
+    #              _draw_solutions_diversity,
+    #              _draw_uniques_inds_count,
+    #              _draw_diff_between_bests]
+    functions = [_draw_best_solution_evolution,
+                 _draw_solutions_diversity,
+                 _draw_uniques_inds_count,
+                 _draw_diff_between_bests,
+                 _draw_pcm,
+                 _draw_gdm]
 
-    ## create diversity plot for species
-    sp = plt.subplot(5, 1, 1)
-    _draw_best_solution_evolution(data)
 
-    ## create solutions diversity plot
-    sp = plt.subplot(5, 1, 2)
-    _draw_species_diversity(data)
 
-    ## create best solution evolution
-    sp = plt.subplot(5, 1, 3)
-    _draw_solutions_diversity(data)
-
-    sp = plt.subplot(5, 1, 4)
-    _draw_uniques_inds_count(data)
-
-    sp = plt.subplot(5, 1, 5)
-    _draw_diff_between_bests(data)
-
-    # it is useful feature, but not for case of multiple subplots
-    #plt.gcf().autofmt_xdate()
+    for i in range(len(functions)):
+        plt.subplot(len(functions), 1, i + 1)
+        functions[i](data)
 
     plt.tight_layout()
 
@@ -219,8 +226,9 @@ def visualize(data, path_to_save=None):
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
-    # path = "../../../temp/cga_exp/"
-    path = "../../../temp/cga_fixed_ordering/"
+    path = "../../../temp/cga_exp/"
+    # path = "D:/FTP/cga_exp_archivedmutation"
+    # path = "../../../temp/cga_fixed_ordering/"
     # path = "D:/FTP/cga_exp_1000_50pop_20_10/"
     # path = "../../../temp/cga_exp_200_50_torn2_transf10_ideal20/"
     # path = "../../../temp/cga_fixed_mapping/"

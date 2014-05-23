@@ -2,9 +2,10 @@ from copy import deepcopy
 from functools import partial
 from deap import tools
 import distance
+import math
 from scoop import futures
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits, bonus_assign_credits, bonus2_assign_credits, MappingArchiveMutate
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits, bonus_assign_credits, bonus2_assign_credits, MappingArchiveMutate, max_assign_credits
 from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
@@ -14,30 +15,30 @@ from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
 
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
-estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=10)
-# selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
+estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
+selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
 ## TODO: remove this hack later
-class Fitness(ComparableMixin):
-    def __init__(self, fitness):
-        self.values = [fitness]
-
-    def _cmpkey(self):
-        return self.values[0]
-
-
-## TODO: remake this stub later
-def roulette(env, pop):
-
-    for p in pop:
-        p.fitness = Fitness((1/-1*p.fitness)*100)
-
-    result = tools.selRoulette(pop, len(pop))
-
-    for p in pop:
-        p.fitness = (1/(p.fitness.values[0]/100)*-1)
-    return result
-
-selector = roulette
+# class Fitness(ComparableMixin):
+#     def __init__(self, fitness):
+#         self.values = [fitness]
+#
+#     def _cmpkey(self):
+#         return self.values[0]
+#
+#
+# ## TODO: remake this stub later
+# def roulette(env, pop):
+#
+#     for p in pop:
+#         p.fitness = Fitness((1/-1*p.fitness)*100)
+#
+#     result = tools.selRoulette(pop, len(pop))
+#
+#     for p in pop:
+#         p.fitness = (1/(p.fitness.values[0]/100)*-1)
+#     return result
+#
+# selector = roulette
 
 @rounddeciter
 def hamming_distances(pop, ideal_ind):
@@ -71,6 +72,42 @@ def best_components_itself(sols):
               for s_name, ind in max(sols, key=lambda x: x.fitness).items()}
     return result
 
+## measure of phenotype convergence
+## as it is normalized, pdm = 1 - pcm
+## pdm == phenotype diversity measure
+## it means pcm == 1 - we are in a local minimum
+def pcm(pop):
+    mx = max(pop, key=lambda x: x.fitness).fitness
+    mn = min(pop, key=lambda x: x.fitness).fitness
+
+    ## loglp(x) = ln(1 + x)
+    sm = lambda arr: sum(math.log1p(math.fabs(p1 - p2)) for p1, p2 in zip(arr[1:len(arr) - 1], arr[2:]))
+    numerator = sm(sorted([p.fitness for p in pop]))
+    uniform_dist = math.fabs(mx - mn)/len(pop) - 1
+
+    i = mn
+    arr = []
+    while i <= mx:
+        arr.append(i)
+        i += uniform_dist
+
+    vmd = sm(arr)
+    measure = 1 - numerator/vmd
+    return measure
+
+## genotype diversity measure
+## 0 - divesity absence,
+## 1 - great diversity
+def gdm(pop):
+    s1 = 0
+    for i in range(len(pop) - 1):
+        s2 = 0
+        for j in range(i + 1, len(pop)):
+            s2 += distance.hamming(pop[i], pop[j], normalized=True)
+        s1 += (s2/(len(pop) - i))
+    measure = s1 / len(pop)
+    return measure
+
 
 ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
@@ -87,7 +124,9 @@ config = {
                            select=selector,
                            initialize=mapping_default_initialize,
                            stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], to_seq(ms_ideal_ind)),
-                                             "unique_inds_count": unique_individuals(pop)}
+                                             "unique_inds_count": unique_individuals(pop),
+                                             "pcm": pcm(pop),
+                                             "gdm": gdm(pop)}
 
                     ),
                     Specie(name=ORDERING_SPECIE, pop_size=50,
@@ -97,7 +136,9 @@ config = {
                            select=selector,
                            initialize=ordering_default_initialize,
                            stat=lambda pop: {"hamming_distances": hamming_distances(pop, os_ideal_ind),
-                                             "unique_inds_count": unique_individuals(pop)}
+                                             "unique_inds_count": unique_individuals(pop),
+                                             "pcm": pcm(pop),
+                                             "gdm": gdm(pop)}
                     )
         ],
         "solstat": lambda sols: {"best_components": hamming_for_best_components(sols),
@@ -105,8 +146,9 @@ config = {
         "operators": {
             "choose": default_choose,
             "fitness": fitness_mapping_and_ordering,
-            "assign_credits": default_assign_credits
+            # "assign_credits": default_assign_credits
             # "assign_credits": bonus2_assign_credits
+            "assign_credits": max_assign_credits
         }
     }
 
@@ -151,7 +193,7 @@ def do_exp():
 
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 1)
+    res = repeat(do_exp, 20)
     print("RESULTS: ")
     print(res)
 

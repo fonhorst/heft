@@ -201,14 +201,15 @@ class MappingArchiveMutate:
         pass
 
     def __call__(self, ctx, mutant):
+        #for i in range(50):
         while True:
-            mt = deepcopy(mutant)
-            mapping_default_mutate(ctx, mt)
-            h = hash(tuple(mt))
+            # mt = deepcopy(mutant)
+            mapping_default_mutate(ctx, mutant)
+            h = hash(tuple(mutant))
             if h not in self._archive:
                 self._archive.add(h)
-                for i in range(len(mutant)):
-                    mutant[i] = mt[i]
+                # for i in range(len(mutant)):
+                #     mutant[i] = mt[i]
                 break
         pass
     pass
