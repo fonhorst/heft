@@ -8,6 +8,12 @@ def aggr_ga():
         data = json.load(f)
     print("Result: " + str(sum(data["results"])/len(data["results"])))
 
+def aggr_ga_from_array():
+    path = "../../../temp/ga_res_200popsize.txt"
+    with open(path, "r") as f:
+        data = json.load(f)
+    print("Result: " + str(sum(data)/len(data)))
+
 def aggr_cga():
     path = "../../../temp/cga_exp_200interact_50popsize_transfer_10/"
     pathes = generate_pathes(path)
@@ -20,4 +26,6 @@ def aggr_cga():
 
 
 if __name__ == "__main__":
-    aggr_cga()
+    # aggr_cga()
+    # aggr_ga()
+    aggr_ga_from_array()

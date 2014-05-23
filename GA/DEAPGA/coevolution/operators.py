@@ -194,6 +194,27 @@ def mapping_default_mutate(ctx, mutant):
     mutant[k] = (t, nodes[random.randint(0, len(names) - 1)].name)
     pass
 
+
+class MappingArchiveMutate:
+    def __init__(self):
+        self._archive = set()
+        pass
+
+    def __call__(self, ctx, mutant):
+        while True:
+            mt = deepcopy(mutant)
+            mapping_default_mutate(ctx, mt)
+            h = hash(tuple(mt))
+            if h not in self._archive:
+                self._archive.add(h)
+                for i in range(len(mutant)):
+                    mutant[i] = mt[i]
+                break
+        pass
+    pass
+
+
+
 ##===================================
 ## Ordering specie
 ##==================================

@@ -4,7 +4,7 @@ from deap import tools
 import distance
 from scoop import futures
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits, bonus_assign_credits, bonus2_assign_credits
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits, bonus_assign_credits, bonus2_assign_credits, MappingArchiveMutate
 from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
@@ -82,7 +82,8 @@ config = {
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.8, mb=0.5,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
-                           mutate=mapping_default_mutate,
+                           # mutate=mapping_default_mutate,
+                           mutate=MappingArchiveMutate(),
                            select=selector,
                            initialize=mapping_default_initialize,
                            stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], to_seq(ms_ideal_ind)),
