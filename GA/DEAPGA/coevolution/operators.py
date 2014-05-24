@@ -92,6 +92,18 @@ def max_assign_credits(ctx, solutions):
     result = {ind_id: max(all_fits) for ind_id, all_fits in inds_credit.items()}
     return result
 
+def assign_from_transfer_overhead(ctx, solutions):
+    inds_credit = dict()
+    for sol in solutions:
+
+        for s, ind in sol.items():
+            values = inds_credit.get(ind.id, [])
+            values.append(sol.fitness)
+            inds_credit[ind.id] = values
+
+    result = {ind_id: max(all_fits) for ind_id, all_fits in inds_credit.items()}
+    return result
+
 
 # def initialize_from_predefined(ctx, name, size):
 #     pop = ctx[name]
@@ -150,6 +162,18 @@ def fitness_mapping_and_ordering(ctx,
     result = Utility.makespan(schedule)
     #result = ExecutorRunner.extract_result(schedule, True, workflow)
     return -result
+
+# def overhead_fitness_mapping_and_ordering(ctx,
+#                                  solution):
+#     env = ctx['env']
+#     schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
+#
+#     for  in schedule.mapping.items():
+#
+#     result = Utility.makespan(schedule)
+#     #result = ExecutorRunner.extract_result(schedule, True, workflow)
+#     return -result
+
 
 
 ## TODO: very simple version, As a ResourceConfig specie It will have to be extended to apply deeper analysis of situations
@@ -214,6 +238,15 @@ def mapping_k_mutate(ctx, k, mutant):
         mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
     pass
 
+def mapping_all_mutate(ctx, mutant):
+    env = ctx['env']
+    nodes = list(env.rm.get_nodes())
+    for i in range(len(mutant)):
+        if random.random() < 1/len(mutant):
+            (t, n) = mutant[i]
+            names = [node.name for node in nodes if node.name != n]
+            mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
+    pass
 
 class MappingArchiveMutate:
     def __init__(self):

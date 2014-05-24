@@ -312,6 +312,7 @@ def create_cooperative_ga(**kwargs):
                         ## TODO: toolbox.inherit_credit(pop, child1, child2)
                         ## TODO: perhaps, this operation should be done after all crossovers in the pop
                         ## default implementation
+                        ## ?
                         child1.fitness = (c1 + c2) / 2.0
                         child2.fitness = (c1 + c2) / 2.0
                         pass
