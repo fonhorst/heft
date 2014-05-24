@@ -1,39 +1,40 @@
 import json
 from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie, ListBasedIndividual
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, default_assign_credits, build_schedule, mapping_default_mutate, mapping_default_initialize
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, default_assign_credits, build_schedule, mapping_default_mutate, mapping_default_initialize, mapping_k_mutate
+from GA.DEAPGA.coevolution.utilities import ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.ResourceGenerator import ResourceGenerator as rg
 from experiments.cga import wf
-from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself
-from experiments.cga.utilities.common import UniqueNameSaver
+from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm
+from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
 
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
-estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=10)
-selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
+estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
+# selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
 ## TODO: remove this hack later
-# class Fitness(ComparableMixin):
-#     def __init__(self, fitness):
-#         self.values = [fitness]
-#
-#     def _cmpkey(self):
-#         return self.values[0]
-#
-#
-# ## TODO: remake this stub later
-# def roulette(env, pop):
-#
-#     for p in pop:
-#         p.fitness = Fitness((1/-1*p.fitness)*100)
-#
-#     result = tools.selRoulette(pop, len(pop))
-#
-#     for p in pop:
-#         p.fitness = (1/(p.fitness.values[0]/100)*-1)
-#     return result
-#
-# selector = roulette
+class Fitness(ComparableMixin):
+    def __init__(self, fitness):
+        self.values = [fitness]
+
+    def _cmpkey(self):
+        return self.values[0]
+
+
+## TODO: remake this stub later
+def roulette(pop, l):
+
+    for p in pop:
+        p.fitness = Fitness((1/-1*p.fitness)*100)
+
+    result = tools.selRoulette(pop, l)
+
+    for p in pop:
+        p.fitness = (1/(p.fitness.values[0]/100)*-1)
+    return result
+
+selector = ArchivedSelector(5)(roulette)
 
 def extract_ordering_from_file(path, wf, estimator, rm):
     with open(path, 'r') as f:
@@ -53,10 +54,13 @@ config = {
                            cxb=0.8, mb=0.5,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            mutate=mapping_default_mutate,
+                           # mutate=lambda ctx, mutant: mapping_k_mutate(ctx, 5, mutant),
                            select=selector,
                            initialize=mapping_default_initialize,
                            stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], to_seq(ms_ideal_ind)),
-                                             "unique_inds_count": unique_individuals(pop)}
+                                             "unique_inds_count": unique_individuals(pop),
+                                             "pcm": pcm(pop),
+                                             "gdm": gdm(pop)}
 
                     ),
                     Specie(name=ORDERING_SPECIE, fixed=True,

@@ -194,6 +194,26 @@ def mapping_default_mutate(ctx, mutant):
     mutant[k] = (t, nodes[random.randint(0, len(names) - 1)].name)
     pass
 
+def mapping_k_mutate(ctx, k, mutant):
+    env = ctx['env']
+    nodes = list(env.rm.get_nodes())
+
+    count = random.randint(1, k)
+
+    genset = set()
+    for i in range(count):
+        for i in range(50):
+            m = random.randint(0, len(mutant) - 1)
+            if m not in genset:
+                genset.add(m)
+                break
+        pass
+    for i in genset:
+        (t, n) = mutant[i]
+        names = [node.name for node in nodes if node.name != n]
+        mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
+    pass
+
 
 class MappingArchiveMutate:
     def __init__(self):

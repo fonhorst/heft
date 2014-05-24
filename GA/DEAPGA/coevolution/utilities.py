@@ -1,4 +1,6 @@
 import json
+from deap import tools
+
 
 def build_ms_ideal_ind(wf, resource_manager):
     ## TODO: reconsider and make this procedure more stable
@@ -20,3 +22,17 @@ def build_os_ideal_ind(wf):
 #     for el in data["iterations"][0]:
 #         if el["gen"] == 0:
 
+class ArchivedSelector:
+    def __init__(self, size):
+        self._hallOfFame = tools.HallOfFame(size)
+        pass
+
+    def __call__(self, selector):
+        def wrapper(ctx, pop):
+            self._hallOfFame.update(pop)
+            new_pop = list(self._hallOfFame)
+            offspring = selector(pop, len(pop) - len(new_pop))
+            new_pop += offspring
+            return new_pop
+        return wrapper
+    pass
