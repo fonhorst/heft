@@ -38,7 +38,8 @@ def do_exp():
 def do_exp_heft_schedule():
     saver = UniqueNameSaver("../../temp/ga_vs_heft_exp_heft_schedule")
     ga_makespan, heft_makespan, ga_schedule, heft_schedule = run(wf_names[0])
-    data = [(item.job.id, node.name) for node, items in heft_schedule.mapping.items() for item in items]
+    ## TODO: pure hack
+    data = [(item.job.id, node.flops) for node, items in heft_schedule.mapping.items() for item in items]
     data = sorted(data, key=lambda x: x[0])
     saver(data)
     return ga_makespan

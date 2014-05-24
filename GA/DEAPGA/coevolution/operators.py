@@ -203,7 +203,7 @@ chromosome = [(task_id, node_name), ...]
 def mapping_default_initialize(ctx, size):
     env = ctx['env']
     nodes = list(env.rm.get_nodes())
-    tasks = list(env.wf.get_all_unique_tasks())
+    tasks = sorted(list(env.wf.get_all_unique_tasks()),key=lambda x: x.id)
     rnd = lambda: random.randint(0, len(nodes) - 1)
     result = [ListBasedIndividual((t.id, nodes[rnd()].name) for t in tasks)
               for i in range(size)]

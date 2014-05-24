@@ -14,7 +14,7 @@ import random
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
-# selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
+tourn = lambda pop, l: tools.selTournament(pop, l, 2)
 ## TODO: remove this hack later
 class Fitness(ComparableMixin):
     def __init__(self, fitness):
@@ -36,7 +36,8 @@ def roulette(pop, l):
         p.fitness = (1/(p.fitness.values[0]/100)*-1)
     return result
 
-selector = ArchivedSelector(5)(roulette)
+# selector = ArchivedSelector(5)(roulette)
+selector = ArchivedSelector(5)(tourn)
 
 def extract_ordering_from_file(path, wf, estimator, rm):
     with open(path, 'r') as f:
@@ -48,13 +49,16 @@ def extract_ordering_from_file(path, wf, estimator, rm):
 def extract_mapping_from_file(path):
     with open(path, 'r') as f:
         data = json.load(f)
-    mapping = ListBasedIndividual([(t, n) for t, n in data])
+    ## TODO: this is pure hack. It is needed to be refactored or removed
+    nodes = {node.flops: node.name for node in rm.get_nodes()}
+
+    mapping = ListBasedIndividual([(t, nodes[n]) for t, n in data])
     return mapping
 
 os_representative = extract_ordering_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
                                               _wf, estimator, rm)
 
-heft_mapping = extract_mapping_from_file("../../temp/heft_etalon.json")
+heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100.json")
 
 saver = UniqueNameSaver("../../temp/cga_fixed_ordering")
 
@@ -70,8 +74,8 @@ def do_exp():
                            # mutate=lambda ctx, mutant: mapping_k_mutate(ctx, 3, mutant)
                            mutate=mapping_all_mutate,
                            select=selector,
-                           initialize=mapping_default_initialize,
-                           # initialize=lambda ctx, pop: mapping_heft_based_initialize(ctx, pop, heft_mapping, 3),
+                           # initialize=mapping_default_initialize,
+                           initialize=lambda ctx, pop: mapping_heft_based_initialize(ctx, pop, heft_mapping, 3),
                            stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], to_seq(ms_ideal_ind)),
                                              "unique_inds_count": unique_individuals(pop),
                                              "pcm": pcm(pop),
