@@ -7,37 +7,15 @@ from core.concrete_realization import ExperimentResourceManager, ExperimentEstim
 from environment.ResourceGenerator import ResourceGenerator as rg
 from environment.Utility import Utility
 from experiments.cga import wf
-from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm
+from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn
 from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
 import random
 
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
-tourn = lambda pop, l: tools.selTournament(pop, l, 2)
-## TODO: remove this hack later
-class Fitness(ComparableMixin):
-    def __init__(self, fitness):
-        self.values = [fitness]
 
-    def _cmpkey(self):
-        return self.values[0]
-
-
-## TODO: remake this stub later
-def roulette(pop, l):
-
-    for p in pop:
-        p.fitness = Fitness((1/-1*p.fitness)*100)
-
-    result = tools.selRoulette(pop, l)
-
-    for p in pop:
-        p.fitness = (1/(p.fitness.values[0]/100)*-1)
-    return result
-
-# selector = ArchivedSelector(5)(roulette)
-selector = ArchivedSelector(5)(tourn)
+selector = tourn
 
 def extract_ordering_from_file(path, wf, estimator, rm):
     with open(path, 'r') as f:

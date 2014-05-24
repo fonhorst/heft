@@ -6,7 +6,7 @@ import math
 from scoop import futures
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter
 from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits, bonus_assign_credits, bonus2_assign_credits, MappingArchiveMutate, max_assign_credits, mapping_all_mutate
-from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind
+from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind, ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
 from environment.ResourceGenerator import ResourceGenerator as rg
@@ -16,29 +16,30 @@ from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
-selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
+tourn = lambda pop, l: tools.selTournament(pop, l, 2)
 ## TODO: remove this hack later
-# class Fitness(ComparableMixin):
-#     def __init__(self, fitness):
-#         self.values = [fitness]
-#
-#     def _cmpkey(self):
-#         return self.values[0]
-#
-#
-# ## TODO: remake this stub later
-# def roulette(env, pop):
-#
-#     for p in pop:
-#         p.fitness = Fitness((1/-1*p.fitness)*100)
-#
-#     result = tools.selRoulette(pop, len(pop))
-#
-#     for p in pop:
-#         p.fitness = (1/(p.fitness.values[0]/100)*-1)
-#     return result
-#
-# selector = roulette
+class Fitness(ComparableMixin):
+    def __init__(self, fitness):
+        self.values = [fitness]
+
+    def _cmpkey(self):
+        return self.values[0]
+
+
+## TODO: remake this stub later
+def roulette(pop, l):
+
+    for p in pop:
+        p.fitness = Fitness((1/-1*p.fitness)*100)
+
+    result = tools.selRoulette(pop, l)
+
+    for p in pop:
+        p.fitness = (1/(p.fitness.values[0]/100)*-1)
+    return result
+
+# selector = ArchivedSelector(5)(roulette)
+selector = ArchivedSelector(5)(tourn)
 
 @rounddeciter
 def hamming_distances(pop, ideal_ind):
@@ -186,10 +187,10 @@ def do_experiment(saver, config, _wf, rm, estimator):
     return m
 
 def repeat(func, n):
-    fs = [futures.submit(func) for i in range(n)]
-    futures.wait(fs)
-    return [f.result() for f in fs]
-    # return [func() for i in range(n)]
+    # fs = [futures.submit(func) for i in range(n)]
+    # futures.wait(fs)
+    # return [f.result() for f in fs]
+    return [func() for i in range(n)]
 
 saver = UniqueNameSaver("../../temp/cga_exp")
 
