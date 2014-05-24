@@ -23,7 +23,7 @@ PARAMS = {
         "generations": 3
     },
     "nodes_conf": [10, 15, 25, 30],
-    "transfer_time": 10
+    "transfer_time": 100
 }
 
 run = functools.partial(MixRunner(), **PARAMS)
@@ -31,34 +31,43 @@ directory = "../../temp/ga_vs_heft_exp"
 saver = UniqueNameSaver("../../temp/ga_vs_heft_exp")
 
 def do_exp():
-    ga_makespan, heft_makespan = run(wf_names[0])
+    ga_makespan, heft_makespan, ga_schedule, heft_schedule = run(wf_names[0])
     saver(ga_makespan)
+    return ga_makespan
+
+def do_exp_heft_schedule():
+    saver = UniqueNameSaver("../../temp/ga_vs_heft_exp_heft_schedule")
+    ga_makespan, heft_makespan, ga_schedule, heft_schedule = run(wf_names[0])
+    data = [(item.job.id, node.name) for node, items in heft_schedule.mapping.items() for item in items]
+    data = sorted(data, key=lambda x: x[0])
+    saver(data)
     return ga_makespan
 
 
 if __name__ == '__main__':
     print("Population size: " + str(PARAMS["ga_params"]["population"]))
 
-    repeat(do_exp, 1)
+    # repeat(do_exp, 1)
+    repeat(do_exp_heft_schedule, 1)
 
-    result = []
-    for entry in os.listdir(directory):
-        p = os.path.join(directory, entry)
-        if os.path.isfile(p):
-            with open(p, "r") as f:
-                a = float(f.read())
-                result.append(a)
-                pass
-            os.remove(p)
-        pass
-
-    dt = {
-        "metainfo": PARAMS,
-        "results": result
-    }
-
-    with open(os.path.join(directory, "all_results.json"), "w") as f:
-        json.dump(dt, f)
+    # result = []
+    # for entry in os.listdir(directory):
+    #     p = os.path.join(directory, entry)
+    #     if os.path.isfile(p):
+    #         with open(p, "r") as f:
+    #             a = float(f.read())
+    #             result.append(a)
+    #             pass
+    #         os.remove(p)
+    #     pass
+    #
+    # dt = {
+    #     "metainfo": PARAMS,
+    #     "results": result
+    # }
+    #
+    # with open(os.path.join(directory, "all_results.json"), "w") as f:
+    #     json.dump(dt, f)
 
 
 

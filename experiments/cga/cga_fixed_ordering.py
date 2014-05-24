@@ -1,7 +1,7 @@
 import json
 from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie, ListBasedIndividual
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, default_assign_credits, build_schedule, mapping_default_mutate, mapping_default_initialize, mapping_k_mutate, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, default_assign_credits, build_schedule, mapping_default_mutate, mapping_default_initialize, mapping_k_mutate, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead, mapping_heft_based_initialize
 from GA.DEAPGA.coevolution.utilities import ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.ResourceGenerator import ResourceGenerator as rg
@@ -45,8 +45,16 @@ def extract_ordering_from_file(path, wf, estimator, rm):
     ordering = solution[ORDERING_SPECIE]
     return ordering
 
+def extract_mapping_from_file(path):
+    with open(path, 'r') as f:
+        data = json.load(f)
+    mapping = ListBasedIndividual([(t, n) for t, n in data])
+    return mapping
+
 os_representative = extract_ordering_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
                                               _wf, estimator, rm)
+
+heft_mapping = extract_mapping_from_file("../../temp/heft_etalon.json")
 
 saver = UniqueNameSaver("../../temp/cga_fixed_ordering")
 
@@ -56,13 +64,14 @@ def do_exp():
         "generations": 300,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
-                           cxb=0.8, mb=0.5,
+                           cxb=0.9, mb=0.9,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            # mutate=mapping_default_mutate,
                            # mutate=lambda ctx, mutant: mapping_k_mutate(ctx, 3, mutant)
                            mutate=mapping_all_mutate,
                            select=selector,
                            initialize=mapping_default_initialize,
+                           # initialize=lambda ctx, pop: mapping_heft_based_initialize(ctx, pop, heft_mapping, 3),
                            stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], to_seq(ms_ideal_ind)),
                                              "unique_inds_count": unique_individuals(pop),
                                              "pcm": pcm(pop),
@@ -90,7 +99,7 @@ def do_exp():
     return do_experiment(saver, config, _wf, rm, estimator)
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 1)
+    res = repeat(do_exp, 5)
     print("RESULTS: ")
     print(res)
 

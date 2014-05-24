@@ -173,7 +173,7 @@ def overhead_fitness_mapping_and_ordering(ctx,
 
     #result = Utility.makespan(schedule)
     #result = ExecutorRunner.extract_result(schedule, True, workflow)
-    return -transfer_overheads
+    return -(transfer_overheads + compute_overheads)
 
 
 
@@ -207,6 +207,11 @@ def mapping_default_initialize(ctx, size):
     rnd = lambda: random.randint(0, len(nodes) - 1)
     result = [ListBasedIndividual((t.id, nodes[rnd()].name) for t in tasks)
               for i in range(size)]
+    return result
+
+def mapping_heft_based_initialize(ctx, size, heft_mapping, count):
+    result = [deepcopy(heft_mapping) for i in range(count)]
+    result = result + mapping_default_initialize(ctx, size - count)
     return result
 
 
