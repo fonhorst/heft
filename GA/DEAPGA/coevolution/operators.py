@@ -93,15 +93,8 @@ def max_assign_credits(ctx, solutions):
     return result
 
 def assign_from_transfer_overhead(ctx, solutions):
-    inds_credit = dict()
-    for sol in solutions:
-
-        for s, ind in sol.items():
-            values = inds_credit.get(ind.id, [])
-            values.append(sol.fitness)
-            inds_credit[ind.id] = values
-
-    result = {ind_id: max(all_fits) for ind_id, all_fits in inds_credit.items()}
+    result = max_assign_credits(ctx, solutions)
+    result = {k: v if v != 0 else -1 for k, v in result.items()}
     return result
 
 
@@ -163,16 +156,24 @@ def fitness_mapping_and_ordering(ctx,
     #result = ExecutorRunner.extract_result(schedule, True, workflow)
     return -result
 
-# def overhead_fitness_mapping_and_ordering(ctx,
-#                                  solution):
-#     env = ctx['env']
-#     schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
-#
-#     for  in schedule.mapping.items():
-#
-#     result = Utility.makespan(schedule)
-#     #result = ExecutorRunner.extract_result(schedule, True, workflow)
-#     return -result
+def overhead_fitness_mapping_and_ordering(ctx,
+                                 solution):
+    env = ctx['env']
+    #schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
+
+    task_to_node = {t: n for t, n in solution[MAPPING_SPECIE]}
+    unique_tasks = env.wf.get_all_unique_tasks()
+    transfer_overheads = 0
+    for task in unique_tasks:
+        tnode = task_to_node[task.id]
+        ## TODO: this is hack. See parametres
+        transfer_overheads += sum([env.estimator.estimate_transfer_time(env.rm.byName(tnode), env.rm.byName(task_to_node[p.id]), task, p) for p in task.parents if p.id != env.wf.head_task.id])
+
+    compute_overheads = sum([env.estimator.estimate_runtime(task, env.rm.byName(task_to_node[task.id])) for task in unique_tasks])
+
+    #result = Utility.makespan(schedule)
+    #result = ExecutorRunner.extract_result(schedule, True, workflow)
+    return -transfer_overheads
 
 
 

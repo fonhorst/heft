@@ -1,10 +1,11 @@
 import json
 from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie, ListBasedIndividual
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, default_assign_credits, build_schedule, mapping_default_mutate, mapping_default_initialize, mapping_k_mutate, max_assign_credits, mapping_all_mutate
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, default_assign_credits, build_schedule, mapping_default_mutate, mapping_default_initialize, mapping_k_mutate, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead
 from GA.DEAPGA.coevolution.utilities import ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.ResourceGenerator import ResourceGenerator as rg
+from environment.Utility import Utility
 from experiments.cga import wf
 from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm
 from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
@@ -51,10 +52,10 @@ saver = UniqueNameSaver("../../temp/cga_fixed_ordering")
 
 def do_exp():
     config = {
-        "interact_individuals_count": 500,
-        "generations": 500,
+        "interact_individuals_count": 200,
+        "generations": 300,
         "env": Env(_wf, rm, estimator),
-        "species": [Specie(name=MAPPING_SPECIE, pop_size=500,
+        "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.8, mb=0.5,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            # mutate=mapping_default_mutate,
@@ -73,19 +74,23 @@ def do_exp():
         ],
 
         "solstat": lambda sols: {"best_components": hamming_for_best_components(sols),
-                                 "best_components_itself": best_components_itself(sols)},
+                                 "best_components_itself": best_components_itself(sols),
+                                 "best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))
+                                 },
 
         "operators": {
             "choose": default_choose,
-            "fitness": fitness_mapping_and_ordering,
+            # "fitness": fitness_mapping_and_ordering,
+            "fitness": overhead_fitness_mapping_and_ordering,
             # "assign_credits": default_assign_credits
-            "assign_credits": max_assign_credits
+            # "assign_credits": max_assign_credits
+            "assign_credits": assign_from_transfer_overhead
         }
     }
     return do_experiment(saver, config, _wf, rm, estimator)
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 5)
+    res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)
 
