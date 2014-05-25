@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adag xmlns="http://pegasus.isi.edu/schema/DAX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pegasus.isi.edu/schema/DAX http://pegasus.isi.edu/schema/dax-2.1.xsd" version="2.1" count="1" index="0" name="test" jobCount="8" fileCount="0" childCount="5">
+<job id="ID1" namespace="GA" name="P" version="1.0" runtime="1"/>
+<job id="ID2" namespace="GA" name="P" version="1.0" runtime="1"/>
+<job id="ID4" namespace="GA" name="P" version="1.0" runtime="1"/>
+<job id="ID7" namespace="GA" name="P" version="1.0" runtime="1"/>
+<job id="ID9" namespace="GA" name="P" version="1.0" runtime="1"/>
+<job id="ID10" namespace="GA" name="P" version="1.0" runtime="1"/>
+<job id="ID12" namespace="GA" name="P" version="1.0" runtime="1"/>
+<job id="ID18" namespace="GA" name="P" version="1.0" runtime="1"/>
+<child ref="ID1"><parent ref="ID10"/></child>
+<child ref="ID1"><parent ref="ID7"/></child>
+<child ref="ID2"><parent ref="ID4"/></child>
+<child ref="ID7"><parent ref="ID9"/></child>
+<child ref="ID12"><parent ref="ID18"/></child>
+</adag>

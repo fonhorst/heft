@@ -1,0 +1,8 @@
+0 <- name: res_0_node_7; flops: 50 
+1 <- name: res_0_node_2; flops: 25 
+2 <- name: res_0_node_3; flops: 30 
+3 <- name: res_0_node_6; flops: 25 
+4 <- name: res_0_node_4; flops: 25 
+5 <- name: res_0_node_1; flops: 15 
+6 <- name: res_0_node_0; flops: 10 
+7 <- name: res_0_node_5; flops: 25 
