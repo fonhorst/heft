@@ -1,26 +1,27 @@
-import json
 from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie, ListBasedIndividual
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, default_assign_credits, build_schedule, mapping_default_mutate, mapping_default_initialize, mapping_k_mutate, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead, mapping_heft_based_initialize
-from GA.DEAPGA.coevolution.utilities import ArchivedSelector
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, default_choose, build_schedule, mapping_default_initialize, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead
+from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind, ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.ResourceGenerator import ResourceGenerator as rg
 from environment.Utility import Utility
 from experiments.cga import wf
 from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn
 from experiments.cga.cga_fixed_ordering import extract_ordering_from_file
-from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
-import random
+from experiments.cga.utilities.common import UniqueNameSaver
 
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 
-selector = tourn
+selector = ArchivedSelector(5)(tourn)
 
 
 os_representative = extract_ordering_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
                                               _wf, estimator, rm)
+
+ms_ideal_ind = build_ms_ideal_ind(_wf, rm)
+os_ideal_ind = build_os_ideal_ind(_wf)
 
 # heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100.json")
 
@@ -34,7 +35,7 @@ def mapping_improving_mutation(ctx, mutant):
         task = env.wf.byId(task_id)
         node = env.rm.byName(node_name)
         ttime = env.estimator.estimate_transfer_time
-        ptransfer_time = [ttime(node, env.rm.byName(task_to_node[p.id]), task, p) for p in task.parents]
+        ptransfer_time = [ttime(node, env.rm.byName(task_to_node[p.id]), task, p) for p in task.parents if p != env.wf.head_task]
         ctransfer_time = [ttime(node, env.rm.byName(task_to_node[p.id]), task, p) for p in task.children]
         computation_time = env.estimator.estimate_runtime(task, node)
         return (ptransfer_time, ctransfer_time, computation_time)
@@ -62,7 +63,7 @@ def mapping_improving_mutation(ctx, mutant):
 def do_exp():
     config = {
         "interact_individuals_count": 200,
-        "generations": 3,
+        "generations": 300,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
@@ -101,7 +102,7 @@ def do_exp():
     return do_experiment(saver, config, _wf, rm, estimator)
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 1)
+    res = repeat(do_exp, 10)
     print("RESULTS: ")
     print(res)
 
