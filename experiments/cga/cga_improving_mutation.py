@@ -1,3 +1,4 @@
+import random
 from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie, ListBasedIndividual
 from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, default_choose, build_schedule, mapping_default_initialize, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead
@@ -6,7 +7,7 @@ from core.concrete_realization import ExperimentResourceManager, ExperimentEstim
 from environment.ResourceGenerator import ResourceGenerator as rg
 from environment.Utility import Utility
 from experiments.cga import wf
-from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn
+from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, roulette
 from experiments.cga.cga_fixed_ordering import extract_ordering_from_file
 from experiments.cga.utilities.common import UniqueNameSaver
 
@@ -14,7 +15,8 @@ _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 
-selector = ArchivedSelector(5)(tourn)
+# selector = ArchivedSelector(5)(tourn)
+selector = ArchivedSelector(5)(roulette)
 
 
 os_representative = extract_ordering_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
@@ -45,27 +47,30 @@ def mapping_improving_mutation(ctx, mutant):
 
     ## choose overhead for improving
     # try to improve max transfer overhead
-    t, oheads = sorted_overheads[0]
+    # t, oheads = sorted_overheads[0]
+    for i in range(50):
+        t, oheads = sorted_overheads[random.randint(0, int(len(sorted_overheads)/2))]
 
-    # improving
-    nodes = env.rm.get_nodes()
-    potential_overheads = [(n, estimate_overheads(t, n.name)) for n in nodes if task_to_node[t] != n.name]
-    n, noheads = min(potential_overheads, key=lambda x: x[1][0] + x[1][1])
+        # improving
+        nodes = env.rm.get_nodes()
+        potential_overheads = [(n, estimate_overheads(t, n.name)) for n in nodes if task_to_node[t] != n.name]
 
-    for i in range(len(mutant)):
-        t1, n1 = mutant[i]
-        if t1 == t:
-            mutant[i] = (t, n.name)
-            break
-        pass
+        n, noheads = min(potential_overheads, key=lambda x: x[1][0] + x[1][1])
+        if oheads[0] + oheads[1] > noheads[0] + noheads[1]:
+            for i in range(len(mutant)):
+                t1, n1 = mutant[i]
+                if t1 == t:
+                    mutant[i] = (t, n.name)
+                    break
+                pass
     pass
 
 def do_exp():
     config = {
-        "interact_individuals_count": 200,
-        "generations": 300,
+        "interact_individuals_count": 500,
+        "generations": 1000,
         "env": Env(_wf, rm, estimator),
-        "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
+        "species": [Specie(name=MAPPING_SPECIE, pop_size=500,
                            cxb=0.9, mb=0.9,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            # mutate=mapping_default_mutate,
