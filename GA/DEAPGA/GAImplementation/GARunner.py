@@ -134,8 +134,8 @@ class MixRunner(BaseRunner):
         ##================================
         ##GA Run
         ##================================
-        # ga_schedule = _run_ga(heft_schedule)
-        ga_schedule = _run_ga(None)
+        ga_schedule = _run_ga(heft_schedule)
+        # ga_schedule = _run_ga(None)
 
         #print("Count of nodes: " + str(sum(1 if len(items) > 0 else 0 for n, items in ga_schedule.mapping.items())))
 

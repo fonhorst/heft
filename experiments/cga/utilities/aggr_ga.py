@@ -3,7 +3,7 @@ from experiments.cga.utilities.common import generate_pathes
 
 
 def aggr_ga():
-    path = "../../../temp/ga_vs_heft_exp_10transfer_200pop/all_results.json"
+    path = "../../../temp/ga_vs_heft_exp/all_results.json"
     with open(path, "r") as f:
         data = json.load(f)
     print("Result: " + str(sum(data["results"])/len(data["results"])))
@@ -15,7 +15,8 @@ def aggr_ga_from_array():
     print("Result: " + str(sum(data)/len(data)))
 
 def aggr_cga():
-    path = "../../../temp/cga_exp_200interact_50popsize_transfer_10/"
+    # path = "../../../temp/cga_heft_mixin/"
+    path = "../../../temp/cga_exp/"
     pathes = generate_pathes(path)
     result = []
     for p in pathes:
@@ -26,6 +27,6 @@ def aggr_cga():
 
 
 if __name__ == "__main__":
-    # aggr_cga()
+    aggr_cga()
     # aggr_ga()
-    aggr_ga_from_array()
+    # aggr_ga_from_array()

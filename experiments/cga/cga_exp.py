@@ -13,7 +13,7 @@ from environment.ResourceGenerator import ResourceGenerator as rg
 from experiments.cga import wf
 from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
 
-_wf = wf("Montage_25")
+_wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 tourn = lambda pop, l: tools.selTournament(pop, l, 2)
@@ -39,7 +39,11 @@ def roulette(pop, l):
     return result
 
 # selector = ArchivedSelector(5)(roulette)
-selector = ArchivedSelector(5)(tourn)
+# mapping_selector = ArchivedSelector(5)(tourn)
+# ordering_selector = ArchivedSelector(5)(tourn)
+
+mapping_selector = ArchivedSelector(5)(roulette)
+ordering_selector = ArchivedSelector(5)(roulette)
 
 @rounddeciter
 def hamming_distances(pop, ideal_ind):
@@ -59,7 +63,7 @@ def to_seq(mapping):
 ms_ideal_ind = build_ms_ideal_ind(_wf, rm)
 os_ideal_ind = build_os_ideal_ind(_wf)
 
-def hamming_for_best_components(sols):
+def hamming_for_best_components(sols, ms_ideal_ind, os_ideal_ind):
     result = {s_name: hamming_distances([ind], ms_ideal_ind if s_name == MAPPING_SPECIE else os_ideal_ind)[0]
               for s_name, ind in max(sols, key=lambda x: x.fitness).items()}
     return result
@@ -118,16 +122,16 @@ ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
 
 config = {
-        "interact_individuals_count": 500,
-        "generations": 300,
+        "interact_individuals_count": 200,
+        "generations": 10000,
         "env": Env(_wf, rm, estimator),
-        "species": [Specie(name=MAPPING_SPECIE, pop_size=500,
-                           cxb=0.8, mb=0.5,
+        "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
+                           cxb=0.9, mb=0.9,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            mutate=mapping_all_mutate,
                            # mutate=mapping_default_mutate,
                            # mutate=MappingArchiveMutate(),
-                           select=selector,
+                           select=mapping_selector,
                            initialize=mapping_default_initialize,
                            stat=lambda pop: {"hamming_distances": hamming_distances([to_seq(p) for p in pop], to_seq(ms_ideal_ind)),
                                              "unique_inds_count": unique_individuals(pop),
@@ -139,7 +143,7 @@ config = {
                            cxb=0.8, mb=0.5,
                            mate=ordering_default_crossover,
                            mutate=ordering_default_mutate,
-                           select=selector,
+                           select=ordering_selector,
                            initialize=ordering_default_initialize,
                            stat=lambda pop: {"hamming_distances": hamming_distances(pop, os_ideal_ind),
                                              "unique_inds_count": unique_individuals(pop),
@@ -147,7 +151,7 @@ config = {
                                              "gdm": gdm(pop)}
                     )
         ],
-        "solstat": lambda sols: {"best_components": hamming_for_best_components(sols),
+        "solstat": lambda sols: {"best_components": hamming_for_best_components(sols, ms_ideal_ind, os_ideal_ind),
                                  "best_components_itself": best_components_itself(sols)},
         "operators": {
             "choose": default_choose,
@@ -187,10 +191,10 @@ def do_experiment(saver, config, _wf, rm, estimator):
     return m
 
 def repeat(func, n):
-    # fs = [futures.submit(func) for i in range(n)]
-    # futures.wait(fs)
-    # return [f.result() for f in fs]
-    return [func() for i in range(n)]
+    fs = [futures.submit(func) for i in range(n)]
+    futures.wait(fs)
+    return [f.result() for f in fs]
+    # return [func() for i in range(n)]
 
 saver = UniqueNameSaver("../../temp/cga_exp")
 
@@ -199,7 +203,7 @@ def do_exp():
 
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 1)
+    res = repeat(do_exp, 5)
     print("RESULTS: ")
     print(res)
 

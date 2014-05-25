@@ -1,6 +1,0 @@
-__heftGa 540.0364257427685 CyberShake_75
-heftREx 419.57139959642495 CyberShake_75
-__heftGa 275.19820470055697 Montage_75
-heftREx 207.93792182358814 Montage_75
-__heftGa 73028.06351620126 Epigenomics_72
-heftREx 55209.66349164522 Epigenomics_72

@@ -1,5 +1,0 @@
-alg_name: HEFT
-wf_name: Montage_25
-task_id: ID00001_000
-	438.0151417663994
-	436.87228721853063

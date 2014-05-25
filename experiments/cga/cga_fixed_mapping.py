@@ -68,7 +68,7 @@ config = {
                            stat=lambda pop: {"hamming_distances": hamming_distances(pop, os_ideal_ind)}
                     )
         ],
-        "solstat": lambda sols: {"best_components": hamming_for_best_components(sols),
+        "solstat": lambda sols: {"best_components": hamming_for_best_components(sols, ms_ideal_ind, os_ideal_ind),
                                  "best_components_itself": best_components_itself(sols)},
         "operators": {
             "choose": default_choose,

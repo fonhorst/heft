@@ -1,4 +1,0 @@
-0 <- name: res_0_node_2; flops: 25 
-1 <- name: res_0_node_1; flops: 15 
-2 <- name: res_0_node_3; flops: 30 
-3 <- name: res_0_node_0; flops: 10 

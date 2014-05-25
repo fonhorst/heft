@@ -1,2 +1,0 @@
-alg_name: HEFT
-wf_name: Montage_25

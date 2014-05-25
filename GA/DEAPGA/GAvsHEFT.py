@@ -5,7 +5,7 @@ from GA.DEAPGA.GAImplementation.GARunner import MixRunner
 from experiments.cga.cga_exp import repeat
 from experiments.cga.utilities.common import UniqueNameSaver
 
-wf_names = ['Montage_25']
+wf_names = ['Montage_50']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
 # wf_names = ['Epigenomics_100']
@@ -20,7 +20,7 @@ PARAMS = {
         "crossover_probability": 0.8,
         "replacing_mutation_probability": 0.5,
         "sweep_mutation_probability": 0.4,
-        "generations": 3
+        "generations": 300
     },
     "nodes_conf": [10, 15, 25, 30],
     "transfer_time": 100
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     print("Population size: " + str(PARAMS["ga_params"]["population"]))
 
     # repeat(do_exp, 1)
-    repeat(do_exp_heft_schedule, 1)
+    result = repeat(do_exp_heft_schedule, 1)
 
     # result = []
     # for entry in os.listdir(directory):
@@ -62,13 +62,13 @@ if __name__ == '__main__':
     #         os.remove(p)
     #     pass
     #
-    # dt = {
-    #     "metainfo": PARAMS,
-    #     "results": result
-    # }
-    #
-    # with open(os.path.join(directory, "all_results.json"), "w") as f:
-    #     json.dump(dt, f)
+    dt = {
+        "metainfo": PARAMS,
+        "results": result
+    }
+
+    with open(os.path.join(directory, "all_results.json"), "w") as f:
+        json.dump(dt, f)
 
 
 

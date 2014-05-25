@@ -64,7 +64,7 @@ def do_exp():
                            representative_individual=ListBasedIndividual(os_representative))
         ],
 
-        "solstat": lambda sols: {"best_components": hamming_for_best_components(sols),
+        "solstat": lambda sols: {"best_components": hamming_for_best_components(sols, ms_ideal_ind, os_ideal_ind),
                                  "best_components_itself": best_components_itself(sols),
                                  "best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))
                                  },
@@ -81,7 +81,7 @@ def do_exp():
     return do_experiment(saver, config, _wf, rm, estimator)
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 5)
+    res = repeat(do_exp, 50)
     print("RESULTS: ")
     print(res)
 

@@ -1,4 +1,0 @@
-_heft 837.8503825492695 CyberShake_75
-cheft 493.7563698448233 CyberShake_75
-_heft 1109.1507706635382 CyberShake_100_2
-cheft 646.2622264948202 CyberShake_100_2
