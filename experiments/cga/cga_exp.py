@@ -1,11 +1,12 @@
 from copy import deepcopy
 from functools import partial
+import random
 from deap import tools
 import distance
 import math
 from scoop import futures
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits, bonus_assign_credits, bonus2_assign_credits, MappingArchiveMutate, max_assign_credits, mapping_all_mutate
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits, bonus_assign_credits, bonus2_assign_credits, MappingArchiveMutate, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering
 from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind, ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
@@ -38,12 +39,52 @@ def roulette(pop, l):
         p.fitness = (1/(p.fitness.values[0]/100)*-1)
     return result
 
+
+def mapping_improving_mutation(ctx, mutant):
+    env = ctx["env"]
+    task_to_node = {t: n for t, n in mutant}
+
+    def estimate_overheads(task_id, node_name):
+        task = env.wf.byId(task_id)
+        node = env.rm.byName(node_name)
+        ttime = env.estimator.estimate_transfer_time
+        ptransfer_time = [ttime(node, env.rm.byName(task_to_node[p.id]), task, p) for p in task.parents if p != env.wf.head_task]
+        ctransfer_time = [ttime(node, env.rm.byName(task_to_node[p.id]), task, p) for p in task.children]
+        computation_time = env.estimator.estimate_runtime(task, node)
+        return (ptransfer_time, ctransfer_time, computation_time)
+
+    overheads = {t: estimate_overheads(t, n) for t,n in task_to_node.items()}
+    sorted_overheads = sorted(overheads.items(), key=lambda x: x[1][0] + x[1][1])
+
+    ## choose overhead for improving
+    # try to improve max transfer overhead
+    # t, oheads = sorted_overheads[0]
+    for i in range(50):
+        t, oheads = sorted_overheads[random.randint(0, int(len(sorted_overheads)/2))]
+
+        # improving
+        nodes = env.rm.get_nodes()
+        potential_overheads = [(n, estimate_overheads(t, n.name)) for n in nodes if task_to_node[t] != n.name]
+
+        n, noheads = min(potential_overheads, key=lambda x: x[1][0] + x[1][1])
+        if oheads[0] + oheads[1] > noheads[0] + noheads[1]:
+            for i in range(len(mutant)):
+                t1, n1 = mutant[i]
+                if t1 == t:
+                    mutant[i] = (t, n.name)
+                    break
+                pass
+    pass
+
 # selector = ArchivedSelector(5)(roulette)
 # mapping_selector = ArchivedSelector(5)(tourn)
 # ordering_selector = ArchivedSelector(5)(tourn)
 
-mapping_selector = ArchivedSelector(5)(roulette)
-ordering_selector = ArchivedSelector(5)(roulette)
+mapping_selector = lambda ctx,pop: tourn(pop, len(pop))
+ordering_selector = lambda ctx,pop: tourn(pop, len(pop))
+
+# mapping_selector = ArchivedSelector(5)(roulette)
+# ordering_selector = ArchivedSelector(5)(roulette)
 
 @rounddeciter
 def hamming_distances(pop, ideal_ind):
@@ -123,12 +164,13 @@ ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
 config = {
         "interact_individuals_count": 200,
-        "generations": 10000,
+        "generations": 300,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
-                           cxb=0.9, mb=0.9,
+                           cxb=0.0, mb=0.9,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
-                           mutate=mapping_all_mutate,
+                           # mutate=mapping_all_mutate,
+                           mutate=mapping_improving_mutation,
                            # mutate=mapping_default_mutate,
                            # mutate=MappingArchiveMutate(),
                            select=mapping_selector,
@@ -155,7 +197,8 @@ config = {
                                  "best_components_itself": best_components_itself(sols)},
         "operators": {
             "choose": default_choose,
-            "fitness": fitness_mapping_and_ordering,
+            # "fitness": fitness_mapping_and_ordering,
+            "fitness": overhead_fitness_mapping_and_ordering,
             # "assign_credits": default_assign_credits
             # "assign_credits": bonus2_assign_credits
             "assign_credits": max_assign_credits
@@ -203,7 +246,7 @@ def do_exp():
 
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 5)
+    res = repeat(do_exp, 10)
     print("RESULTS: ")
     print(res)
 

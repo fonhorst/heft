@@ -1,13 +1,13 @@
 import random
 from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie, ListBasedIndividual
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, default_choose, build_schedule, mapping_default_initialize, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, default_choose, build_schedule, mapping_default_initialize, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead, mapping_all_mutate
 from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind, ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.ResourceGenerator import ResourceGenerator as rg
 from environment.Utility import Utility
 from experiments.cga import wf
-from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, roulette
+from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, roulette, mapping_improving_mutation
 from experiments.cga.cga_fixed_ordering import extract_ordering_from_file
 from experiments.cga.utilities.common import UniqueNameSaver
 
@@ -29,41 +29,6 @@ os_ideal_ind = build_os_ideal_ind(_wf)
 
 saver = UniqueNameSaver("../../temp/cga_improving_mutation")
 
-def mapping_improving_mutation(ctx, mutant):
-    env = ctx["env"]
-    task_to_node = {t: n for t, n in mutant}
-
-    def estimate_overheads(task_id, node_name):
-        task = env.wf.byId(task_id)
-        node = env.rm.byName(node_name)
-        ttime = env.estimator.estimate_transfer_time
-        ptransfer_time = [ttime(node, env.rm.byName(task_to_node[p.id]), task, p) for p in task.parents if p != env.wf.head_task]
-        ctransfer_time = [ttime(node, env.rm.byName(task_to_node[p.id]), task, p) for p in task.children]
-        computation_time = env.estimator.estimate_runtime(task, node)
-        return (ptransfer_time, ctransfer_time, computation_time)
-
-    overheads = {t: estimate_overheads(t, n) for t,n in task_to_node.items()}
-    sorted_overheads = sorted(overheads.items(), key=lambda x: x[1][0] + x[1][1])
-
-    ## choose overhead for improving
-    # try to improve max transfer overhead
-    # t, oheads = sorted_overheads[0]
-    for i in range(50):
-        t, oheads = sorted_overheads[random.randint(0, int(len(sorted_overheads)/2))]
-
-        # improving
-        nodes = env.rm.get_nodes()
-        potential_overheads = [(n, estimate_overheads(t, n.name)) for n in nodes if task_to_node[t] != n.name]
-
-        n, noheads = min(potential_overheads, key=lambda x: x[1][0] + x[1][1])
-        if oheads[0] + oheads[1] > noheads[0] + noheads[1]:
-            for i in range(len(mutant)):
-                t1, n1 = mutant[i]
-                if t1 == t:
-                    mutant[i] = (t, n.name)
-                    break
-                pass
-    pass
 
 def do_exp():
     config = {
@@ -75,8 +40,8 @@ def do_exp():
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            # mutate=mapping_default_mutate,
                            # mutate=lambda ctx, mutant: mapping_k_mutate(ctx, 3, mutant)
-                           # mutate=mapping_all_mutate,
-                           mutate=mapping_improving_mutation,
+                           mutate=mapping_all_mutate,
+                           # mutate=mapping_improving_mutation,
                            select=selector,
                            initialize=mapping_default_initialize,
                            # initialize=lambda ctx, pop: mapping_heft_based_initialize(ctx, pop, heft_mapping, 3),
