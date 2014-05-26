@@ -6,7 +6,7 @@ from GA.DEAPGA.GAImplementation.GARunner import MixRunner
 from experiments.cga.cga_exp import repeat
 from experiments.cga.utilities.common import UniqueNameSaver
 
-wf_names = ['Montage_100']
+wf_names = ['Montage_25']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
 # wf_names = ['Epigenomics_100']
@@ -39,13 +39,7 @@ def do_exp():
 def do_exp_heft_schedule():
     saver = UniqueNameSaver("../../temp/ga_vs_heft_exp_heft_schedule")
 
-    tstart = datetime.now()
-
     ga_makespan, heft_makespan, ga_schedule, heft_schedule = run(wf_names[0])
-    tend = datetime.now()
-
-    tres = tend - tstart
-    print("Time Result: " + str(tres.total_seconds()))
 
     ## TODO: pure hack
     data = [(item.job.id, node.flops) for node, items in heft_schedule.mapping.items() for item in items]
@@ -58,7 +52,7 @@ if __name__ == '__main__':
     print("Population size: " + str(PARAMS["ga_params"]["population"]))
 
     # repeat(do_exp, 1)
-    result = repeat(do_exp_heft_schedule, 10)
+    result = repeat(do_exp_heft_schedule, 1)
 
 
     # result = []

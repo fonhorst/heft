@@ -1,3 +1,4 @@
+from datetime import datetime
 from GA.DEAPGA.GAImplementation.GAFunctions2 import mark_finished
 from GA.DEAPGA.GAImplementation.GAImpl import GAFactory
 from core.DSimpleHeft import DynamicHeft
@@ -134,8 +135,15 @@ class MixRunner(BaseRunner):
         ##================================
         ##GA Run
         ##================================
-        ga_schedule = _run_ga(heft_schedule)
-        # ga_schedule = _run_ga(None)
+
+         ## TODO: remove time measure
+        tstart = datetime.now()
+        # ga_schedule = _run_ga(heft_schedule)
+        ga_schedule = _run_ga(None)
+
+        tend = datetime.now()
+        tres = tend - tstart
+        print("Time Result: " + str(tres.total_seconds()))
 
         #print("Count of nodes: " + str(sum(1 if len(items) > 0 else 0 for n, items in ga_schedule.mapping.items())))
 

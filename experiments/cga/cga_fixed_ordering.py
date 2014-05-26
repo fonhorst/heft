@@ -7,7 +7,8 @@ from core.concrete_realization import ExperimentResourceManager, ExperimentEstim
 from environment.ResourceGenerator import ResourceGenerator as rg
 from environment.Utility import Utility
 from experiments.cga import wf
-from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn
+from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, \
+    extract_ordering_from_file, extract_mapping_from_file
 from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
 import random
 
@@ -17,21 +18,6 @@ estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 
 selector = tourn
 
-def extract_ordering_from_file(path, wf, estimator, rm):
-    with open(path, 'r') as f:
-        data = json.load(f)
-    solution = data["final_solution"]
-    ordering = solution[ORDERING_SPECIE]
-    return ordering
-
-def extract_mapping_from_file(path):
-    with open(path, 'r') as f:
-        data = json.load(f)
-    ## TODO: this is pure hack. It is needed to be refactored or removed
-    nodes = {node.flops: node.name for node in rm.get_nodes()}
-
-    mapping = ListBasedIndividual([(t, nodes[n]) for t, n in data])
-    return mapping
 
 os_representative = extract_ordering_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
                                               _wf, estimator, rm)

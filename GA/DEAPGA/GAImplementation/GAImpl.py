@@ -210,20 +210,20 @@ class GAFactory:
 
                     # check if evolution process has stopped
 
-                    if (check_evolution_for_stopping is True) and len(previous_raised_avr_individuals) == repeated_best_count:
-                        length = len(previous_raised_avr_individuals)
-                        whole_sum = sum(previous_raised_avr_individuals)
-                        mean = whole_sum / length
-                        sum2 = sum(abs(x - mean) for x in previous_raised_avr_individuals)
-                        std = sum2/length
-                        ## TODO: uncomment it later. output
-                        # print("std: " + str(std))
-                        if std < 0.0001:
-                            print(" Evolution process has stopped at " + str(g) + " iteration")
-                            res = self._get_result()
-                            extended_result = (res[0], res[1], res[2], res[3], g)
-                            self._save_result(extended_result)
-                            break
+                    # if (check_evolution_for_stopping is True) and len(previous_raised_avr_individuals) == repeated_best_count:
+                    #     length = len(previous_raised_avr_individuals)
+                    #     whole_sum = sum(previous_raised_avr_individuals)
+                    #     mean = whole_sum / length
+                    #     sum2 = sum(abs(x - mean) for x in previous_raised_avr_individuals)
+                    #     std = sum2/length
+                    #     ## TODO: uncomment it later. output
+                    #     # print("std: " + str(std))
+                    #     if std < 0.0001:
+                    #         print(" Evolution process has stopped at " + str(g) + " iteration")
+                    #         res = self._get_result()
+                    #         extended_result = (res[0], res[1], res[2], res[3], g)
+                    #         self._save_result(extended_result)
+                    #         break
 
 
 
