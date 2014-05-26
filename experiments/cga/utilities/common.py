@@ -3,6 +3,9 @@ import os
 import uuid
 
 ## TODO: make a blocking wrapper
+from scoop import futures
+
+
 class UniqueNameSaver:
     def __init__(self, directory):
         self.directory = directory
@@ -14,7 +17,7 @@ class UniqueNameSaver:
         path = os.path.join(self.directory, name)
         with open(path, "w") as f:
             json.dump(data, f)
-        pass
+        return name
 
 
 def load_data(path):
@@ -63,5 +66,8 @@ class ComparableMixin(object):
         return self._compare(other, lambda s, o: s != o)
 
 
-
-
+def repeat(func, n):
+    # fs = [futures.submit(func) for i in range(n)]
+    # futures.wait(fs)
+    # return [f.result() for f in fs]
+    return [func() for i in range(n)]

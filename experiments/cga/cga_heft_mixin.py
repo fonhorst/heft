@@ -6,10 +6,9 @@ from core.concrete_realization import ExperimentResourceManager, ExperimentEstim
 from environment.Utility import Utility
 from environment.ResourceGenerator import ResourceGenerator as rg
 from experiments.cga import wf
-from experiments.cga.cga_exp import tourn, hamming_distances, unique_individuals, to_seq, pcm, gdm, hamming_for_best_components, best_components_itself, do_experiment, repeat, \
-    roulette
-from experiments.cga.cga_fixed_ordering import extract_mapping_from_file
-from experiments.cga.utilities.common import UniqueNameSaver
+from experiments.cga.cga_exp import tourn, hamming_distances, unique_individuals, to_seq, pcm, gdm, hamming_for_best_components, best_components_itself, do_experiment, roulette
+from experiments.cga.cga_fixed_ordering import extract_mapping_from_ga_file
+from experiments.cga.utilities.common import UniqueNameSaver, repeat
 
 _wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
@@ -23,7 +22,7 @@ ordering_selector = ArchivedSelector(5)(tourn)
 
 
 # heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100.json")
-heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100_m50.json")
+heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_tr100_m50.json")
 
 ms_ideal_ind = build_ms_ideal_ind(_wf, rm)
 os_ideal_ind = build_os_ideal_ind(_wf)

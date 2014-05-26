@@ -31,8 +31,9 @@ class ArchivedSelector:
         def wrapper(ctx, pop):
             self._hallOfFame.update(pop)
             new_pop = list(self._hallOfFame)
-            offspring = selector(pop, len(pop) - len(new_pop))
-            new_pop += offspring
+            # offspring = selector(pop, len(pop) - len(new_pop))
+            offspring = selector(ctx, pop)
+            new_pop += offspring[0:len(pop) - len(new_pop)]
             return new_pop
         return wrapper
     pass

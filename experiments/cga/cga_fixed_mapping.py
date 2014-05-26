@@ -5,8 +5,8 @@ from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_cro
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.ResourceGenerator import ResourceGenerator as rg
 from experiments.cga import wf
-from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, hamming_for_best_components, best_components_itself
-from experiments.cga.utilities.common import UniqueNameSaver
+from experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, hamming_for_best_components, best_components_itself
+from experiments.cga.utilities.common import UniqueNameSaver, repeat
 
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))

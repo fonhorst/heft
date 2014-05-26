@@ -1,26 +1,27 @@
 from copy import deepcopy
 from datetime import datetime
-from functools import partial
 import json
 import random
+import math
+
 from deap import tools
 import distance
-import math
-from scoop import futures
+
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter, ListBasedIndividual
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, mapping_default_mutate, mapping_default_initialize, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, default_assign_credits, bonus_assign_credits, bonus2_assign_credits, MappingArchiveMutate, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering, \
-    mapping_heft_based_initialize
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, build_schedule, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering, \
+    mapping_heft_based_initialize, ordering_heft_based_initialize, default_assign_credits
 from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind, ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
 from environment.ResourceGenerator import ResourceGenerator as rg
 from experiments.cga import wf
-from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin
+from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin, repeat
+
 
 _wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
-tourn = lambda pop, l: tools.selTournament(pop, l, 2)
+tourn = lambda ctx, pop: tools.selTournament(pop, len(pop), 2)
 ## TODO: remove this hack later
 class Fitness(ComparableMixin):
     def __init__(self, fitness):
@@ -31,12 +32,12 @@ class Fitness(ComparableMixin):
 
 
 ## TODO: remake this stub later
-def roulette(pop, l):
+def roulette(ctx, pop):
 
     for p in pop:
         p.fitness = Fitness((1/-1*p.fitness)*100)
 
-    result = tools.selRoulette(pop, l)
+    result = tools.selRoulette(pop, len(pop))
 
     for p in pop:
         p.fitness = (1/(p.fitness.values[0]/100)*-1)
@@ -83,12 +84,12 @@ def mapping_improving_mutation(ctx, mutant):
 # mapping_selector = ArchivedSelector(5)(tourn)
 # ordering_selector = ArchivedSelector(5)(tourn)
 
-# mapping_selector = lambda ctx,pop: tourn(pop, len(pop))
-# ordering_selector = lambda ctx,pop: tourn(pop, len(pop))
+mapping_selector = tourn
+ordering_selector = tourn
 
-asel = ArchivedSelector(5)
-mapping_selector = asel(roulette)
-ordering_selector = ArchivedSelector(5)(roulette)
+# asel = ArchivedSelector(5)
+# mapping_selector = asel(roulette)
+# ordering_selector = ArchivedSelector(5)(roulette)
 
 @rounddeciter
 def hamming_distances(pop, ideal_ind):
@@ -170,24 +171,33 @@ def extract_ordering_from_file(path, wf, estimator, rm):
     ordering = solution[ORDERING_SPECIE]
     return ordering
 
-def extract_mapping_from_file(path):
+def extract_mapping_from_ga_file(path):
     with open(path, 'r') as f:
         data = json.load(f)
     ## TODO: this is pure hack. It is needed to be refactored or removed
     nodes = {node.flops: node.name for node in rm.get_nodes()}
 
-    mapping = ListBasedIndividual([(t, nodes[n]) for t, n in data])
+    mapping = ListBasedIndividual([(t, nodes[n]) for t, n in data["mapping"]])
     return mapping
+
+def extract_ordering_from_ga_file(path):
+    with open(path, 'r') as f:
+        data = json.load(f)
+
+    ordering = ListBasedIndividual([t for t in data["ordering"]])
+    return ordering
 
 ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
 
 # heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100.json")
-heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100_m50.json")
+heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
+heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
+
 
 config = {
         "interact_individuals_count": 200,
-        "generations": 1000,
+        "generations": 500,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
@@ -210,7 +220,8 @@ config = {
                            mate=ordering_default_crossover,
                            mutate=ordering_default_mutate,
                            select=ordering_selector,
-                           initialize=ordering_default_initialize,
+                           # initialize=ordering_default_initialize,
+                           initialize=lambda ctx, pop: ordering_heft_based_initialize(ctx, pop, heft_ordering, 3),
                            stat=lambda pop: {"hamming_distances": hamming_distances(pop, os_ideal_ind),
                                              "unique_inds_count": unique_individuals(pop),
                                              "pcm": pcm(pop),
@@ -228,7 +239,6 @@ config = {
             "assign_credits": max_assign_credits
         }
     }
-
 
 
 def do_experiment(saver, config, _wf, rm, estimator):
@@ -257,11 +267,7 @@ def do_experiment(saver, config, _wf, rm, estimator):
     saver(data)
     return m
 
-def repeat(func, n):
-    fs = [futures.submit(func) for i in range(n)]
-    futures.wait(fs)
-    return [f.result() for f in fs]
-    # return [func() for i in range(n)]
+
 
 saver = UniqueNameSaver("../../temp/cga_exp")
 

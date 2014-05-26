@@ -279,6 +279,11 @@ class MappingArchiveMutate:
 ## Ordering specie
 ##==================================
 
+def ordering_heft_based_initialize(ctx, size, heft_ordering, count):
+    result = [deepcopy(heft_ordering) for i in range(count)]
+    result = result + ordering_default_initialize(ctx, size - count)
+    return result
+
 
 def ordering_default_initialize(ctx, size):
     env = ctx['env']

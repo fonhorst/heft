@@ -3,10 +3,9 @@ import functools
 import json
 import os
 from GA.DEAPGA.GAImplementation.GARunner import MixRunner
-from experiments.cga.cga_exp import repeat
-from experiments.cga.utilities.common import UniqueNameSaver
+from experiments.cga.utilities.common import UniqueNameSaver, repeat
 
-wf_names = ['Montage_25']
+wf_names = ['Montage_50']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
 # wf_names = ['Epigenomics_100']
@@ -36,24 +35,46 @@ def do_exp():
     saver(ga_makespan)
     return ga_makespan
 
-def do_exp_heft_schedule():
+def do_exp_schedule(takeHeftSchedule=True):
     saver = UniqueNameSaver("../../temp/ga_vs_heft_exp_heft_schedule")
 
     ga_makespan, heft_makespan, ga_schedule, heft_schedule = run(wf_names[0])
 
     ## TODO: pure hack
-    data = [(item.job.id, node.flops) for node, items in heft_schedule.mapping.items() for item in items]
-    data = sorted(data, key=lambda x: x[0])
-    saver(data)
-    return ga_makespan
+
+    schedule = heft_schedule if takeHeftSchedule else ga_schedule
+
+    mapping = [(item.job.id, node.flops) for node, items in schedule.mapping.items() for item in items]
+    mapping = sorted(mapping, key=lambda x: x[0])
+
+    ordering = [(item.job.id, item.start_time) for node, items in heft_schedule.mapping.items() for item in items]
+    ordering = [t for t, time in sorted(ordering, key=lambda x: x[1])]
+
+    data = {
+        "mapping": mapping,
+        "ordering": ordering
+    }
+
+    name = saver(data)
+    return ga_makespan, heft_makespan, ga_schedule, heft_schedule, name
+
+def do_exp_heft_schedule():
+    res = do_exp_schedule(True)
+    return res[0]
+
+def do_exp_ga_schedule():
+    res = do_exp_schedule(False)
+    return (res[0], res[4])
 
 
 if __name__ == '__main__':
     print("Population size: " + str(PARAMS["ga_params"]["population"]))
 
     # repeat(do_exp, 1)
-    result = repeat(do_exp_heft_schedule, 1)
+    # result = repeat(do_exp_heft_schedule, 1)
+    result = repeat(do_exp_ga_schedule, 10)
 
+    print(result)
 
     # result = []
     # for entry in os.listdir(directory):

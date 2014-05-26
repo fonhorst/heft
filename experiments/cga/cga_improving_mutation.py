@@ -7,9 +7,9 @@ from core.concrete_realization import ExperimentResourceManager, ExperimentEstim
 from environment.ResourceGenerator import ResourceGenerator as rg
 from environment.Utility import Utility
 from experiments.cga import wf
-from experiments.cga.cga_exp import repeat, hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, roulette, mapping_improving_mutation
+from experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, roulette, mapping_improving_mutation
 from experiments.cga.cga_fixed_ordering import extract_ordering_from_file
-from experiments.cga.utilities.common import UniqueNameSaver
+from experiments.cga.utilities.common import UniqueNameSaver, repeat
 
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
