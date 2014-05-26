@@ -1,17 +1,18 @@
 import json
 from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie, ListBasedIndividual
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, default_assign_credits, build_schedule
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, default_assign_credits, build_schedule, ordering_heft_based_initialize, overhead_fitness_mapping_and_ordering
+from GA.DEAPGA.coevolution.utilities import build_os_ideal_ind
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.ResourceGenerator import ResourceGenerator as rg
 from experiments.cga import wf
-from experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, hamming_for_best_components, best_components_itself
+from experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, hamming_for_best_components, best_components_itself, extract_mapping_from_ga_file, extract_ordering_from_ga_file, tourn
 from experiments.cga.utilities.common import UniqueNameSaver, repeat
 
-_wf = wf("Montage_25")
+_wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=10)
-selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
+selector = tourn
 ## TODO: remove this hack later
 # class Fitness(ComparableMixin):
 #     def __init__(self, fitness):
@@ -35,23 +36,28 @@ selector = lambda env, pop: tools.selTournament(pop, len(pop), 2)
 #
 # selector = roulette
 
-def extract_mapping_from_file(path, wf, estimator, rm):
-    with open(path, 'r') as f:
-        data = json.load(f)
-    solution = data["final_solution"]
-    schedule = build_schedule(wf, estimator, rm, solution)
-    ind = [(item.job.id, node.name) for node, items in schedule.mapping.items() for item in items]
-    return ind
+# def extract_mapping_from_file(path, wf, estimator, rm):
+#     with open(path, 'r') as f:
+#         data = json.load(f)
+#     solution = data["final_solution"]
+#     schedule = build_schedule(wf, estimator, rm, solution)
+#     ind = [(item.job.id, node.name) for node, items in schedule.mapping.items() for item in items]
+#     return ind
+#
+# def extract_ordering_from_file(path, wf, estimator, rm):
+#     with open(path, 'r') as f:
+#         data = json.load(f)
+#     solution = data["final_solution"]
+#     ordering = solution[ORDERING_SPECIE]
+#     return ordering
 
-def extract_ordering_from_file(path, wf, estimator, rm):
-    with open(path, 'r') as f:
-        data = json.load(f)
-    solution = data["final_solution"]
-    ordering = solution[ORDERING_SPECIE]
-    return ordering
+# ms_representative = extract_mapping_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
+#                                               _wf, estimator, rm)
+ms_representative = extract_mapping_from_ga_file("../../temp/ga_schedule_272 _tr100_m50.json")
 
-ms_representative = extract_mapping_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
-                                              _wf, estimator, rm)
+heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
+
+os_ideal_ind = build_os_ideal_ind(_wf)
 
 config = {
         "interact_individuals_count": 200,
@@ -64,7 +70,8 @@ config = {
                            mate=ordering_default_crossover,
                            mutate=ordering_default_mutate,
                            select=selector,
-                           initialize=ordering_default_initialize,
+                           # initialize=ordering_default_initialize,
+                           initialize=lambda ctx, pop: ordering_heft_based_initialize(ctx, pop, heft_ordering, 3),
                            stat=lambda pop: {"hamming_distances": hamming_distances(pop, os_ideal_ind)}
                     )
         ],
@@ -73,6 +80,7 @@ config = {
         "operators": {
             "choose": default_choose,
             "fitness": fitness_mapping_and_ordering,
+            # "fitness": overhead_fitness_mapping_and_ordering,
             "assign_credits": default_assign_credits
         }
     }
@@ -82,7 +90,7 @@ def do_exp():
     return do_experiment(saver, config, _wf, rm, estimator)
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 30)
+    res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)
 

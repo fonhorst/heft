@@ -8,21 +8,23 @@ from environment.ResourceGenerator import ResourceGenerator as rg
 from environment.Utility import Utility
 from experiments.cga import wf
 from experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, \
-    extract_ordering_from_file, extract_mapping_from_ga_file
+    extract_ordering_from_file, extract_mapping_from_ga_file, extract_ordering_from_ga_file
 from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin, repeat
 import random
 
-_wf = wf("Montage_25")
+_wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 
 selector = tourn
 
 
-os_representative = extract_ordering_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
-                                              _wf, estimator, rm)
+# os_representative = extract_ordering_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
+#                                               _wf, estimator, rm)
+os_representative = extract_ordering_from_ga_file("../../temp/ga_schedule_272 _tr100_m50.json")
 
-heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_tr100.json")
+# heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_tr100.json")
+heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 
 saver = UniqueNameSaver("../../temp/cga_fixed_ordering")
 
@@ -67,7 +69,7 @@ def do_exp():
     return do_experiment(saver, config, _wf, rm, estimator)
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 50)
+    res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)
 
