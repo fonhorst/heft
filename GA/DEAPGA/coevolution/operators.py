@@ -269,6 +269,27 @@ def mapping_all_mutate_variable(ctx, mutant):
             mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
     pass
 
+def mapping_all_mutate_variable2(ctx, mutant):
+
+    gen_num = ctx['gen']
+    if gen_num < 100:
+        k = 20
+    elif gen_num < 200:
+        k = 10
+    elif gen_num < 300:
+        k = 5
+    else:
+        k = 1
+
+    env = ctx['env']
+    nodes = list(env.rm.get_nodes())
+    for i in range(len(mutant)):
+        if random.random() < k/len(mutant):
+            (t, n) = mutant[i]
+            names = [node.name for node in nodes if node.name != n]
+            mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
+    pass
+
 
 class MappingArchiveMutate:
     def __init__(self):

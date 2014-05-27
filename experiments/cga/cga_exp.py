@@ -9,7 +9,8 @@ import distance
 
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter, ListBasedIndividual
 from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, build_schedule, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering, \
-    mapping_heft_based_initialize, ordering_heft_based_initialize, default_assign_credits, fitness_mapping_and_ordering, mapping_all_mutate_variable
+    mapping_heft_based_initialize, ordering_heft_based_initialize, default_assign_credits, fitness_mapping_and_ordering, mapping_all_mutate_variable, \
+    mapping_default_initialize, mapping_all_mutate_variable2
 from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind, ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
@@ -200,13 +201,14 @@ heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100
 
 config = {
         "interact_individuals_count": 100,
-        "generations": 600,
+        "generations": 1000,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            # mutate=mapping_all_mutate,
-                           mutate=mapping_all_mutate_variable,
+                           # mutate=mapping_all_mutate_variable,
+                           mutate=mapping_all_mutate_variable2,
                            # mutate=mapping_improving_mutation,
                            # mutate=mapping_default_mutate,
                            # mutate=MappingArchiveMutate(),
@@ -273,7 +275,7 @@ def do_experiment(saver, config, _wf, rm, estimator):
 
 
 
-saver = UniqueNameSaver("../../temp/cga_exp")
+saver = UniqueNameSaver("../../temp/cga_exp_2")
 
 def do_exp():
     ## TODO: remove time measure
@@ -285,7 +287,7 @@ def do_exp():
     return res
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 3)
+    res = repeat(do_exp, 10)
     print("RESULTS: ")
     print(res)
 
