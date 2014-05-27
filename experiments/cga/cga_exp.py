@@ -9,7 +9,7 @@ import distance
 
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter, ListBasedIndividual
 from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, build_schedule, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering, \
-    mapping_heft_based_initialize, ordering_heft_based_initialize, default_assign_credits, fitness_mapping_and_ordering
+    mapping_heft_based_initialize, ordering_heft_based_initialize, default_assign_credits, fitness_mapping_and_ordering, mapping_all_mutate_variable
 from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind, ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
@@ -18,7 +18,7 @@ from experiments.cga import wf
 from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin, repeat
 
 
-_wf = wf("Montage_50")
+_wf = wf("Montage_100")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 tourn = lambda ctx, pop: tools.selTournament(pop, len(pop), 2)
@@ -191,11 +191,11 @@ ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
 
 # heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100.json")
-heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
-heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
+# heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
+# heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 
-# heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
-# heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
+heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
+heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
 
 
 config = {
@@ -205,7 +205,8 @@ config = {
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
-                           mutate=mapping_all_mutate,
+                           # mutate=mapping_all_mutate,
+                           mutate=mapping_all_mutate_variable,
                            # mutate=mapping_improving_mutation,
                            # mutate=mapping_default_mutate,
                            # mutate=MappingArchiveMutate(),
@@ -284,7 +285,7 @@ def do_exp():
     return res
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 10)
+    res = repeat(do_exp, 3)
     print("RESULTS: ")
     print(res)
 

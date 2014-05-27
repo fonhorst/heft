@@ -238,6 +238,7 @@ def create_cooperative_ga(**kwargs):
         for gen in range(GENERATIONS):
 
             print("Gen: " + str(gen))
+            kwargs['gen'] = gen
             ## constructing set of possible solutions
             solutions = []
             for i in range(INTERACT_INDIVIDUALS_COUNT):
