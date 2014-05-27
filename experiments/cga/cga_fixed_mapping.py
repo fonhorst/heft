@@ -79,8 +79,8 @@ config = {
                                  "best_components_itself": best_components_itself(sols)},
         "operators": {
             "choose": default_choose,
-            "fitness": fitness_mapping_and_ordering,
-            # "fitness": overhead_fitness_mapping_and_ordering,
+            # "fitness": fitness_mapping_and_ordering,
+            "fitness": overhead_fitness_mapping_and_ordering,
             "assign_credits": default_assign_credits
         }
     }
@@ -90,7 +90,7 @@ def do_exp():
     return do_experiment(saver, config, _wf, rm, estimator)
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 1)
+    res = repeat(do_exp, 10)
     print("RESULTS: ")
     print(res)
 

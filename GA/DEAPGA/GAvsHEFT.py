@@ -5,7 +5,7 @@ import os
 from GA.DEAPGA.GAImplementation.GARunner import MixRunner
 from experiments.cga.utilities.common import UniqueNameSaver, repeat
 
-wf_names = ['Montage_50']
+wf_names = ['Montage_100']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
 # wf_names = ['Epigenomics_100']
@@ -71,8 +71,8 @@ if __name__ == '__main__':
     print("Population size: " + str(PARAMS["ga_params"]["population"]))
 
     # repeat(do_exp, 1)
-    # result = repeat(do_exp_heft_schedule, 1)
-    result = repeat(do_exp_ga_schedule, 10)
+    result = repeat(do_exp_heft_schedule, 1)
+    # result = repeat(do_exp_ga_schedule, 1)
 
     print(result)
 

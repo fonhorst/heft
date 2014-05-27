@@ -8,15 +8,15 @@ from environment.ResourceGenerator import ResourceGenerator as rg
 from environment.Utility import Utility
 from experiments.cga import wf
 from experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, \
-    extract_ordering_from_file, extract_mapping_from_ga_file, extract_ordering_from_ga_file
-from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin, repeat
+    extract_ordering_from_file, extract_mapping_from_ga_file, extract_ordering_from_ga_file, roulette
+from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin, repeat, OnlyUniqueMutant
 import random
 
 _wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 
-selector = tourn
+selector = ArchivedSelector(5)(tourn)
 
 
 # os_representative = extract_ordering_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
@@ -30,15 +30,16 @@ saver = UniqueNameSaver("../../temp/cga_fixed_ordering")
 
 def do_exp():
     config = {
-        "interact_individuals_count": 200,
-        "generations": 300,
+        "interact_individuals_count": 100,
+        "generations": 2000,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            # mutate=mapping_default_mutate,
                            # mutate=lambda ctx, mutant: mapping_k_mutate(ctx, 3, mutant)
-                           mutate=mapping_all_mutate,
+                           # mutate=mapping_all_mutate,
+                           mutate=OnlyUniqueMutant()(mapping_all_mutate),
                            select=selector,
                            # initialize=mapping_default_initialize,
                            initialize=lambda ctx, pop: mapping_heft_based_initialize(ctx, pop, heft_mapping, 3),
@@ -59,8 +60,8 @@ def do_exp():
 
         "operators": {
             "choose": default_choose,
-            # "fitness": fitness_mapping_and_ordering,
-            "fitness": overhead_fitness_mapping_and_ordering,
+            "fitness": fitness_mapping_and_ordering,
+            # "fitness": overhead_fitness_mapping_and_ordering,
             # "assign_credits": default_assign_credits
             # "assign_credits": max_assign_credits
             "assign_credits": assign_from_transfer_overhead
@@ -69,7 +70,7 @@ def do_exp():
     return do_experiment(saver, config, _wf, rm, estimator)
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 1)
+    res = repeat(do_exp, 5)
     print("RESULTS: ")
     print(res)
 

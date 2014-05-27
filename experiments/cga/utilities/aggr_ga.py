@@ -3,9 +3,10 @@ from experiments.cga.utilities.common import generate_pathes
 
 
 def aggr_ga():
-    path = "../../../temp/ga_vs_heft_exp/all_results.json"
+    path = "../../../temp/ga_vs_heft_exp/all_results_m50.json"
     with open(path, "r") as f:
         data = json.load(f)
+    print(data)
     print("Result: " + str(sum(data["results"])/len(data["results"])))
 
 def aggr_ga_from_array():
@@ -23,6 +24,7 @@ def aggr_cga():
         with open(p, "r") as f:
             data = json.load(f)
         result.append(data["final_makespan"])
+    print(result)
     print(sum(result)/len(result))
 
 

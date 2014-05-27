@@ -138,8 +138,9 @@ class MixRunner(BaseRunner):
 
          ## TODO: remove time measure
         tstart = datetime.now()
-        # ga_schedule = _run_ga(heft_schedule)
-        ga_schedule = _run_ga(None)
+        # ga_schedule = heft_schedule
+        ga_schedule = _run_ga(heft_schedule)
+        # ga_schedule = _run_ga(None)
 
         tend = datetime.now()
         tres = tend - tstart

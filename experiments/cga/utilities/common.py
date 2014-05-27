@@ -1,3 +1,4 @@
+from copy import deepcopy
 import json
 import os
 import uuid
@@ -67,7 +68,25 @@ class ComparableMixin(object):
 
 
 def repeat(func, n):
-    # fs = [futures.submit(func) for i in range(n)]
-    # futures.wait(fs)
-    # return [f.result() for f in fs]
-    return [func() for i in range(n)]
+    fs = [futures.submit(func) for i in range(n)]
+    futures.wait(fs)
+    return [f.result() for f in fs]
+    # return [func() for i in range(n)]
+
+
+class OnlyUniqueMutant:
+    def __init__(self):
+        self.found = set()
+
+    def __call__(self, func):
+        def wrapper(ctx, mutant):
+            for i in range(50):
+                m = deepcopy(mutant)
+                func(ctx, m)
+                identity = hash(tuple(m))
+                if identity not in self.found:
+                    for i in range(len(mutant)):
+                        mutant[i] = m[i]
+                    self.found.add(identity)
+                    break
+        return wrapper

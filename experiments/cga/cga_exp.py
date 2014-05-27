@@ -9,7 +9,7 @@ import distance
 
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter, ListBasedIndividual
 from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, build_schedule, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering, \
-    mapping_heft_based_initialize, ordering_heft_based_initialize, default_assign_credits
+    mapping_heft_based_initialize, ordering_heft_based_initialize, default_assign_credits, fitness_mapping_and_ordering
 from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind, ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
@@ -81,11 +81,11 @@ def mapping_improving_mutation(ctx, mutant):
     pass
 
 # selector = ArchivedSelector(5)(roulette)
-# mapping_selector = ArchivedSelector(5)(tourn)
-# ordering_selector = ArchivedSelector(5)(tourn)
+mapping_selector = ArchivedSelector(3)(tourn)
+ordering_selector = ArchivedSelector(3)(tourn)
 
-mapping_selector = tourn
-ordering_selector = tourn
+# mapping_selector = tourn
+# ordering_selector = tourn
 
 # asel = ArchivedSelector(5)
 # mapping_selector = asel(roulette)
@@ -194,10 +194,13 @@ ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 
+# heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
+# heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
+
 
 config = {
-        "interact_individuals_count": 200,
-        "generations": 500,
+        "interact_individuals_count": 100,
+        "generations": 600,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
@@ -216,7 +219,7 @@ config = {
 
                     ),
                     Specie(name=ORDERING_SPECIE, pop_size=50,
-                           cxb=0.8, mb=0.5,
+                           cxb=0.9, mb=0.9,
                            mate=ordering_default_crossover,
                            mutate=ordering_default_mutate,
                            select=ordering_selector,
@@ -232,8 +235,8 @@ config = {
                                  "best_components_itself": best_components_itself(sols)},
         "operators": {
             "choose": default_choose,
-            # "fitness": fitness_mapping_and_ordering,
-            "fitness": overhead_fitness_mapping_and_ordering,
+            "fitness": fitness_mapping_and_ordering,
+            # "fitness": overhead_fitness_mapping_and_ordering,
             # "assign_credits": default_assign_credits
             # "assign_credits": bonus2_assign_credits
             "assign_credits": max_assign_credits
@@ -281,7 +284,7 @@ def do_exp():
     return res
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 3)
+    res = repeat(do_exp, 10)
     print("RESULTS: ")
     print(res)
 
