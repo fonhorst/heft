@@ -17,7 +17,9 @@ def aggr_ga_from_array():
 
 def aggr_cga():
     # path = "../../../temp/cga_heft_mixin/"
-    path = "../../../temp/cga_exp/"
+    # path = "../../../temp/cga_exp/"
+    # path = "../../../temp/cga_init_pop_good/"
+    path = "../../../temp/cga_init_pop_bad/"
     pathes = generate_pathes(path)
     result = []
     for p in pathes:

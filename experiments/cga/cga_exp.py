@@ -188,6 +188,8 @@ def extract_ordering_from_ga_file(path):
     ordering = ListBasedIndividual([t for t in data["ordering"]])
     return ordering
 
+
+
 ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
 
@@ -201,7 +203,7 @@ heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100
 
 config = {
         "interact_individuals_count": 100,
-        "generations": 1000,
+        "generations": 600,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
