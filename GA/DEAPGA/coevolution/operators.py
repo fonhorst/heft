@@ -4,6 +4,7 @@ import random
 from deap import tools
 from deap import base
 from deap import creator
+import numpy
 from GA.DEAPGA.GAImplementation.NewSchedulerBuilder import place_task_to_schedule
 from GA.DEAPGA.coevolution.cga import Specie, Env, ListBasedIndividual
 from core.DSimpleHeft import DynamicHeft
@@ -254,6 +255,20 @@ def mapping_all_mutate(ctx, mutant):
             mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
     pass
 
+def mapping_all_mutate_configurable(ctx, mutant, k):
+
+    # gen_num = ctx['gen']
+    # k = 5 if gen_num < 100 else 1
+
+    env = ctx['env']
+    nodes = list(env.rm.get_nodes())
+    for i in range(len(mutant)):
+        if random.random() < k/len(mutant):
+            (t, n) = mutant[i]
+            names = [node.name for node in nodes if node.name != n]
+            mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
+    pass
+
 ## TODO: only for debug of experiments. remove this enity later
 def mapping_all_mutate_variable(ctx, mutant):
 
@@ -289,6 +304,28 @@ def mapping_all_mutate_variable2(ctx, mutant):
             names = [node.name for node in nodes if node.name != n]
             mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
     pass
+
+
+
+class MutRegulator:
+    def __init__(self, gens_count=30):
+        self.generations = []
+        self.gens_count = gens_count
+        pass
+
+    def __call__(self, mutation):
+        def wrapper(ctx, mutant):
+            if len(self.generations) >= self.gens_count and numpy.std(self.generations[-30::]) == 0:
+                mutation(ctx, mutant, 2)
+            else:
+                mutation(ctx, mutant, 1)
+        return wrapper
+
+    def analyze(self, ctx, solutions, pops):
+        gen = ctx['gen']
+        best = max(solutions, key=lambda x: x.fitness)
+        self.generations.append((gen, best.fitness))
+        pass
 
 
 class MappingArchiveMutate:
@@ -466,6 +503,8 @@ def default_config(wf, rm, estimator):
             "assign_credits": default_assign_credits
         }
     }
+
+
 
 
 

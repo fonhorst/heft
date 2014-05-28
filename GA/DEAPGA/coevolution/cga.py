@@ -153,6 +153,7 @@ class Specie:
 
 
 def create_cooperative_ga(**kwargs):
+    kwargs = deepcopy(kwargs)
     """
     DSL example:
     workflow, resource_manager, estimator
@@ -175,6 +176,8 @@ def create_cooperative_ga(**kwargs):
         choose = kwargs["operators"]["choose"]
         fitness = kwargs["operators"]["fitness"]
         assign_credits = kwargs["operators"]["assign_credits"]
+
+        analyzers = kwargs.get("analyzers", [])
 
         USE_CREDIT_INHERITANCE = kwargs.get("use_credit_inheritance", False)
 
@@ -220,6 +223,7 @@ def create_cooperative_ga(**kwargs):
             return pop
 
         logbook = tools.Logbook()
+        kwargs['logbook'] = logbook
 
         ## TODO: make processing of population consisting of 1 element uniform
         ## generate initial population
@@ -292,12 +296,16 @@ def create_cooperative_ga(**kwargs):
             for s, pop in pops.items():
                 popsstat_dict[s.name]["fitnesses"] = [p.fitness for p in pop]
 
+            if hall.maxsize > 0:
+                hall.update(solutions)
+
             logbook.record(gen=gen,
                            popsstat=(popsstat_dict,),
                            solsstat=(solsstat_dict,))
 
-            if hall.maxsize > 0:
-                hall.update(solutions)
+            for an in analyzers:
+                an(kwargs, solutions, pops)
+
 
             #_logpops(logbook, gen, pops, solutions)
 

@@ -10,7 +10,7 @@ import distance
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter, ListBasedIndividual
 from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, build_schedule, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering, \
     mapping_heft_based_initialize, ordering_heft_based_initialize, default_assign_credits, fitness_mapping_and_ordering, mapping_all_mutate_variable, \
-    mapping_default_initialize, mapping_all_mutate_variable2
+    mapping_default_initialize, mapping_all_mutate_variable2, MutRegulator, mapping_all_mutate_configurable
 from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind, build_os_ideal_ind, ArchivedSelector
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
@@ -198,18 +198,21 @@ ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
 heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
 
+mapping_mut_reg = MutRegulator()
+
 
 config = {
-        "hall_of_fame_size": 5,
+        "hall_of_fame_size": 0,
         "interact_individuals_count": 100,
-        "generations": 300,
+        "generations": 600,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            # mutate=mapping_all_mutate,
                            # mutate=mapping_all_mutate_variable,
-                           mutate=mapping_all_mutate_variable2,
+                           mutate=mapping_mut_reg(mapping_all_mutate_configurable),
+                           # mutate=mapping_all_mutate_variable2,
                            # mutate=mapping_improving_mutation,
                            # mutate=mapping_default_mutate,
                            # mutate=MappingArchiveMutate(),
@@ -236,7 +239,11 @@ config = {
                     )
         ],
         "solstat": lambda sols: {"best_components": hamming_for_best_components(sols, ms_ideal_ind, os_ideal_ind),
-                                 "best_components_itself": best_components_itself(sols)},
+                                 "best_components_itself": best_components_itself(sols),
+                                 "best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))},
+
+        "analyzers": [mapping_mut_reg.analyze],
+
         "operators": {
             "choose": default_choose,
             "fitness": fitness_mapping_and_ordering,
