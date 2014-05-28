@@ -5,6 +5,8 @@ import uuid
 
 ## TODO: make a blocking wrapper
 from scoop import futures
+from GA.DEAPGA.coevolution.cga import ListBasedIndividual
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
 
 
 class UniqueNameSaver:
@@ -90,3 +92,13 @@ class OnlyUniqueMutant:
                     self.found.add(identity)
                     break
         return wrapper
+
+
+def extract_initial_pops(path):
+    with open(path, "r") as f:
+        data = json.load(f)
+    initial_pops = data["initial_pops"]
+
+    mps = [ListBasedIndividual([tuple(g) for g in ind]) for ind in initial_pops[MAPPING_SPECIE]]
+    os = [ListBasedIndividual(ind) for ind in initial_pops[ORDERING_SPECIE]]
+    return mps, os
