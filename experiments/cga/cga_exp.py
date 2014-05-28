@@ -200,8 +200,9 @@ heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100
 
 
 config = {
+        "hall_of_fame_size": 5,
         "interact_individuals_count": 100,
-        "generations": 1000,
+        "generations": 300,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
@@ -275,7 +276,7 @@ def do_experiment(saver, config, _wf, rm, estimator):
 
 
 
-saver = UniqueNameSaver("../../temp/cga_exp_2")
+saver = UniqueNameSaver("../../temp/cga_exp")
 
 def do_exp():
     ## TODO: remove time measure
@@ -287,7 +288,7 @@ def do_exp():
     return res
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 10)
+    res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)
 

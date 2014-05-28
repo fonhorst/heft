@@ -3,6 +3,7 @@ from copy import deepcopy
 import random
 
 from deap import creator, tools
+from deap.tools import HallOfFame
 import numpy
 
 SPECIES = "species"
@@ -177,6 +178,8 @@ def create_cooperative_ga(**kwargs):
 
         USE_CREDIT_INHERITANCE = kwargs.get("use_credit_inheritance", False)
 
+        HALL_OF_FAME_SIZE = kwargs.get("hall_of_fame_size", 0)
+
         # assert INTERACT_INDIVIDUALS_COUNT >= min(s.pop_size for s in SPECIES), \
         #     "Count of interacting individuals cannot be lower than size of any population." \
         #     " This restriction will be removed in future releases"
@@ -234,6 +237,10 @@ def create_cooperative_ga(**kwargs):
 
         print("Initialization finished")
 
+
+        hall = HallOfFame(HALL_OF_FAME_SIZE)
+
+
         best = None
         for gen in range(GENERATIONS):
 
@@ -289,12 +296,18 @@ def create_cooperative_ga(**kwargs):
                            popsstat=(popsstat_dict,),
                            solsstat=(solsstat_dict,))
 
+            if hall.maxsize > 0:
+                hall.update(solutions)
+
             #_logpops(logbook, gen, pops, solutions)
 
             ## select best solution as a result
             ## TODO: remake it in a more generic way
             ## TODO: add archive and corresponding updating and mixing
-            best = max(solutions, key=lambda x: x.fitness)
+            #best = max(solutions, key=lambda x: x.fitness)
+
+            ## take the best
+            best = hall[0] if hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
 
             ## produce offsprings
             items = [(s, pop) for s, pop in pops.items() if not s.fixed]
@@ -303,6 +316,14 @@ def create_cooperative_ga(**kwargs):
                     continue
                 offspring = s.select(kwargs, pop)
                 offspring = list(map(deepcopy, offspring))
+
+                ## apply mixin elite ones from the hall
+                if hall.maxsize > 0:
+                    elite = [sol[s.name] for sol in hall]
+                    offspring = elite + offspring
+                    offspring = offspring[0:len(pop)]
+
+
                 # Apply crossover and mutation on the offspring
                 for child1, child2 in zip(offspring[::2], offspring[1::2]):
                     if random.random() < s.cxb:

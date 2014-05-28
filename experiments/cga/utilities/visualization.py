@@ -227,8 +227,8 @@ def visualize(data, path_to_save=None):
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
-    # path = "../../../temp/cga_exp/"
-    path = "../../../temp/cga_exp_2/"
+    path = "../../../temp/cga_exp/"
+    # path = "../../../temp/cga_exp_2/"
     # path = "D:/FTP/cga_exp_archivedmutation"
     # path = "../../../temp/cga_fixed_ordering/"
     # path = "../../../temp/cga_fixed_mapping/"
