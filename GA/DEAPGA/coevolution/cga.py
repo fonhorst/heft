@@ -300,7 +300,7 @@ def create_cooperative_ga(**kwargs):
                 hall.update(solutions)
                 ## TODO: this should be reconsidered
                 lsols = len(solutions)
-                solutions = hall + solutions
+                solutions = list(hall) + solutions
                 solutions = solutions[0:lsols]
 
             logbook.record(gen=gen,
