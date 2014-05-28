@@ -305,6 +305,41 @@ def mapping_all_mutate_variable2(ctx, mutant):
             mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
     pass
 
+def mapping_improving_mutation(ctx, mutant):
+    env = ctx["env"]
+    task_to_node = {t: n for t, n in mutant}
+
+    def estimate_overheads(task_id, node_name):
+        task = env.wf.byId(task_id)
+        node = env.rm.byName(node_name)
+        ttime = env.estimator.estimate_transfer_time
+        ptransfer_time = [ttime(node, env.rm.byName(task_to_node[p.id]), task, p) for p in task.parents if p != env.wf.head_task]
+        ctransfer_time = [ttime(node, env.rm.byName(task_to_node[p.id]), task, p) for p in task.children]
+        computation_time = env.estimator.estimate_runtime(task, node)
+        return (ptransfer_time, ctransfer_time, computation_time)
+
+    overheads = {t: estimate_overheads(t, n) for t,n in task_to_node.items()}
+    sorted_overheads = sorted(overheads.items(), key=lambda x: x[1][0] + x[1][1])
+
+    ## choose overhead for improving
+    # try to improve max transfer overhead
+    # t, oheads = sorted_overheads[0]
+    for i in range(50):
+        t, oheads = sorted_overheads[random.randint(0, int(len(sorted_overheads)/2))]
+
+        # improving
+        nodes = env.rm.get_nodes()
+        potential_overheads = [(n, estimate_overheads(t, n.name)) for n in nodes if task_to_node[t] != n.name]
+
+        n, noheads = min(potential_overheads, key=lambda x: x[1][0] + x[1][1])
+        if oheads[0] + oheads[1] > noheads[0] + noheads[1]:
+            for i in range(len(mutant)):
+                t1, n1 = mutant[i]
+                if t1 == t:
+                    mutant[i] = (t, n.name)
+                    break
+                pass
+    pass
 
 
 class MutRegulator:

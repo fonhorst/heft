@@ -3,12 +3,12 @@ import json
 import unittest
 from GA.DEAPGA.coevolution.cga import run_cooperative_ga, Specie, ListBasedIndividual
 from GA.DEAPGA.coevolution.operators import build_schedule, default_config, MAPPING_SPECIE, ORDERING_SPECIE
-from GA.DEAPGA.coevolution.utilities import build_ms_ideal_ind
 from core.concrete_realization import ExperimentEstimator, ExperimentResourceManager
 from core.runners.ExecutorRunner import ExecutorRunner
 from environment.ResourceGenerator import ResourceGenerator
 from environment.ResourceManager import ScheduleItem
 from environment.Utility import Utility
+from experiments.cga.utilities.common import build_ms_ideal_ind
 
 
 class CoevolutionTest(unittest.TestCase):

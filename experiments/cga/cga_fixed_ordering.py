@@ -1,14 +1,13 @@
 from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie, ListBasedIndividual
 from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, mapping_all_mutate, assign_from_transfer_overhead, mapping_heft_based_initialize
-from GA.DEAPGA.coevolution.utilities import ArchivedSelector, build_ms_ideal_ind, build_os_ideal_ind
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.ResourceGenerator import ResourceGenerator as rg
 from environment.Utility import Utility
 from experiments.cga import wf
 from experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, \
     extract_mapping_from_ga_file, extract_ordering_from_ga_file
-from experiments.cga.utilities.common import UniqueNameSaver, repeat
+from experiments.cga.utilities.common import UniqueNameSaver, repeat, ArchivedSelector, build_ms_ideal_ind, build_os_ideal_ind
 
 _wf = wf("Montage_100")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))

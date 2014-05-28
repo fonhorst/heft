@@ -1,14 +1,13 @@
 from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie
 from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, build_schedule, mapping_all_mutate, mapping_heft_based_initialize, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead
-from GA.DEAPGA.coevolution.utilities import ArchivedSelector, build_ms_ideal_ind, build_os_ideal_ind
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
 from environment.ResourceGenerator import ResourceGenerator as rg
 from experiments.cga import wf
-from experiments.cga.cga_exp import tourn, hamming_distances, unique_individuals, to_seq, pcm, gdm, hamming_for_best_components, best_components_itself, do_experiment, roulette
+from experiments.cga.cga_exp import tourn, hamming_distances, unique_individuals, to_seq, pcm, gdm, hamming_for_best_components, best_components_itself, do_experiment
 from experiments.cga.cga_fixed_ordering import extract_mapping_from_ga_file
-from experiments.cga.utilities.common import UniqueNameSaver, repeat
+from experiments.cga.utilities.common import UniqueNameSaver, repeat, ArchivedSelector, build_ms_ideal_ind, build_os_ideal_ind
 
 _wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
