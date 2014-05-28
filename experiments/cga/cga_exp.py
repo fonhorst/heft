@@ -51,9 +51,9 @@ mapping_mut_reg = MutRegulator()
 
 
 config = {
-        "hall_of_fame_size": 0,
+        "hall_of_fame_size": 3,
         "interact_individuals_count": 100,
-        "generations": 100,
+        "generations": 300,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,

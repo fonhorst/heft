@@ -298,6 +298,10 @@ def create_cooperative_ga(**kwargs):
 
             if hall.maxsize > 0:
                 hall.update(solutions)
+                ## TODO: this should be reconsidered
+                lsols = len(solutions)
+                solutions = hall + solutions
+                solutions = solutions[0:lsols]
 
             logbook.record(gen=gen,
                            popsstat=(popsstat_dict,),
@@ -306,6 +310,7 @@ def create_cooperative_ga(**kwargs):
             for an in analyzers:
                 an(kwargs, solutions, pops)
 
+            print("hall: " + str(list(map(lambda x: x.fitness, hall))))
 
             #_logpops(logbook, gen, pops, solutions)
 
