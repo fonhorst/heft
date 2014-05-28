@@ -1,6 +1,4 @@
 from copy import deepcopy
-import json
-from GA.DEAPGA.coevolution.cga import ListBasedIndividual
 from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
 from experiments.cga.cga_exp import config, do_experiment, _wf, rm, estimator
 from experiments.cga.utilities.common import UniqueNameSaver, repeat, extract_initial_pops

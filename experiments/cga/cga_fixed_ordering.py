@@ -1,6 +1,6 @@
 from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie, ListBasedIndividual
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, build_schedule, mapping_all_mutate, assign_from_transfer_overhead, mapping_heft_based_initialize
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, fitness_mapping_and_ordering, build_schedule, mapping_all_mutate, assign_from_transfer_overhead, mapping_heft_based_initialize, default_build_solutions
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.ResourceGenerator import ResourceGenerator as rg
 from environment.Utility import Utility
@@ -60,7 +60,8 @@ def do_exp():
                                  },
 
         "operators": {
-            "choose": default_choose,
+            # "choose": default_choose,
+            "build_solutions": default_build_solutions,
             "fitness": fitness_mapping_and_ordering,
             # "fitness": overhead_fitness_mapping_and_ordering,
             # "assign_credits": default_assign_credits

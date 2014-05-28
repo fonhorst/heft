@@ -6,7 +6,7 @@ from deap import base
 from deap import creator
 import numpy
 from GA.DEAPGA.GAImplementation.NewSchedulerBuilder import place_task_to_schedule
-from GA.DEAPGA.coevolution.cga import Specie, Env, ListBasedIndividual
+from GA.DEAPGA.coevolution.cga import Specie, Env, ListBasedIndividual, DictBasedIndividual
 from core.DSimpleHeft import DynamicHeft
 from core.HeftHelper import HeftHelper
 from core.concrete_realization import ExperimentResourceManager
@@ -21,12 +21,37 @@ ORDERING_SPECIE = "OrderingSpecie"
 RESOURCE_CONFIG_SPECIE = "ResourceConfigSpecie"
 
 ## TODO: move it to experiments/five_runs/
-
+## TODO: obsolete, remove it later.
 def default_choose(ctx, pop):
     while True:
         i = random.randint(0, len(pop) - 1)
         if pop[i].k > 0:
             return pop[i]
+
+def default_build_solutions(pops, interact_count):
+    def decrease_k(ind):
+        ind.k -= 1
+        return ind
+    def choose(pop):
+        while True:
+            i = random.randint(0, len(pop) - 1)
+            if pop[i].k > 0:
+                return pop[i]
+
+    solutions = [DictBasedIndividual({s.name: decrease_k(choose(pop)) if not s.fixed
+                                                else s.representative_individual
+                                                for s, pop in pops.items()})
+                                                for i in range(interact_count)]
+
+    return solutions
+
+def one_to_one_build_solutions(pops, interact_count):
+    ls = [len(pop) for s, pop in pops.items()]
+    assert numpy.std(ls) == 0, "Pops have different lengths: " + str(pops)
+    assert ls[0] == interact_count, "Interact count doesn't equal to length of pops"
+    elts = [[(s, p) for p in pop] for s, pop in pops.items()]
+    solutions = [DictBasedIndividual({s.name: pop for s, pop in el}) for el in zip(*elts)]
+    return solutions
 
 
 def default_assign_credits(ctx, solutions):
@@ -533,7 +558,8 @@ def default_config(wf, rm, estimator):
         ],
 
         "operators": {
-            "choose": default_choose,
+            # "choose": default_choose,
+            "build_solutions": default_build_solutions,
             "fitness": fitness_mapping_and_ordering,
             "assign_credits": default_assign_credits
         }

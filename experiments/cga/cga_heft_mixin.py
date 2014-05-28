@@ -1,6 +1,6 @@
 from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, build_schedule, mapping_all_mutate, mapping_heft_based_initialize, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, build_schedule, mapping_all_mutate, mapping_heft_based_initialize, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead, default_build_solutions
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
 from environment.ResourceGenerator import ResourceGenerator as rg
@@ -66,7 +66,8 @@ config = {
                                  "best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))
                                  },
         "operators": {
-            "choose": default_choose,
+            # "choose": default_choose,
+            "build_solutions": default_build_solutions,
              # "fitness": fitness_mapping_and_ordering,
             "fitness": overhead_fitness_mapping_and_ordering,
             # "assign_credits": default_assign_credits

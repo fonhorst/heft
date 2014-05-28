@@ -1,21 +1,14 @@
-from copy import deepcopy
 from datetime import datetime
-import json
-import random
-import math
 
 from deap import tools
-import distance
 
-from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, rounddeciter, ListBasedIndividual
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, build_schedule, max_assign_credits, mapping_all_mutate, overhead_fitness_mapping_and_ordering, \
-    mapping_heft_based_initialize, ordering_heft_based_initialize, default_assign_credits, fitness_mapping_and_ordering, mapping_all_mutate_variable, \
-    mapping_default_initialize, mapping_all_mutate_variable2, MutRegulator, mapping_all_mutate_configurable
+from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ORDERING_SPECIE, build_schedule, max_assign_credits, mapping_heft_based_initialize, ordering_heft_based_initialize, fitness_mapping_and_ordering, MutRegulator, mapping_all_mutate_configurable, default_build_solutions, one_to_one_build_solutions
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
 from environment.ResourceGenerator import ResourceGenerator as rg
 from experiments.cga import wf
-from experiments.cga.utilities.common import UniqueNameSaver, ComparableMixin, repeat, tourn, ArchivedSelector, extract_mapping_from_ga_file, extract_ordering_from_ga_file, hamming_distances, to_seq, unique_individuals, pcm, gdm, hamming_for_best_components, best_components_itself
+from experiments.cga.utilities.common import UniqueNameSaver, repeat, tourn, ArchivedSelector, extract_mapping_from_ga_file, extract_ordering_from_ga_file, hamming_distances, to_seq, unique_individuals, pcm, gdm, hamming_for_best_components, best_components_itself
 
 
 _wf = wf("Montage_100")
@@ -51,9 +44,9 @@ mapping_mut_reg = MutRegulator()
 
 
 config = {
-        "hall_of_fame_size": 3,
-        "interact_individuals_count": 100,
-        "generations": 300,
+        "hall_of_fame_size": 0,
+        "interact_individuals_count": 50,
+        "generations": 100,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
@@ -94,7 +87,9 @@ config = {
         "analyzers": [mapping_mut_reg.analyze],
 
         "operators": {
-            "choose": default_choose,
+            # "choose": default_choose,
+            # "build_solutions": default_build_solutions,
+            "build_solutions": one_to_one_build_solutions,
             "fitness": fitness_mapping_and_ordering,
             # "fitness": overhead_fitness_mapping_and_ordering,
             # "assign_credits": default_assign_credits

@@ -1,7 +1,5 @@
-import json
-from deap import tools
 from GA.DEAPGA.coevolution.cga import Env, Specie, ListBasedIndividual
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ordering_default_initialize, ORDERING_SPECIE, default_choose, fitness_mapping_and_ordering, default_assign_credits, build_schedule, ordering_heft_based_initialize, overhead_fitness_mapping_and_ordering
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ORDERING_SPECIE, default_assign_credits, ordering_heft_based_initialize, overhead_fitness_mapping_and_ordering, default_build_solutions
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.ResourceGenerator import ResourceGenerator as rg
 from experiments.cga import wf
@@ -77,7 +75,8 @@ config = {
         "solstat": lambda sols: {"best_components": hamming_for_best_components(sols, ms_ideal_ind, os_ideal_ind),
                                  "best_components_itself": best_components_itself(sols)},
         "operators": {
-            "choose": default_choose,
+            # "choose": default_choose,
+            "build_solutions": default_build_solutions,
             # "fitness": fitness_mapping_and_ordering,
             "fitness": overhead_fitness_mapping_and_ordering,
             "assign_credits": default_assign_credits

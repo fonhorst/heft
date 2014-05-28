@@ -173,7 +173,9 @@ def create_cooperative_ga(**kwargs):
 
         solstat = kwargs.get("solstat", lambda sols: {})
 
-        choose = kwargs["operators"]["choose"]
+        #choose = kwargs["operators"]["choose"]
+        build_solutions = kwargs["operators"]["build_solutions"]
+
         fitness = kwargs["operators"]["fitness"]
         assign_credits = kwargs["operators"]["assign_credits"]
 
@@ -208,9 +210,7 @@ def create_cooperative_ga(**kwargs):
                 pop[i].k += 1
             return pop
 
-        def decrease_k(ind):
-            ind.k -= 1
-            return ind
+
 
         def credit_to_k(pop):
             norma = INTERACT_INDIVIDUALS_COUNT / sum(el.fitness for el in pop)
@@ -252,11 +252,13 @@ def create_cooperative_ga(**kwargs):
             kwargs['gen'] = gen
             ## constructing set of possible solutions
             solutions = []
-            for i in range(INTERACT_INDIVIDUALS_COUNT):
-                solution = DictBasedIndividual({s.name: decrease_k(choose(kwargs, pop)) if not s.fixed
-                                                else s.representative_individual
-                                                for s, pop in pops.items()})
-                solutions.append(solution)
+
+            solutions = build_solutions(pops, INTERACT_INDIVIDUALS_COUNT)
+            # for i in range(INTERACT_INDIVIDUALS_COUNT):
+            #     # solution = DictBasedIndividual({s.name: decrease_k(choose(kwargs, pop)) if not s.fixed
+            #     #                                 else s.representative_individual
+            #     #                                 for s, pop in pops.items()})
+            #     solutions.append(solution)
 
             print("Solutions have been built")
 
@@ -320,6 +322,7 @@ def create_cooperative_ga(**kwargs):
             #best = max(solutions, key=lambda x: x.fitness)
 
             ## take the best
+            # best = hall[0] if hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
             best = hall[0] if hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
 
             ## produce offsprings
