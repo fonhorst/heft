@@ -2,7 +2,8 @@ import random
 import deap
 from deap import tools, algorithms
 from deap.base import Toolbox
-from GA.DEAPGA.coevolution.cga import Env, ListBasedIndividual
+import numpy
+from GA.DEAPGA.coevolution.cga import Env, ListBasedIndividual, rounddec
 from GA.DEAPGA.coevolution.operators import mapping_heft_based_initialize, ordering_heft_based_initialize, ordering_default_crossover, mapping_default_mutate, ordering_default_mutate, fitness_mapping_and_ordering, MAPPING_SPECIE, ORDERING_SPECIE
 from experiments.cga.utilities.common import extract_mapping_from_ga_file, Fitness
 
@@ -54,7 +55,10 @@ def run_dcga(wf, estimator, rm, heft_mapping, heft_ordering, **params):
     for p in pop:
         p.fitness = Fitness(0)
 
-    final_pop, logbook = deap.algorithms.eaSimple(pop, toolbox, cxpb, mutpb, ngen)
+    stat = tools.Statistics(key=lambda x: x.fitness)
+    stat.register("solsstat", lambda pop: [{"best": numpy.max(pop).values[0]}])
+
+    final_pop, logbook = deap.algorithms.eaSimple(pop, toolbox, cxpb, mutpb, ngen, stat)
     best = max(final_pop, key=lambda x: x.fitness)
-    return best.fitness.values[0]
+    return best.fitness.values[0], logbook
 

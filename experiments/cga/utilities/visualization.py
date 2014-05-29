@@ -190,22 +190,8 @@ def _draw_gdm(data):
     pass
 
 
-def visualize(data, path_to_save=None):
+def visualize(data, functions, path_to_save=None):
     plt.figure(figsize=(10, 10))
-
-    # functions = [_draw_best_solution_evolution,
-    #              _draw_species_diversity,
-    #              _draw_solutions_diversity,
-    #              _draw_uniques_inds_count,
-    #              _draw_diff_between_bests]
-    functions = [_draw_best_solution_evolution,
-                 _draw_solutions_diversity,
-                 _draw_uniques_inds_count,
-                 _draw_diff_between_bests,
-                 _draw_pcm,
-                 _draw_gdm]
-
-
 
     for i in range(len(functions)):
         plt.subplot(len(functions), 1, i + 1)
@@ -221,13 +207,31 @@ def visualize(data, path_to_save=None):
     pass
 
 
+def vis_full(data, path_to_save):
+    functions = [_draw_best_solution_evolution,
+                 _draw_solutions_diversity,
+                 _draw_uniques_inds_count,
+                 _draw_diff_between_bests,
+                 _draw_pcm,
+                 _draw_gdm]
+    visualize(data, functions, path_to_save)
+    pass
+
+def vis_only_best(data, path_to_save):
+    functions = [_draw_best_solution_evolution]
+    visualize(data, functions, path_to_save)
+    pass
+
+
+
 
 
 
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
-    path = "../../../temp/cga_exp/"
+    # path = "../../../temp/cga_exp/"
+    path = "../../../temp/dcga_exp/"
     # path = "../../../temp/cga_exp_2/"
     # path = "D:/FTP/cga_exp_archivedmutation"
     # path = "../../../temp/cga_fixed_ordering/"
@@ -241,11 +245,11 @@ if __name__ == "__main__":
     # path = "../../../temp/cga_exp_with_roulette/"
     # path = "../../../temp/cga_partial_experiments/"
 
-
+    vis = vis_only_best
 
     pathes = generate_pathes(path)
 
     #names = ["d53fc071-ad6a-409f-9809-db948d1cd1b6.json"]
 
     for n in pathes:
-        visualize(load_data(n), n + ".png")
+        vis(load_data(n), n + ".png")

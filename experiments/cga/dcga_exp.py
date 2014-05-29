@@ -20,10 +20,11 @@ params = {
 }
 
 def do_exp():
-    result = run_dcga(_wf, estimator, rm, heft_mapping, heft_ordering, **params)
+    result, logbook = run_dcga(_wf, estimator, rm, heft_mapping, heft_ordering, **params)
     saver = UniqueNameSaver("../../temp/dcga_exp")
     data = {
-        "final_makespan": result
+        "final_makespan": result,
+        "iterations": logbook
     }
     saver(data)
     return result
