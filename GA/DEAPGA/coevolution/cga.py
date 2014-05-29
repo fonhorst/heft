@@ -329,7 +329,11 @@ class CoevolutionGA:
         pass
 
     def result(self):
+        self.best.fitness = self.fitness(self.kwargs, self.best)
         return self.best, self.pops, self.logbook, self.initial_pops
+
+    def species(self):
+        return self.SPECIES
 
     def _generate_k(self, pop):
         base_k = int(self.INTERACT_INDIVIDUALS_COUNT / len(pop))

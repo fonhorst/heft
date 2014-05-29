@@ -1,4 +1,5 @@
 ## interface of island component
+from copy import deepcopy
 import random
 
 
@@ -37,8 +38,8 @@ def run_island_ga(islands, migration_scheme, MAX_GEN, MIGRATION_PERIOD):
         for island in islands:
             island.gen()
 
-        if i % MIGRATION_PERIOD == 0:
-            species = island[0].species()
+        if i > 0 and i % MIGRATION_PERIOD == 0:
+            species = islands[0].species()
             separate_pops = [[island.pops[s] for island in islands] for s in species]
             for p in separate_pops:
                 migration_scheme(p)
@@ -51,7 +52,7 @@ def run_island_ga(islands, migration_scheme, MAX_GEN, MIGRATION_PERIOD):
         bests.append(best)
         pass
 
-    best = max(best, lambda x: x.fitness)
+    best = max(bests, key=lambda x: x.fitness)
     return best, islands
 
 def equal_social_migration_scheme(populations, k, selection):
@@ -59,8 +60,9 @@ def equal_social_migration_scheme(populations, k, selection):
     In this scheme we get from every population :k elements and distribute their between all another islands.
     :k should be multiple by (count of islands - 1) to properly distribute individuals between islands
     """
-    assert k % len(populations) - 1 == 0, "k is not multiple by count of islands"
+    assert k % (len(populations) - 1) == 0, "k is not multiple by count of islands"
     emigrants = {i: selection(populations[i], k) for i in range(len(populations))}
+    copy_emigrants = deepcopy(emigrants)
 
     def choose(emigr):
         el = emigr[random.randint(0, len(emigr) - 1)]
@@ -68,12 +70,27 @@ def equal_social_migration_scheme(populations, k, selection):
         return el
     immigrants = [[choose(v) for k, v in emigrants.items() if k != i] for i in range(len(populations))]
 
-    pop_without_emigr = lambda pop: [ind for ind in pop if ind not in em]
-    new_populations = [pop_without_emigr(pop) + im for pop, em, im in zip(populations, emigrants, immigrants)]
+    print([len(v) for k, v in copy_emigrants.items()])
+    print([len(el) for el in immigrants])
+
+
+    # pop_without_emigr = lambda pop, em: [ind for ind in pop if ind not in em]
+    def pop_without_emigr(pop, em):
+        print("VVV:")
+        print([id(e) for e in em])
+
+        np = deepcopy(pop)
+        for e in em:
+            np.remove(e)
+        return np
+        # return [ind for ind in pop if ind not in em]
+        # return pop
+    new_populations = [pop_without_emigr(pop, em) + im for pop, em, im in zip(populations, [x[1] for x in sorted(copy_emigrants.items(), key=lambda x: x[0])], immigrants)]
 
     ## fill old population with changed content
     for old_pop, new_pop in zip(populations, new_populations):
-        assert len(old_pop) == len(new_pop), "population with immigrants differs from old population by size"
+        assert len(old_pop) == len(new_pop), \
+            "population with immigrants differs from old population by size: {0} != {1}".format(len(old_pop), len(new_pop))
         for i in range(len(old_pop)):
             old_pop[i] = new_pop[i]
     pass
