@@ -13,7 +13,7 @@ from experiments.cga.utilities.common import UniqueNameSaver, repeat, tourn, Arc
 from experiments.cga.utilities.island_ga import equal_social_migration_scheme, run_island_ga, best_selection
 
 
-_wf = wf("Montage_100")
+_wf = wf("Montage_75")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 
@@ -34,8 +34,11 @@ ordering_selector = ArchivedSelector(3)(tourn)
 # heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 # heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 
-heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json", rm)
-heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
+# heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json", rm)
+# heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
+
+heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m75.json", rm)
+heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m75.json")
 
 ms_ideal_ind = heft_mapping
 os_ideal_ind = heft_ordering
@@ -107,7 +110,7 @@ def do_experiment(saver, config, _wf, rm, estimator):
     islands = [CoevolutionGA(**config), CoevolutionGA(**config),
                CoevolutionGA(**config), CoevolutionGA(**config)]
     migration = partial(equal_social_migration_scheme, k=3, selection=best_selection)
-    best, islands = run_island_ga(islands, migration, 100, 2)
+    best, islands = run_island_ga(islands, migration, 100, 20)
     return best.fitness
 
 
@@ -119,7 +122,7 @@ def do_exp():
     return res
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 1)
+    res = repeat(do_exp, 10)
     print("RESULTS: ")
     print(res)
 
