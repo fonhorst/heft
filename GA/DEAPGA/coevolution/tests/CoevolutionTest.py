@@ -12,6 +12,7 @@ from experiments.cga.utilities.common import build_ms_ideal_ind
 
 
 class CoevolutionTest(unittest.TestCase):
+
     def test_mapping_and_ordering(self):
         wf_path = "../../../../resources/Montage_25.xml"
         wf_name = "Montage_25"
@@ -121,8 +122,6 @@ class CoevolutionTest(unittest.TestCase):
         ## TODO: refactor this
         ExecutorRunner.extract_result(schedule, True, wf)
         pass
-
-
 
     pass
 if __name__ == "main":

@@ -106,19 +106,19 @@ def rounddeciter(func):
         return res
     return wrapper
 
-class Specie:
-    def __init__(self, **kwargs):
-        self.name = kwargs["name"]
-        ## TODO: reconsider, should It be here?
-        self.pop_size = kwargs["pop_size"]
-        ## crossover probability
-        self.cxb = kwargs["cxb"]
-        ## mutation probability
-        self.mb = kwargs["mb"]
-
-        self.fixed = kwargs.get("fixed", None)
-        self.representative_individual = kwargs.get("representative_individual", None)
-    pass
+# class Specie:
+#     def __init__(self, **kwargs):
+#         self.name = kwargs["name"]
+#         ## TODO: reconsider, should It be here?
+#         self.pop_size = kwargs["pop_size"]
+#         ## crossover probability
+#         self.cxb = kwargs["cxb"]
+#         ## mutation probability
+#         self.mb = kwargs["mb"]
+#
+#         self.fixed = kwargs.get("fixed", None)
+#         self.representative_individual = kwargs.get("representative_individual", None)
+#     pass
 
 """
 Toolbox need to implement functions:
@@ -148,234 +148,214 @@ class Specie:
         pass
 
 
+class CoevolutionGA:
 
-
-
-
-def create_cooperative_ga(**kwargs):
-    kwargs = deepcopy(kwargs)
-    """
-    DSL example:
-    workflow, resource_manager, estimator
-    """
-    def func():
+    def __init__(self, **kwargs):
         ## TODO: add ability to determine if evolution has stopped
         ## TODO: add archive
         ## TODO: add generating and collecting different statistics
         ## TODO: add logging
         # create initial populations of all species
         # taking part in coevolution
+        self.kwargs = deepcopy(kwargs)
+        self.ENV = kwargs["env"]
+        self.SPECIES = kwargs["species"]
+        self.INTERACT_INDIVIDUALS_COUNT = kwargs["interact_individuals_count"]
+        self.GENERATIONS = kwargs["generations"]
 
-        ENV = kwargs["env"]
-        SPECIES = kwargs["species"]
-        INTERACT_INDIVIDUALS_COUNT = kwargs["interact_individuals_count"]
-        GENERATIONS = kwargs["generations"]
-
-        solstat = kwargs.get("solstat", lambda sols: {})
-
+        self.solstat = kwargs.get("solstat", lambda sols: {})
         #choose = kwargs["operators"]["choose"]
-        build_solutions = kwargs["operators"]["build_solutions"]
+        self.build_solutions = kwargs["operators"]["build_solutions"]
 
-        fitness = kwargs["operators"]["fitness"]
-        assign_credits = kwargs["operators"]["assign_credits"]
+        self.fitness = kwargs["operators"]["fitness"]
+        self.assign_credits = kwargs["operators"]["assign_credits"]
+        self.analyzers = kwargs.get("analyzers", [])
+        self.USE_CREDIT_INHERITANCE = kwargs.get("use_credit_inheritance", False)
+        self.HALL_OF_FAME_SIZE = kwargs.get("hall_of_fame_size", 0)
 
-        analyzers = kwargs.get("analyzers", [])
+        self._result = None
 
-        USE_CREDIT_INHERITANCE = kwargs.get("use_credit_inheritance", False)
+        self.stat = tools.Statistics(key=lambda x: x.fitness)
+        self.stat.register("best", rounddec(numpy.max))
+        self.stat.register("min", rounddec(numpy.min))
+        self.stat.register("avg", rounddec(numpy.average))
+        self.stat.register("std", rounddec(numpy.std))
 
-        HALL_OF_FAME_SIZE = kwargs.get("hall_of_fame_size", 0)
-
-        # assert INTERACT_INDIVIDUALS_COUNT >= min(s.pop_size for s in SPECIES), \
-        #     "Count of interacting individuals cannot be lower than size of any population." \
-        #     " This restriction will be removed in future releases"
-
-
-        stat = tools.Statistics(key=lambda x: x.fitness)
-        stat.register("best", rounddec(numpy.max))
-        stat.register("min", rounddec(numpy.min))
-        stat.register("avg", rounddec(numpy.average))
-        stat.register("std", rounddec(numpy.std))
-
-
-
-
-        def generate_k(pop):
-            base_k = int(INTERACT_INDIVIDUALS_COUNT / len(pop))
-            free_slots = INTERACT_INDIVIDUALS_COUNT % len(pop)
-            for ind in pop:
-                ind.k = base_k
-
-            for slot in range(free_slots):
-                i = random.randint(0, len(pop) - 1)
-                pop[i].k += 1
-            return pop
-
-
-
-        def credit_to_k(pop):
-            norma = INTERACT_INDIVIDUALS_COUNT / sum(el.fitness for el in pop)
-            for c in pop:
-                c.k = int(c.fitness * norma)
-            left_part = INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
-            sorted_pop = sorted(pop, key=lambda x: x.fitness, reverse=True)
-            for i in range(left_part):
-                sorted_pop[i].k += 1
-            return pop
-
-        logbook = tools.Logbook()
-        kwargs['logbook'] = logbook
+        self.logbook = tools.Logbook()
+        self.kwargs['logbook'] = self.logbook
 
         ## TODO: make processing of population consisting of 1 element uniform
         ## generate initial population
-        pops = {s: generate_k(s.initialize(kwargs, s.pop_size)) if not s.fixed
-        else generate_k([s.representative_individual])
-                for s in SPECIES}
+        self.pops = {s: self._generate_k(s.initialize(self.kwargs, s.pop_size)) if not s.fixed
+        else self._generate_k([s.representative_individual])
+                for s in self.SPECIES}
+
         ## make a copy for logging. TODO: remake it with logbook later.
-        initial_pops = {s.name: deepcopy(pop) for s, pop in pops.items()}
+        self.initial_pops = {s.name: deepcopy(pop) for s, pop in self.pops.items()}
 
         ## checking correctness
-        for s, pop in pops.items():
+        for s, pop in self.pops.items():
            sm = sum(p.k for p in pop)
-           assert sm == INTERACT_INDIVIDUALS_COUNT, \
-               "For specie {0} count doesn't equal to {1}. Actual value {2}".format(s, INTERACT_INDIVIDUALS_COUNT, sm)
+           assert sm == self.INTERACT_INDIVIDUALS_COUNT, \
+               "For specie {0} count doesn't equal to {1}. Actual value {2}".format(s, self.INTERACT_INDIVIDUALS_COUNT, sm)
 
         print("Initialization finished")
 
+        self.hall = HallOfFame(self.HALL_OF_FAME_SIZE)
 
-        hall = HallOfFame(HALL_OF_FAME_SIZE)
+        self.kwargs['gen'] = 0
+        pass
 
+    def __call__(self):
+        for gen in range(self.GENERATIONS):
+            self.gen()
+            print("Offsprings have been generated")
+            pass
+        return self.result()
 
-        best = None
-        for gen in range(GENERATIONS):
+    def gen(self):
+        kwargs = self.kwargs
+        kwargs['gen'] = kwargs['gen'] + 1
+        print("Gen: " + str(kwargs['gen']))
+        solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
 
-            print("Gen: " + str(gen))
-            kwargs['gen'] = gen
-            ## constructing set of possible solutions
-            solutions = []
+        print("Solutions have been built")
 
-            solutions = build_solutions(pops, INTERACT_INDIVIDUALS_COUNT)
-            # for i in range(INTERACT_INDIVIDUALS_COUNT):
-            #     # solution = DictBasedIndividual({s.name: decrease_k(choose(kwargs, pop)) if not s.fixed
-            #     #                                 else s.representative_individual
-            #     #                                 for s, pop in pops.items()})
-            #     solutions.append(solution)
+        ## estimate fitness
+        for sol in solutions:
+            sol.fitness = self.fitness(kwargs, sol)
 
-            print("Solutions have been built")
+        print("Fitness have been evaluated")
 
-            ## estimate fitness
-            for sol in solutions:
-                sol.fitness = fitness(kwargs, sol)
+        for s, pop in self.pops.items():
+            for p in pop:
+                p.fitness = -1000000000.0
 
-            print("Fitness have been evaluated")
+        ## assign id, calculate credits and save it
+        i = 0
+        for s, pop in self.pops.items():
+            for p in pop:
+                p.id = i
+                i += 1
+        ind_maps = {p.id: p for s, pop in self.pops.items() for p in pop}
+        ind_to_credits = self.assign_credits(kwargs, solutions)
+        for ind_id, credit in ind_to_credits.items():
+            ## assign credit to every individual
+            ind_maps[ind_id].fitness = credit
 
-            for s, pop in pops.items():
-                for p in pop:
-                    p.fitness = -1000000000.0
-
-            ## assign id, calculate credits and save it
-            i = 0
-            for s, pop in pops.items():
-                for p in pop:
-                    p.id = i
-                    i += 1
-            ind_maps = {p.id: p for s, pop in pops.items() for p in pop}
-            ind_to_credits = assign_credits(kwargs, solutions)
-            for ind_id, credit in ind_to_credits.items():
-                ## assign credit to every individual
-                ind_maps[ind_id].fitness = credit
-
-            assert all([sum(p.fitness for p in pop) != 0 for s, pop in pops.items()]), \
+        assert all([sum(p.fitness for p in pop) != 0 for s, pop in self.pops.items()]), \
                 "Error. Some population has individuals only with zero fitness"
 
-            print("Credit have been estimated")
+        print("Credit have been estimated")
 
-            #{s:distance.hamming() for s, pop in pops.items()}
+        solsstat_dict = dict(list(self.stat.compile(solutions).items()) + list(self.solstat(solutions).items()))
+        solsstat_dict["fitnesses"] = [sol.fitness for sol in solutions]
 
-            solsstat_dict = dict(list(stat.compile(solutions).items()) + list(solstat(solutions).items()))
-            solsstat_dict["fitnesses"] = [sol.fitness for sol in solutions]
+        popsstat_dict = {s.name: dict(list(self.stat.compile(pop).items()) + list(s.stat(pop).items())) for s, pop in self.pops.items()}
+        for s, pop in self.pops.items():
+            popsstat_dict[s.name]["fitnesses"] = [p.fitness for p in pop]
 
-            popsstat_dict = {s.name: dict(list(stat.compile(pop).items()) + list(s.stat(pop).items())) for s, pop in pops.items()}
-            for s, pop in pops.items():
-                popsstat_dict[s.name]["fitnesses"] = [p.fitness for p in pop]
+        if self.hall.maxsize > 0:
+            self.hall.update(solutions)
+            ## TODO: this should be reconsidered
+            lsols = len(solutions)
+            solutions = list(self.hall) + solutions
+            solutions = solutions[0:lsols]
 
-            if hall.maxsize > 0:
-                hall.update(solutions)
-                ## TODO: this should be reconsidered
-                lsols = len(solutions)
-                solutions = list(hall) + solutions
-                solutions = solutions[0:lsols]
+        self.logbook.record(gen=kwargs['gen'],
+                        popsstat=(popsstat_dict,),
+                        solsstat=(solsstat_dict,))
 
-            logbook.record(gen=gen,
-                           popsstat=(popsstat_dict,),
-                           solsstat=(solsstat_dict,))
+        for an in self.analyzers:
+            an(kwargs, solutions, self.pops)
 
-            for an in analyzers:
-                an(kwargs, solutions, pops)
+        print("hall: " + str(list(map(lambda x: x.fitness, self.hall))))
 
-            print("hall: " + str(list(map(lambda x: x.fitness, hall))))
+        ## select best solution as a result
+        ## TODO: remake it in a more generic way
+        ## TODO: add archive and corresponding updating and mixing
+        #best = max(solutions, key=lambda x: x.fitness)
 
-            #_logpops(logbook, gen, pops, solutions)
+        ## take the best
+        # best = hall[0] if hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
+        self.best = self.hall[0] if self.hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
 
-            ## select best solution as a result
-            ## TODO: remake it in a more generic way
-            ## TODO: add archive and corresponding updating and mixing
-            #best = max(solutions, key=lambda x: x.fitness)
+        ## produce offsprings
+        items = [(s, pop) for s, pop in self.pops.items() if not s.fixed]
+        for s, pop in items:
+            if s.fixed:
+                continue
+            offspring = s.select(kwargs, pop)
+            offspring = list(map(deepcopy, offspring))
 
-            ## take the best
-            # best = hall[0] if hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
-            best = hall[0] if hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
-
-            ## produce offsprings
-            items = [(s, pop) for s, pop in pops.items() if not s.fixed]
-            for s, pop in items:
-                if s.fixed:
-                    continue
-                offspring = s.select(kwargs, pop)
-                offspring = list(map(deepcopy, offspring))
-
-                ## apply mixin elite ones from the hall
-                if hall.maxsize > 0:
-                    elite = [sol[s.name] for sol in hall]
-                    offspring = elite + offspring
-                    offspring = offspring[0:len(pop)]
+            ## apply mixin elite ones from the hall
+            if self.hall.maxsize > 0:
+                elite = [sol[s.name] for sol in self.hall]
+                offspring = elite + offspring
+                offspring = offspring[0:len(pop)]
 
 
-                # Apply crossover and mutation on the offspring
-                for child1, child2 in zip(offspring[::2], offspring[1::2]):
-                    if random.random() < s.cxb:
-                        c1 = child1.fitness
-                        c2 = child2.fitness
-                        s.mate(kwargs, child1, child2)
-                        ## TODO: make credit inheritance here
-                        ## TODO: toolbox.inherit_credit(pop, child1, child2)
-                        ## TODO: perhaps, this operation should be done after all crossovers in the pop
-                        ## default implementation
-                        ## ?
-                        child1.fitness = (c1 + c2) / 2.0
-                        child2.fitness = (c1 + c2) / 2.0
-                        pass
+            # Apply crossover and mutation on the offspring
+            for child1, child2 in zip(offspring[::2], offspring[1::2]):
+                if random.random() < s.cxb:
+                    c1 = child1.fitness
+                    c2 = child2.fitness
+                    s.mate(kwargs, child1, child2)
+                    ## TODO: make credit inheritance here
+                    ## TODO: toolbox.inherit_credit(pop, child1, child2)
+                    ## TODO: perhaps, this operation should be done after all crossovers in the pop
+                    ## default implementation
+                    ## ?
+                    child1.fitness = (c1 + c2) / 2.0
+                    child2.fitness = (c1 + c2) / 2.0
                     pass
 
-                for mutant in offspring:
-                    if random.random() < s.mb:
-                        s.mutate(kwargs, mutant)
-                    pass
-                pops[s] = offspring
+            for mutant in offspring:
+                if random.random() < s.mb:
+                    s.mutate(kwargs, mutant)
                 pass
+            self.pops[s] = offspring
+            pass
 
             ## assign credits for every individuals of all pops
-            for s, pop in pops.items():
-                credit_to_k(pop)
+        for s, pop in self.pops.items():
+            self._credit_to_k(pop)
 
-            for s, pop in pops.items():
-                for ind in pop:
-                    if not USE_CREDIT_INHERITANCE:
-                        del ind.fitness
-                    del ind.id
-            pass
-            print("Offsprings have been generated")
-        return best, pops, logbook, initial_pops
-    return func
+        for s, pop in self.pops.items():
+            for ind in pop:
+                if not self.USE_CREDIT_INHERITANCE:
+                    del ind.fitness
+                del ind.id
+        pass
+
+    def result(self):
+        return self.best, self.pops, self.logbook, self.initial_pops
+
+    def _generate_k(self, pop):
+        base_k = int(self.INTERACT_INDIVIDUALS_COUNT / len(pop))
+        free_slots = self.INTERACT_INDIVIDUALS_COUNT % len(pop)
+        for ind in pop:
+            ind.k = base_k
+
+        for slot in range(free_slots):
+            i = random.randint(0, len(pop) - 1)
+            pop[i].k += 1
+        return pop
+
+    def _credit_to_k(self, pop):
+        norma = self.INTERACT_INDIVIDUALS_COUNT / sum(el.fitness for el in pop)
+        for c in pop:
+            c.k = int(c.fitness * norma)
+        left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
+        sorted_pop = sorted(pop, key=lambda x: x.fitness, reverse=True)
+        for i in range(left_part):
+            sorted_pop[i].k += 1
+        return pop
+
+    pass
+
 
 def run_cooperative_ga(**kwargs):
-    return create_cooperative_ga(**kwargs)()
+    kwargs = deepcopy(kwargs)
+    cga = CoevolutionGA(**kwargs)
+    return cga()
