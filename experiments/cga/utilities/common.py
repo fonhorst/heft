@@ -241,12 +241,43 @@ def extract_ordering_from_ga_file(path):
 
 tourn = lambda ctx, pop: tools.selTournament(pop, len(pop), 2)
 ## TODO: remove this hack later
+
 class Fitness(ComparableMixin):
     def __init__(self, fitness):
         self.values = [fitness]
+        self.valid = True
 
     def _cmpkey(self):
         return self.values[0]
+
+    ## TODO: remove it later
+
+    def _compare(self, other, method):
+        try:
+            return method(self._cmpkey(), other._cmpkey())
+        except (AttributeError, TypeError):
+            # _cmpkey not implemented, or return different type,
+            # so I can't compare with "other".
+            print("Have some fun")
+            return NotImplemented
+
+    def __lt__(self, other):
+        return self._compare(other, lambda s, o: s < o)
+
+    def __le__(self, other):
+        return self._compare(other, lambda s, o: s <= o)
+
+    def __eq__(self, other):
+        return self._compare(other, lambda s, o: s == o)
+
+    def __ge__(self, other):
+        return self._compare(other, lambda s, o: s >= o)
+
+    def __gt__(self, other):
+        return self._compare(other, lambda s, o: s > o)
+
+    def __ne__(self, other):
+        return self._compare(other, lambda s, o: s != o)
 
 
 ## TODO: remake this stub later
