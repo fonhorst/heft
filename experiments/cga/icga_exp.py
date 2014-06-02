@@ -4,7 +4,7 @@ from functools import partial
 from deap import tools
 
 from GA.DEAPGA.coevolution.cga import Env, Specie, run_cooperative_ga, CoevolutionGA
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ORDERING_SPECIE, build_schedule, max_assign_credits, mapping_heft_based_initialize, ordering_heft_based_initialize, fitness_mapping_and_ordering, MutRegulator, mapping_all_mutate_configurable, default_build_solutions, one_to_one_build_solutions
+from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ORDERING_SPECIE, build_schedule, max_assign_credits, mapping_heft_based_initialize, ordering_heft_based_initialize, fitness_mapping_and_ordering, MutRegulator, mapping_all_mutate_configurable, default_build_solutions, one_to_one_build_solutions, default_assign_credits, bonus2_assign_credits, mapping_all_mutate
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from environment.Utility import Utility
 from environment.ResourceGenerator import ResourceGenerator as rg
@@ -31,7 +31,11 @@ ordering_selector = ArchivedSelector(3)(tourn)
 
 
 # heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100.json")
-# heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
+
+# heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m40(m35).json", rm)
+# heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m40(m35).json")
+
+# heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json", rm)
 # heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 
 # heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json", rm)
@@ -39,6 +43,9 @@ ordering_selector = ArchivedSelector(3)(tourn)
 
 heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m75.json", rm)
 heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m75.json")
+
+# heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m25.json", rm)
+# heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m25.json")
 
 ms_ideal_ind = heft_mapping
 os_ideal_ind = heft_ordering
@@ -56,9 +63,9 @@ config = {
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
-                           # mutate=mapping_all_mutate,
+                           mutate=mapping_all_mutate,
                            # mutate=mapping_all_mutate_variable,
-                           mutate=mapping_mut_reg(mapping_all_mutate_configurable),
+                           # mutate=mapping_mut_reg(mapping_all_mutate_configurable),
                            # mutate=mapping_all_mutate_variable2,
                            # mutate=mapping_improving_mutation,
                            # mutate=mapping_default_mutate,
@@ -109,6 +116,7 @@ config = {
 def do_experiment(saver, config, _wf, rm, estimator):
     islands = [CoevolutionGA(**config), CoevolutionGA(**config),
                CoevolutionGA(**config), CoevolutionGA(**config)]
+    # islands = [CoevolutionGA(**config), CoevolutionGA(**config)]
     migration = partial(equal_social_migration_scheme, k=3, selection=best_selection)
     best, islands = run_island_ga(islands, migration, 100, 20)
     return best.fitness

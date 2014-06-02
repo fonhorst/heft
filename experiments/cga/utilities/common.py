@@ -73,10 +73,10 @@ class ComparableMixin(object):
 
 
 def repeat(func, n):
-    fs = [futures.submit(func) for i in range(n)]
-    futures.wait(fs)
-    return [f.result() for f in fs]
-    # return [func() for i in range(n)]
+    # fs = [futures.submit(func) for i in range(n)]
+    # futures.wait(fs)
+    # return [f.result() for f in fs]
+    return [func() for i in range(n)]
 
 
 class OnlyUniqueMutant:

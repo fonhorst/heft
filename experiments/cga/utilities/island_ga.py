@@ -68,7 +68,7 @@ def equal_social_migration_scheme(populations, k, selection):
         el = emigr[random.randint(0, len(emigr) - 1)]
         emigr.remove(el)
         return el
-    immigrants = [[choose(v) for k, v in emigrants.items() if k != i] for i in range(len(populations))]
+    immigrants = [[choose(v) for key, v in emigrants.items() if key != i] for i in range(len(populations))]
 
     print([len(v) for k, v in copy_emigrants.items()])
     print([len(el) for el in immigrants])
