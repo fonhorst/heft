@@ -172,7 +172,7 @@ class Schedule:
         all_items = [item for node, items in self.mapping.items() for item in items]
         assert all(it.state == ScheduleItem.UNSTARTED for it in all_items),\
             "This operation is applicable only for static scheduling"
-        t_to_n = {item.job.id: node for (node, items) in self.mapping.items() for item in items}
+        t_to_n = {item.job: node for (node, items) in self.mapping.items() for item in items}
         return t_to_n
 
 

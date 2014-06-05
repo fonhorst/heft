@@ -5,7 +5,8 @@ import os
 from GA.DEAPGA.GAImplementation.GARunner import MixRunner
 from experiments.cga.utilities.common import UniqueNameSaver, repeat
 
-wf_names = ['Montage_100']
+# wf_names = ['Montage_100']
+wf_names = ['Montage_50']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
 # wf_names = ['Epigenomics_100']

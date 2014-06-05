@@ -13,41 +13,41 @@
 #    You should have received a copy of the GNU Lesser General Public
 #    License along with DEAP. If not, see <http://www.gnu.org/licenses/>.
 
-import array
 import random
-import json
-
 import numpy
 
-from math import sqrt
-
-from deap import algorithms
 from deap import base
-from deap import benchmarks
-from deap.benchmarks.tools import diversity, convergence
 from deap import creator
 from deap import tools
 from GA.DEAPGA.coevolution.cga import ListBasedIndividual, Env
 from GA.DEAPGA.coevolution.operators import mapping_heft_based_initialize, ordering_heft_based_initialize
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
 from experiments.cga import wf
-from experiments.cga.mobjective.utility import VMResGen, cost_mapping_and_ordering, fitness_makespan_and_cost_map_ord
+from environment.ResourceGenerator import ResourceGenerator as rg
+from experiments.cga.mobjective.utility import VMResGen, fitness_makespan_and_cost_map_ord, SimpleTimeCostEstimator
 from experiments.cga.utilities.common import extract_ordering_from_ga_file, extract_mapping_from_ga_file
 from experiments.cga.utilities.double_chromosome_ga import _mate, _mutate
 
 
 _wf = wf("Montage_100")
-rm = ExperimentResourceManager(VMResGen.r([10, 15, 25, 30], 4))
-estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
+# rm = ExperimentResourceManager(VMResGen.r([10, 15, 25, 30], 4))
+rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
+# estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
+estimator = SimpleTimeCostEstimator(comp_time_cost=10, transf_time_cost=2, transferMx=None, ideal_flops=20, transfer_time=100)
 env = Env(_wf, rm, estimator)
-pop_size = 50
 
-heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
-heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
+pop_size = 200
+NGEN = 200
+MU = 40
+CXPB = 0.9
+
+heft_mapping = extract_mapping_from_ga_file("../../../temp/heft_etalon_full_tr100_m100.json", rm)
+heft_ordering = extract_ordering_from_ga_file("../../../temp/heft_etalon_full_tr100_m100.json")
+
 
 INF = float("-inf")
-creator.create("FitnessMin", base.Fitness, weights=(INF, INF))
-ListBasedIndividual.fitness = creator.FitnessMin
+creator.create("FitnessMax", base.Fitness, weights=(1.0, 1.0))
+creator.create("Individual", ListBasedIndividual, typecode='d', fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 
@@ -55,19 +55,18 @@ toolbox = base.Toolbox()
 ctx = {'env': env}
 pop_mapping = mapping_heft_based_initialize(ctx, pop_size, heft_mapping, 3)
 pop_ordering = ordering_heft_based_initialize(ctx, pop_size, heft_ordering, 3)
-pop = [ListBasedIndividual(el) for el in zip(pop_mapping, pop_ordering)]
+init_pop = [creator.Individual(el) for el in zip(pop_mapping, pop_ordering)]
 
-toolbox.register("evaluate", fitness_makespan_and_cost_map_ord)
-toolbox.register("mate", _mate, ctx=ctx)
-toolbox.register("mutate", _mutate, ctx=ctx)
+toolbox.register("evaluate", fitness_makespan_and_cost_map_ord, ctx)
+toolbox.register("mate", _mate, ctx)
+toolbox.register("mutate", _mutate, ctx)
 toolbox.register("select", tools.selNSGA2)
 
-def main(seed=None):
-    random.seed(seed)
 
-    NGEN = 250
-    MU = 100
-    CXPB = 0.9
+def main():
+
+
+    pop = init_pop
 
     stats = tools.Statistics(lambda ind: ind.fitness.values)
     stats.register("avg", numpy.mean, axis=0)
@@ -121,24 +120,15 @@ def main(seed=None):
     return pop, logbook
 
 if __name__ == "__main__":
-    with open("pareto_front/zdt1_front.json") as optimal_front_data:
-        optimal_front = json.load(optimal_front_data)
-    # Use 500 of the 1000 points in the json file
-    optimal_front = sorted(optimal_front[i] for i in range(0, len(optimal_front), 2))
 
     pop, stats = main()
     pop.sort(key=lambda x: x.fitness.values)
-
-    print(stats)
-    print("Convergence: ", convergence(pop, optimal_front))
-    print("Diversity: ", diversity(pop, optimal_front[0], optimal_front[-1]))
 
     import matplotlib.pyplot as plt
     import numpy
 
     front = numpy.array([ind.fitness.values for ind in pop])
-    optimal_front = numpy.array(optimal_front)
-    plt.scatter(optimal_front[:,0], optimal_front[:,1], c="r")
+
     plt.scatter(front[:,0], front[:,1], c="b")
     plt.axis("tight")
     plt.show()
