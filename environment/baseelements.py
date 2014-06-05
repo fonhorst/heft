@@ -107,7 +107,7 @@ class Workflow:
 
 
 class Task:
-    def __init__(self, id, internal_wf_id):
+    def __init__(self, id, internal_wf_id, is_head=False):
         self.id = id
         self.internal_wf_id = internal_wf_id
         self.wf = None
@@ -117,6 +117,7 @@ class Task:
         self.runtime = None ## flops for calculating
         self.input_files = None ##
         self.output_files = None
+        self.is_head = is_head
 
     def __str__(self):
         return self.id

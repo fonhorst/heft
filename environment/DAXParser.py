@@ -44,7 +44,7 @@ class DAXParser:
 
         heads = [task for (name, task) in internal_id2Task.items() if len(task.parents) == 0 ]
 
-        common_head = Task("000_" + taskPostfixId, "000")
+        common_head = Task("000_" + taskPostfixId, "000", True)
         for head in heads:
             head.parents = set([common_head])
         common_head.children = heads
