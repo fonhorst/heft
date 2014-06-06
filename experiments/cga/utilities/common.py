@@ -11,8 +11,10 @@ from scoop import futures
 from GA.DEAPGA.coevolution.cga import ListBasedIndividual, rounddeciter
 from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
 
+class Saver:
+    pass
 
-class UniqueNameSaver:
+class UniqueNameSaver(Saver):
     def __init__(self, directory):
         self.directory = directory
 
@@ -24,6 +26,12 @@ class UniqueNameSaver:
         with open(path, "w") as f:
             json.dump(data, f)
         return name
+
+class FakeSaver(Saver):
+    def __init__(self):
+        pass
+    def __call__(self, *args, **kwargs):
+        pass
 
 
 def load_data(path):

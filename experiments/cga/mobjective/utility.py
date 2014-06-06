@@ -45,8 +45,12 @@ def cost_mapping_and_ordering(ctx, solution):
 
 
 def fitness_makespan_and_cost_map_ord(ctx, x):
-    makespan = fitness_mapping_and_ordering(ctx, {MAPPING_SPECIE: x[0], ORDERING_SPECIE: x[1]})
-    cost = cost_mapping_and_ordering(ctx, {MAPPING_SPECIE: x[0], ORDERING_SPECIE: x[1]})
+    if isinstance(x, dict):
+        sol = x
+    else:
+        sol = {MAPPING_SPECIE: x[0], ORDERING_SPECIE: x[1]}
+    makespan = fitness_mapping_and_ordering(ctx, sol)
+    cost = cost_mapping_and_ordering(ctx, sol)
     ## TODO: to correct this issue we need to refactor single-objective cga version
     return -makespan, -cost
 

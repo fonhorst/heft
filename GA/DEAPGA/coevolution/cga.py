@@ -91,19 +91,25 @@ DictBasedIndividual = creator.DictBasedIndividual
 creator.create("ListBasedIndividual", list)
 ListBasedIndividual = creator.ListBasedIndividual
 
+def _round(res):
+    if isinstance(res, tuple):
+            res = tuple(int(x*100.0)/100.0 for x in res)
+    else:
+        res = int(res*100.0)/100.0
+    return res
 
 def rounddec(func):
     def wrapper(*args, **kwargs):
         res = func(*args, **kwargs)
-        res = int(res*100.0)/100.0
+        res = _round(res)
         return res
     return wrapper
 
 def rounddeciter(func):
     def wrapper(*args, **kwargs):
         results = func(*args, **kwargs)
-        res = [int(res*100)/100 for res in results]
-        return res
+        results = [_round(res) for res in results]
+        return results
     return wrapper
 
 # class Specie:
@@ -126,6 +132,21 @@ Toolbox need to implement functions:
 """
 
 Env = namedtuple('Env', ['wf', 'rm', 'estimator'])
+
+def equal_fitness_distribution(child1, child2):
+    c1 = child1.fitness
+    c2 = child2.fitness
+    child1.fitness = (c1 + c2) / 2.0
+    child2.fitness = (c1 + c2) / 2.0
+    pass
+
+def equal_mo_fitness_distribution(child1, child2):
+    c1_vals = child1.fitness.values
+    c2_vals = child2.fitness.values
+    vals = [(x1 + x2) / 2.0 for x1, x2 in zip(c1_vals, c2_vals)]
+    child1.fitness.values = deepcopy(vals)
+    child2.fitness.values = deepcopy(vals)
+    pass
 
 class Specie:
     def __init__(self, **kwargs):
@@ -173,13 +194,15 @@ class CoevolutionGA:
         self.USE_CREDIT_INHERITANCE = kwargs.get("use_credit_inheritance", False)
         self.HALL_OF_FAME_SIZE = kwargs.get("hall_of_fame_size", 0)
 
+        self._fitness_distribution = kwargs["operators"].get("fitness_distribution", equal_fitness_distribution)
+
         self._result = None
 
-        self.stat = tools.Statistics(key=lambda x: x.fitness)
-        self.stat.register("best", rounddec(numpy.max))
-        self.stat.register("min", rounddec(numpy.min))
-        self.stat.register("avg", rounddec(numpy.average))
-        self.stat.register("std", rounddec(numpy.std))
+        self.stat = tools.Statistics(key=lambda x: x.fitness.values if hasattr(x.fitness, "values") else x.fitness)
+        # self.stat.register("best", rounddec(numpy.max))
+        # self.stat.register("min", rounddec(numpy.min))
+        # self.stat.register("avg", rounddec(numpy.average))
+        # self.stat.register("std", rounddec(numpy.std))
 
         self.logbook = tools.Logbook()
         self.kwargs['logbook'] = self.logbook
@@ -205,6 +228,7 @@ class CoevolutionGA:
 
         self.kwargs['gen'] = 0
 
+        self.solutions = None
         pass
 
     def __call__(self):
@@ -218,19 +242,21 @@ class CoevolutionGA:
         kwargs = self.kwargs
         kwargs['gen'] = kwargs['gen'] + 1
         print("Gen: " + str(kwargs['gen']))
-        solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
+        self.solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
 
         print("Solutions have been built")
 
         ## estimate fitness
-        for sol in solutions:
+        for sol in self.solutions:
             sol.fitness = self.fitness(kwargs, sol)
 
         print("Fitness have been evaluated")
 
         for s, pop in self.pops.items():
             for p in pop:
-                p.fitness = -1000000000.0
+                ## TODO: refactor with normal fitness.values
+                # p.fitness = -1000000000.0
+                p.fitness.values = (-1000000000.0, -1000000000.0)
 
         ## assign id, calculate credits and save it
         i = 0
@@ -239,36 +265,37 @@ class CoevolutionGA:
                 p.id = i
                 i += 1
         ind_maps = {p.id: p for s, pop in self.pops.items() for p in pop}
-        ind_to_credits = self.assign_credits(kwargs, solutions)
+        ind_to_credits = self.assign_credits(kwargs, self.solutions)
         for ind_id, credit in ind_to_credits.items():
             ## assign credit to every individual
-            ind_maps[ind_id].fitness = credit
+            ## TODO: refactor with normal fitness.values
+            ind_maps[ind_id].fitness.values = credit
 
-        assert all([sum(p.fitness for p in pop) != 0 for s, pop in self.pops.items()]), \
-                "Error. Some population has individuals only with zero fitness"
+        # assert all([sum(p.fitness for p in pop) != 0 for s, pop in self.pops.items()]), \
+        #         "Error. Some population has individuals only with zero fitness"
 
         print("Credit have been estimated")
 
-        solsstat_dict = dict(list(self.stat.compile(solutions).items()) + list(self.solstat(solutions).items()))
-        solsstat_dict["fitnesses"] = [sol.fitness for sol in solutions]
+        solsstat_dict = dict(list(self.stat.compile(self.solutions).items()) + list(self.solstat(self.solutions).items()))
+        solsstat_dict["fitnesses"] = [sol.fitness for sol in self.solutions]
 
         popsstat_dict = {s.name: dict(list(self.stat.compile(pop).items()) + list(s.stat(pop).items())) for s, pop in self.pops.items()}
         for s, pop in self.pops.items():
             popsstat_dict[s.name]["fitnesses"] = [p.fitness for p in pop]
 
         if self.hall.maxsize > 0:
-            self.hall.update(solutions)
+            self.hall.update(self.solutions)
             ## TODO: this should be reconsidered
-            lsols = len(solutions)
-            solutions = list(self.hall) + solutions
-            solutions = solutions[0:lsols]
+            lsols = len(self.solutions)
+            self.solutions = list(self.hall) + self.solutions
+            self.solutions = self.solutions[0:lsols]
 
         self.logbook.record(gen=kwargs['gen'],
-                        popsstat=(popsstat_dict,),
-                        solsstat=(solsstat_dict,))
+                            popsstat=(popsstat_dict,),
+                            solsstat=(solsstat_dict,))
 
         for an in self.analyzers:
-            an(kwargs, solutions, self.pops)
+            an(kwargs, self.solutions, self.pops)
 
         print("hall: " + str(list(map(lambda x: x.fitness, self.hall))))
 
@@ -279,7 +306,7 @@ class CoevolutionGA:
 
         ## take the best
         # best = hall[0] if hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
-        self.best = self.hall[0] if self.hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
+        self.best = self.hall[0] if self.hall.maxsize > 0 else max(self.solutions, key=lambda x: x.fitness)
 
         ## produce offsprings
         items = [(s, pop) for s, pop in self.pops.items() if not s.fixed]
@@ -302,13 +329,9 @@ class CoevolutionGA:
                     c1 = child1.fitness
                     c2 = child2.fitness
                     s.mate(kwargs, child1, child2)
-                    ## TODO: make credit inheritance here
-                    ## TODO: toolbox.inherit_credit(pop, child1, child2)
-                    ## TODO: perhaps, this operation should be done after all crossovers in the pop
-                    ## default implementation
-                    ## ?
-                    child1.fitness = (c1 + c2) / 2.0
-                    child2.fitness = (c1 + c2) / 2.0
+                    ## TODO: consider possibility to combine it with crossover operation by decorating
+                    self._fitness_distribution(child1, child2)
+
                     pass
 
             for mutant in offspring:
@@ -330,7 +353,7 @@ class CoevolutionGA:
         pass
 
     def result(self):
-        return self.best, self.pops, self.logbook, self.initial_pops
+        return self.best, self.pops, self.logbook, self.initial_pops, self.solutions
 
     def _generate_k(self, pop):
         base_k = int(self.INTERACT_INDIVIDUALS_COUNT / len(pop))
@@ -352,6 +375,27 @@ class CoevolutionGA:
         for i in range(left_part):
             sorted_pop[i].k += 1
         return pop
+
+    # def _credit_to_k_2(self, pop):
+    #
+    #     fs = [el.fitness for el in pop]
+    #     l = len(fs[0].values)
+    #     mn = numpy.min(f.values for f in fs)
+    #     mx = numpy.max(f.values for f in fs)
+    #     df = mx - mn
+    #     for f in fs:
+    #         val = (f.values - mn) / df
+    #
+    #
+    #     norma = self.INTERACT_INDIVIDUALS_COUNT / sum(el.fitness for el in pop)
+    #     for c in pop:
+    #         c.k = int(c.fitness * norma)
+    #     left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
+    #     sorted_pop = sorted(pop, key=lambda x: x.fitness, reverse=True)
+    #     for i in range(left_part):
+    #         sorted_pop[i].k += 1
+    #     return pop
+
 
     pass
 
