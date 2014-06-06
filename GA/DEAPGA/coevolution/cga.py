@@ -88,8 +88,8 @@ toolbox = TBX(
 creator.create("DictBasedIndividual", dict)
 DictBasedIndividual = creator.DictBasedIndividual
 
-creator.create("Individual", list)
-ListBasedIndividual = creator.Individual
+creator.create("ListBasedIndividual", list)
+ListBasedIndividual = creator.ListBasedIndividual
 
 
 def rounddec(func):

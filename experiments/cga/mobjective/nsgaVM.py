@@ -19,6 +19,7 @@ import numpy
 from deap import base
 from deap import creator
 from deap import tools
+from scoop import futures
 from GA.DEAPGA.coevolution.cga import ListBasedIndividual, Env
 from GA.DEAPGA.coevolution.operators import mapping_heft_based_initialize, ordering_heft_based_initialize
 from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
@@ -37,7 +38,7 @@ estimator = SimpleTimeCostEstimator(comp_time_cost=10, transf_time_cost=2, trans
 env = Env(_wf, rm, estimator)
 
 pop_size = 200
-NGEN = 200
+NGEN = 300
 MU = 40
 CXPB = 0.9
 
@@ -45,9 +46,8 @@ heft_mapping = extract_mapping_from_ga_file("../../../temp/heft_etalon_full_tr10
 heft_ordering = extract_ordering_from_ga_file("../../../temp/heft_etalon_full_tr100_m100.json")
 
 
-INF = float("-inf")
-creator.create("FitnessMax", base.Fitness, weights=(1.0, 1.0))
-creator.create("Individual", ListBasedIndividual, typecode='d', fitness=creator.FitnessMax)
+creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0))
+creator.create("Individual", ListBasedIndividual, typecode='d', fitness=creator.FitnessMin)
 
 toolbox = base.Toolbox()
 
@@ -61,6 +61,8 @@ toolbox.register("evaluate", fitness_makespan_and_cost_map_ord, ctx)
 toolbox.register("mate", _mate, ctx)
 toolbox.register("mutate", _mutate, ctx)
 toolbox.register("select", tools.selNSGA2)
+
+# toolbox.register("map", futures.map_as_completed)
 
 
 def main():
@@ -94,7 +96,8 @@ def main():
     # Begin the generational process
     for gen in range(1, NGEN):
         # Vary the population
-        offspring = tools.selTournamentDCD(pop, len(pop))
+        # offspring = tools.selTournamentDCD(pop, len(pop))
+        offspring = toolbox.select(pop, len(pop))
         offspring = [toolbox.clone(ind) for ind in offspring]
 
         for ind1, ind2 in zip(offspring[::2], offspring[1::2]):
