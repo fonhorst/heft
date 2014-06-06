@@ -366,27 +366,7 @@ class CoevolutionGA:
             pop[i].k += 1
         return pop
 
-    def _credit_to_k(self, pop):
-        norma = self.INTERACT_INDIVIDUALS_COUNT / sum(el.fitness for el in pop)
-        for c in pop:
-            c.k = int(c.fitness * norma)
-        left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
-        sorted_pop = sorted(pop, key=lambda x: x.fitness, reverse=True)
-        for i in range(left_part):
-            sorted_pop[i].k += 1
-        return pop
-
-    # def _credit_to_k_2(self, pop):
-    #
-    #     fs = [el.fitness for el in pop]
-    #     l = len(fs[0].values)
-    #     mn = numpy.min(f.values for f in fs)
-    #     mx = numpy.max(f.values for f in fs)
-    #     df = mx - mn
-    #     for f in fs:
-    #         val = (f.values - mn) / df
-    #
-    #
+    # def _credit_to_k(self, pop):
     #     norma = self.INTERACT_INDIVIDUALS_COUNT / sum(el.fitness for el in pop)
     #     for c in pop:
     #         c.k = int(c.fitness * norma)
@@ -395,6 +375,23 @@ class CoevolutionGA:
     #     for i in range(left_part):
     #         sorted_pop[i].k += 1
     #     return pop
+
+    def _credit_to_k(self, pop):
+
+        mn = numpy.min(el.fitness.values for el in pop)
+        mx = numpy.max(el.fitness.values for el in pop)
+        df = mx - mn
+
+        pop_vals = zip(pop, [((el.fitness.values - mn) / df)*el.fitness.values.weights for el in pop])
+
+        norma = self.INTERACT_INDIVIDUALS_COUNT / sum(v for p, v in pop_vals)
+        for p, v in pop_vals:
+            p.k = int(v * norma)
+        left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
+        sorted_pop = sorted(pop_vals, key=lambda x: x[1], reverse=True)
+        for i in range(left_part):
+            sorted_pop[i].k += 1
+        return pop
 
 
     pass
