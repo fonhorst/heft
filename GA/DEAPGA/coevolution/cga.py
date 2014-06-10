@@ -385,6 +385,7 @@ class CoevolutionGA:
     #         sorted_pop[i].k += 1
     #     return pop
 
+    ## TODO: make it a part of the strategy
     def _credit_to_k(self, pop):
 
         base_count = 1
@@ -413,9 +414,11 @@ class CoevolutionGA:
                              for el in pop]))
         pop_vals = [(p, 0 if math.isinf(v) else v) for p, v in pop_vals]
 
-        norma = self.INTERACT_INDIVIDUALS_COUNT / sum(v for p, v in pop_vals)
+        # norma = self.INTERACT_INDIVIDUALS_COUNT / sum(v for p, v in pop_vals)
+        norma = (self.INTERACT_INDIVIDUALS_COUNT - len(pop)) / sum(v for p, v in pop_vals)
         for p, v in pop_vals:
             p.k = int(v * norma)
+            p.k += 1
 
         left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
         sorted_pop = [p for p, v in sorted(pop_vals, key=lambda x: x[1], reverse=True)]
