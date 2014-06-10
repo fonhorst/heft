@@ -58,7 +58,7 @@ mapping_mut_reg = MutRegulator()
 config = {
         "hall_of_fame_size": 0,
         "interact_individuals_count": 40,
-        "generations": 10,
+        "generations": 100,
         "env": Env(_wf, rm, estimator),
         "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
                            cxb=0.9, mb=0.9,
@@ -86,8 +86,9 @@ config = {
             "build_solutions": default_build_solutions,
             # "build_solutions": one_to_one_build_solutions,
             "fitness_distribution": equal_mo_fitness_distribution,
-            "fitness": fitness_makespan_and_cost_map_ord,
-            "assign_credits": max_assign_credits
+            "fitness": lambda ctx, x: creator.FitnessMin(fitness_makespan_and_cost_map_ord(ctx, x)),
+            "assign_credits": max_assign_credits,
+            "empty_fitness": lambda: creator.FitnessMin((float("-inf"), float("-inf")))
         }
     }
 

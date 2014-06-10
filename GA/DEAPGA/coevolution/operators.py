@@ -112,7 +112,7 @@ def max_assign_credits(ctx, solutions):
     for sol in solutions:
         for s, ind in sol.items():
             values = inds_credit.get(ind.id, [])
-            values.append(sol.fitness)
+            values.append(sol.fitness.values)
             inds_credit[ind.id] = values
 
     result = {ind_id: max(all_fits) for ind_id, all_fits in inds_credit.items()}

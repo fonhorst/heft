@@ -1,9 +1,11 @@
 from collections import namedtuple
 from copy import deepcopy
+import functools
 import random
 
 from deap import creator, tools
 from deap.tools import HallOfFame
+import math
 import numpy
 
 SPECIES = "species"
@@ -92,10 +94,11 @@ creator.create("ListBasedIndividual", list)
 ListBasedIndividual = creator.ListBasedIndividual
 
 def _round(res):
+    r = lambda x: x if x == float("inf") or x == float("-inf") or math.isnan(x) else int(x*100.0)/100.0
     if isinstance(res, tuple):
-            res = tuple(int(x*100.0)/100.0 for x in res)
+            res = tuple(r(x) for x in res)
     else:
-        res = int(res*100.0)/100.0
+        res = r(res)
     return res
 
 def rounddec(func):
@@ -169,6 +172,7 @@ class Specie:
         pass
 
 
+
 class CoevolutionGA:
 
     def __init__(self, **kwargs):
@@ -179,30 +183,32 @@ class CoevolutionGA:
         # create initial populations of all species
         # taking part in coevolution
         self.kwargs = deepcopy(kwargs)
-        self.ENV = kwargs["env"]
-        self.SPECIES = kwargs["species"]
-        self.INTERACT_INDIVIDUALS_COUNT = kwargs["interact_individuals_count"]
-        self.GENERATIONS = kwargs["generations"]
+        self.ENV = self.kwargs["env"]
+        self.SPECIES = self.kwargs["species"]
+        self.INTERACT_INDIVIDUALS_COUNT = self.kwargs["interact_individuals_count"]
+        self.GENERATIONS = self.kwargs["generations"]
 
-        self.solstat = kwargs.get("solstat", lambda sols: {})
+        self.solstat = self.kwargs.get("solstat", lambda sols: {})
         #choose = kwargs["operators"]["choose"]
-        self.build_solutions = kwargs["operators"]["build_solutions"]
+        self.build_solutions = self.kwargs["operators"]["build_solutions"]
 
-        self.fitness = kwargs["operators"]["fitness"]
-        self.assign_credits = kwargs["operators"]["assign_credits"]
-        self.analyzers = kwargs.get("analyzers", [])
-        self.USE_CREDIT_INHERITANCE = kwargs.get("use_credit_inheritance", False)
-        self.HALL_OF_FAME_SIZE = kwargs.get("hall_of_fame_size", 0)
+        self.fitness = self.kwargs["operators"]["fitness"]
+        self.assign_credits = self.kwargs["operators"]["assign_credits"]
+        self.analyzers = self.kwargs.get("analyzers", [])
+        self.USE_CREDIT_INHERITANCE = self.kwargs.get("use_credit_inheritance", False)
+        self.HALL_OF_FAME_SIZE = self.kwargs.get("hall_of_fame_size", 0)
 
-        self._fitness_distribution = kwargs["operators"].get("fitness_distribution", equal_fitness_distribution)
+        self._empty_fitness = self.kwargs["operators"]["empty_fitness"]
+
+        self._fitness_distribution = self.kwargs["operators"].get("fitness_distribution", equal_fitness_distribution)
 
         self._result = None
 
         self.stat = tools.Statistics(key=lambda x: x.fitness.values if hasattr(x.fitness, "values") else x.fitness)
-        # self.stat.register("best", rounddec(numpy.max))
-        # self.stat.register("min", rounddec(numpy.min))
-        # self.stat.register("avg", rounddec(numpy.average))
-        # self.stat.register("std", rounddec(numpy.std))
+        self.stat.register("best", rounddec(numpy.max))
+        self.stat.register("min", rounddec(numpy.min))
+        self.stat.register("avg", rounddec(numpy.average))
+        self.stat.register("std", rounddec(numpy.std))
 
         self.logbook = tools.Logbook()
         self.kwargs['logbook'] = self.logbook
@@ -242,6 +248,9 @@ class CoevolutionGA:
         kwargs = self.kwargs
         kwargs['gen'] = kwargs['gen'] + 1
         print("Gen: " + str(kwargs['gen']))
+
+        ## build solutions from individuals of different species
+        ## It is assumed to build a solution All species have to be applied
         self.solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
 
         print("Solutions have been built")
@@ -256,7 +265,8 @@ class CoevolutionGA:
             for p in pop:
                 ## TODO: refactor with normal fitness.values
                 # p.fitness = -1000000000.0
-                p.fitness.values = (-1000000000.0, -1000000000.0)
+                # FitnessMin(float("-inf"), float("-inf"))
+                p.fitness = self._empty_fitness()
 
         ## assign id, calculate credits and save it
         i = 0
@@ -264,6 +274,7 @@ class CoevolutionGA:
             for p in pop:
                 p.id = i
                 i += 1
+
         ind_maps = {p.id: p for s, pop in self.pops.items() for p in pop}
         ind_to_credits = self.assign_credits(kwargs, self.solutions)
         for ind_id, credit in ind_to_credits.items():
@@ -326,8 +337,6 @@ class CoevolutionGA:
             # Apply crossover and mutation on the offspring
             for child1, child2 in zip(offspring[::2], offspring[1::2]):
                 if random.random() < s.cxb:
-                    c1 = child1.fitness
-                    c2 = child2.fitness
                     s.mate(kwargs, child1, child2)
                     ## TODO: consider possibility to combine it with crossover operation by decorating
                     self._fitness_distribution(child1, child2)
@@ -378,17 +387,39 @@ class CoevolutionGA:
 
     def _credit_to_k(self, pop):
 
-        mn = numpy.min(el.fitness.values for el in pop)
-        mx = numpy.max(el.fitness.values for el in pop)
-        df = mx - mn
+        base_count = 1
 
-        pop_vals = zip(pop, [((el.fitness.values - mn) / df)*el.fitness.values.weights for el in pop])
+        ## TODO: replace it with data structure with the same functionality from numpy or scipy
+        def by_dimensions(iterable, *funcs):
+            val_iter = (i.fitness.values for i in iterable)
+            return [functools.reduce(lambda acc, x: x(acc), funcs, dim) for dim in zip(*val_iter)]
+
+        def vec_sub(a, b):
+            return [ael - bel for ael, bel in zip(a, b)]
+
+        def vec_div(a, b):
+            return [ael/bel for ael, bel in zip(a, b)]
+
+        def vec_mult(a, b):
+            return sum(ael*bel for ael, bel in zip(a, b))
+
+        ft = functools.partial(filter, lambda x: x > float("-inf"))
+        mn = by_dimensions(pop, ft, min)
+        mx = by_dimensions(pop, max)
+        df = vec_sub(mx, mn)
+
+
+        pop_vals = list(zip(pop, [vec_mult(vec_div(vec_sub(el.fitness.values, mn), df), el.fitness.weights)
+                             for el in pop]))
+        pop_vals = [(p, 0 if math.isinf(v) else v) for p, v in pop_vals]
 
         norma = self.INTERACT_INDIVIDUALS_COUNT / sum(v for p, v in pop_vals)
         for p, v in pop_vals:
             p.k = int(v * norma)
+
         left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
-        sorted_pop = sorted(pop_vals, key=lambda x: x[1], reverse=True)
+        sorted_pop = [p for p, v in sorted(pop_vals, key=lambda x: x[1], reverse=True)]
+
         for i in range(left_part):
             sorted_pop[i].k += 1
         return pop
