@@ -14,13 +14,19 @@ from experiments.cga.mobjective.utility import SimpleTimeCostEstimator, fitness_
 from experiments.cga.utilities.common import UniqueNameSaver, repeat, tourn, ArchivedSelector, extract_mapping_from_ga_file, extract_ordering_from_ga_file, hamming_distances, to_seq, unique_individuals, pcm, gdm, hamming_for_best_components, best_components_itself, FakeSaver
 
 
-_wf = wf("Montage_100")
+_wf = wf("Montage_50")
 # rm = ExperimentResourceManager(VMResGen.r([10, 15, 25, 30], 4))
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
-estimator = SimpleTimeCostEstimator(comp_time_cost=10, transf_time_cost=2, transferMx=None, ideal_flops=20, transfer_time=100)
+estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None, ideal_flops=20, transfer_time=100)
 env = Env(_wf, rm, estimator)
 
-selector = lambda ctx, pop:  tools.selNSGA2(pop, len(pop))
+# selector = lambda ctx, pop:  tools.selNSGA2(pop, len(pop))
+# selector = lambda ctx, pop:  tools.selTournament(pop, len(pop), 2)
+# selector = lambda ctx, pop:  tools.selTournamentDCD(pop, len(pop))
+def selector(ctx, pop):
+    tools.selNSGA2(pop, len(pop))
+    return tools.selTournamentDCD(pop, len(pop))
+
 
 # mapping_selector = ArchivedSelector(3)(selector)
 # ordering_selector = ArchivedSelector(3)(selector)
@@ -39,8 +45,8 @@ ordering_selector = selector
 # heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 # heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 
-heft_mapping = extract_mapping_from_ga_file("../../../temp/heft_etalon_full_tr100_m100.json", rm)
-heft_ordering = extract_ordering_from_ga_file("../../../temp/heft_etalon_full_tr100_m100.json")
+heft_mapping = extract_mapping_from_ga_file("../../../temp/heft_etalon_full_tr100_m50.json", rm)
+heft_ordering = extract_ordering_from_ga_file("../../../temp/heft_etalon_full_tr100_m50.json")
 
 ms_ideal_ind = heft_mapping
 os_ideal_ind = heft_ordering
@@ -54,13 +60,14 @@ ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
 mapping_mut_reg = MutRegulator()
 
+# os_representative = extract_ordering_from_ga_file("../../../temp/ga_schedule_272 _tr100_m50.json")
 
 config = {
-        "hall_of_fame_size": 0,
-        "interact_individuals_count": 120,
-        "generations": 100,
+        "hall_of_fame_size": 5,
+        "interact_individuals_count": 80,
+        "generations": 200,
         "env": Env(_wf, rm, estimator),
-        "species": [Specie(name=MAPPING_SPECIE, pop_size=50,
+        "species": [Specie(name=MAPPING_SPECIE, pop_size=80,
                            cxb=0.9, mb=0.9,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            mutate=mapping_all_mutate,
@@ -69,7 +76,7 @@ config = {
                            stat=lambda pop: {}
 
                     ),
-                    Specie(name=ORDERING_SPECIE, pop_size=50,
+                    Specie(name=ORDERING_SPECIE, pop_size=80,
                            cxb=0.9, mb=0.9,
                            mate=ordering_default_crossover,
                            mutate=ordering_default_mutate,
@@ -77,18 +84,20 @@ config = {
                            initialize=lambda ctx, pop: [creator.Individual(el) for el in ordering_heft_based_initialize(ctx, pop, heft_ordering, 3)],
                            stat=lambda pop: {}
                     )
+
         ],
         "solstat": lambda sols: {},
 
         "analyzers": [mapping_mut_reg.analyze],
 
         "operators": {
-            "build_solutions": default_build_solutions,
-            # "build_solutions": one_to_one_build_solutions,
+            # "build_solutions": default_build_solutions,
+            "build_solutions": one_to_one_build_solutions,
             "fitness_distribution": equal_mo_fitness_distribution,
             "fitness": lambda ctx, x: creator.FitnessMin(fitness_makespan_and_cost_map_ord(ctx, x)),
             "assign_credits": max_assign_credits,
-            "empty_fitness": lambda: creator.FitnessMin((float("-inf"), float("-inf")))
+            "empty_fitness": lambda: creator.FitnessMin((float("inf"), float("inf")))
+            # "empty_fitness": lambda: creator.FitnessMin((-1000000000.0, -1000000000.0))
         }
     }
 
@@ -127,7 +136,7 @@ def do_exp():
     return res
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 1)
+    res = repeat(do_exp, 10)
     print("RESULTS: ")
     print(res)
 

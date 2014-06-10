@@ -317,7 +317,11 @@ class CoevolutionGA:
 
         ## take the best
         # best = hall[0] if hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
-        self.best = self.hall[0] if self.hall.maxsize > 0 else max(self.solutions, key=lambda x: x.fitness)
+        # self.best = self.hall[0] if self.hall.maxsize > 0 else max(self.solutions, key=lambda x: x.fitness)
+        self.best = min(list(self.hall) + self.solutions, key=lambda x: x.fitness)
+
+        for s, pop in self.pops.items():
+            print("parent pop values {0}: {1}".format(s.name, [p.fitness.values for p in pop]))
 
         ## produce offsprings
         items = [(s, pop) for s, pop in self.pops.items() if not s.fixed]
@@ -350,9 +354,12 @@ class CoevolutionGA:
             self.pops[s] = offspring
             pass
 
-            ## assign credits for every individuals of all pops
         for s, pop in self.pops.items():
-            self._credit_to_k(pop)
+            print("child pop values {0}: {1}".format(s.name, [p.fitness.values for p in pop]))
+        ## assign credits for every individuals of all pops
+        for s, pop in self.pops.items():
+            if not s.fixed:
+                self._credit_to_k(pop)
 
         for s, pop in self.pops.items():
             for ind in pop:
@@ -376,11 +383,11 @@ class CoevolutionGA:
         return pop
 
     # def _credit_to_k(self, pop):
-    #     norma = self.INTERACT_INDIVIDUALS_COUNT / sum(el.fitness for el in pop)
+    #     norma = self.INTERACT_INDIVIDUALS_COUNT / sum(el.fitness.values[0] for el in pop)
     #     for c in pop:
-    #         c.k = int(c.fitness * norma)
+    #         c.k = int(c.fitness.values[0] * norma)
     #     left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
-    #     sorted_pop = sorted(pop, key=lambda x: x.fitness, reverse=True)
+    #     sorted_pop = sorted(pop, key=lambda x: x.fitness.values[0], reverse=True)
     #     for i in range(left_part):
     #         sorted_pop[i].k += 1
     #     return pop
@@ -388,7 +395,7 @@ class CoevolutionGA:
     ## TODO: make it a part of the strategy
     def _credit_to_k(self, pop):
 
-        base_count = 1
+        base_count = 0
 
         ## TODO: replace it with data structure with the same functionality from numpy or scipy
         def by_dimensions(iterable, *funcs):
@@ -399,26 +406,35 @@ class CoevolutionGA:
             return [ael - bel for ael, bel in zip(a, b)]
 
         def vec_div(a, b):
-            return [ael/bel for ael, bel in zip(a, b)]
+            ## check conditions when we optimize only makespan
+            return [0 if ael == 0 and bel == 0 else ael/bel for ael, bel in zip(a, b)]
 
         def vec_mult(a, b):
             return sum(ael*bel for ael, bel in zip(a, b))
 
-        ft = functools.partial(filter, lambda x: x > float("-inf"))
+        def scalar_mult(a, b):
+            return [a*bel for bel in b]
+
+        ft = functools.partial(filter, lambda x: float("-inf") < x < float("inf"))
         mn = by_dimensions(pop, ft, min)
-        mx = by_dimensions(pop, max)
+        mx = by_dimensions(pop, ft, max)
         df = vec_sub(mx, mn)
+        print("MX: {0}".format(mx))
+        print("MN: {0}".format(mn))
+        ## case for handling situations when some components mx == mn
+        df = [1 if eldf == 0 else eldf for eldf in df]
 
 
-        pop_vals = list(zip(pop, [vec_mult(vec_div(vec_sub(el.fitness.values, mn), df), el.fitness.weights)
+        pop_vals = list(zip(pop, [vec_mult(vec_div(vec_sub(el.fitness.values, mn), df), scalar_mult(1, el.fitness.weights))
                              for el in pop]))
         pop_vals = [(p, 0 if math.isinf(v) else v) for p, v in pop_vals]
+        print("pop_vals: {0}".format([v for p,v in pop_vals]) )
 
         # norma = self.INTERACT_INDIVIDUALS_COUNT / sum(v for p, v in pop_vals)
-        norma = (self.INTERACT_INDIVIDUALS_COUNT - len(pop)) / sum(v for p, v in pop_vals)
+        norma = (self.INTERACT_INDIVIDUALS_COUNT - base_count*len(pop)) / sum(v for p, v in pop_vals)
         for p, v in pop_vals:
             p.k = int(v * norma)
-            p.k += 1
+            p.k += base_count
 
         left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
         sorted_pop = [p for p, v in sorted(pop_vals, key=lambda x: x[1], reverse=True)]
