@@ -37,7 +37,7 @@ rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=10, transf_time_cost=2, transferMx=None, ideal_flops=20, transfer_time=100)
 env = Env(_wf, rm, estimator)
 
-pop_size = 200
+pop_size = 40
 NGEN = 200
 MU = 40
 CXPB = 0.9
@@ -116,6 +116,7 @@ def main():
 
         # Select the next generation population
         pop = toolbox.select(pop + offspring, MU)
+        # pop = offspring
         record = stats.compile(pop)
         logbook.record(gen=gen, evals=len(invalid_ind), **record)
         print(logbook.stream)

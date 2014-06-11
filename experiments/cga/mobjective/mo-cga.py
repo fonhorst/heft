@@ -22,9 +22,10 @@ env = Env(_wf, rm, estimator)
 # selector = lambda ctx, pop:  tools.selNSGA2(pop, len(pop))
 # selector = lambda ctx, pop:  tools.selTournament(pop, len(pop), 2)
 # selector = lambda ctx, pop:  tools.selTournamentDCD(pop, len(pop))
-def selector(ctx, pop):
-    tools.selNSGA2(pop, len(pop))
-    return tools.selTournamentDCD(pop, len(pop))
+def selector(ctx, pop, size=None):
+    size = len(pop) if size is None else size
+    return tools.selNSGA2(pop, size)
+    # return tools.selTournamentDCD(pop, size)
 
 
 # mapping_selector = ArchivedSelector(3)(selector)
@@ -59,14 +60,14 @@ ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
 mapping_mut_reg = MutRegulator()
 
-os_representative = extract_ordering_from_ga_file("../../../temp/ga_schedule_full_439_tr100_m100.json")
+# os_representative = extract_ordering_from_ga_file("../../../temp/ga_schedule_full_439_tr100_m100.json")
 
 config = {
         "hall_of_fame_size": 0,
-        "interact_individuals_count": 80,
-        "generations": 100,
+        "interact_individuals_count": 100,
+        "generations": 200,
         "env": Env(_wf, rm, estimator),
-        "species": [Specie(name=MAPPING_SPECIE, pop_size=80,
+        "species": [Specie(name=MAPPING_SPECIE, pop_size=40,
                            cxb=0.9, mb=0.9,
                            mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
                            mutate=mapping_all_mutate,
@@ -75,7 +76,7 @@ config = {
                            stat=lambda pop: {}
 
                     ),
-                    Specie(name=ORDERING_SPECIE, pop_size=80,
+                    Specie(name=ORDERING_SPECIE, pop_size=40,
                            cxb=0.9, mb=0.9,
                            mate=ordering_default_crossover,
                            mutate=ordering_default_mutate,
@@ -92,8 +93,8 @@ config = {
         "analyzers": [mapping_mut_reg.analyze],
 
         "operators": {
-            # "build_solutions": default_build_solutions,
-            "build_solutions": one_to_one_build_solutions,
+            "build_solutions": default_build_solutions,
+            # "build_solutions": one_to_one_build_solutions,
             "fitness_distribution": equal_mo_fitness_distribution,
             "fitness": lambda ctx, x: creator.FitnessMin(fitness_makespan_and_cost_map_ord(ctx, x)),
             "assign_credits": max_assign_credits,
@@ -137,7 +138,7 @@ def do_exp():
     return res
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 10)
+    res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)
 

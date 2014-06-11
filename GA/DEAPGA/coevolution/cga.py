@@ -351,7 +351,9 @@ class CoevolutionGA:
                 if random.random() < s.mb:
                     s.mutate(kwargs, mutant)
                 pass
-            self.pops[s] = offspring
+
+            # self.pops[s] = offspring
+            self.pops[s] = s.select(kwargs, self.pops[s] + offspring, s.pop_size)
             pass
 
         for s, pop in self.pops.items():
@@ -382,66 +384,67 @@ class CoevolutionGA:
             pop[i].k += 1
         return pop
 
-    # def _credit_to_k(self, pop):
-    #     norma = self.INTERACT_INDIVIDUALS_COUNT / sum(el.fitness.values[0] for el in pop)
-    #     for c in pop:
-    #         c.k = int(c.fitness.values[0] * norma)
-    #     left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
-    #     sorted_pop = sorted(pop, key=lambda x: x.fitness.values[0], reverse=True)
-    #     for i in range(left_part):
-    #         sorted_pop[i].k += 1
-    #     return pop
-
-    ## TODO: make it a part of the strategy
     def _credit_to_k(self, pop):
-
-        base_count = 0
-
-        ## TODO: replace it with data structure with the same functionality from numpy or scipy
-        def by_dimensions(iterable, *funcs):
-            val_iter = (i.fitness.values for i in iterable)
-            return [functools.reduce(lambda acc, x: x(acc), funcs, dim) for dim in zip(*val_iter)]
-
-        def vec_sub(a, b):
-            return [ael - bel for ael, bel in zip(a, b)]
-
-        def vec_div(a, b):
-            ## check conditions when we optimize only makespan
-            return [0 if ael == 0 and bel == 0 else ael/bel for ael, bel in zip(a, b)]
-
-        def vec_mult(a, b):
-            return sum(ael*bel for ael, bel in zip(a, b))
-
-        def scalar_mult(a, b):
-            return [a*bel for bel in b]
-
-        ft = functools.partial(filter, lambda x: float("-inf") < x < float("inf"))
-        mn = by_dimensions(pop, ft, min)
-        mx = by_dimensions(pop, ft, max)
-        df = vec_sub(mx, mn)
-        print("MX: {0}".format(mx))
-        print("MN: {0}".format(mn))
-        ## case for handling situations when some components mx == mn
-        df = [1 if eldf == 0 else eldf for eldf in df]
-
-
-        pop_vals = list(zip(pop, [vec_mult(vec_div(vec_sub(el.fitness.values, mn), df), scalar_mult(1, el.fitness.weights))
-                             for el in pop]))
-        pop_vals = [(p, 0 if math.isinf(v) else v) for p, v in pop_vals]
-        print("pop_vals: {0}".format([v for p,v in pop_vals]) )
-
-        # norma = self.INTERACT_INDIVIDUALS_COUNT / sum(v for p, v in pop_vals)
-        norma = (self.INTERACT_INDIVIDUALS_COUNT - base_count*len(pop)) / sum(v for p, v in pop_vals)
-        for p, v in pop_vals:
-            p.k = int(v * norma)
-            p.k += base_count
-
+        norma = self.INTERACT_INDIVIDUALS_COUNT / sum(el.fitness.values[0] for el in pop)
+        for c in pop:
+            c.k = int(c.fitness.values[0] * norma)
         left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
-        sorted_pop = [p for p, v in sorted(pop_vals, key=lambda x: x[1], reverse=True)]
-
+        sorted_pop = sorted(pop, key=lambda x: x.fitness.values[0], reverse=True)
         for i in range(left_part):
             sorted_pop[i].k += 1
         return pop
+    
+
+    ## TODO: make it a part of the strategy
+    # def _credit_to_k(self, pop):
+    #
+    #     base_count = 0
+    #
+    #     ## TODO: replace it with data structure with the same functionality from numpy or scipy
+    #     def by_dimensions(iterable, *funcs):
+    #         val_iter = (i.fitness.values for i in iterable)
+    #         return [functools.reduce(lambda acc, x: x(acc), funcs, dim) for dim in zip(*val_iter)]
+    #
+    #     def vec_sub(a, b):
+    #         return [ael - bel for ael, bel in zip(a, b)]
+    #
+    #     def vec_div(a, b):
+    #         ## check conditions when we optimize only makespan
+    #         return [0 if ael == 0 and bel == 0 else ael/bel for ael, bel in zip(a, b)]
+    #
+    #     def vec_mult(a, b):
+    #         return sum(ael*bel for ael, bel in zip(a, b))
+    #
+    #     def scalar_mult(a, b):
+    #         return [a*bel for bel in b]
+    #
+    #     ft = functools.partial(filter, lambda x: float("-inf") < x < float("inf"))
+    #     mn = by_dimensions(pop, ft, min)
+    #     mx = by_dimensions(pop, ft, max)
+    #     df = vec_sub(mx, mn)
+    #     print("MX: {0}".format(mx))
+    #     print("MN: {0}".format(mn))
+    #     ## case for handling situations when some components mx == mn
+    #     df = [1 if eldf == 0 else eldf for eldf in df]
+    #
+    #
+    #     pop_vals = list(zip(pop, [vec_mult(vec_div(vec_sub(el.fitness.values, mn), df), scalar_mult(1, el.fitness.weights))
+    #                          for el in pop]))
+    #     pop_vals = [(p, 0 if math.isinf(v) else v) for p, v in pop_vals]
+    #     print("pop_vals: {0}".format([v for p,v in pop_vals]) )
+    #
+    #     # norma = self.INTERACT_INDIVIDUALS_COUNT / sum(v for p, v in pop_vals)
+    #     norma = (self.INTERACT_INDIVIDUALS_COUNT - base_count*len(pop)) / sum(v for p, v in pop_vals)
+    #     for p, v in pop_vals:
+    #         p.k = int(v * norma)
+    #         p.k += base_count
+    #
+    #     left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
+    #     sorted_pop = [p for p, v in sorted(pop_vals, key=lambda x: x[1], reverse=True)]
+    #
+    #     for i in range(left_part):
+    #         sorted_pop[i].k += 1
+    #     return pop
 
 
     pass
