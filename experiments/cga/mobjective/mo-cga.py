@@ -14,7 +14,7 @@ from experiments.cga.mobjective.utility import SimpleTimeCostEstimator, fitness_
 from experiments.cga.utilities.common import UniqueNameSaver, repeat, tourn, ArchivedSelector, extract_mapping_from_ga_file, extract_ordering_from_ga_file, hamming_distances, to_seq, unique_individuals, pcm, gdm, hamming_for_best_components, best_components_itself, FakeSaver
 
 
-_wf = wf("Montage_100")
+_wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None, ideal_flops=20, transfer_time=100)
 env = Env(_wf, rm, estimator)
@@ -45,8 +45,8 @@ ordering_selector = selector
 # heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 # heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 
-heft_mapping = extract_mapping_from_ga_file("../../../temp/heft_etalon_full_tr100_m100.json", rm)
-heft_ordering = extract_ordering_from_ga_file("../../../temp/heft_etalon_full_tr100_m100.json")
+heft_mapping = extract_mapping_from_ga_file("../../../temp/heft_etalon_full_tr100_m50.json", rm)
+heft_ordering = extract_ordering_from_ga_file("../../../temp/heft_etalon_full_tr100_m50.json")
 
 ms_ideal_ind = heft_mapping
 os_ideal_ind = heft_ordering
@@ -60,7 +60,7 @@ ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
 mapping_mut_reg = MutRegulator()
 
-# os_representative = extract_ordering_from_ga_file("../../../temp/ga_schedule_full_439_tr100_m100.json")
+os_representative = extract_ordering_from_ga_file("../../../temp/ga_schedule_272 _tr100_m50.json")
 
 config = {
         "hall_of_fame_size": 0,
@@ -76,16 +76,16 @@ config = {
                            stat=lambda pop: {}
 
                     ),
-                    Specie(name=ORDERING_SPECIE, pop_size=40,
-                           cxb=0.9, mb=0.9,
-                           mate=ordering_default_crossover,
-                           mutate=ordering_default_mutate,
-                           select=ordering_selector,
-                           initialize=lambda ctx, pop: [creator.Individual(el) for el in ordering_heft_based_initialize(ctx, pop, heft_ordering, 3)],
-                           stat=lambda pop: {}
-                    )
-                    # Specie(name=ORDERING_SPECIE, fixed=True,
-                    #        representative_individual=creator.Individual(os_representative))
+                    # Specie(name=ORDERING_SPECIE, pop_size=40,
+                    #        cxb=0.9, mb=0.9,
+                    #        mate=ordering_default_crossover,
+                    #        mutate=ordering_default_mutate,
+                    #        select=ordering_selector,
+                    #        initialize=lambda ctx, pop: [creator.Individual(el) for el in ordering_heft_based_initialize(ctx, pop, heft_ordering, 3)],
+                    #        stat=lambda pop: {}
+                    # )
+                    Specie(name=ORDERING_SPECIE, fixed=True,
+                           representative_individual=creator.Individual(os_representative))
 
         ],
         "solstat": lambda sols: {},

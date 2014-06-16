@@ -30,7 +30,7 @@ from experiments.cga.utilities.common import extract_ordering_from_ga_file, extr
 from experiments.cga.utilities.double_chromosome_ga import _mate, _mutate
 
 
-_wf = wf("Montage_75")
+_wf = wf("Montage_50")
 # rm = ExperimentResourceManager(VMResGen.r([10, 15, 25, 30], 4))
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 # estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
@@ -42,8 +42,8 @@ NGEN = 200
 MU = 40
 CXPB = 0.9
 
-heft_mapping = extract_mapping_from_ga_file("../../../temp/heft_etalon_full_tr100_m75.json", rm)
-heft_ordering = extract_ordering_from_ga_file("../../../temp/heft_etalon_full_tr100_m75.json")
+heft_mapping = extract_mapping_from_ga_file("../../../temp/heft_etalon_full_tr100_m50.json", rm)
+heft_ordering = extract_ordering_from_ga_file("../../../temp/heft_etalon_full_tr100_m50.json")
 
 
 creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0))

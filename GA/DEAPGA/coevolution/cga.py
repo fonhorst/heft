@@ -353,7 +353,16 @@ class CoevolutionGA:
                 pass
 
             # self.pops[s] = offspring
-            self.pops[s] = s.select(kwargs, self.pops[s] + offspring, s.pop_size)
+            # self.pops[s] = s.select(kwargs, self.pops[s] + offspring, s.pop_size)
+            parents_count = int(s.pop_size *0.2)
+            children_count = int((s.pop_size - parents_count)*0.375) # get 0.3 from initial pop
+            rest_count = s.pop_size - children_count - parents_count
+
+            survived_parents = s.select(kwargs, self.pops[s], parents_count)
+            survived_children = s.select(kwargs, offspring, children_count)
+            rest_part = deepcopy(s.select(kwargs, self.pops[s] + offspring, rest_count))
+
+            self.pops[s] = survived_parents + survived_children + rest_part
             pass
 
         for s, pop in self.pops.items():
@@ -392,8 +401,28 @@ class CoevolutionGA:
         sorted_pop = sorted(pop, key=lambda x: x.fitness.values[0], reverse=True)
         for i in range(left_part):
             sorted_pop[i].k += 1
+
+        def by_dimensions(iterable, *funcs):
+            val_iter = (i.fitness.values for i in iterable)
+            return [functools.reduce(lambda acc, x: x(acc), funcs, dim) for dim in zip(*val_iter)]
+
+        ft = functools.partial(filter, lambda x: float("-inf") < x < float("inf"))
+        mn = by_dimensions(pop, ft, min)
+
+        print("MIN: {0}".format(mn))
+
         return pop
-    
+
+    # def _credit_to_k(self, pop):
+    #     base_count = int(self.INTERACT_INDIVIDUALS_COUNT / len(pop))
+    #     for c in pop:
+    #         c.k = base_count
+    #     left_part = self.INTERACT_INDIVIDUALS_COUNT - sum(c.k for c in pop)
+    #     sorted_pop = sorted(pop, key=lambda x: x.fitness.values[0], reverse=True)
+    #     for i in range(left_part):
+    #         sorted_pop[i].k += 1
+    #     return pop
+
 
     ## TODO: make it a part of the strategy
     # def _credit_to_k(self, pop):
