@@ -4,12 +4,22 @@ import os
 import pstats
 import subprocess
 import io
+import time
 from core.comparisons.ComparisonBase import ComparisonUtility
 from environment.DAXParser import DAXParser
 from random import Random
 from environment.BaseElements import Node, Resource
 from environment.ResourceManager import ScheduleItem, Schedule
 import xml.etree.ElementTree as ET
+
+def timing(f):
+    def wrap(*args, **kwargs):
+        time1 = time.time()
+        ret = f(*args, **kwargs)
+        time2 = time.time()
+        print('{0} function took {1:0.3f} ms'.format(f.__name__, (time2-time1)*1000.0))
+        return ret
+    return wrap
 
 def profile_decorator(func):
     def wrap_func(*args, **kwargs):

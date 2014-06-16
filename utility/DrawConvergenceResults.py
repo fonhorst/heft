@@ -3,6 +3,7 @@ import json
 import os
 from matplotlib.patches import Rectangle
 import matplotlib.pyplot as plt
+import matplotlib
 
 ##=========================================
 ## Settings
@@ -16,7 +17,7 @@ ALL = None
 #                  "ID00030_000", "ID00035_000", "ID00040_000", "ID00045_000", "ID00050_000"]
 # tasks_to_draw = ["ID00055_000", "ID00060_000", "ID00065_000", "ID00070_000", "ID00075_000", "ID00080_000",
 #                  "ID00085_000", "ID00090_000", "ID00095_000", "ID00099_000"]
-tasks_to_draw = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00030_000"]
+tasks_to_draw = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000"]
 # tasks_to_draw = ["ID00040_000", "ID00050_000", "ID00060_000", "ID00070_000"]
 # tasks_to_draw = ["ID00080_000", "ID00090_000"]
 
@@ -24,7 +25,10 @@ tasks_to_draw = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00030_000"]
 
 # points = [10, 20, 30, 40, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500]
 # points = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 85, 100, 150, 200, 250, 300, 350, 400, 450, 500]
-points = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 85, 100]
+# points = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 85, 100]
+points = [1] + [(i+1)*5 for i in range(19)] + [99]
+
+matplotlib.rc('xtick', labelsize=10)
 
 items_proccessing_lower_threshold = 5
 
@@ -55,7 +59,7 @@ def _converge_aggr(data):
             max_avr = max(avr)
 
             # best = [i["best"] for i in items]
-            best = [i["best"] for i in items[0:35]]
+            best = [i["best"] for i in items[0:15]]
             best_avr = sum(best)/len(best)
             if (inum == 10 or inum == 15 or inum == 20 or inum == 25):
                 print("inum {0} value {1}".format(inum, best_avr))
@@ -153,7 +157,24 @@ def _draw_pref_profit(type, task_id, old_pop_results, random_results):
     ax.set_xlim(0, len(points))
     ax.set_xscale('linear')
     plt.xticks(range(0, len(points)))
-    ax.set_xticklabels(points)
+    # plt.setp(plt.xticks()[1], rotation=5, ha='right')
+
+    ## TODO: remove it later.
+    d = {
+        "ID00000_000": 0.3298,
+        "ID00010_000": 0.3042,
+        "ID00020_000": 0.2352,
+        "ID00040_000": 0.1851,
+        "ID00050_000": 0.1632,
+        "ID00070_000": 0.1447,
+        "ID00090_000": 0.0740,
+    }
+    # lb = lambda x: "{:0.2f}".format(x*d[task_id.strip()])
+    lb = lambda x: "{0}".format(x)
+    points_labels = [lb(0)] + [lb(p) for p in points if p != 1 or p != 99] + [lb(100)]
+    ####################################
+
+    ax.set_xticklabels(points_labels)
     ax.set_title(str(task_id))
 
     tp = type + "_avr"
@@ -173,6 +194,7 @@ def plot_avrs_by_taskid(data, draw_func, base_path, filename):
     #     data = json.load(data_json)
 
     plt.figure(figsize=(10, 10))
+
 
     i = 1
     for wf_name, tasks in data.items():
@@ -209,6 +231,7 @@ def plot_avrs_by_taskid(data, draw_func, base_path, filename):
     plt.suptitle('Average of Best vs Average of Avr', fontsize=20)
     plt.figlegend([h1, h2, h3], ['with old pop', 'random', 'perf profit'], loc='lower center', ncol=10, labelspacing=0. )
     plt.subplots_adjust(hspace=0.5)
+    plt.tight_layout()
     plt.savefig(base_path + filename, dpi=96.0, format="png")
     plt.clf()
     ##plt.show()
@@ -286,7 +309,8 @@ def visualize2(path):
 if __name__ == "__main__":
 
 
-    folder = "D:/wspace/heft/results/good_for_GA_IGA/[Montage_100]_[50]_[10by50]_[19_04_14_16_44_43]/"
+    # folder = "D:/wspace/heft/results/good_for_GA_IGA/[Montage_100]_[50]_[10by50]_[19_04_14_16_44_43]/"
+    folder = "C:/Users/nikolay/Documents/the_third_paper/review_improvements/f6-7/"
 
     # folder = "D:/wspace/heft/results/m_[20x3]/tournament/m40(35)_[20x3]_5by10_tour4/"
     def generate_pathes(folder):

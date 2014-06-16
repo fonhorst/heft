@@ -11,6 +11,8 @@ from deap.tools import History
 from GA.DEAPGA.GAImplementation.GAFunctions2 import GAFunctions2
 from core.HeftHelper import HeftHelper
 from environment.ResourceManager import Schedule
+from environment.Utility import timing
+
 
 class SynchronizedCheckpointedGA:
 
@@ -156,6 +158,7 @@ class GAFactory:
                 super().__init__()
                 pass
 
+            @timing
             def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None):
                 print("Evaluating...")
                 toolbox.register("evaluate", ga_functions.build_fitness(fixed_schedule_part, current_time))

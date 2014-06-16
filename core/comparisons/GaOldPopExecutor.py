@@ -7,7 +7,7 @@ from core.executors.BaseExecutor import BaseExecutor
 from core.executors.EventMachine import TaskFinished, NodeFailed, NodeUp
 from environment.BaseElements import Node
 from environment.ResourceManager import Schedule, ScheduleItem
-from environment.Utility import Utility
+from environment.Utility import Utility, timing
 
 
 class GaOldPopExecutor(FailOnce, BaseExecutor):
@@ -92,6 +92,7 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
         self._reschedule(event)
         pass
 
+    @timing
     def _clean_chromosome(self, chromosome, event, current_cleaned_schedule):
 
         not_scheduled_tasks = [ item.job.id for (node, items) in current_cleaned_schedule.mapping.items() for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING]

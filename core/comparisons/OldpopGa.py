@@ -3,8 +3,8 @@ from core.CommonComponents.ExpRunner import run_experiment
 from core.runners.ExecutorRunner import ExecutorsFactory
 
 
-tsk_period = 5
-repeat_count = 10
+tsk_period = 10
+repeat_count = 1
 pop_size = 50
 
 def fnc(tsk, save_path, wf_name, pop_size):
@@ -24,7 +24,7 @@ def fnc(tsk, save_path, wf_name, pop_size):
                                         "crossover_probability": 0.8,
                                         "replacing_mutation_probability": 0.5,
                                         "sweep_mutation_probability": 0.4,
-                                        "generations": 300
+                                        "generations": 100
                                      },
                                      save_path=save_path,
                                      check_evolution_for_stopping=False)
@@ -36,7 +36,7 @@ def fnc(tsk, save_path, wf_name, pop_size):
 if __name__ == "__main__":
     run = partial(run_experiment, fnc=fnc, tsk_period=tsk_period, repeat_count=repeat_count, pop_size=pop_size)
     run(wf_name="Montage_100")
-    run(wf_name="Montage_50")
+    # run(wf_name="Montage_50")
     pass
 
 

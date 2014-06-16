@@ -2,7 +2,7 @@ from functools import partial
 
 from environment.BaseElements import Node, SoftItem
 from environment.ResourceManager import Algorithm, Schedule, ScheduleItem
-from environment.Utility import reverse_dict
+from environment.Utility import reverse_dict, timing
 from core.HeftHelper import HeftHelper
 from core.simple_heft import StaticHeftPlanner
 
@@ -36,6 +36,7 @@ class DynamicHeft(StaticHeftPlanner):
         # print(to_print)
         pass
 
+    @timing
     def run(self, current_cleaned_schedule):
         ## current_cleaned_schedule - this schedule contains only
         ## finished and executed tasks, all unfinished and failed have been removed already

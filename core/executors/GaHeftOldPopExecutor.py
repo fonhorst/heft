@@ -3,7 +3,7 @@ from core.CommonComponents.failers.FailOnce import FailOnce
 from core.executors.EventMachine import NodeFailed, NodeUp, TaskFinished
 from core.executors.GaHeftExecutor import GaHeftExecutor
 from environment.ResourceManager import ScheduleItem
-from environment.Utility import Utility
+from environment.Utility import Utility, timing
 
 
 class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
@@ -122,6 +122,7 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
         return result
 
     ## TODO: merge with GAOldPopExecutor
+    @timing
     def _clean_chromosome(self, chromosome, event, current_cleaned_schedule):
 
         not_scheduled_tasks = [item.job.id for (node, items) in current_cleaned_schedule.mapping.items() for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.UNSTARTED]

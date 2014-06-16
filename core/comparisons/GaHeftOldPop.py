@@ -1,9 +1,9 @@
 from functools import partial
 from scoop import futures
 from core.runners.ExecutorRunner import ExecutorsFactory
-wf_name = "Montage_50"
+wf_name = "Montage_100"
 tsk_period = 10
-repeat_count = 5
+repeat_count = 1
 save_path = "D:/wspace/heft/results/m50_gaheft_oldpop_20__10by5_2/"
 def fnc(tsk):
     return ExecutorsFactory.default().run_gaheftoldpop_executor(
@@ -21,7 +21,7 @@ def fnc(tsk):
                                         "crossover_probability": 0.8,
                                         "replacing_mutation_probability": 0.5,
                                         "sweep_mutation_probability": 0.4,
-                                        "generations": 300
+                                        "generations": 100
                                      },
                                      check_evolution_for_stopping=False)
 
@@ -33,5 +33,6 @@ tasks_to_fail = ["ID000{0}_000".format("0"+str(t) if t < 10 else str(t)) for t i
 to_exec = [t for i in range(repeat_count) for t in tasks_to_fail]
 
 if __name__ == "__main__":
-    res = list(futures.map_as_completed(fnc, to_exec))
+    # res = list(futures.map_as_completed(fnc, to_exec))
+    res = list(map(fnc, to_exec))
     pass
