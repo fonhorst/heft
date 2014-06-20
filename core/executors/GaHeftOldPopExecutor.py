@@ -122,7 +122,7 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
         return result
 
     ## TODO: merge with GAOldPopExecutor
-    @timing
+    #@timing
     def _clean_chromosome(self, chromosome, event, current_cleaned_schedule):
 
         not_scheduled_tasks = [item.job.id for (node, items) in current_cleaned_schedule.mapping.items() for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.UNSTARTED]

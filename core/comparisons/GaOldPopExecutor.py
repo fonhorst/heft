@@ -30,6 +30,9 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
         pass
 
     def init(self):
+        ## TODO: replace it with logging
+        print("Working with initial state of nodes: {0}".format([n.flops for n in self.resource_manager.get_nodes()]))
+
         ga_planner = self.ga_builder()
         self.current_schedule = Schedule({node: [] for node in self.resource_manager.get_nodes()})
         (result, logbook) = ga_planner(self.current_schedule, None)
@@ -92,7 +95,7 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
         self._reschedule(event)
         pass
 
-    @timing
+    #@timing
     def _clean_chromosome(self, chromosome, event, current_cleaned_schedule):
 
         not_scheduled_tasks = [ item.job.id for (node, items) in current_cleaned_schedule.mapping.items() for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING]

@@ -14,10 +14,10 @@ def fnc(tsk):
                                      key_for_save='small_run',
                                      #task_id_to_fail="ID00005_000",
                                      task_id_to_fail=tsk,
-                                     fixed_interval_for_ga=15,
+                                     fixed_interval_for_ga=6,
                                      save_path=save_path,
                                      ga_params={
-                                        "population": 20,
+                                        "population": 50,
                                         "crossover_probability": 0.8,
                                         "replacing_mutation_probability": 0.5,
                                         "sweep_mutation_probability": 0.4,
@@ -30,8 +30,8 @@ def fnc(tsk):
 #==================================================
 tnum = int(wf_name.split("_")[1])
 tasks_to_fail = ["ID000{0}_000".format("0"+str(t) if t < 10 else str(t)) for t in range(0, tnum, tsk_period)]
-to_exec = [t for i in range(repeat_count) for t in tasks_to_fail]
-
+# to_exec = [t for i in range(repeat_count) for t in tasks_to_fail]
+to_exec = ["ID00000_000"]
 if __name__ == "__main__":
     # res = list(futures.map_as_completed(fnc, to_exec))
     res = list(map(fnc, to_exec))

@@ -40,9 +40,14 @@ class ExecutorRunner:
         return bundle
 
     @staticmethod
-    def get_infrastructure(bundle, reliability, with_ga_initial):
+    def get_infrastructure(bundle, reliability, with_ga_initial, nodes_conf=None):
 
-        nodes = HeftHelper.to_nodes(bundle.dedicated_resources)
+        if nodes_conf is not None:
+            resources = ResourceGenerator.r(nodes_conf)
+        else:
+            resources = bundle.dedicated_resources
+
+        nodes = HeftHelper.to_nodes(resources)
         realibility_map = {node.name: reliability for node in nodes}
 
         initial_schedule = None
@@ -56,7 +61,8 @@ class ExecutorRunner:
         ## create heft_executor
         ##======================
         estimator = ExperimentEstimator(bundle.transfer_mx, bundle.ideal_flops, realibility_map)
-        resource_manager = ExperimentResourceManager(bundle.dedicated_resources)
+
+        resource_manager = ExperimentResourceManager(resources)
         return (estimator, resource_manager, initial_schedule)
 
     def main(self, reliability, is_silent, wf_name, with_ga_initial=False, the_bundle=None):
@@ -94,11 +100,19 @@ class ExecutorRunner:
             the_bundle = kwargs.get(        'the_bundle', None)
             with_ga_initial = kwargs.get(   'with_ga_initial', False)
             logger = kwargs.get(            'logger', None)
+            nodes_conf = kwargs.get("nodes_conf", None)
 
 
             wf = ExecutorRunner.get_wf(wf_name)
             bundle = self.get_bundle(the_bundle)
-            (estimator, resource_manager, initial_schedule) = ExecutorRunner.get_infrastructure(bundle, reliability, with_ga_initial)
+            (estimator, resource_manager, initial_schedule) = ExecutorRunner.get_infrastructure(bundle,
+                                                                                                reliability,
+                                                                                                with_ga_initial,
+                                                                                                nodes_conf)
+
+            nodes = kwargs.get("nodes", None)
+            if nodes is not None:
+                resource_manager = ExperimentResourceManager(ResourceGenerator.r(nodes))
 
             kwargs["wf"] = wf
             kwargs["estimator"] = estimator

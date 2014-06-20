@@ -8,17 +8,21 @@ import matplotlib
 ##=========================================
 ## Settings
 ##=========================================
+import numpy
 from scoop import futures
 
 ALL = None
 # base_path = "../results/m_[30x3]/m100_[30x3]_10by10_tour4/"
 # tasks_to_draw = ALL
+tasks_to_draw = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00030_000", "ID00050_000"]
+
 # tasks_to_draw = ["ID00000_000", "ID00005_000", "ID00010_000", "ID00015_000", "ID00020_000", "ID00025_000",
 #                  "ID00030_000", "ID00035_000", "ID00040_000", "ID00045_000", "ID00050_000"]
 # tasks_to_draw = ["ID00055_000", "ID00060_000", "ID00065_000", "ID00070_000", "ID00075_000", "ID00080_000",
 #                  "ID00085_000", "ID00090_000", "ID00095_000", "ID00099_000"]
-tasks_to_draw = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000"]
-# tasks_to_draw = ["ID00040_000", "ID00050_000", "ID00060_000", "ID00070_000"]
+# tasks_to_draw = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00030_000"]
+# tasks_to_draw = ["ID00090_000"]
+# tasks_to_draw = ["ID00050_000", "ID00060_000", "ID00070_000", "ID00090_000"]
 # tasks_to_draw = ["ID00080_000", "ID00090_000"]
 
 # tasks_to_draw = ["ID000{0}_000".format(str(i) if i > 10 else "0" + str(i)) for i in range(0, 8)]
@@ -36,7 +40,13 @@ items_proccessing_lower_threshold = 5
 
 
 ### preprocess data
-def _converge_aggr(data):
+def _converge_aggr(data, only_best=0):
+    """
+    only_best param can be -1, 0, 1
+    if only_best == 0 than use all data
+    if only_best == -1 than use only worst data
+    if only_best == 1 than use only best data
+    """
     # convergence aggregation
     interesting_iter_number = points
     interest_dict = {iter_num: [] for iter_num in interesting_iter_number}
@@ -59,7 +69,19 @@ def _converge_aggr(data):
             max_avr = max(avr)
 
             # best = [i["best"] for i in items]
-            best = [i["best"] for i in items[0:15]]
+            # best = [i["best"] for i in items]
+            best = [i["best"] for i in items]
+            best = sorted(best)
+            if isinstance(only_best, tuple) and len(only_best) == 2:
+                start, end = only_best
+                best = best[start: end]
+            elif isinstance(only_best, int):
+                best = best[0:only_best] if only_best != 0 else best
+            elif isinstance(only_best, str):
+                m_best = numpy.mean(best)
+                std_best = numpy.std(best)
+                best = [b for b in best if (m_best - std_best) <= b <= (m_best + std_best)]
+
             best_avr = sum(best)/len(best)
             if (inum == 10 or inum == 15 or inum == 20 or inum == 25):
                 print("inum {0} value {1}".format(inum, best_avr))
@@ -99,9 +121,9 @@ def built_converged_data(base_path):
             if tasks_to_draw == ALL or task_id.strip() in tasks_to_draw:
                 print("task_id " + str(task_id))
                 print("old")
-                op = _converge_aggr(old_pop)
+                op = _converge_aggr(old_pop, only_best="mean")
                 print("rand")
-                rnd = _converge_aggr(random)
+                rnd = _converge_aggr(random, only_best="mean")
                 convergence_results[wf_name][task_id] = (op, rnd)
             pass
         pass
@@ -149,6 +171,11 @@ def _draw_task(type, task_id, old_pop_results, random_results):
     best_avr_random = [record[tp] for inum, record in _sort_dict(random_results) if int(inum) in points]
     plt.plot(best_avr_oldpop, '-rx')
     plt.plot(best_avr_random, '-gD')
+
+    # p1 = Rectangle((0, 0), 1, 1, fc="g")
+    # p2 = Rectangle((0, 0), 1, 1, fc="r")
+    # p3 = Rectangle((0, 0), 1, 1, fc="#00A2E8")
+    # plt.legend([p1, p2, p3], ["GA", "IGA", "HEFT"])
     pass
 
 def _draw_pref_profit(type, task_id, old_pop_results, random_results):
@@ -171,7 +198,8 @@ def _draw_pref_profit(type, task_id, old_pop_results, random_results):
     }
     # lb = lambda x: "{:0.2f}".format(x*d[task_id.strip()])
     lb = lambda x: "{0}".format(x)
-    points_labels = [lb(0)] + [lb(p) for p in points if p != 1 or p != 99] + [lb(100)]
+    points_labels = [lb(p) for p in points]
+    # points_labels = [lb(0)] + [lb(p) for p in points if p != 1 or p != 99] + [lb(100)]
     ####################################
 
     ax.set_xticklabels(points_labels)
@@ -231,8 +259,8 @@ def plot_avrs_by_taskid(data, draw_func, base_path, filename):
     plt.suptitle('Average of Best vs Average of Avr', fontsize=20)
     plt.figlegend([h1, h2, h3], ['with old pop', 'random', 'perf profit'], loc='lower center', ncol=10, labelspacing=0. )
     plt.subplots_adjust(hspace=0.5)
-    plt.tight_layout()
-    plt.savefig(base_path + filename, dpi=96.0, format="png")
+    # plt.tight_layout()
+    plt.savefig(base_path + filename, dpi=56.0, format="png")
     plt.clf()
     ##plt.show()
     pass
@@ -300,7 +328,7 @@ def visualize2(path):
     plt.suptitle('Average of Best vs Average of Avr', fontsize=20)
     plt.figlegend([h1, h2, h3], ['with old pop', 'random', 'perf profit'], loc='lower center', ncol=10, labelspacing=0. )
     plt.subplots_adjust(hspace=0.5)
-    plt.savefig(path + "overall.png", dpi=96.0, format="png")
+    plt.savefig(path + "overall.png", dpi=128.0, format="png")
     plt.clf()
     pass
 
@@ -310,7 +338,17 @@ if __name__ == "__main__":
 
 
     # folder = "D:/wspace/heft/results/good_for_GA_IGA/[Montage_100]_[50]_[10by50]_[19_04_14_16_44_43]/"
-    folder = "C:/Users/nikolay/Documents/the_third_paper/review_improvements/f6-7/"
+    # folder = "C:/Users/nikolay/Documents/the_third_paper/review_improvements/f6-7/1/"
+    # folder = "D:/wspace/heft/results/m250/"
+    # folder = "D:/wspace/heft/results/[Montage_250]_[50]_[10by20]_[18_06_14_17_52_26]/"
+    # folder = "D:/wspace/heft/results/[Montage_250]_[50]_[10by20]_[18_06_14_18_16_37]/"
+    # folder = "D:/wspace/heft/results/[Montage_250]_[50]_[10by5]_[18_06_14_18_41_42]/"
+    # folder = "D:/wspace/heft/results/m250_[120-180]/"
+    # folder = "D:/wspace/heft/results/[Montage_250]_[50]_[10by20]_[18_06_14_19_09_24]/"
+    # folder = "D:/wspace/heft/results/[Montage_250]_[50]_[10by5]_[19_06_14_10_43_15]/"
+    # folder = "C:/Users/nikolay/Documents/the_third_paper/good/good/mcopy/"
+    folder = "D:/wspace/heft/results/[Montage_100]_[50]_[10by1]_[20_06_14_13_13_51]/"
+    # folder = "D:/wspace/heft/results/m250_[120-180]_good120/"
 
     # folder = "D:/wspace/heft/results/m_[20x3]/tournament/m40(35)_[20x3]_5by10_tour4/"
     def generate_pathes(folder):
@@ -335,6 +373,7 @@ if __name__ == "__main__":
     # list(map(visualize2, pathes))
     # list(futures.map(visualize2, pathes))
     list(futures.map(visualize, pathes))
+    # list(map(visualize, pathes))
 
 
     #data = built_converged_data()

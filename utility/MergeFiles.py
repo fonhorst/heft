@@ -43,7 +43,15 @@ if __name__ == "__main__":
         result = functools.reduce(lambda x, y: x + y, seq, [dir])
         return result
 
-    dir = "D:/wspace/heft/results/new_experiments_for_ECTA/sw2/additional_strongest/"
+    # dir = "D:/wspace/heft/results/new_experiments_for_ECTA/sw2/additional_strongest/"
+    # dir = "D:/wspace/heft/results/m250/"
+    # dir = "D:/wspace/heft/results/[Montage_250]_[50]_[10by20]_[18_06_14_17_52_26]/"
+    # dir = "D:/wspace/heft/results/[Montage_250]_[50]_[10by20]_[18_06_14_18_16_37]/"
+    # dir = "D:/wspace/heft/results/[Montage_250]_[50]_[10by5]_[18_06_14_18_41_42]/"
+    # dir = "D:/wspace/heft/results/m250_[120-180]/"
+    # dir = "D:/wspace/heft/results/[Montage_250]_[50]_[10by20]_[18_06_14_19_09_24]/"
+    # dir = "D:/wspace/heft/results/[Montage_250]_[50]_[10by5]_[19_06_14_10_43_15]/"
+    dir = "D:/wspace/heft/results/[Montage_100]_[50]_[10by1]_[20_06_14_13_13_51]/"
     # dir = "D:/wspace/heft/results/"
     # dir = "D:/wspace/heft/results/m_[50x3]/tournament/"
     pathes = generate_pathes(dir, key)

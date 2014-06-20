@@ -5,6 +5,10 @@ from core.runners.ExecutorRunner import ExecutorsFactory
 
 tsk_period = 10
 repeat_count = 1
+
+def queue_of_tasks(*args, **kwargs):
+    return ["ID00000_000"]
+
 pop_size = 50
 
 def fnc(tsk, save_path, wf_name, pop_size):
@@ -27,14 +31,15 @@ def fnc(tsk, save_path, wf_name, pop_size):
                                         "generations": 100
                                      },
                                      save_path=save_path,
-                                     check_evolution_for_stopping=False)
+                                     check_evolution_for_stopping=False,
+                                     nodes_conf=[10, 10, 10, 10])
         return res
     return decoratee(tsk)
 
 
 
 if __name__ == "__main__":
-    run = partial(run_experiment, fnc=fnc, tsk_period=tsk_period, repeat_count=repeat_count, pop_size=pop_size)
+    run = partial(run_experiment, fnc=fnc, tsk_period=tsk_period, repeat_count=repeat_count, pop_size=pop_size, produce_queue=queue_of_tasks)
     run(wf_name="Montage_100")
     # run(wf_name="Montage_50")
     pass

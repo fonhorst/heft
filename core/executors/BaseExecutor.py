@@ -1,6 +1,7 @@
 from collections import deque
 from core.executors.EventMachine import EventMachine, TaskStart, TaskFinished, NodeFailed, NodeUp
 from environment.ResourceManager import ScheduleItem, Schedule
+from environment.Utility import Utility
 
 
 class BaseExecutor(EventMachine):
@@ -76,6 +77,12 @@ class BaseExecutor(EventMachine):
         self.heft_planner.current_time = self.current_time
         current_cleaned_schedule = self._clean_events(event)
         self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
+
+        ## TODO: remove it later.
+        # makespan = Utility.makespan(self.current_schedule)
+        # id = "{0} {1}".format(event.task.id, event.node.flops) if isinstance(event, NodeFailed) else "?"
+        # print("RESCHEDULE EVENT: {0}({1}) HEFT MAKESPAN: {2:.2f}".format(event.__class__.__name__, id, makespan))
+
         self._post_new_events()
 
     def _task_start_handler(self, event):
