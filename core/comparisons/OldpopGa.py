@@ -4,7 +4,7 @@ from core.runners.ExecutorRunner import ExecutorsFactory
 
 
 tsk_period = 10
-repeat_count = 20
+repeat_count = 50
 
 def queue_of_tasks(*args, **kwargs):
     return ["ID00100_000" for i in range(repeat_count)]
@@ -22,7 +22,7 @@ def fnc(tsk, save_path, wf_name, pop_size):
                                      logger=None,
                                      key_for_save='small_run',
                                      task_id_to_fail=tsk,
-                                     fixed_interval_for_ga=15,
+                                     fixed_interval_for_ga=6,
                                      ga_params={
                                         "population": pop_size,
                                         "crossover_probability": 0.8,
