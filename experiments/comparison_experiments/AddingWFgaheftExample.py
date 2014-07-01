@@ -1,4 +1,5 @@
 ## TODO: it's an example. It should be rewritten and moved to unit tests directory
+## TODO: obsolete. It needs to be repaired or moved away.
 ## GaHeftvsHeft with wf adding
 from algs.ga.GAImplementation.GAFunctions2 import mark_finished
 

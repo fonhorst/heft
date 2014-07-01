@@ -26,7 +26,7 @@ def run_experiment(fnc, wf_name, tsk_period, repeat_count, pop_size, produce_que
     ## TODO: replace it with normal ticket description
     fun = partial(fnc, save_path=save_path, wf_name=wf_name, pop_size=pop_size)
     to_exec = produce_queue(wf_name, tsk_period, repeat_count)
-    res = list(futures.map_as_completed(fun, to_exec))
+    # res = list(futures.map_as_completed(fun, to_exec))
     res = list(map(fun, to_exec))
 
 

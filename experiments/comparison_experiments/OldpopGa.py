@@ -4,7 +4,7 @@ from experiments.comparison_experiments.common.ExecutorRunner import ExecutorsFa
 
 
 tsk_period = 10
-repeat_count = 50
+repeat_count = 1
 
 def queue_of_tasks(*args, **kwargs):
     return ["ID00100_000" for i in range(repeat_count)]

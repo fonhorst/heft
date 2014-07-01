@@ -1,11 +1,11 @@
 from algs.ga.coevolution.cga import Env, Specie, ListBasedIndividual
 from algs.ga.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ORDERING_SPECIE, default_assign_credits, ordering_heft_based_initialize, overhead_fitness_mapping_and_ordering, default_build_solutions
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
-from core.environment import ResourceGenerator as rg
+from core.environment.ResourceGenerator import ResourceGenerator as rg
 from core.environment.Utility import wf
 from experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, hamming_for_best_components, best_components_itself, extract_mapping_from_ga_file, extract_ordering_from_ga_file, tourn
 from experiments.cga.utilities.common import UniqueNameSaver, repeat, build_os_ideal_ind
-
+from config.settings import __root_path__
 _wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=10)
@@ -50,11 +50,14 @@ selector = tourn
 
 # ms_representative = extract_mapping_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
 #                                               _wf, estimator, rm)
-ms_representative = extract_mapping_from_ga_file("../../temp/ga_schedule_272 _tr100_m50.json")
 
-heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
+ms_representative = extract_mapping_from_ga_file("{0}/temp/ga_schedule_272 _tr100_m50.json".format(__root_path__), rm)
+
+heft_ordering = extract_ordering_from_ga_file("{0}/temp/heft_etalon_full_tr100_m50.json".format(__root_path__))
+heft_mapping = extract_mapping_from_ga_file("{0}/temp/heft_etalon_full_tr100_m50.json".format(__root_path__), rm)
 
 os_ideal_ind = build_os_ideal_ind(_wf)
+ms_ideal_ind = heft_mapping
 
 config = {
         "interact_individuals_count": 200,
@@ -88,7 +91,7 @@ def do_exp():
     return do_experiment(saver, config, _wf, rm, estimator)
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 10)
+    res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)
 

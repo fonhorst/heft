@@ -2,10 +2,12 @@ from deap import tools
 from algs.ga.coevolution.cga import Env, Specie, ListBasedIndividual
 from algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, build_schedule, mapping_default_initialize, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead, mapping_all_mutate, default_build_solutions
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
-from core.environment import Utility
+from core.environment.Utility import Utility
 from core.environment.Utility import wf
 from experiments.cga.cga_exp import os_ideal_ind, ms_ideal_ind, do_experiment
 from experiments.cga.utilities.common import UniqueNameSaver, repeat, extract_ordering_from_file, ArchivedSelector, roulette, build_ms_ideal_ind, build_os_ideal_ind, hamming_distances, unique_individuals, to_seq, pcm, gdm, hamming_for_best_components, best_components_itself
+from core.environment.ResourceGenerator import ResourceGenerator as rg
+from config.settings import __root_path__
 
 _wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
@@ -15,7 +17,7 @@ estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 selector = ArchivedSelector(5)(roulette)
 
 
-os_representative = extract_ordering_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
+os_representative = extract_ordering_from_file("{0}/temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json".format(__root_path__),
                                               _wf, estimator, rm)
 
 ms_ideal_ind = build_ms_ideal_ind(_wf, rm)
@@ -23,7 +25,7 @@ os_ideal_ind = build_os_ideal_ind(_wf)
 
 # heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100.json")
 
-saver = UniqueNameSaver("../../temp/cga_improving_mutation")
+saver = UniqueNameSaver("{0}/temp/cga_improving_mutation".format(__root_path__))
 
 
 def do_exp():
@@ -69,7 +71,7 @@ def do_exp():
     return do_experiment(saver, config, _wf, rm, estimator)
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 10)
+    res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)
 

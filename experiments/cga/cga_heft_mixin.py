@@ -7,6 +7,8 @@ from core.environment.Utility import wf
 from experiments.cga.cga_exp import tourn, hamming_distances, unique_individuals, to_seq, pcm, gdm, hamming_for_best_components, best_components_itself, do_experiment
 from experiments.cga.cga_fixed_ordering import extract_mapping_from_ga_file
 from experiments.cga.utilities.common import UniqueNameSaver, repeat, ArchivedSelector, build_ms_ideal_ind, build_os_ideal_ind
+from core.environment.ResourceGenerator import ResourceGenerator as rg
+from config.settings import __root_path__
 
 _wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
@@ -20,7 +22,7 @@ ordering_selector = ArchivedSelector(5)(tourn)
 
 
 # heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100.json")
-heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_tr100_m50.json")
+heft_mapping = extract_mapping_from_ga_file("{0}/temp/heft_etalon_tr100_m50.json".format(__root_path__), rm)
 
 ms_ideal_ind = build_ms_ideal_ind(_wf, rm)
 os_ideal_ind = build_os_ideal_ind(_wf)
@@ -82,7 +84,7 @@ def do_exp():
 
 if __name__ == "__main__":
 
-    res = repeat(do_exp, 5)
+    res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)
 

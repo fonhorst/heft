@@ -135,7 +135,7 @@ class Utility:
         for item in items:
             if time > item.start_time:
                 return False
-                ##raise Exception("Node: " + str(node) + " all time: " + str(time) + " st_time: " + str(item.start_time))
+                # raise Exception("Node: " + str(node) + " all time: " + str(time) + " st_time: " + str(item.start_time))
             else:
                 time = item.start_time
             if time > item.end_time:

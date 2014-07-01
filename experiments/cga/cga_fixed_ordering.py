@@ -2,11 +2,13 @@ from deap import tools
 from algs.ga.coevolution.cga import Env, Specie, ListBasedIndividual
 from algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, fitness_mapping_and_ordering, build_schedule, mapping_all_mutate, assign_from_transfer_overhead, mapping_heft_based_initialize, default_build_solutions
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
-from core.environment import Utility
+from core.environment.Utility import Utility
 from core.environment.Utility import wf
 from experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, \
     extract_mapping_from_ga_file, extract_ordering_from_ga_file
 from experiments.cga.utilities.common import UniqueNameSaver, repeat, ArchivedSelector, build_ms_ideal_ind, build_os_ideal_ind
+from core.environment.ResourceGenerator import ResourceGenerator as rg
+from config.settings import __root_path__
 
 _wf = wf("Montage_100")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
@@ -17,14 +19,9 @@ selector = ArchivedSelector(5)(tourn)
 ms_ideal_ind = build_ms_ideal_ind(_wf, rm)
 os_ideal_ind = build_os_ideal_ind(_wf)
 
-# os_representative = extract_ordering_from_file("../../temp/cga_exp_example/6685a2b2-78d6-4637-b099-ed91152464f5.json",
-#                                               _wf, estimator, rm)
-# os_representative = extract_ordering_from_ga_file("../../temp/ga_schedule_272 _tr100_m50.json")
-os_representative = extract_ordering_from_ga_file("../../temp/ga_schedule_full_439_tr100_m100.json")
+os_representative = extract_ordering_from_ga_file("{0}/temp/ga_schedule_full_439_tr100_m100.json".format(__root_path__))
 
-# heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_tr100.json")
-# heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
-heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
+heft_mapping = extract_mapping_from_ga_file("{0}/temp/heft_etalon_full_tr100_m100.json".format(__root_path__), rm)
 
 saver = UniqueNameSaver("../../temp/cga_fixed_ordering")
 

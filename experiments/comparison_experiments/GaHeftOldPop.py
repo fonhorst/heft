@@ -34,6 +34,6 @@ tasks_to_fail = ["ID000{0}_000".format("0"+str(t) if t < 10 else str(t)) for t i
 # to_exec = [t for i in range(repeat_count) for t in tasks_to_fail]
 to_exec = ["ID00150_000" for i in range(repeat_count)]
 if __name__ == "__main__":
-    res = list(futures.map_as_completed(fnc, to_exec))
-    # res = list(map(fnc, to_exec))
+    # res = list(futures.map_as_completed(fnc, to_exec))
+    res = list(map(fnc, to_exec))
     pass

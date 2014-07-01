@@ -3,10 +3,10 @@ import os
 from scoop import futures
 from experiments.cga.cga_exp import config, do_experiment, _wf, rm, estimator
 from experiments.cga.utilities.common import UniqueNameSaver
+from config.settings import __root_path__
 
 
-
-base_path = "../../temp/cga_partial_experiments/"
+base_path = "{0}/temp/cga_partial_experiments/".format(__root_path__)
 
 cfg_50_interact = deepcopy(config)
 cfg_50_interact["interact_individuals_count"] = 50
@@ -55,7 +55,7 @@ def do_exp(arg):
     saver = UniqueNameSaver(os.path.join(base_path, name))
     return do_experiment(saver, config, _wf, rm, estimator)
 
-REPEAT_COUNT = 10
+REPEAT_COUNT = 1
 
 if __name__ == "__main__":
     for i in range(REPEAT_COUNT):

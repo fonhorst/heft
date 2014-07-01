@@ -5,10 +5,11 @@ import numpy
 from algs.ga.GAImplementation.NewSchedulerBuilder import place_task_to_schedule
 from algs.ga.coevolution.cga import Specie, Env, ListBasedIndividual, DictBasedIndividual
 from algs.heft.DSimpleHeft import DynamicHeft
-from algs.heft import HeftHelper
+from algs.heft.HeftHelper import HeftHelper
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from core.environment.ResourceManager import Schedule
-from core.environment import Utility, ResourceGenerator
+from core.environment.Utility import Utility
+from core.environment.ResourceGenerator import ResourceGenerator
 
 
 MAPPING_SPECIE = "MappingSpecie"

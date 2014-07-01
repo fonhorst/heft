@@ -1,12 +1,13 @@
 ## TODO: it's an example. It should be rewritten and moved to unit tests directory
+## TODO: obsolete. It needs to be repaired or moved away.
 ## GaHeftvsHeft with wf adding
 from algs.ga.GAImplementation.GAFunctions2 import mark_finished
 
 from algs.heft.DSimpleHeft import DynamicHeft
 ## reliability doesn't matter anything here
-from core.environment import Utility
+from core.environment.Utility import Utility
 from core.environment.ResourceManager import Schedule
-from experiments.comparison_experiments.common import ExecutorRunner
+from experiments.comparison_experiments.common.ExecutorRunner import ExecutorRunner
 
 wf_added_times = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 #wf_added_times = [0.1]

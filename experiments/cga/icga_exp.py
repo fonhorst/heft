@@ -5,11 +5,12 @@ from deap import tools
 from algs.ga.coevolution.cga import Env, Specie, CoevolutionGA
 from algs.ga.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ORDERING_SPECIE, build_schedule, max_assign_credits, mapping_heft_based_initialize, ordering_heft_based_initialize, fitness_mapping_and_ordering, MutRegulator, one_to_one_build_solutions, mapping_all_mutate
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
-from core.environment import Utility
+from core.environment.Utility import Utility
 from core.environment.Utility import wf
 from experiments.cga.utilities.common import UniqueNameSaver, repeat, tourn, ArchivedSelector, extract_mapping_from_ga_file, extract_ordering_from_ga_file, hamming_distances, to_seq, unique_individuals, pcm, gdm, hamming_for_best_components, best_components_itself
 from experiments.cga.utilities.island_ga import equal_social_migration_scheme, run_island_ga, best_selection
-
+from core.environment.ResourceGenerator import ResourceGenerator as rg
+from config.settings import __root_path__
 
 _wf = wf("Montage_75")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
@@ -39,8 +40,8 @@ ordering_selector = ArchivedSelector(3)(tourn)
 # heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json", rm)
 # heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
 
-heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m75.json", rm)
-heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m75.json")
+heft_mapping = extract_mapping_from_ga_file("{0}/temp/heft_etalon_full_tr100_m75.json".format(__root_path__), rm)
+heft_ordering = extract_ordering_from_ga_file("{0}/temp/heft_etalon_full_tr100_m75.json".format(__root_path__))
 
 # heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m25.json", rm)
 # heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m25.json")
@@ -121,14 +122,14 @@ def do_experiment(saver, config, _wf, rm, estimator):
 
 
 
-saver = UniqueNameSaver("../../temp/icga_exp")
+saver = UniqueNameSaver("{0}/temp/icga_exp".format(__root_path__))
 
 def do_exp():
     res = do_experiment(saver, config, _wf, rm, estimator)
     return res
 
 if __name__ == "__main__":
-    res = repeat(do_exp, 10)
+    res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)
 
