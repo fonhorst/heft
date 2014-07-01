@@ -7,7 +7,7 @@ from core.CommonComponents.ExperimentalManagers import ExperimentEstimator, Expe
 from core.environment import Utility, ResourceGenerator
 from core.environment.ResourceManager import ScheduleItem
 from experiments.cga.utilities.common import build_ms_ideal_ind
-from experiments.comparison_experiments.utilities import ExecutorRunner
+from experiments.comparison_experiments.common import ExecutorRunner
 
 
 class CoevolutionTest(unittest.TestCase):

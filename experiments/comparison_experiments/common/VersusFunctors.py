@@ -1,7 +1,7 @@
 from functools import partial
-from experiments.comparison_experiments.utilities.ComparisonBase import VersusFunctor, profit_print, ComparisonUtility, run
+from experiments.comparison_experiments.common.ComparisonBase import VersusFunctor, profit_print, ComparisonUtility, run
 from core.environment import Utility
-from experiments.comparison_experiments.utilities.ExecutorRunner import ExecutorsFactory
+from experiments.comparison_experiments.common.ExecutorRunner import ExecutorsFactory
 
 
 class CloudHeftVsHeft(VersusFunctor):

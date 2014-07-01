@@ -1,6 +1,6 @@
 from functools import partial
 import unittest
-from experiments.comparison_experiments.utilities.ExecutorRunner import ExecutorsFactory
+from experiments.comparison_experiments.common.ExecutorRunner import ExecutorsFactory
 
 
 ## checking for absence of different exceptions.

@@ -4,7 +4,7 @@
 from functools import partial
 import os
 from scoop import futures
-from experiments.comparison_experiments.utilities.ComparisonBase import ComparisonUtility
+from experiments.comparison_experiments.common.ComparisonBase import ComparisonUtility
 
 
 def produce_queue_of_tasks(wf_name, tsk_period, repeat_count):

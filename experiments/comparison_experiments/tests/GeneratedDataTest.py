@@ -3,8 +3,8 @@ import json
 import os
 import unittest
 import shutil
-from experiments.comparison_experiments.utilities.ExecutorRunner import ExecutorsFactory
-from experiments.comparison_experiments.utilities.ComparisonBase import ComparisonUtility as CU
+from experiments.comparison_experiments.common.ExecutorRunner import ExecutorsFactory
+from experiments.comparison_experiments.common.ComparisonBase import ComparisonUtility as CU
 
 ## This test aims to validate all stat info written to file during
 ## a simulation process.

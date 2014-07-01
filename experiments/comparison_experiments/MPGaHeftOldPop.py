@@ -1,6 +1,6 @@
 from functools import partial
 from core.CommonComponents.ExpRunner import run_experiment
-from experiments.comparison_experiments.utilities.ExecutorRunner import ExecutorsFactory
+from experiments.comparison_experiments.common.ExecutorRunner import ExecutorsFactory
 
 tsk_period = 10
 repeat_count = 10

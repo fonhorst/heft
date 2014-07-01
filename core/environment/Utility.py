@@ -8,7 +8,7 @@ import time
 from random import Random
 import xml.etree.ElementTree as ET
 
-from experiments.comparison_experiments.utilities.ComparisonBase import ComparisonUtility
+from experiments.comparison_experiments.common.ComparisonBase import ComparisonUtility
 from environment.BaseElements import Node, Resource
 from environment.ResourceManager import ScheduleItem, Schedule
 from core.environment import DAXParser

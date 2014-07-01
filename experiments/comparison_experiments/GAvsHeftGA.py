@@ -1,5 +1,5 @@
-from experiments.comparison_experiments.utilities.ComparisonBase import ResultSaver, ComparisonUtility
-from experiments.comparison_experiments.utilities.VersusFunctors import GAvsHeftGA
+from experiments.comparison_experiments.common.ComparisonBase import ResultSaver, ComparisonUtility
+from experiments.comparison_experiments.common.VersusFunctors import GAvsHeftGA
 
 reliability = 0.9
 

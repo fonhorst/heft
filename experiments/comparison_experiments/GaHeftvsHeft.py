@@ -1,7 +1,7 @@
 import os
 from uuid import uuid4
-from experiments.comparison_experiments.utilities.ComparisonBase import ResultSaver, ComparisonUtility
-from experiments.comparison_experiments.utilities.VersusFunctors import GaHeftvsHeft
+from experiments.comparison_experiments.common.ComparisonBase import ResultSaver, ComparisonUtility
+from experiments.comparison_experiments.common.VersusFunctors import GaHeftvsHeft
 
 reliability = 0.99
 

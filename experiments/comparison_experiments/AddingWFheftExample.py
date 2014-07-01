@@ -6,7 +6,7 @@ from algs.heft.DSimpleHeft import DynamicHeft
 ## reliability doesn't matter anything here
 from core.environment import Utility
 from core.environment.ResourceManager import Schedule
-from experiments.comparison_experiments.utilities import ExecutorRunner
+from experiments.comparison_experiments.common import ExecutorRunner
 
 wf_added_times = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 #wf_added_times = [0.1]

@@ -1,5 +1,5 @@
-from experiments.comparison_experiments.utilities.ComparisonBase import ComparisonUtility, ResultSaver
-from experiments.comparison_experiments.utilities.VersusFunctors import GAvsHeftGAvsHeftReXGA
+from experiments.comparison_experiments.common.ComparisonBase import ComparisonUtility, ResultSaver
+from experiments.comparison_experiments.common.VersusFunctors import GAvsHeftGAvsHeftReXGA
 
 reliability = 0.95
 

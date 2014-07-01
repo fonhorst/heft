@@ -6,7 +6,7 @@ from algs.heft import HeftHelper, PublicResourceManager
 from core.CommonComponents.failers.ConcreteNodeFailOnce import WeakestFailOnce
 from algs.heft.DSimpleHeft import DynamicHeft
 from experiments.comparison_experiments import GaOldPopExecutor
-from experiments.comparison_experiments.utilities.ComparisonBase import ResultSaver, ComparisonUtility
+from experiments.comparison_experiments.common.ComparisonBase import ResultSaver, ComparisonUtility
 from core.environment import Utility, ResourceGenerator
 from core.CommonComponents.ExperimentalManagers import ExperimentEstimator, ExperimentResourceManager
 from experiments.comparison_experiments.executors import GaHeftOldPopExecutor, GaHeftExecutor, HeftExecutor, CloudHeftExecutor

@@ -2,10 +2,10 @@
 
 import os
 from algs.heft.DSimpleHeft import DynamicHeft
-from experiments.comparison_experiments.utilities import ExecutorRunner
-from experiments.comparison_experiments.utilities.ComparisonBase import ComparisonUtility
+from experiments.comparison_experiments.common import ExecutorRunner
+from experiments.comparison_experiments.common.ComparisonBase import ComparisonUtility
 from core.environment import Utility
-from experiments.comparison_experiments.utilities.ExecutorRunner import ExecutorsFactory
+from experiments.comparison_experiments.common.ExecutorRunner import ExecutorsFactory
 from experiments.comparison_experiments.executors import GaHeftExecutor, HeftExecutor
 
 
