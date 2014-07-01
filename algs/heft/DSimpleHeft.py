@@ -1,4 +1,4 @@
-from algs.heft import HeftHelper
+from algs.heft.HeftHelper import HeftHelper
 from core.environment.ResourceManager import Schedule, ScheduleItem
 from core.environment.Utility import timing
 from algs.heft.simple_heft import StaticHeftPlanner

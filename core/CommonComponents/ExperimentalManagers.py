@@ -1,4 +1,4 @@
-from core.environment import ResourceManager
+from core.environment.ResourceManager import ResourceManager
 from core.environment.ResourceManager import Estimator
 
 

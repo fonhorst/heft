@@ -1,8 +1,8 @@
 from copy import deepcopy
 from deap import creator, tools
-from algs.ga.GAImplementation import GAFunctions2
-from core.environment import Utility
-from experiments.comparison_experiments.executors import GaHeftOldPopExecutor
+from algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
+from core.environment.Utility import Utility
+from experiments.comparison_experiments.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
 
 
 class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):

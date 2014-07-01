@@ -5,7 +5,7 @@ import operator
 
 from deap import base, tools, creator
 from deap.tools import migRing
-from algs.ga.GAImplementation import GAFunctions2
+from algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
 
 from algs.ga.GAImplementation.GAImpl import GAFactory, SynchronizedCheckpointedGA
 

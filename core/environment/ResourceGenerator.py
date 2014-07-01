@@ -1,6 +1,6 @@
 import math
 from random import Random
-from algs.heft import HeftHelper
+from algs.heft.HeftHelper import HeftHelper
 from core.environment.BaseElements import Resource, Node, SoftItem
 
 __author__ = 'nikolay'

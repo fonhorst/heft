@@ -3,7 +3,7 @@ from algs.ga.coevolution.cga import Env, Specie, ListBasedIndividual
 from algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, build_schedule, mapping_default_initialize, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead, mapping_all_mutate, default_build_solutions
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
 from core.environment import Utility
-from experiments.cga import wf
+from core.environment.Utility import wf
 from experiments.cga.cga_exp import os_ideal_ind, ms_ideal_ind, do_experiment
 from experiments.cga.utilities.common import UniqueNameSaver, repeat, extract_ordering_from_file, ArchivedSelector, roulette, build_ms_ideal_ind, build_os_ideal_ind, hamming_distances, unique_individuals, to_seq, pcm, gdm, hamming_for_best_components, best_components_itself
 

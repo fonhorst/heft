@@ -7,12 +7,18 @@ import io
 import time
 from random import Random
 import xml.etree.ElementTree as ET
+from config.settings import __root_path__
 
 from experiments.comparison_experiments.common.ComparisonBase import ComparisonUtility
-from environment.BaseElements import Node, Resource
-from environment.ResourceManager import ScheduleItem, Schedule
-from core.environment import DAXParser
+from core.environment.BaseElements import Node, Resource
+from core.environment.ResourceManager import ScheduleItem, Schedule
+from core.environment.DAXParser import DAXParser
 
+def wf(wf_name, task_postfix_id="00"):
+    # dax_filepath = "../../resources/{0}.xml".format(wf_name)
+    dax_filepath = "{0}/resources/{1}.xml".format(__root_path__, wf_name)
+    _wf = Utility.readWorkflow(dax_filepath, wf_name, task_postfix_id)
+    return _wf
 
 def timing(f):
     def wrap(*args, **kwargs):
@@ -100,10 +106,9 @@ class Utility:
     @staticmethod
     def get_default_bundle():
         ## dedicated resource are the same for all bundles
-        wf_name = 'CyberShake_30'
-        dax2 = '../../resources/' + wf_name + '.xml'
-        path = '../../resources/saved_schedules/' + 'CyberShake_30_bundle_backup' + '.json'
-        bundle = Utility.load_schedule(path, Utility.readWorkflow(dax2, wf_name))
+        _wf = wf('CyberShake_30')
+        path = '{0}/resources/saved_schedules/CyberShake_30_bundle_backup.json'.format(__root_path__)
+        bundle = Utility.load_schedule(path, _wf)
         return bundle
 
     @staticmethod
@@ -597,21 +602,5 @@ class StartEndPair:
     def __init__(self, start_time, end_time):
         self.start_time = start_time
         self.end_time = end_time
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -1,8 +1,8 @@
 from collections import deque
 import random
-from core.CommonComponents import BaseExecutor
+from core.CommonComponents.BaseExecutor import BaseExecutor
 from core.CommonComponents.failers.FailOnce import FailOnce
-from core.environment import Utility
+from core.environment.Utility import Utility
 from core.environment.EventMachine import TaskFinished, NodeFailed, NodeUp
 from core.environment.BaseElements import Node
 from core.environment.ResourceManager import Schedule, ScheduleItem

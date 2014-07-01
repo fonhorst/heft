@@ -1,4 +1,5 @@
 from functools import partial
+import traceback
 import unittest
 from experiments.comparison_experiments.common.ExecutorRunner import ExecutorsFactory
 

@@ -2,15 +2,21 @@ from functools import partial
 import random
 from algs.ga.GAImplementation.GAImpl import GAFactory
 from algs.ga.multipopGA.MPGA import create_mpga
-from algs.heft import HeftHelper, PublicResourceManager
+from algs.heft.HeftHelper import HeftHelper
+from algs.heft.PublicResourceManager import PublicResourceManager
 from core.CommonComponents.failers.ConcreteNodeFailOnce import WeakestFailOnce
 from algs.heft.DSimpleHeft import DynamicHeft
-from experiments.comparison_experiments import GaOldPopExecutor
+from experiments.comparison_experiments.GaOldPopExecutor import GaOldPopExecutor
 from experiments.comparison_experiments.common.ComparisonBase import ResultSaver, ComparisonUtility
-from core.environment import Utility, ResourceGenerator
+from core.environment.Utility import Utility, wf
+from core.environment.ResourceGenerator import ResourceGenerator
 from core.CommonComponents.ExperimentalManagers import ExperimentEstimator, ExperimentResourceManager
-from experiments.comparison_experiments.executors import GaHeftOldPopExecutor, GaHeftExecutor, HeftExecutor, CloudHeftExecutor
-from experiments.comparison_experiments.executors import MPGaHeftOldPopExecutor, GAExecutor
+from experiments.comparison_experiments.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
+from experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
+from experiments.comparison_experiments.executors.HeftExecutor import HeftExecutor
+from experiments.comparison_experiments.executors.CloudHeftExecutor import CloudHeftExecutor
+from experiments.comparison_experiments.executors.MPGaHeftOldPopExecutor import MPGaHeftOldPopExecutor
+from experiments.comparison_experiments.executors.GAExecutor import GAExecutor
 
 
 class ExecutorRunner:
@@ -19,10 +25,7 @@ class ExecutorRunner:
 
     @staticmethod
     def get_wf(wf_name, task_postfix_id="00"):
-        ## TODO: make check for valid path in wf_name variable
-        dax1 = '..\\..\\resources\\' + wf_name + '.xml'
-        wf = Utility.readWorkflow(dax1, wf_name, task_postfix_id=task_postfix_id)
-        return wf
+        return wf(wf_name, task_postfix_id)
 
     def get_bundle(self, the_bundle):
         bundle = None

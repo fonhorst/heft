@@ -1,5 +1,5 @@
 import random
-from algs.heft import HeftHelper
+from algs.heft.HeftHelper import HeftHelper
 from core.environment.BaseElements import Node
 from core.environment.ResourceManager import Scheduler, ScheduleItem, Schedule
 

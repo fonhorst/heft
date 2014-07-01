@@ -1,6 +1,6 @@
 from collections import deque
 from core.environment.EventMachine import TaskStart, TaskFinished, NodeFailed, NodeUp
-from core.environment import EventMachine
+from core.environment.EventMachine import EventMachine
 from core.environment.ResourceManager import ScheduleItem, Schedule
 
 

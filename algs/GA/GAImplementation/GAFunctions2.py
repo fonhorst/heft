@@ -1,11 +1,11 @@
 ## from Buyya
 import random
-from algs import SimpleRandomizedHeuristic
+from algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from algs.ga.GAImplementation.NewSchedulerBuilder import NewScheduleBuilder
-from algs.heft import HeftHelper
+from algs.heft.HeftHelper import HeftHelper
 from core.environment.BaseElements import Node
 from core.environment.ResourceManager import ScheduleItem
-from core.environment import Utility
+from core.environment.Utility import Utility
 
 
 def mark_finished(schedule):

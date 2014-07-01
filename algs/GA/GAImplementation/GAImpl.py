@@ -7,9 +7,9 @@ from deap import creator
 from deap import base
 import deap
 from deap.tools import History
-from algs.ga.GAImplementation import GAFunctions2
+from algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
 
-from algs.heft import HeftHelper
+from algs.heft.HeftHelper import HeftHelper
 from core.environment.ResourceManager import Schedule
 from core.environment.Utility import timing
 

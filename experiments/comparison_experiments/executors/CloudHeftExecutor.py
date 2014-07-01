@@ -1,7 +1,7 @@
 from collections import deque
 import random
-from algs.heft import HeftHelper
-from core.environment import EventMachine
+from algs.heft.HeftHelper import HeftHelper
+from core.environment.EventMachine import EventMachine
 from core.environment.BaseElements import Node
 from core.environment.ResourceManager import Schedule, ScheduleItem
 from core.environment.EventMachine import TaskStart, NodeFailed, NodeUp, TaskFinished

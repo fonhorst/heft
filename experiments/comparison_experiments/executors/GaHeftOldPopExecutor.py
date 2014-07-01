@@ -1,8 +1,8 @@
 import random
 from core.CommonComponents.failers.FailOnce import FailOnce
-from core.environment import Utility
+from core.environment.Utility import Utility
 from core.environment.EventMachine import NodeFailed, NodeUp, TaskFinished
-from experiments.comparison_experiments.executors import GaHeftExecutor
+from experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
 from core.environment.ResourceManager import ScheduleItem
 
 

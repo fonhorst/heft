@@ -1,7 +1,7 @@
 from collections import deque
 import random
-from algs.heft import HeftHelper
-from core.CommonComponents import BaseExecutor
+from algs.heft.HeftHelper import HeftHelper
+from core.CommonComponents.BaseExecutor import BaseExecutor
 from core.CommonComponents.failers.FailRandom import FailRandom
 from core.environment.BaseElements import Node
 from core.environment.ResourceManager import Schedule, ScheduleItem
