@@ -14,18 +14,16 @@
 #    License along with DEAP. If not, see <http://www.gnu.org/licenses/>.
 
 import random
-import numpy
 
 from deap import base
 from deap import creator
 from deap import tools
-from scoop import futures
-from GA.DEAPGA.coevolution.cga import ListBasedIndividual, Env
-from GA.DEAPGA.coevolution.operators import mapping_heft_based_initialize, ordering_heft_based_initialize
-from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
+from algs.ga.coevolution.cga import ListBasedIndividual, Env
+from algs.ga.coevolution.operators import mapping_heft_based_initialize, ordering_heft_based_initialize
+from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
+from core.environment import ResourceGenerator as rg
 from experiments.cga import wf
-from environment.ResourceGenerator import ResourceGenerator as rg
-from experiments.cga.mobjective.utility import VMResGen, fitness_makespan_and_cost_map_ord, SimpleTimeCostEstimator
+from experiments.cga.mobjective.utility import fitness_makespan_and_cost_map_ord, SimpleTimeCostEstimator
 from experiments.cga.utilities.common import extract_ordering_from_ga_file, extract_mapping_from_ga_file
 from experiments.cga.utilities.double_chromosome_ga import _mate, _mutate
 

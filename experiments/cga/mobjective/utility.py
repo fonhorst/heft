@@ -1,6 +1,6 @@
-from GA.DEAPGA.coevolution.operators import fitness_mapping_and_ordering, MAPPING_SPECIE, ORDERING_SPECIE, build_schedule
-from core.concrete_realization import ExperimentEstimator
-from environment.BaseElements import Resource, Node, SoftItem
+from algs.ga.coevolution.operators import fitness_mapping_and_ordering, MAPPING_SPECIE, ORDERING_SPECIE, build_schedule
+from core.CommonComponents.ExperimentalManagers import ExperimentEstimator
+from core.environment.BaseElements import Resource, Node, SoftItem
 
 
 class VMResGen:

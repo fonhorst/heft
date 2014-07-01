@@ -1,13 +1,12 @@
-from environment.ResourceGenerator import ResourceGenerator
+from core.environment import Utility, ResourceGenerator
 
 __author__ = 'Николай'
 
 import unittest
 from unittest import TestCase
-from environment.Utility import Utility
-from core.simple_heft import StaticHeftPlanner
-from core.concrete_realization import ExperimentEstimator
-from core.concrete_realization import ExperimentResourceManager
+from algs.heft.simple_heft import StaticHeftPlanner
+from core.CommonComponents.ExperimentalManagers import ExperimentEstimator
+from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 import cProfile, pstats, io
 
 

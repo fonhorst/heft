@@ -1,9 +1,8 @@
 from deap import tools
-from GA.DEAPGA.coevolution.cga import Env, Specie, ListBasedIndividual
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, fitness_mapping_and_ordering, build_schedule, mapping_all_mutate, assign_from_transfer_overhead, mapping_heft_based_initialize, default_build_solutions
-from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
-from environment.ResourceGenerator import ResourceGenerator as rg
-from environment.Utility import Utility
+from algs.ga.coevolution.cga import Env, Specie, ListBasedIndividual
+from algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, fitness_mapping_and_ordering, build_schedule, mapping_all_mutate, assign_from_transfer_overhead, mapping_heft_based_initialize, default_build_solutions
+from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
+from core.environment import Utility
 from experiments.cga import wf
 from experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, \
     extract_mapping_from_ga_file, extract_ordering_from_ga_file

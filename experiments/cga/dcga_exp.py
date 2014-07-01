@@ -1,7 +1,7 @@
-from core.concrete_realization import ExperimentResourceManager, ExperimentEstimator
+from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
+from core.environment import ResourceGenerator as rg
 from experiments.cga import wf
 from experiments.cga.utilities.common import extract_mapping_from_ga_file, extract_ordering_from_ga_file, UniqueNameSaver, repeat
-from environment.ResourceGenerator import ResourceGenerator as rg
 from experiments.cga.utilities.double_chromosome_ga import run_dcga
 
 _wf = wf("Montage_100")

@@ -1,5 +1,5 @@
-from environment.Utility import Utility
 from config.settings import __root_path__
+from core.environment import Utility
 
 
 def wf(wf_name):

@@ -7,9 +7,8 @@ import uuid
 from deap import tools
 import distance
 import math
-from scoop import futures
-from GA.DEAPGA.coevolution.cga import ListBasedIndividual, rounddeciter
-from GA.DEAPGA.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
+from algs.ga.coevolution.cga import ListBasedIndividual, rounddeciter
+from algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
 
 
 class UniqueNameSaver:

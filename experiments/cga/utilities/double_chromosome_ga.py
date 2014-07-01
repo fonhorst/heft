@@ -1,11 +1,10 @@
-import random
 import deap
 from deap import tools, algorithms
 from deap.base import Toolbox
 import numpy
-from GA.DEAPGA.coevolution.cga import Env, ListBasedIndividual, rounddec
-from GA.DEAPGA.coevolution.operators import mapping_heft_based_initialize, ordering_heft_based_initialize, ordering_default_crossover, mapping_default_mutate, ordering_default_mutate, fitness_mapping_and_ordering, MAPPING_SPECIE, ORDERING_SPECIE
-from experiments.cga.utilities.common import extract_mapping_from_ga_file, Fitness
+from algs.ga.coevolution.cga import Env, ListBasedIndividual
+from algs.ga.coevolution.operators import mapping_heft_based_initialize, ordering_heft_based_initialize, ordering_default_crossover, mapping_default_mutate, ordering_default_mutate, fitness_mapping_and_ordering, MAPPING_SPECIE, ORDERING_SPECIE
+from experiments.cga.utilities.common import Fitness
 
 
 def _mate(ctx, child1, child2):
