@@ -1,5 +1,4 @@
 import functools
-import operator
 import random
 
 def _randvecsum(vectors):
@@ -76,6 +75,6 @@ def run_gsa(toolbox, pop_size, iter_number, kbest, ginit):
             del p.fitness
             del p.acceleration
         pass
-    pass
+    return pop
 
 
