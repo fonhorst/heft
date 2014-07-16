@@ -1,5 +1,5 @@
 import unittest
-from algs.ga.coevolution.operators import _check_precedence, ordering_mutate
+from algs.ga.coevolution.operators import _check_precedence, ordering_default_mutate
 from core.environment import Utility
 
 
@@ -41,7 +41,7 @@ class OperatorsTest(unittest.TestCase):
         mutant = _topological_sort(self.wf)
         assert _check_precedence(self.wf, mutant)
 
-        mutant = ordering_mutate(self.wf, mutant)
+        mutant = ordering_default_mutate(self.wf, mutant)
         assert _check_precedence(self.wf, mutant)
 
     pass

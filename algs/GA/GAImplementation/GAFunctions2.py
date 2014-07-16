@@ -1,7 +1,7 @@
 ## from Buyya
 import random
 from algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
-from algs.ga.GAImplementation.NewSchedulerBuilder import NewScheduleBuilder
+from algs.common.NewSchedulerBuilder import NewScheduleBuilder
 from algs.heft.HeftHelper import HeftHelper
 from core.environment.BaseElements import Node
 from core.environment.ResourceManager import ScheduleItem

@@ -21,7 +21,7 @@ class SimpleRandomizedHeuristic(Scheduler):
             self.initial_chromosome = None
             pass
 
-     def schedule(self, fixed_schedule_part, current_time):
+     def schedule(self, fixed_schedule_part=None, current_time=0.0):
 
          estimate = self.estimator.estimate_transfer_time
          # TODO: make common utility function with ScheduleBuilder

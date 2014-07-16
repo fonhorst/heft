@@ -2,18 +2,16 @@ from copy import deepcopy
 import random
 from deap import tools
 import numpy
-from algs.ga.GAImplementation.NewSchedulerBuilder import place_task_to_schedule
+from algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE, _check_precedence
 from algs.ga.coevolution.cga import Specie, Env, ListBasedIndividual, DictBasedIndividual
 from algs.heft.DSimpleHeft import DynamicHeft
 from algs.heft.HeftHelper import HeftHelper
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
-from core.environment.ResourceManager import Schedule
 from core.environment.Utility import Utility
 from core.environment.ResourceGenerator import ResourceGenerator
 
 
-MAPPING_SPECIE = "MappingSpecie"
-ORDERING_SPECIE = "OrderingSpecie"
+
 RESOURCE_CONFIG_SPECIE = "ResourceConfigSpecie"
 
 ## TODO: move it to experiments/five_runs/
@@ -125,50 +123,6 @@ def assign_from_transfer_overhead(ctx, solutions):
 #     assert len(pop) == size, "Size of predefined population doesn't match to required size: {0} vs {1}"\
 #         .format(len(pop), size)
 #     return pop
-
-
-def _check_precedence(workflow, seq):
-    for i in range(len(seq)):
-        task = workflow.byId(seq[i])
-        pids = [p.id for p in task.parents]
-        for j in range(i + 1, len(seq)):
-            if seq[j] in pids:
-                return False
-    return True
-
-
-def build_schedule(workflow, estimator, resource_manager, solution):
-    """
-    the solution consists all parts necessary to build whole solution
-    For the moment, it is mentioned that all species taking part in algorithm
-    are necessary to build complete solution
-    solution = {
-        s1.name: val1,
-        s2.name: val2,
-        ....
-    }
-    """
-    ms = solution[MAPPING_SPECIE]
-    os = solution[ORDERING_SPECIE]
-
-    assert _check_precedence(workflow, os), "Precedence is violated"
-
-    ms = {t: resource_manager.byName(n) for t, n in ms}
-    schedule_mapping = {n: [] for n in set(ms.values())}
-    task_to_node = {}
-    for t in os:
-        node = ms[t]
-        t = workflow.byId(t)
-        (start_time, end_time) = place_task_to_schedule(workflow,
-                                                        estimator,
-                                                        schedule_mapping,
-                                                        task_to_node,
-                                                        ms, t, node, 0)
-
-        task_to_node[t.id] = (node, start_time, end_time)
-    schedule = Schedule(schedule_mapping)
-    return schedule
-
 
 def fitness_mapping_and_ordering(ctx,
                                  solution):
