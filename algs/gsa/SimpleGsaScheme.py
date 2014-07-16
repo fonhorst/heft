@@ -10,7 +10,7 @@ def _randsum(iterable):
     add = lambda a, b: a + random.random()*b
     return functools.reduce(add, iterable)
 
-def run_gsa(toolbox, pop_size, iter_number, kbest, ginit):
+def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
     """
     This method is targeted to propose a prototype implementation of
     Gravitational Search Algorithm(gsa). It is intended only for initial steps
@@ -45,31 +45,37 @@ def run_gsa(toolbox, pop_size, iter_number, kbest, ginit):
         best = pop[0]
         worst = pop[-1]
         for p in pop:
-            p.mass = toolbox.mass(p, worst, best)
+            p.mass = (p.fitness.mofit - worst) / (best - worst)
         mass_sum = sum(p for p in pop)
         for p in pop:
             p.mass = p.mass/mass_sum
 
-        ## estimate all related powers
-        ## pvm is a matrix of VECTORS(due to we are operating in d-dimensional space) size of 'pop_size x kbest'
+        ## estimate all related forces
+        ## fvm is a matrix of VECTORS(due to we are operating in d-dimensional space) size of 'pop_size x kbest'
         ## in fact we can use wrapper for the entity of pop individual but python has duck typing,
         ## so why don't use it, if you use it carefully?
-        pvm = toolbox.force_vector_matrix(pop, kbest, G)
+        fvm = toolbox.force_vector_matrix(pop, kbest, G)
         ## compute new velocity and position
         for p in pop:
             ## get vector of total influential force for all dimensions
-            total_force = _randvecsum(vec for vec in pvm[p])
+            total_force = _randvecsum(vec for vec in fvm[p])
             p.acceleration = [f/p.mass for f in total_force]
             # p.velocity = toolbox.velocity(p, velocity, acceleration)
             velocity = random.random()*p.velocity + p.acceleration
             p = toolbox.position(p, velocity)
             p.velocity = velocity
 
+        ##statistics gathering
+        record = statistics.compile(pop)
+        logbook.record(gen=i, G=G, kbest=kbest, **record)
+        print(logbook.stream)
+
+
         ## change gravitational constants
-        G = toolbox.G(G, i)
-        kbest = toolbox.kbest(kbest, i)
+        G = toolbox.G(ginit, i, iter_number)
+        kbest = toolbox.kbest(kbest, i, iter_number)
 
-
+        ##removing temporary elements
         for p in pop:
             del p.mass
             del p.fitness
