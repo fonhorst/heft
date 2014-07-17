@@ -371,15 +371,9 @@ def ordering_heft_based_initialize(ctx, size, heft_ordering, count):
 
 def ordering_default_initialize(ctx, size):
     env = ctx['env']
-    estimator = env.estimator
-    nodes = env.rm.get_nodes()
-    wf = env.wf
-    ranking = HeftHelper.build_ranking_func(nodes,
-                                            lambda job, agent: estimator.estimate_runtime(job, agent),
-                                            lambda ni, nj, A, B: estimator.estimate_transfer_time(A, B, ni, nj))
-    sorted_tasks = [t.id for t in ranking(wf)]
+    sorted_tasks = HeftHelper.heft_rank(env.wf, env.rm, env.estimator)
 
-    assert _check_precedence(wf, sorted_tasks), "Check precedence failed"
+    assert _check_precedence(env.wf, sorted_tasks), "Check precedence failed"
 
     result = [ListBasedIndividual(ordering_default_mutate(ctx, deepcopy(sorted_tasks))) for i in range(size)]
     return result

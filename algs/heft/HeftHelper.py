@@ -5,6 +5,16 @@ from core.environment.ResourceManager import Scheduler, ScheduleItem, Schedule
 class HeftHelper(Scheduler):
 
     @staticmethod
+    def heft_rank(wf, rm, estimator):
+        nodes = rm.get_nodes()
+        ranking = HeftHelper.build_ranking_func(nodes,
+                                            lambda job, agent: estimator.estimate_runtime(job, agent),
+                                            lambda ni, nj, A, B: estimator.estimate_transfer_time(A, B, ni, nj))
+        sorted_tasks = [t.id for t in ranking(wf)]
+        return sorted_tasks
+
+
+    @staticmethod
     def to_nodes(resources):
             result = set()
             for resource in resources:

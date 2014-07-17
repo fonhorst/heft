@@ -29,6 +29,9 @@ class ResourceManager:
             result.update(resource.nodes)
         return result
 
+    def byName(self):
+        pass
+
 ##interface Estimator
 class Estimator:
     def __init__(self):

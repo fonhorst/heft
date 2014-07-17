@@ -316,6 +316,16 @@ class Utility:
             return False
         return True
 
+    @staticmethod
+    def validate_static_schedule(schedule):
+        seq_time_validaty = Utility.validateNodesSeq(schedule)
+        dependency_validaty = Utility.validateParentsAndChildren(schedule, wf)
+
+        if seq_time_validaty is False:
+            raise Exception("Sequence validaty check failed")
+        if dependency_validaty is False:
+            raise Exception("Dependency validaty check failed")
+        pass
 
     @staticmethod
     def makespan(schedule):

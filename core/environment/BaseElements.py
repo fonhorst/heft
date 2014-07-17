@@ -1,3 +1,4 @@
+from copy import copy
 import functools
 
 ##just an enum
@@ -65,7 +66,7 @@ class Workflow:
                 add_tasks(unique_tasks, self.head_task)
                 result = unique_tasks
             self._unique_tasks = result
-        return self._unique_tasks
+        return copy(self._unique_tasks)
 
     def byId(self, id):
         if self._id_to_task is None:

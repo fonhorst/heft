@@ -10,6 +10,15 @@ def _randsum(iterable):
     add = lambda a, b: a + random.random()*b
     return functools.reduce(add, iterable)
 
+def calculate_velocity_and_position(p, fvm, estimate_position):
+    ## get vector of total influential force for all dimensions
+    total_force = _randvecsum(vec for vec in fvm[p])
+    p.acceleration = [f/p.mass for f in total_force]
+    # p.velocity = toolbox.velocity(p, velocity, acceleration)
+    p.velocity = random.random()*p.velocity + p.acceleration
+    p = estimate_position(p)
+    return p
+
 def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
     """
     This method is targeted to propose a prototype implementation of
@@ -51,19 +60,14 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
             p.mass = p.mass/mass_sum
 
         ## estimate all related forces
-        ## fvm is a matrix of VECTORS(due to we are operating in d-dimensional space) size of 'pop_size x kbest'
+        ## fvm is a matrix of VECTORS(due to the fact we are operating in d-dimensional space) size of 'pop_size x kbest'
         ## in fact we can use wrapper for the entity of pop individual but python has duck typing,
         ## so why don't use it, if you use it carefully?
         fvm = toolbox.force_vector_matrix(pop, kbest, G)
         ## compute new velocity and position
-        for p in pop:
-            ## get vector of total influential force for all dimensions
-            total_force = _randvecsum(vec for vec in fvm[p])
-            p.acceleration = [f/p.mass for f in total_force]
-            # p.velocity = toolbox.velocity(p, velocity, acceleration)
-            velocity = random.random()*p.velocity + p.acceleration
-            p = toolbox.position(p, velocity)
-            p.velocity = velocity
+        position = toolbox.position if hasattr(toolbox, 'position') else None
+        pop = [toolbox.velocity_and_position(p, fvm, position) for p in pop]
+
 
         ##statistics gathering
         record = statistics.compile(pop)
@@ -77,9 +81,9 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
 
         ##removing temporary elements
         for p in pop:
-            del p.mass
-            del p.fitness
-            del p.acceleration
+            if hasattr(p, 'mass'): del p.mass
+            if hasattr(p, 'fitness'): del p.fitness
+            if hasattr(p, 'acceleration'): del p.acceleration
         pass
     return pop
 
