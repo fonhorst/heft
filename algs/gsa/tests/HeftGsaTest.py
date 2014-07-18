@@ -32,24 +32,25 @@ class HeftGsaTest(unittest.TestCase):
         toolbox.register("kbest", Kbest)
 
         statistics = Statistics()
-        statistics.register("min", lambda pop: numpy.min([p.fitness for p in pop]))
-        statistics.register("avr", lambda pop: numpy.average([p.fitness for p in pop]))
-        statistics.register("max", lambda pop: numpy.max([p.fitness for p in pop]))
-        statistics.register("std", lambda pop: numpy.std([p.fitness for p in pop]))
+        statistics.register("min", lambda pop: numpy.min([p.fitness.mofit for p in pop]))
+        statistics.register("avr", lambda pop: numpy.average([p.fitness.mofit for p in pop]))
+        statistics.register("max", lambda pop: numpy.max([p.fitness.mofit for p in pop]))
+        statistics.register("std", lambda pop: numpy.std([p.fitness.mofit for p in pop]))
 
         logbook = Logbook()
+        logbook.header = ("gen", "G", "kbest", "min", "avr", "max", "std")
 
-        pop_size = 50
-        iter_number = 200
+        pop_size = 10
+        iter_number = 20
         kbest = pop_size
         ginit = 1
 
         final_pop = run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit)
 
-        best = min(final_pop, key=lambda x: x.fitness)
-        solution = {MAPPING_SPECIE: best, ORDERING_SPECIE: sorted_tasks}
-        schedule = build_schedule(_wf, rm, estimator, solution)
-        Utility.validate_static_schedule(schedule)
+        best = min(final_pop, key=lambda x: toolbox.fitness(x).mofit)
+        solution = {MAPPING_SPECIE: list(zip(sorted_tasks, best)), ORDERING_SPECIE: sorted_tasks}
+        schedule = build_schedule(_wf, estimator, rm, solution)
+        Utility.validate_static_schedule(_wf, schedule)
         makespan = Utility.makespan(schedule)
         print("Final makespan: {0}".format(makespan))
 

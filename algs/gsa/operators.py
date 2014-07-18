@@ -125,11 +125,12 @@ def G(ginit, i, iter_number):
     ng = ginit*(1 - i/iter_number)
     return ng
 
-def Kbest(kbest, i, iter_number):
+def Kbest(kbest_init, kbest, i, iter_number):
     """
     basic implementation of kbest decreasing
     """
-    nkbest = math.ceil(i / iter_number)
+    d = iter_number / kbest_init
+    nkbest = math.ceil(abs(kbest_init - i/d))
     return nkbest
 
 

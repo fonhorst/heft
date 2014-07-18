@@ -1,11 +1,13 @@
-from deap import tools
 import math
+
+from deap import tools
 from deap.base import Fitness
+
 from algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
-from algs.common.individuals import DictBasedIndividual
+from algs.common.individuals import ListBasedIndividual
 from algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE
-from algs.common.utilities import mapping_as_vector
 from algs.gsa.operators import fitness as basefitness
+
 
 
 ## TODO: remake vector representation -> sorted
@@ -17,7 +19,8 @@ def schedule_to_position(schedule):
     items = lambda: iter((item, node) for node, items in schedule.mapping.items() for item in items)
     if not all(i.is_unstarted() for i, _ in items()):
         raise ValueError("Schedule is not valid. Not all elements have unstarted state.")
-    mapping = DictBasedIndividual({i.job.id: n.name for i, n in items()})
+
+    mapping = ListBasedIndividual([n.name for _, n in sorted(items(), key=lambda x: x[0].job.id)])
     return mapping
 
 def generate(wf, rm, estimator):
@@ -36,12 +39,12 @@ def force_vector_matrix(rm, pop, kbest, G, e=0.0):
     dist = lambda a, b: sum([(0 if r1 == r2 else 1) + math.fabs(rm.byName(r1).flops - rm.byName(r2).flops)/(rm.byName(r1).flops + rm.byName(r2).flops) for r1, r2 in zip(a, b)])
 
     def estimate_force(a, b):
-        a_string = mapping_as_vector(a)
-        b_string = mapping_as_vector(b)
+        a_string = a#mapping_as_vector(a)
+        b_string = b#mapping_as_vector(b)
 
         R = dist(a_string, b_string)
         ## TODO: here must be a multiplication of a vector and a number
-        val = (G*(a.mass*b.mass)/R + e)
+        val = (G*(a.mass*b.mass)/(R + e))
         f = [val * d for d in sub(a_string, b_string)]
         return f
 
@@ -61,22 +64,28 @@ def velocity_and_position(wf, rm, estimator, p, fvm, estimate_position=None):
 
         ## get all forces which act from all other participating masses to mass p
         ## for all vectors of force save force value and point in discrete dimension where it is
-        dforces = [TempWrapper(mapping_as_vector(mass)[d], f[d]/p.mass) for f, mass in fvm[p.uid]]
+        dforces = [TempWrapper(mass[d], f[d]/p.mass) for f, mass in fvm[p.uid]]
 
         ## case without changing of current place in space
         ## acts like yet another divicion for roulette
         not_changing = sum([mass.mass for _, mass in fvm[p.uid]])/(p.mass*len(fvm[p.uid]))
         if not_changing < 1:
-            dforces.append(TempWrapper(mapping_as_vector(p)[d], sum([x.fitness.values[0] for x in dforces]) * not_changing))
+            dforces.append(TempWrapper(p[d], sum([x.fitness.values[0] for x in dforces]) * not_changing))
 
-        el = tools.selRoulette(dforces, 1)[0]
-        return el.pd
+        if sum([t.fitness.values[0] for t in dforces]) == 0:
+            ## corner case, when all accelerations(fitnesses) equal 0
+            return p[d]
+        else:
+            # el = tools.selRoulette(dforces, 1)[0]
+            el = tools.selTournament(dforces, 1, 2)[0]
+            return el.pd
     ## construct new position vector based on forces
-    new_p = [change(i) for i in range(len(p))]
+    new_p = ListBasedIndividual([change(i) for i in range(len(p))])
     return new_p
 
 def fitness(wf, rm, estimator, ordering, position):
-    solution = {MAPPING_SPECIE: position.items(), ORDERING_SPECIE: ordering}
+    solution = {MAPPING_SPECIE: list(zip(wf.get_tasks_id(), position)),
+                ORDERING_SPECIE: ordering}
     fit = basefitness(wf, rm, estimator, solution)
     return fit
 

@@ -54,6 +54,9 @@ class Workflow:
         return result
 
     def get_all_unique_tasks(self):
+        """
+        Get all unique tasks in sorted order
+        """
         if self._unique_tasks is None:
             def add_tasks(unique_tasks, task):
                 unique_tasks.update(task.children)
@@ -65,8 +68,11 @@ class Workflow:
             else:
                 add_tasks(unique_tasks, self.head_task)
                 result = unique_tasks
-            self._unique_tasks = result
+            self._unique_tasks = sorted(result, key=lambda x: x.id)
         return copy(self._unique_tasks)
+
+    def get_tasks_id(self):
+        return [t.id for t in self._unique_tasks]
 
     def byId(self, id):
         if self._id_to_task is None:

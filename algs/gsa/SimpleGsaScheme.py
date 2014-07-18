@@ -37,6 +37,7 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
     """
 
     G = ginit
+    kbest_init = kbest
 
     ## initialization
     ## generates random solutions
@@ -64,9 +65,6 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
         ## in fact we can use wrapper for the entity of pop individual but python has duck typing,
         ## so why don't use it, if you use it carefully?
         fvm = toolbox.force_vector_matrix(pop, kbest, G)
-        ## compute new velocity and position
-        position = toolbox.position if hasattr(toolbox, 'position') else None
-        pop = [toolbox.velocity_and_position(p, fvm, position) for p in pop]
 
 
         ##statistics gathering
@@ -74,10 +72,13 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
         logbook.record(gen=i, G=G, kbest=kbest, **record)
         print(logbook.stream)
 
+        ## compute new velocity and position
+        position = toolbox.position if hasattr(toolbox, 'position') else None
+        pop = [toolbox.velocity_and_position(p, fvm, position) for p in pop]
 
         ## change gravitational constants
         G = toolbox.G(ginit, i, iter_number)
-        kbest = toolbox.kbest(kbest, i, iter_number)
+        kbest = toolbox.kbest(kbest_init, kbest, i, iter_number)
 
         ##removing temporary elements
         for p in pop:

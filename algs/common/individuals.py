@@ -21,5 +21,10 @@ class DictBasedIndividual(dict):
         self.uid = uuid4()
     pass
 
-creator.create("ListBasedIndividual", list)
-ListBasedIndividual = creator.ListBasedIndividual
+# creator.create("ListBasedIndividual", list)
+# ListBasedIndividual = creator.ListBasedIndividual
+class ListBasedIndividual(list):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.uid = uuid4()
+    pass

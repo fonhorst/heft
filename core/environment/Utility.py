@@ -154,7 +154,7 @@ class Utility:
 
     ## TODO: under development now
     @staticmethod
-    def validateParentsAndChildren(schedule, workflow):
+    def validateParentsAndChildren(schedule, workflow, AllUnstartedMode=False):
         #{
         #   task: (node,start_time,end_time),
         #   ...
@@ -171,14 +171,18 @@ class Utility:
             ## in schedule items sequence, only one finished element must be
             ## resulted schedule can contain only failed and finished elements
             states = [item.state for item in seq]
-            if states[-1] != ScheduleItem.FINISHED:
-                return False
-            finished = [state for state in states if state == ScheduleItem.FINISHED]
-            if len(finished) != 1:
-                return False
-            failed = [state for state in states if state == ScheduleItem.FAILED]
-            if len(states) - len(finished) != len(failed):
-                return False
+            if AllUnstartedMode:
+                if len(states) > 1 or states[0] != ScheduleItem.UNSTARTED:
+                    return False
+            else:
+                if states[-1] != ScheduleItem.FINISHED:
+                    return False
+                finished = [state for state in states if state == ScheduleItem.FINISHED]
+                if len(finished) != 1:
+                    return False
+                failed = [state for state in states if state == ScheduleItem.FAILED]
+                if len(states) - len(finished) != len(failed):
+                    return False
             return True
 
         task_to_node = {job_id: sorted(seq, key=lambda x: x.start_time) for (job_id, seq) in task_to_node.items()}
@@ -317,9 +321,9 @@ class Utility:
         return True
 
     @staticmethod
-    def validate_static_schedule(schedule):
+    def validate_static_schedule(_wf, schedule):
         seq_time_validaty = Utility.validateNodesSeq(schedule)
-        dependency_validaty = Utility.validateParentsAndChildren(schedule, wf)
+        dependency_validaty = Utility.validateParentsAndChildren(schedule, _wf, AllUnstartedMode=True)
 
         if seq_time_validaty is False:
             raise Exception("Sequence validaty check failed")
