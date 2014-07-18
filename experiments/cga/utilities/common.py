@@ -7,7 +7,8 @@ import uuid
 from deap import tools
 import distance
 import math
-from algs.ga.coevolution.cga import ListBasedIndividual, rounddeciter
+from algs.common.individuals import ListBasedIndividual
+from algs.ga.coevolution.cga import rounddeciter
 from algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
 
 

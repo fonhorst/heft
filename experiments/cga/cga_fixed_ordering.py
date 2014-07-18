@@ -1,5 +1,6 @@
 from deap import tools
-from algs.ga.coevolution.cga import Env, Specie, ListBasedIndividual
+from algs.common.individuals import ListBasedIndividual
+from algs.ga.coevolution.cga import Env, Specie
 from algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, fitness_mapping_and_ordering, build_schedule, mapping_all_mutate, assign_from_transfer_overhead, mapping_heft_based_initialize, default_build_solutions
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
 from core.environment.Utility import Utility

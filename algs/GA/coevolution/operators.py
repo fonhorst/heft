@@ -2,8 +2,9 @@ from copy import deepcopy
 import random
 from deap import tools
 import numpy
+from algs.common.individuals import DictBasedIndividual, ListBasedIndividual
 from algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE, _check_precedence
-from algs.ga.coevolution.cga import Specie, Env, ListBasedIndividual, DictBasedIndividual
+from algs.ga.coevolution.cga import Specie, Env
 from algs.heft.DSimpleHeft import DynamicHeft
 from algs.heft.HeftHelper import HeftHelper
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager

@@ -18,7 +18,8 @@ import random
 from deap import base
 from deap import creator
 from deap import tools
-from algs.ga.coevolution.cga import ListBasedIndividual, Env
+from algs.common.individuals import ListBasedIndividual
+from algs.ga.coevolution.cga import Env
 from algs.ga.coevolution.operators import mapping_heft_based_initialize, ordering_heft_based_initialize
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from core.environment import ResourceGenerator as rg

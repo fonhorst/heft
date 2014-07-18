@@ -14,6 +14,7 @@ from deap.base import Fitness
 import math
 from algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE
+from algs.common.utilities import mapping_as_vector
 from core.environment.Utility import Utility
 from experiments.cga.utilities.common import hamming_distances
 
@@ -28,7 +29,7 @@ class Position(dict):
         converts position to a single vector by joining mapping and ordering structure
         all workflow tasks is sorted by task.id and thus it provides idempotentity for multiple runs
         """
-        mapp_string = [node_name for task_id, node_name in sorted(super().__getitem__(MAPPING_SPECIE), key=lambda x: x[0])]
+        mapp_string = mapping_as_vector(super().__getitem__(MAPPING_SPECIE))
         ord_string = super().__getitem__[ORDERING_SPECIE]
         return mapp_string + ord_string
 

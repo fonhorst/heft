@@ -26,7 +26,7 @@ class HeftGsaTest(unittest.TestCase):
         toolbox.register("generate", generate, _wf, rm, estimator)
         toolbox.register("fitness", fitness, _wf, rm, estimator, sorted_tasks)
 
-        toolbox.register("force_vector_matrix", force_vector_matrix)
+        toolbox.register("force_vector_matrix", force_vector_matrix, rm)
         toolbox.register("velocity_and_position", velocity_and_position, _wf, rm, estimator)
         toolbox.register("G", G)
         toolbox.register("kbest", Kbest)

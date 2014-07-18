@@ -1,4 +1,3 @@
-from scoop import futures
 from experiments.comparison_experiments.common.ExecutorRunner import ExecutorsFactory
 wf_name = "Montage_250"
 tsk_period = 10

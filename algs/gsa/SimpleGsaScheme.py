@@ -50,12 +50,12 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
         ## mass estimation
         ## It is assumed that a minimization task is solved
         ## special field 'mofit' is used to get complex value of fitness
-        pop = sorted(pop, key=p.fitness.mofit)
-        best = pop[0]
-        worst = pop[-1]
+        pop = sorted(pop, key=lambda x: x.fitness.mofit)
+        best = pop[0].fitness.mofit
+        worst = pop[-1].fitness.mofit
         for p in pop:
-            p.mass = (p.fitness.mofit - worst) / (best - worst)
-        mass_sum = sum(p for p in pop)
+            p.mass = 1 + (p.fitness.mofit - worst) / (1 if abs(best - worst) < 0.001 else (best - worst))
+        mass_sum = sum(p.mass for p in pop)
         for p in pop:
             p.mass = p.mass/mass_sum
 

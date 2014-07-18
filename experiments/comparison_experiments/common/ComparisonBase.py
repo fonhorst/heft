@@ -2,9 +2,6 @@ from datetime import datetime
 import json
 import os
 from uuid import uuid4
-from Tools.Scripts.ndiff import fopen
-#from filelock.filelock import FileLock
-
 
 class VersusFunctor:
     def __call__(self, wf_name):

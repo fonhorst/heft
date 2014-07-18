@@ -1,4 +1,5 @@
-from algs.ga.coevolution.cga import Env, Specie, ListBasedIndividual
+from algs.common.individuals import ListBasedIndividual
+from algs.ga.coevolution.cga import Env, Specie
 from algs.ga.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ORDERING_SPECIE, default_assign_credits, ordering_heft_based_initialize, overhead_fitness_mapping_and_ordering, default_build_solutions
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
 from core.environment.ResourceGenerator import ResourceGenerator as rg
