@@ -9,7 +9,7 @@ from heft.algs.gsa.operators import fitness as basefitness
 
 
 ## TODO: remake vector representation -> sorted
-from heft.algs import SimpleRandomizedHeuristic
+from heft.algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 
 
 def schedule_to_position(schedule):
@@ -35,7 +35,10 @@ def force_vector_matrix(rm, pop, kbest, G, e=0.0):
     Note: pop is sorted by decreasing of goodness, so to find kbest
     we only need to take first kbest of pop
     """
-    sub = lambda seq1, seq2: [0 if s1 == s2 else 1 for s1, s2 in zip(seq1, seq2)]
+    ## calculate components of DIRECTED force vector
+    # sub = lambda seq1, seq2: [0 if s1 == s2 else 1 for s1, s2 in zip(seq1, seq2)]
+    ## pure hack to account it as preventing forces to change the position in particular dimension
+    sub = lambda seq1, seq2: [1 for s1, s2 in zip(seq1, seq2)]
     zero = lambda: [0 for _ in range(len(pop[0]))]
     dist = lambda a, b: sum([(0 if r1 == r2 else 1) + math.fabs(rm.byName(r1).flops - rm.byName(r2).flops)/(rm.byName(r1).flops + rm.byName(r2).flops) for r1, r2 in zip(a, b)])
 
