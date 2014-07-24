@@ -1,3 +1,4 @@
+import random
 import unittest
 
 from deap.base import Toolbox
@@ -5,8 +6,10 @@ from deap.tools.support import Statistics, Logbook
 import numpy
 from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE
 from heft.algs.gsa.SimpleGsaScheme import run_gsa
-from heft.algs.gsa.heftbasedoperators import generate, force_vector_matrix, velocity_and_position, fitness
+from heft.algs.gsa.heftbasedoperators import generate, force_vector_matrix, velocity_and_position, fitness, \
+    schedule_to_position
 from heft.algs.gsa.operators import G, Kbest
+from heft.algs.heft.DSimpleHeft import run_heft
 from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import wf, Utility
@@ -23,8 +26,15 @@ class HeftGsaTest(unittest.TestCase):
                                             ideal_flops=20, transfer_time=100)
         sorted_tasks = HeftHelper.heft_rank(_wf, rm, estimator)
 
+        heft_schedule = run_heft(_wf, rm, estimator)
+        heft_mapping = schedule_to_position(heft_schedule)
+
+        heft_gen = lambda: heft_mapping if random.random() > 0.95 else generate(_wf, rm, estimator)
+
+
         toolbox = Toolbox()
-        toolbox.register("generate", generate, _wf, rm, estimator)
+        # toolbox.register("generate", generate, _wf, rm, estimator)
+        toolbox.register("generate", heft_gen)
         toolbox.register("fitness", fitness, _wf, rm, estimator, sorted_tasks)
 
         toolbox.register("force_vector_matrix", force_vector_matrix, rm)
