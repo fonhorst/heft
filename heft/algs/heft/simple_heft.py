@@ -9,7 +9,7 @@ from heft.core.environment.ResourceManager import ScheduleItem
 from heft.core.environment.ResourceManager import Schedule
 from heft.core.environment.Utility import reverse_dict
 
-
+## TODO: obsolete remove this test later
 class StaticHeftPlanner(Scheduler):
     global_count = 0
     def __init__(self):

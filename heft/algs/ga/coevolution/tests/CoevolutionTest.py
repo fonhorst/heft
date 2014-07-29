@@ -1,23 +1,25 @@
 from copy import deepcopy
 import json
 import unittest
+import os
 from heft.algs.common.individuals import ListBasedIndividual
 
 from heft.algs.ga.coevolution.cga import run_cooperative_ga, Specie
 from heft.algs.ga.coevolution.operators import build_schedule, default_config, MAPPING_SPECIE, ORDERING_SPECIE
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentEstimator, ExperimentResourceManager
-from heft.core.environment import Utility, ResourceGenerator
+from heft.core.environment.ResourceGenerator import ResourceGenerator
+from heft.core.environment.Utility import wf as WF
 from heft.core.environment.ResourceManager import ScheduleItem
 from heft.experiments.cga.utilities.common import build_ms_ideal_ind
-from heft.experiments.comparison_experiments.common import ExecutorRunner
+from heft.experiments.comparison_experiments.common.ExecutorRunner import ExecutorRunner
+from heft.settings import TEMP_PATH
 
 
 class CoevolutionTest(unittest.TestCase):
 
     def test_mapping_and_ordering(self):
-        wf_path = "../../../../resources/Montage_25.xml"
         wf_name = "Montage_25"
-        wf = Utility.readWorkflow(wf_path, wf_name)
+        wf = WF(wf_name)
         manager = ExperimentResourceManager(ResourceGenerator.r([10, 15, 15, 25]))
         estimator = ExperimentEstimator(None, 20, 1.0, transfer_time=100)
 
@@ -45,9 +47,8 @@ class CoevolutionTest(unittest.TestCase):
         pass
 
     def test_fixed_specie(self):
-        wf_path = "../../../../resources/Montage_25.xml"
         wf_name = "Montage_25"
-        wf = Utility.readWorkflow(wf_path, wf_name)
+        wf = WF(wf_name)
         manager = ExperimentResourceManager(ResourceGenerator.r([10, 15, 15, 25]))
         estimator = ExperimentEstimator(None, 20, 1.0, transfer_time=100)
 
@@ -69,16 +70,16 @@ class CoevolutionTest(unittest.TestCase):
 
     def test_predefined_init_pop(self):
         ## TODO: make loading from save file too
-        wf_path = "../../../../resources/Montage_25.xml"
         wf_name = "Montage_25"
-        wf = Utility.readWorkflow(wf_path, wf_name)
+        _wf = WF(wf_name)
         manager = ExperimentResourceManager(ResourceGenerator.r([10, 15, 15, 25]))
         estimator = ExperimentEstimator(None, 20, 1.0, transfer_time=100)
 
-        config = default_config(wf, manager, estimator)
+        config = default_config(_wf, manager, estimator)
 
         ## TODO: need to hide low level details
-        path = "../../../../temp/cga_exp_for_example/5760f488-932e-4224-942f-1f5ac68709bf.json"
+        import os
+        path = os.path.join(TEMP_PATH, "cga_exp_for_example/5760f488-932e-4224-942f-1f5ac68709bf.json")
         with open(path, "r") as f:
             data = json.load(f)
         initial_pops = data["initial_pops"]
@@ -96,19 +97,18 @@ class CoevolutionTest(unittest.TestCase):
 
 
         solution, pops, logbook, initial_pops = run_cooperative_ga(**config)
-        schedule = build_schedule(wf, estimator, manager, solution)
+        schedule = build_schedule(_wf, estimator, manager, solution)
 
         for k, items in schedule.mapping.items():
             for item in items:
                 item.state = ScheduleItem.FINISHED
         ## TODO: refactor this
-        ExecutorRunner.extract_result(schedule, True, wf)
+        ExecutorRunner.extract_result(schedule, True, _wf)
         pass
 
     def test_hall_of_fame(self):
-        wf_path = "../../../../resources/Montage_25.xml"
         wf_name = "Montage_25"
-        wf = Utility.readWorkflow(wf_path, wf_name)
+        wf = WF(wf_name)
         manager = ExperimentResourceManager(ResourceGenerator.r([10, 15, 15, 25]))
         estimator = ExperimentEstimator(None, 20, 1.0, transfer_time=100)
 

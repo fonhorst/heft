@@ -1,7 +1,8 @@
 import unittest
+from heft.algs.ga.coevolution.cga import Env
 
+from heft.core.environment.Utility import wf as WF
 from heft.algs.ga.coevolution.operators import _check_precedence, ordering_default_mutate
-from heft.core.environment import Utility
 
 
 def _topological_sort(wf):
@@ -23,9 +24,9 @@ def _topological_sort(wf):
 class OperatorsTest(unittest.TestCase):
 
     def setUp(self):
-        wf_path = "D:/wspace/heft/resources/Montage_25.xml"
         wf_name = "Montage_25"
-        self.wf = Utility.readWorkflow(wf_path, wf_name)
+        self.wf = WF(wf_name)
+        self.env = Env(self.wf, None, None)
 
     def test_check_precedence(self):
 
@@ -42,7 +43,7 @@ class OperatorsTest(unittest.TestCase):
         mutant = _topological_sort(self.wf)
         assert _check_precedence(self.wf, mutant)
 
-        mutant = ordering_default_mutate(self.wf, mutant)
+        mutant = ordering_default_mutate({'env': self.env}, mutant)
         assert _check_precedence(self.wf, mutant)
 
     pass

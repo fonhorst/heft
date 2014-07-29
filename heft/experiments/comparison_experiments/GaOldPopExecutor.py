@@ -142,7 +142,9 @@ class GaOldPopExecutor(FailOnce, BaseExecutor):
         cleaned_chromosomes = [ch for ch in cleaned_chromosomes if not is_empty(ch)]
         cleaned_chromosomes = None if len(cleaned_chromosomes) == 0 else cleaned_chromosomes
 
-        if self.workflow.get_all_unique_tasks() in current_cleaned_schedule.get_all_unique_tasks_id():
+        curr_ids = frozenset(current_cleaned_schedule.get_all_unique_tasks_id())
+        all_ids = frozenset(t.id for t in self.workflow.get_all_unique_tasks())
+        if all_ids == curr_ids:
             print("Schedule alleady has all unique tasks")
             return
 

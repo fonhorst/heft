@@ -118,7 +118,7 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
             self.stat_saver(stat_data)
 
         #TODO: remove this hack later
-        self.stop()
+        #self.stop()
 
         self._stop_ga()
         return result

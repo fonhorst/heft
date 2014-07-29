@@ -1,4 +1,6 @@
-from heft.core.environment import Utility, ResourceGenerator
+import os
+from heft.core.environment.ResourceGenerator import ResourceGenerator
+from heft.core.environment.Utility import Utility
 
 import unittest
 from unittest import TestCase
@@ -6,6 +8,7 @@ from heft.algs.heft.simple_heft import StaticHeftPlanner
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentEstimator
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 import cProfile, pstats, io
+from heft.settings import RESOURCES_PATH
 
 
 def wrap():
@@ -13,8 +16,8 @@ def wrap():
     ut = Utility()
 
     wf_name = 'Montage_25'
-    dax1 = '..\\resources\\' + wf_name + '.xml'
-    dax2 = '..\\resources\\CyberShake_30.xml'
+    dax1 = os.path.join(RESOURCES_PATH,  wf_name + '.xml')
+    #dax2 = '..\\resources\\CyberShake_30.xml'
 
     wf_start_id_1 = "00"
     task_postfix_id_1 = "00"
@@ -41,7 +44,7 @@ def wrap():
     resources = rgen.generate()
     transferMx = rgen.generateTransferMatrix(resources)
 
-    estimator = ExperimentEstimator(transferMx)
+    estimator = ExperimentEstimator(transferMx, 20)
 
     planner = StaticHeftPlanner()
     planner.estimator = estimator

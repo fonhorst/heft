@@ -6,7 +6,7 @@ from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import ScheduleItem
 from heft.core.environment.Utility import Utility
-from heft.algs import SimpleRandomizedHeuristic
+from heft.algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 
 
 def mark_finished(schedule):

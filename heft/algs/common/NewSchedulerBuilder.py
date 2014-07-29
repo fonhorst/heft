@@ -1,4 +1,4 @@
-from heft.algs.heft import HeftHelper
+from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import Schedule, ScheduleItem
 
