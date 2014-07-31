@@ -1,5 +1,6 @@
 from uuid import uuid4
 from deap import creator
+from deap.base import Fitness
 
 """
 This file contains only wrappers type for individuals
@@ -27,4 +28,13 @@ class ListBasedIndividual(list):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.uid = uuid4()
+    pass
+
+"""
+simple class-adapter for dealing with deap's fitness-based operators
+"""
+class FitAdapter:
+    def __init__(self, entity, values=()):
+        self.entity = entity
+        self.fitness = Fitness(values)
     pass

@@ -40,6 +40,9 @@ def force_vector_matrix(rm, pop, kbest, G, e=0.0):
     ## pure hack to account it as preventing forces to change the position in particular dimension
     sub = lambda seq1, seq2: [1 for s1, s2 in zip(seq1, seq2)]
     zero = lambda: [0 for _ in range(len(pop[0]))]
+    def squared(a):
+        val = (G*(a.mass * a.mass)/1)
+        return [val for _ in range(len(pop[0]))]
     dist = lambda a, b: sum([(0 if r1 == r2 else 1) + math.fabs(rm.byName(r1).flops - rm.byName(r2).flops)/(rm.byName(r1).flops + rm.byName(r2).flops) for r1, r2 in zip(a, b)])
 
     def estimate_force(a, b):
@@ -48,11 +51,12 @@ def force_vector_matrix(rm, pop, kbest, G, e=0.0):
 
         R = dist(a_string, b_string)
         ## TODO: here must be a multiplication of a vector and a number
-        val = (G*(a.mass*b.mass)/(R + e))
+        #val = (G*(a.mass * b.mass)/(R + e))
+        val = (G*(a.mass * b.mass)/(1 if R == 0 else 2))
         f = [val * d for d in sub(a_string, b_string)]
         return f
 
-    mat = {p.uid: [(zero(), b) if p == b else (estimate_force(p, b), b) for b in pop[0:kbest]] for p in pop}
+    mat = {p.uid: [(squared(b), b) if p == b else (estimate_force(p, b), b) for b in pop[0:kbest]] for p in pop}
     return mat
 
 def velocity_and_position(wf, rm, estimator, p, fvm, estimate_position=None):
@@ -69,19 +73,22 @@ def velocity_and_position(wf, rm, estimator, p, fvm, estimate_position=None):
         ## get all forces which act from all other participating masses to mass p
         ## for all vectors of force save force value and point in discrete dimension where it is
         dforces = [TempWrapper(mass[d], f[d]/p.mass) for f, mass in fvm[p.uid]]
+        #dforces = [tw for tw in dforces if tw.fitness.values[0] < 0]
+
 
         ## case without changing of current place in space
         ## acts like yet another divicion for roulette
-        not_changing = sum([mass.mass for _, mass in fvm[p.uid]])/(p.mass*len(fvm[p.uid]))
-        if not_changing < 1:
-            dforces.append(TempWrapper(p[d], sum([x.fitness.values[0] for x in dforces]) * not_changing))
+        # not_changing = sum([mass.mass for _, mass in fvm[p.uid]])/(p.mass*len(fvm[p.uid]))
+        # if not_changing < 1:
+        #     dforces.append(TempWrapper(p[d], sum([x.fitness.values[0] for x in dforces]) * not_changing))
+
 
         if sum([t.fitness.values[0] for t in dforces]) == 0:
             ## corner case, when all accelerations(fitnesses) equal 0
             return p[d]
         else:
-            # el = tools.selRoulette(dforces, 1)[0]
-            el = tools.selTournament(dforces, 1, 2)[0]
+            el = tools.selRoulette(dforces, 1)[0]
+            # el = tools.selTournament(dforces, 1, 2)[0]
             return el.pd
     ## construct new position vector based on forces
     new_p = ListBasedIndividual([change(i) for i in range(len(p))])
@@ -92,5 +99,6 @@ def fitness(wf, rm, estimator, ordering, position):
                 ORDERING_SPECIE: ordering}
     fit = basefitness(wf, rm, estimator, solution)
     return fit
+
 
 

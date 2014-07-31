@@ -56,9 +56,9 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
         worst = pop[-1].fitness.mofit
         for p in pop:
             p.mass = 1 + (p.fitness.mofit - worst) / (1 if abs(best - worst) < 0.001 else (best - worst))
-        mass_sum = sum(p.mass for p in pop)
-        for p in pop:
-            p.mass = p.mass/mass_sum
+        # mass_sum = sum(p.mass for p in pop)
+        # for p in pop:
+        #     p.mass = p.mass/mass_sum
 
         ## estimate all related forces
         ## fvm is a matrix of VECTORS(due to the fact we are operating in d-dimensional space) size of 'pop_size x kbest'

@@ -51,10 +51,10 @@ class HeftGsaTest(unittest.TestCase):
         logbook = Logbook()
         logbook.header = ("gen", "G", "kbest", "min", "avr", "max", "std")
 
-        pop_size = 50
-        iter_number = 50
+        pop_size = 100
+        iter_number = 100
         kbest = pop_size
-        ginit = 1
+        ginit = 5
 
         final_pop = run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit)
 
