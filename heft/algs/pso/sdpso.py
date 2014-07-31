@@ -6,9 +6,12 @@ Position =>{task_name: node_name}
 Velocity => {(task_name, node_name): probability}
 """
 from _ctypes import ArgumentError
+from copy import deepcopy
 from numbers import Number
 import random
 from deap import tools
+from deap import creator
+from heft.algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from heft.algs.common.individuals import FitAdapter
 
 
@@ -71,9 +74,73 @@ def position_update(position, velocity):
         new_position[task] = new_node
     return new_position
 
+creator.create("Particle", base=FitAdapter, velocity=None)
+Particle = creator.Particle
 
-def run_pso():
+
+def run_pso(w, c1, c2, gen, n, toolbox, stats, logbook):
+    """
+    :param w:
+    :param c1:
+    :param c2:
+    :param gen:
+    :param n:
+    :param toolbox:
+    :param stats:
+    :param logbook:
+    :return:
+
+    for toolbox we need the following functions:
+    population
+    fitness
+    update
+
+    And the following params:
+    w
+    c1
+    c2
+    """
+    pop = toolbox.population(n)
+    # stats = tools.Statistics(lambda ind: ind.fitness.values)
+    # stats.register("avg", numpy.mean)
+    # stats.register("std", numpy.std)
+    # stats.register("min", numpy.min)
+    # stats.register("max", numpy.max)
+
+    # logbook = tools.Logbook()
+    # logbook.header = ["gen", "evals"] + stats.fields
+
+    best = None
+
+    for g in range(gen):
+        for p in pop:
+            p.fitness = toolbox.fitness(p)
+            if not p.best or p.best.fitness < p.fitness:
+                p.best = deepcopy(p)
+            if not best or best.fitness < p.fitness:
+                best = deepcopy(p)
+
+        # Gather all the fitnesses in one list and print the stats
+        data = stats.compile(pop) if stats is not None else None
+        if logbook is not None:
+            logbook.record(gen=g, evals=len(pop), **data)
+            print(logbook.stream)
+
+        for p in pop:
+            toolbox.update(w, c1, c2, p, best)
+    return pop, logbook, best
+
+def schedule_to_position(schedule):
     raise NotImplementedError()
+
+def update(w, c1, c2, p, best):
+    raise NotImplementedError()
+
+def generate(wf, rm, estimator, n):
+    return [schedule_to_position(SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule()) for i in range(n)]
+
+
+
 
 
 

@@ -4,7 +4,7 @@ from deap import tools
 from deap.base import Fitness
 from heft.algs.common.individuals import ListBasedIndividual
 from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE
-from heft.algs.gsa.operators import fitness as basefitness
+from heft.algs.common.mapordschedule import fitness as basefitness
 
 
 

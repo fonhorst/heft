@@ -1,8 +1,11 @@
+from deap.base import Fitness
 from heft.algs.common.NewSchedulerBuilder import place_task_to_schedule
 from heft.core.environment.ResourceManager import Schedule
+from heft.core.environment.Utility import Utility
 
 MAPPING_SPECIE = "MappingSpecie"
 ORDERING_SPECIE = "OrderingSpecie"
+
 
 def build_schedule(workflow, estimator, resource_manager, solution):
     """
@@ -36,6 +39,7 @@ def build_schedule(workflow, estimator, resource_manager, solution):
     schedule = Schedule(schedule_mapping)
     return schedule
 
+
 def _check_precedence(workflow, seq):
     for i in range(len(seq)):
         task = workflow.byId(seq[i])
@@ -44,3 +48,15 @@ def _check_precedence(workflow, seq):
             if seq[j] in pids:
                 return False
     return True
+
+
+def fitness(wf, rm, estimator, position):
+    sched = build_schedule(wf, estimator, rm, position)
+    makespan = Utility.makespan(sched)
+    ## TODO: make a real estimation later
+    cost = 0.0
+    Fitness.weights = [1.0, 1.0]
+    fit = Fitness(values=(makespan, cost))
+    ## TODO: make a normal multi-objective fitness estimation
+    fit.mofit = makespan
+    return fit

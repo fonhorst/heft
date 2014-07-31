@@ -51,16 +51,7 @@ def generate(wf, rm, estimator):
     sched = SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule()
     return schedule_to_position(sched)
 
-def fitness(wf, rm, estimator, position):
-    sched = build_schedule(wf, estimator, rm, position)
-    makespan = Utility.makespan(sched)
-    ## TODO: make a real estimation later
-    cost = 0.0
-    Fitness.weights = [1.0, 1.0]
-    fit = Fitness(values=(makespan, cost))
-    ## TODO: make a normal multi-objective fitness estimation
-    fit.mofit = makespan
-    return fit
+
 
 def force_vector_matrix(pop, kbest, G, e=0.0):
     """
