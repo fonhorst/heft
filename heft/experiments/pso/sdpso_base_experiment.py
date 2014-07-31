@@ -4,10 +4,11 @@ from deap.base import Toolbox
 import numpy
 from heft.algs.heft.DSimpleHeft import run_heft
 from heft.algs.heft.HeftHelper import HeftHelper
-from heft.algs.pso.sdpso import run_pso, generate, update, schedule_to_position
+from heft.algs.pso.sdpso import run_pso, generate, update, schedule_to_position, fitness, construct_solution, Particle, \
+    Velocity
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import Utility, wf
-from heft.algs.common.mapordschedule import fitness, build_schedule, MAPPING_SPECIE, ORDERING_SPECIE
+from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 
@@ -19,8 +20,9 @@ sorted_tasks = HeftHelper.heft_rank(_wf, rm, estimator)
 
 heft_schedule = run_heft(_wf, rm, estimator)
 heft_mapping = schedule_to_position(heft_schedule)
+heft_mapping.velocity = Velocity({})
 
-heft_gen = lambda: heft_mapping if random.random() > 0.95 else generate(_wf, rm, estimator)
+heft_gen = lambda n: [heft_mapping if random.random() > 0.95 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
 
 W, C1, C2 = 0.9, 0.5, 0.5
 GEN, N = 100, 50
@@ -28,7 +30,7 @@ GEN, N = 100, 50
 
 toolbox = Toolbox()
 toolbox.register("population", heft_gen)
-toolbox.register("fitness", fitness,  wf=wf, rm=rm, estimator=estimator)
+toolbox.register("fitness", fitness,  _wf, rm, estimator, sorted_tasks)
 toolbox.register("update", update)
 
 stats = tools.Statistics(lambda ind: ind.fitness.values)
@@ -37,7 +39,7 @@ stats.register("std", numpy.std)
 stats.register("min", numpy.min)
 stats.register("max", numpy.max)
 
-logbook= tools.Logbook()
+logbook = tools.Logbook()
 logbook.header = ["gen", "evals"] + stats.fields
 
 def do_exp():
@@ -49,8 +51,8 @@ def do_exp():
         logbook=logbook
     )
 
-    best = best.entity
-    solution = {MAPPING_SPECIE: list(zip(sorted_tasks, best)), ORDERING_SPECIE: sorted_tasks}
+    best_position = best.entity
+    solution = construct_solution(best_position, sorted_tasks)
     schedule = build_schedule(_wf, estimator, rm, solution)
     makespan = Utility.makespan(schedule)
     print("Final makespan: {0}".format(makespan))

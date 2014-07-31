@@ -13,16 +13,19 @@ from deap import tools
 from deap import creator
 from heft.algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from heft.algs.common.individuals import FitAdapter
+from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE
+from heft.algs.common.mapordschedule import fitness as basefitness
 
 
 class FrozenDict(dict):
-    def __setitem__(self, key, value):
-        raise ValueError("Operation is not allowed for this type")
+    # def __setitem__(self, key, value):
+    #     raise ValueError("Operation is not allowed for this type")
+    pass
 
 
 class Position(FrozenDict):
     def __init__(self, d):
-        super(d)
+        super().__init__(d)
 
     def __sub__(self, other):
         return Position({k: self[k] for k in self.keys() - other.keys()})
@@ -37,7 +40,7 @@ class Position(FrozenDict):
 class Velocity(FrozenDict):
 
     def __init__(self, d):
-        super(d)
+        super().__init__(d)
 
     def __mul__(self, other):
         if isinstance(other, Number):
@@ -45,12 +48,16 @@ class Velocity(FrozenDict):
         raise ArgumentError("{0} has not a suitable type for multiplication".format(other))
 
     def __add__(self, other):
-        return Velocity({k: max(self.get(k, 0), other.get(k, 0)) for k in self.keys() + other.keys()})
+        return Velocity({k: max(self.get(k, 0), other.get(k, 0)) for k in set(self.keys()).union(other.keys())})
 
     def cutby(self, alpha):
         return Velocity({k: v for k, v in self.items() if v >= alpha})
 
     pass
+
+
+creator.create("Particle", base=FitAdapter, velocity=None, best=None)
+Particle = creator.Particle
 
 
 def _cutting_by_task(velocity, task):
@@ -59,7 +66,7 @@ def _cutting_by_task(velocity, task):
 def velocity_update(w, c1, c2, pbest, gbest, velocity, position):
     r1 = random.random()
     r2 = random.random()
-    new_velocty = w*velocity + (c1*r1)*(pbest - position) + (c2*r2)*(gbest - position)
+    new_velocty = velocity*w + (pbest - position)*(c1*r1) + (gbest - position)*(c2*r2)
     return new_velocty
 
 def position_update(position, velocity):
@@ -69,13 +76,12 @@ def position_update(position, velocity):
     for task in position:
         available_nodes = _cutting_by_task(cut_velocity, task)
         if len(available_nodes) == 0:
-            available_nodes = position[task]
-        new_node = tools.selRoulette(available_nodes, 1).entity
+            available_nodes = [FitAdapter(position[task], (1.0,))]
+        new_node = tools.selRoulette(available_nodes, 1)[0].entity
         new_position[task] = new_node
     return new_position
 
-creator.create("Particle", base=FitAdapter, velocity=None)
-Particle = creator.Particle
+
 
 
 def run_pso(w, c1, c2, gen, n, toolbox, stats, logbook):
@@ -130,16 +136,34 @@ def run_pso(w, c1, c2, gen, n, toolbox, stats, logbook):
             toolbox.update(w, c1, c2, p, best)
     return pop, logbook, best
 
+
 def schedule_to_position(schedule):
-    raise NotImplementedError()
+    return Particle(Position({item.job.id: node.name for node, items in schedule.mapping.items() for item in items}))
+
 
 def update(w, c1, c2, p, best):
-    raise NotImplementedError()
+    p.velocity = velocity_update(w, c1, c2, p.best.entity, best.entity, p.velocity, p.entity)
+    new_position = position_update(p.entity, p.velocity)
+    p.entity = new_position
+    pass
+
 
 def generate(wf, rm, estimator, n):
-    return [schedule_to_position(SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule()) for i in range(n)]
+    pop = []
+    for i in range(n):
+        sched = SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule()
+        particle = schedule_to_position(sched)
+        particle.velocity = Velocity({})
+        pop.append(particle)
+    return pop
 
+def construct_solution(position, sorted_tasks):
+    return {MAPPING_SPECIE: [(t, position[t]) for t in sorted_tasks], ORDERING_SPECIE: sorted_tasks}
 
+def fitness(wf, rm, estimator, sorted_tasks, particle):
+    position = particle.entity
+    solution = construct_solution(position, sorted_tasks)
+    return basefitness(wf, rm, estimator, solution)
 
 
 
