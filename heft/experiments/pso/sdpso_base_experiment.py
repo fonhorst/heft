@@ -33,7 +33,7 @@ toolbox.register("population", heft_gen)
 toolbox.register("fitness", fitness,  _wf, rm, estimator, sorted_tasks)
 toolbox.register("update", update)
 
-stats = tools.Statistics(lambda ind: ind.fitness.values)
+stats = tools.Statistics(lambda ind: ind.fitness.values[0])
 stats.register("avg", numpy.mean)
 stats.register("std", numpy.std)
 stats.register("min", numpy.min)

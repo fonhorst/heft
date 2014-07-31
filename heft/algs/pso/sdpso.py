@@ -28,7 +28,8 @@ class Position(FrozenDict):
         super().__init__(d)
 
     def __sub__(self, other):
-        return Position({k: self[k] for k in self.keys() - other.keys()})
+        # return Position({k: self[k] for k in self.keys() - other.keys()})
+        return Velocity({item: 1.0 for item in self.items() - other.items()})
 
     def __mul__(self, other):
         if isinstance(other, Number):
@@ -61,7 +62,7 @@ Particle = creator.Particle
 
 
 def _cutting_by_task(velocity, task):
-    return [FitAdapter(node, (v,)) for task, node, v in velocity.items()]
+    return [FitAdapter(node, (v,)) for (task, node), v in velocity.items()]
 
 def velocity_update(w, c1, c2, pbest, gbest, velocity, position):
     r1 = random.random()
@@ -79,7 +80,7 @@ def position_update(position, velocity):
             available_nodes = [FitAdapter(position[task], (1.0,))]
         new_node = tools.selRoulette(available_nodes, 1)[0].entity
         new_position[task] = new_node
-    return new_position
+    return Position(new_position)
 
 
 
