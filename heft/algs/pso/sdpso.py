@@ -11,10 +11,12 @@ from numbers import Number
 import random
 from deap import tools
 from deap import creator
+import distance
 from heft.algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from heft.algs.common.individuals import FitAdapter
 from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE
 from heft.algs.common.mapordschedule import fitness as basefitness
+from heft.experiments.cga.utilities.common import hamming_distances
 
 
 class FrozenDict(dict):
@@ -64,10 +66,22 @@ Particle = creator.Particle
 def _cutting_by_task(velocity, task):
     return [FitAdapter(node, (v,)) for (task, node), v in velocity.items()]
 
-def velocity_update(w, c1, c2, pbest, gbest, velocity, position):
+def velocity_update(w, c1, c2, pbest, gbest, velocity, position, pop):
+    # c3, c4, tasks, nodes
     r1 = random.random()
     r2 = random.random()
-    new_velocty = velocity*w + (pbest - position)*(c1*r1) + (gbest - position)*(c2*r2)
+    # r3 = random.random()
+    # r4 = random.random()
+    # def choose_random_pair(tasks, nodes):
+    #     t = tasks[random.randint(0, len(tasks) - 1)]
+    #     n = nodes[random.randint(0, len(tasks) - 1)]
+    #     return (t, n)
+
+    #pcuriosity = Position({t: n for t, n in [choose_random_pair(tasks, nodes) for _ in range(0, 2)]})
+    #localbest = max((p for p in pop if 0 < distance.hamming(position, pop) <=2), key=lambda x: x.fitness)
+
+
+    new_velocty = velocity*w + (pbest - position)*(c1*r1) + (gbest - position)*(c2*r2) #+ (localbest - position)*(c3*r3) + pcuriosity*(c4*r4)
     return new_velocty
 
 def position_update(position, velocity):
@@ -134,7 +148,7 @@ def run_pso(w, c1, c2, gen, n, toolbox, stats, logbook):
             print(logbook.stream)
 
         for p in pop:
-            toolbox.update(w, c1, c2, p, best)
+            toolbox.update(w, c1, c2, p, best, pop)
     return pop, logbook, best
 
 
