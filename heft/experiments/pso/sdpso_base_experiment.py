@@ -25,7 +25,7 @@ heft_mapping.velocity = Velocity({})
 heft_gen = lambda n: [heft_mapping if random.random() > 0.95 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
 
 W, C1, C2 = 0.9, 0.5, 0.5
-GEN, N = 100, 50
+GEN, N = 10, 5
 
 
 toolbox = Toolbox()

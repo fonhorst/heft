@@ -98,6 +98,55 @@ def position_update(position, velocity):
 
 
 
+class MappingPSO:
+    def __init__(self, w, c1, c2, gen, n, toolbox, stats, logbook):
+        self._w = w
+        self._c1 = c1
+        self._c2 = c2
+        self._gen = gen
+        self._n = n
+        self._toolbox = toolbox
+        self._stats = stats
+        self._logbook = logbook
+
+        self._current_gen = 0
+        self._pop = toolbox.population(n)
+        self._best = None
+        pass
+
+    def __call__(self):
+        if self._gen is None:
+            raise ValueError("Generations count is not valid")
+        for g in range(self._gen):
+            self._current_gen = g
+            self.evolve()
+        return self.result()
+
+    def evolve(self):
+        for p in self._pop:
+            p.fitness = self._toolbox.fitness(p)
+            if not p.best or p.best.fitness < p.fitness:
+                p.best = deepcopy(p)
+            if not self._best or self._best.fitness < p.fitness:
+                self._best = deepcopy(p)
+
+        # Gather all the fitnesses in one list and print the stats
+        data = self._stats.compile(self._pop) if self._stats is not None else None
+        if self._logbook is not None:
+            self._logbook.record(gen=self._current_gen, evals=len(self._pop), **data)
+            print(self._logbook.stream)
+
+        for p in self._pop:
+            self._toolbox.update(self._w, self._c1, self._c2, p, self._best, self._pop)
+        return self.result()
+
+    def result(self):
+        return self._pop, self._logbook, self._best
+
+
+
+
+
 
 def run_pso(w, c1, c2, gen, n, toolbox, stats, logbook):
     """
@@ -121,43 +170,16 @@ def run_pso(w, c1, c2, gen, n, toolbox, stats, logbook):
     c1
     c2
     """
-    pop = toolbox.population(n)
-    # stats = tools.Statistics(lambda ind: ind.fitness.values)
-    # stats.register("avg", numpy.mean)
-    # stats.register("std", numpy.std)
-    # stats.register("min", numpy.min)
-    # stats.register("max", numpy.max)
-
-    # logbook = tools.Logbook()
-    # logbook.header = ["gen", "evals"] + stats.fields
-
-    best = None
-
-    for g in range(gen):
-        for p in pop:
-            p.fitness = toolbox.fitness(p)
-            if not p.best or p.best.fitness < p.fitness:
-                p.best = deepcopy(p)
-            if not best or best.fitness < p.fitness:
-                best = deepcopy(p)
-
-        # Gather all the fitnesses in one list and print the stats
-        data = stats.compile(pop) if stats is not None else None
-        if logbook is not None:
-            logbook.record(gen=g, evals=len(pop), **data)
-            print(logbook.stream)
-
-        for p in pop:
-            toolbox.update(w, c1, c2, p, best, pop)
-    return pop, logbook, best
+    pso = MappingPSO(w, c1, c2, gen, n, toolbox, stats, logbook)
+    return pso()
 
 
 def schedule_to_position(schedule):
     return Particle(Position({item.job.id: node.name for node, items in schedule.mapping.items() for item in items}))
 
 
-def update(w, c1, c2, p, best):
-    p.velocity = velocity_update(w, c1, c2, p.best.entity, best.entity, p.velocity, p.entity)
+def update(w, c1, c2, p, best, pop):
+    p.velocity = velocity_update(w, c1, c2, p.best.entity, best.entity, p.velocity, p.entity, pop)
     new_position = position_update(p.entity, p.velocity)
     p.entity = new_position
     pass
