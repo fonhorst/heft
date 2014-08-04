@@ -97,58 +97,60 @@ def position_update(position, velocity):
     return Position(new_position)
 
 
+## TODO: remove it a little bit later, after the implementation of run_pso will show its suitable applicability
+# class MappingPSO:
+#     def __init__(self, w, c1, c2, gen, n, toolbox, stats, logbook):
+#         self._w = w
+#         self._c1 = c1
+#         self._c2 = c2
+#         self._gen = gen
+#         self._n = n
+#         self._toolbox = toolbox
+#         self._stats = stats
+#         self._logbook = logbook
+#
+#         self._current_gen = 0
+#         self._pop = toolbox.population(n)
+#         self._best = None
+#         pass
+#
+#     def __call__(self):
+#         if self._gen is None:
+#             raise ValueError("Generations count is not valid")
+#         for g in range(self._gen):
+#             self._current_gen = g
+#             self.evolve(gen_curr=g, gen_step=1, pop=self._pop)
+#         return self.result()
+#
+#     def evolve(self, gen_curr, gen_step=1, pop=None):
+#         if pop is not None:
+#             self._pop = pop
+#
+#         for g in range(gen_curr, gen_curr + gen_step):
+#             for p in self._pop:
+#                 if not hasattr(p, "fitness") or not p.fitness.valid:
+#                     p.fitness = self._toolbox.fitness(p)
+#                 if not p.best or p.best.fitness < p.fitness:
+#                     p.best = deepcopy(p)
+#                 if not self._best or self._best.fitness < p.fitness:
+#                     self._best = deepcopy(p)
+#
+#             # Gather all the fitnesses in one list and print the stats
+#             data = self._stats.compile(self._pop) if self._stats is not None else None
+#             if self._logbook is not None:
+#                 self._logbook.record(gen=g, evals=len(self._pop), **data)
+#                 print(self._logbook.stream)
+#
+#             for p in self._pop:
+#                 self._toolbox.update(self._w, self._c1, self._c2, p, self._best, self._pop)
+#         return self.result()
+#
+#     def result(self):
+#         return self._pop, self._logbook, self._best
 
-class MappingPSO:
-    def __init__(self, w, c1, c2, gen, n, toolbox, stats, logbook):
-        self._w = w
-        self._c1 = c1
-        self._c2 = c2
-        self._gen = gen
-        self._n = n
-        self._toolbox = toolbox
-        self._stats = stats
-        self._logbook = logbook
 
-        self._current_gen = 0
-        self._pop = toolbox.population(n)
-        self._best = None
-        pass
+def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=True, pop=None, **params):
 
-    def __call__(self):
-        if self._gen is None:
-            raise ValueError("Generations count is not valid")
-        for g in range(self._gen):
-            self._current_gen = g
-            self.evolve()
-        return self.result()
-
-    def evolve(self):
-        for p in self._pop:
-            p.fitness = self._toolbox.fitness(p)
-            if not p.best or p.best.fitness < p.fitness:
-                p.best = deepcopy(p)
-            if not self._best or self._best.fitness < p.fitness:
-                self._best = deepcopy(p)
-
-        # Gather all the fitnesses in one list and print the stats
-        data = self._stats.compile(self._pop) if self._stats is not None else None
-        if self._logbook is not None:
-            self._logbook.record(gen=self._current_gen, evals=len(self._pop), **data)
-            print(self._logbook.stream)
-
-        for p in self._pop:
-            self._toolbox.update(self._w, self._c1, self._c2, p, self._best, self._pop)
-        return self.result()
-
-    def result(self):
-        return self._pop, self._logbook, self._best
-
-
-
-
-
-
-def run_pso(w, c1, c2, gen, n, toolbox, stats, logbook):
     """
     :param w:
     :param c1:
@@ -170,8 +172,46 @@ def run_pso(w, c1, c2, gen, n, toolbox, stats, logbook):
     c1
     c2
     """
-    pso = MappingPSO(w, c1, c2, gen, n, toolbox, stats, logbook)
-    return pso()
+    # pso = MappingPSO(w, c1, c2, gen, n, toolbox, stats, logbook)
+    # return pso()
+
+    w, c1, c2, n = params["w"], params["c1"], params["c2"], params["n"]
+
+    best = None
+
+    if pop is None:
+        pop = toolbox.population(n)
+
+    for g in range(gen_curr, gen_curr + gen_step, 1):
+        for p in pop:
+            if not hasattr(p, "fitness") or not p.fitness.valid:
+                p.fitness = toolbox.fitness(p)
+            if not p.best or p.best.fitness < p.fitness:
+                p.best = deepcopy(p)
+            if not best or best.fitness < p.fitness:
+                best = deepcopy(p)
+
+        # Gather all the fitnesses in one list and print the stats
+        data = stats.compile(pop) if stats is not None else None
+        if logbook is not None:
+            logbook.record(gen=g, evals=len(pop), **data)
+            print(logbook.stream)
+
+        for p in pop:
+            toolbox.update(w, c1, c2, p, best, pop)
+
+        if invalidate_fitness:
+            for p in pop:
+                del p.fitness
+        pass
+
+
+
+    return pop, logbook, best
+
+
+
+
 
 
 def schedule_to_position(schedule):

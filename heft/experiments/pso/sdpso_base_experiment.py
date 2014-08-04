@@ -28,6 +28,7 @@ W, C1, C2 = 0.9, 0.5, 0.5
 GEN, N = 10, 5
 
 
+
 toolbox = Toolbox()
 toolbox.register("population", heft_gen)
 toolbox.register("fitness", fitness,  _wf, rm, estimator, sorted_tasks)
@@ -44,11 +45,11 @@ logbook.header = ["gen", "evals"] + stats.fields
 
 def do_exp():
     pop, log, best = run_pso(
-        w=W, c1=C1, c2=C2,
-        gen=GEN, n=N,
         toolbox=toolbox,
+        logbook=logbook,
         stats=stats,
-        logbook=logbook
+        gen_curr=0, gen_step=GEN, invalidate_fitness=True, pop=None,
+        w=W, c1=C1, c2=C2, n=N,
     )
 
     best_position = best.entity
