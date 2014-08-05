@@ -7,3 +7,4 @@ def mapping_as_vector(mapping):
     mapp_string = [node_name for task_id, node_name in sorted(mapping.items(), key=lambda x: x[0])]
     return mapp_string
 
+

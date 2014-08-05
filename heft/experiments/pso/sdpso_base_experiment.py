@@ -1,3 +1,4 @@
+from copy import deepcopy
 import random
 from deap import tools
 from deap.base import Toolbox
@@ -22,10 +23,10 @@ heft_schedule = run_heft(_wf, rm, estimator)
 heft_mapping = schedule_to_position(heft_schedule)
 heft_mapping.velocity = Velocity({})
 
-heft_gen = lambda n: [heft_mapping if random.random() > 0.95 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
+heft_gen = lambda n: [deepcopy(heft_mapping) if random.random() > 1.0 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
 
-W, C1, C2 = 0.9, 0.5, 0.5
-GEN, N = 10, 5
+W, C1, C2 = 0.5, 2.0, 2.0
+GEN, N = 100, 50
 
 
 

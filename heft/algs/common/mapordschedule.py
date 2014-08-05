@@ -60,3 +60,15 @@ def fitness(wf, rm, estimator, position):
     ## TODO: make a normal multi-objective fitness estimation
     fit.mofit = makespan
     return fit
+
+
+def mapping_from_schedule(schedule):
+    mapping = {item.job.id: node.name for node, items in schedule.mapping.items() for item in items}
+    return mapping
+
+
+def ordering_from_schedule(schedule):
+    ordering = sorted((item for node, items in schedule.mapping.items() for item in items),
+                      key=lambda x: x.start_time)
+    ordering = [item.job.id for item in ordering]
+    return ordering

@@ -92,7 +92,10 @@ def position_update(position, velocity):
         available_nodes = _cutting_by_task(cut_velocity, task)
         if len(available_nodes) == 0:
             available_nodes = [FitAdapter(position[task], (1.0,))]
-        new_node = tools.selRoulette(available_nodes, 1)[0].entity
+        # new_node = tools.selRoulette(available_nodes, 1)[0].entity
+        # new_node = max(available_nodes, key=lambda x: x.fitness).entity
+        # new_node = tools.selTournament(available_nodes, 1, 2)[0].entity
+        new_node = available_nodes[random.randint(0, len(available_nodes) - 1)].entity
         new_position[task] = new_node
     return Position(new_position)
 
@@ -171,13 +174,16 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
     w
     c1
     c2
+    n
     """
     # pso = MappingPSO(w, c1, c2, gen, n, toolbox, stats, logbook)
     # return pso()
 
     w, c1, c2, n = params["w"], params["c1"], params["c2"], params["n"]
+    ## TODO: remove it later
+    w = w * (500 - gen_curr)/500
 
-    best = None
+    best = params.get('best', None)
 
     if pop is None:
         pop = toolbox.population(n)
@@ -204,9 +210,6 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
             for p in pop:
                 del p.fitness
         pass
-
-
-
     return pop, logbook, best
 
 
