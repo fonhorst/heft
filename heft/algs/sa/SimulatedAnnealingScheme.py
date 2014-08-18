@@ -1,0 +1,43 @@
+import random
+
+
+def run_sa(toolbox, stats, logbook, initial_solution, T, N):
+    """
+    Simple Simulated Annealing implementation
+    toolbox must contain the following methods:
+    energy - value of objective which needs to be optimized
+    update_T
+    neighbor
+    transition_probability
+    """
+    ## initialization
+    current_solution = initial_solution
+    best = current_solution
+    current_solution.energy = toolbox.energy(current_solution)
+    g = 0
+    ## whole run
+    while T > 0:
+
+        data = stats.compile([current_solution]) if stats is not None else None
+        if logbook is not None:
+            logbook.record(gen=g, T=T,  **data)
+            print(logbook.stream)
+
+        T = toolbox.update_T(T, N, g)
+        new_sol = toolbox.neighbor(current_solution)
+        new_sol.energy = toolbox.energy(new_sol)
+        tprob = toolbox.transition_probability(current_solution, new_sol, T)
+        if random.random() < tprob:
+            current_solution = new_sol
+        best = max(best, current_solution, key=lambda x: x.energy)
+
+        g += 1
+        pass
+
+    return best, logbook, current_solution
+
+
+
+
+
+
