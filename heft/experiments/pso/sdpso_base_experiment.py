@@ -13,7 +13,7 @@ from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDE
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 
-_wf = wf("Montage_25")
+_wf = wf("Montage_100")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
                                             ideal_flops=20, transfer_time=100)
@@ -23,10 +23,10 @@ heft_schedule = run_heft(_wf, rm, estimator)
 heft_mapping = schedule_to_position(heft_schedule)
 heft_mapping.velocity = Velocity({})
 
-heft_gen = lambda n: [deepcopy(heft_mapping) if random.random() > 0.95 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
+heft_gen = lambda n: [deepcopy(heft_mapping) if random.random() > 1.0 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
 
-W, C1, C2 = 0.2, 0.5, 0.5
-GEN, N = 100, 20
+W, C1, C2 = 0.0, 0.5, 0.5
+GEN, N = 10000, 30
 
 
 
@@ -58,6 +58,7 @@ def do_exp():
     schedule = build_schedule(_wf, estimator, rm, solution)
     makespan = Utility.makespan(schedule)
     print("Final makespan: {0}".format(makespan))
+    print("Heft makespan: {0}".format(Utility.makespan(heft_schedule)))
     pass
 
 if __name__ == "__main__":

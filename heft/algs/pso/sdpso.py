@@ -51,7 +51,8 @@ class Velocity(FrozenDict):
         raise ArgumentError("{0} has not a suitable type for multiplication".format(other))
 
     def __add__(self, other):
-        return Velocity({k: max(self.get(k, 0), other.get(k, 0)) for k in set(self.keys()).union(other.keys())})
+        vel = Velocity({k: max(self.get(k, 0), other.get(k, 0)) for k in set(self.keys()).union(other.keys())})
+        return vel
 
     def cutby(self, alpha):
         return Velocity({k: v for k, v in self.items() if v >= alpha})
@@ -92,11 +93,37 @@ def position_update(position, velocity):
         available_nodes = _cutting_by_task(cut_velocity, task)
         if len(available_nodes) == 0:
             available_nodes = [FitAdapter(position[task], (1.0,))]
+
+        #print("=== task: {0}; available nodes: {1}".format(task, [node.entity for node in available_nodes]))
+
         # new_node = tools.selRoulette(available_nodes, 1)[0].entity
         # new_node = max(available_nodes, key=lambda x: x.fitness).entity
         # new_node = tools.selTournament(available_nodes, 1, 2)[0].entity
         new_node = available_nodes[random.randint(0, len(available_nodes) - 1)].entity
         new_position[task] = new_node
+    return Position(new_position)
+
+def position_update2(position, velocity):
+    alpha = random.random()
+    cut_velocity = velocity.cutby(alpha)
+    new_position = {}
+    for task, node in position.items():
+        new_position[task] = node
+
+    tasks = list(position.keys())
+    task = tasks[random.randint(0, len(tasks) - 1)]
+
+    available_nodes = _cutting_by_task(cut_velocity, task)
+    if len(available_nodes) == 0:
+        available_nodes = [FitAdapter(position[task], (1.0,))]
+
+    #print("=== task: {0}; available nodes: {1}".format(task, [node.entity for node in available_nodes]))
+
+    # new_node = tools.selRoulette(available_nodes, 1)[0].entity
+    #  new_node = max(available_nodes, key=lambda x: x.fitness).entity
+    # new_node = tools.selTournament(available_nodes, 1, 2)[0].entity
+    new_node = available_nodes[random.randint(0, len(available_nodes) - 1)].entity
+    new_position[task] = new_node
     return Position(new_position)
 
 
@@ -181,7 +208,7 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
 
     w, c1, c2, n = params["w"], params["c1"], params["c2"], params["n"]
     ## TODO: remove it later
-    w = w * (500 - gen_curr)/500
+    #w = w * (500 - gen_curr)/500
 
     best = params.get('best', None)
 
@@ -223,7 +250,7 @@ def schedule_to_position(schedule):
 
 def update(w, c1, c2, p, best, pop):
     p.velocity = velocity_update(w, c1, c2, p.best.entity, best.entity, p.velocity, p.entity, pop)
-    new_position = position_update(p.entity, p.velocity)
+    new_position = position_update2(p.entity, p.velocity)
     p.entity = new_position
     pass
 

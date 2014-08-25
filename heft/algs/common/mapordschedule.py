@@ -55,7 +55,7 @@ def fitness(wf, rm, estimator, position):
     makespan = Utility.makespan(sched)
     ## TODO: make a real estimation later
     cost = 0.0
-    Fitness.weights = [1.0, 1.0]
+    Fitness.weights = [-1.0, -1.0]
     fit = Fitness(values=(makespan, cost))
     ## TODO: make a normal multi-objective fitness estimation
     fit.mofit = makespan
