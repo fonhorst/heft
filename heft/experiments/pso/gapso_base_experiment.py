@@ -24,10 +24,10 @@ from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.algs.common.mapordschedule import fitness as basefitness
 
-_wf = wf("Montage_25")
+_wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
-                                            ideal_flops=20, transfer_time=1)
+                                            ideal_flops=20, transfer_time=100)
 sorted_tasks = HeftHelper.heft_rank(_wf, rm, estimator)
 
 heft_schedule = run_heft(_wf, rm, estimator)
@@ -54,11 +54,11 @@ heft_ordering = ordering_from_schedule(heft_schedule)
 
 
 # common params
-GEN, N = 500, 20
+GEN, N = 1000, 30
 # pso params
-W, C1, C2 = 0.05, 0.6, 0.4
+W, C1, C2 = 0.0, 0.3, 0.3
 # ga params
-CXPB, MU = 0.9, N
+CXPB, MU = 0.1, N
 
 creator.create("ParticleIndividual", base=FitAdapter, velocity=Velocity({}), best=None, ordering=None)
 ParticleIndividual = creator.ParticleIndividual
@@ -80,7 +80,7 @@ def generate(n):
 
 
 def population(n):
-    return [deepcopy(heft_particle) if random.random() > 1.0 else generate(1)[0] for _ in range(n)]
+    return [deepcopy(heft_particle) if random.random() > 0.95 else generate(1)[0] for _ in range(n)]
 
 
 def mutate(ind):

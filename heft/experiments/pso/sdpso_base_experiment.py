@@ -25,8 +25,8 @@ heft_mapping.velocity = Velocity({})
 
 heft_gen = lambda n: [deepcopy(heft_mapping) if random.random() > 1.0 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
 
-W, C1, C2 = 0.0, 0.5, 0.5
-GEN, N = 10000, 30
+W, C1, C2 = 0.1, 0.6, 0.2
+GEN, N = 300, 100
 
 
 
@@ -56,6 +56,9 @@ def do_exp():
     best_position = best.entity
     solution = construct_solution(best_position, sorted_tasks)
     schedule = build_schedule(_wf, estimator, rm, solution)
+
+    Utility.validate_static_schedule(_wf, schedule)
+
     makespan = Utility.makespan(schedule)
     print("Final makespan: {0}".format(makespan))
     print("Heft makespan: {0}".format(Utility.makespan(heft_schedule)))

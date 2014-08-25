@@ -47,7 +47,7 @@ class Velocity(FrozenDict):
 
     def __mul__(self, other):
         if isinstance(other, Number):
-            return Velocity({k: 1 if v * other > 0 else v * other for k, v in self.items()})
+            return Velocity({k: 1.0 if v * other > 1.0 else v * other for k, v in self.items()})
         raise ArgumentError("{0} has not a suitable type for multiplication".format(other))
 
     def __add__(self, other):
@@ -80,9 +80,12 @@ def velocity_update(w, c1, c2, pbest, gbest, velocity, position, pop):
 
     #pcuriosity = Position({t: n for t, n in [choose_random_pair(tasks, nodes) for _ in range(0, 2)]})
     #localbest = max((p for p in pop if 0 < distance.hamming(position, pop) <=2), key=lambda x: x.fitness)
+    old_velocity = velocity*w
+    pbest_velocity = (pbest - position)*(c1*r1)
+    gbest_velocity = (gbest - position)*(c2*r2)
 
-
-    new_velocty = velocity*w + (pbest - position)*(c1*r1) + (gbest - position)*(c2*r2) #+ (localbest - position)*(c3*r3) + pcuriosity*(c4*r4)
+    new_velocty = old_velocity + pbest_velocity + gbest_velocity #+ (localbest - position)*(c3*r3) + pcuriosity*(c4*r4)
+    # print("===== new velocity: {0}".format(new_velocty))
     return new_velocty
 
 def position_update(position, velocity):
@@ -250,7 +253,7 @@ def schedule_to_position(schedule):
 
 def update(w, c1, c2, p, best, pop):
     p.velocity = velocity_update(w, c1, c2, p.best.entity, best.entity, p.velocity, p.entity, pop)
-    new_position = position_update2(p.entity, p.velocity)
+    new_position = position_update(p.entity, p.velocity)
     p.entity = new_position
     pass
 
