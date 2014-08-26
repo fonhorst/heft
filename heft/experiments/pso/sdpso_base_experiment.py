@@ -12,6 +12,7 @@ from heft.core.environment.Utility import Utility, wf
 from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
+from heft.experiments.cga.utilities.common import repeat
 
 _wf = wf("Montage_75")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
@@ -26,9 +27,7 @@ heft_mapping.velocity = Velocity({})
 heft_gen = lambda n: [deepcopy(heft_mapping) if random.random() > 1.0 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
 
 W, C1, C2 = 0.1, 0.6, 0.2
-GEN, N = 300, 200
-
-
+GEN, N = 30, 20
 
 toolbox = Toolbox()
 toolbox.register("population", heft_gen)
@@ -44,7 +43,10 @@ stats.register("max", numpy.max)
 logbook = tools.Logbook()
 logbook.header = ["gen", "evals"] + stats.fields
 
+
+
 def do_exp():
+
     pop, log, best = run_pso(
         toolbox=toolbox,
         logbook=logbook,
@@ -52,6 +54,8 @@ def do_exp():
         gen_curr=0, gen_step=GEN, invalidate_fitness=True, pop=None,
         w=W, c1=C1, c2=C2, n=N,
     )
+
+
 
     best_position = best.entity
     solution = construct_solution(best_position, sorted_tasks)
@@ -62,8 +66,8 @@ def do_exp():
     makespan = Utility.makespan(schedule)
     print("Final makespan: {0}".format(makespan))
     print("Heft makespan: {0}".format(Utility.makespan(heft_schedule)))
-    pass
+    return makespan
 
 if __name__ == "__main__":
-    do_exp()
+    repeat(do_exp, 1)
     pass
