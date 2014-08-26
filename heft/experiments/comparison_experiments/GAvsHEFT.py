@@ -6,8 +6,8 @@ from heft.algs.ga.GAImplementation.GARunner import MixRunner
 from heft.experiments.cga.utilities.common import UniqueNameSaver, repeat
 
 
-# wf_names = ['Montage_100']
-wf_names = ['Montage_50']
+wf_names = ['Montage_100']
+# wf_names = ['Montage_50']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
 # wf_names = ['Epigenomics_100']
@@ -94,8 +94,8 @@ if __name__ == '__main__':
         "results": result
     }
 
-    with open(os.path.join(directory, "all_results.json"), "w") as f:
-        json.dump(dt, f)
+    # with open(os.path.join(directory, "all_results.json"), "w") as f:
+    #     json.dump(dt, f)
 
 
 

@@ -3,12 +3,12 @@ from datetime import datetime
 from heft.algs.ga.GAImplementation.GAFunctions2 import mark_finished
 from heft.algs.ga.GAImplementation.GAImpl import GAFactory
 from heft.algs.heft.DSimpleHeft import DynamicHeft
-from heft.algs.heft import HeftHelper
+from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentEstimator, ExperimentResourceManager
 from heft.core.environment.ResourceManager import Schedule
-from heft.core.environment.Utility import GraphVisualizationUtility as viz
-from heft.core.environment import Utility, ResourceGenerator
-
+from heft.core.environment.Utility import GraphVisualizationUtility as viz, wf
+from heft.core.environment.ResourceGenerator import ResourceGenerator
+from heft.core.environment.Utility import Utility
 
 DEFAULT_GA_PARAMS = {
     "population": 1000,
@@ -25,8 +25,10 @@ class BaseRunner:
         ideal_flops = kwargs.get("ideal_flops", 20)
         transfer_time = kwargs.get("transfer_time", 100)
 
-        dax1 = '../../resources/' + wf_name + '.xml'
-        wf = Utility.readWorkflow(dax1, wf_name)
+        # dax1 = '../../resources/' + wf_name + '.xml'
+        # wf = Utility.readWorkflow(dax1, wf_name)
+
+        _wf = wf(wf_name)
 
         rgen = ResourceGenerator(min_res_count=1,
                                  max_res_count=1,
@@ -51,7 +53,7 @@ class BaseRunner:
 
         estimator = ExperimentEstimator(transferMx, ideal_flops, dict(), transfer_time)
         resource_manager = ExperimentResourceManager(resources)
-        return (wf, resource_manager, estimator)
+        return (_wf, resource_manager, estimator)
 
     def _validate(self, wf, estimator, schedule):
          max_makespan = Utility.makespan(schedule)
@@ -98,7 +100,7 @@ class MixRunner(BaseRunner):
             return schedule_dynamic_heft
 
         # @profile_decorator
-        def _run_ga(initial_schedule):
+        def _run_ga(initial_schedule, saveIt=True):
             def default_fixed_schedule_part(resource_manager):
                 fix_schedule_part = Schedule({node: [] for node in HeftHelper.to_nodes(resource_manager.get_resources())})
                 return fix_schedule_part
@@ -110,7 +112,8 @@ class MixRunner(BaseRunner):
 
             name = wf_name +"_bundle"
             path = '../../resources/saved_schedules/' + name + '.json'
-            Utility.save_schedule(path, wf_name, resource_manager.get_resources(), estimator.transfer_matrix, ideal_flops, schedule)
+            if saveIt:
+                Utility.save_schedule(path, wf_name, resource_manager.get_resources(), estimator.transfer_matrix, ideal_flops, schedule)
 
             if is_visualized:
                 viz.visualize_task_node_mapping(wf, schedule)
@@ -140,7 +143,7 @@ class MixRunner(BaseRunner):
          ## TODO: remove time measure
         tstart = datetime.now()
         # ga_schedule = heft_schedule
-        ga_schedule = _run_ga(heft_schedule)
+        ga_schedule = _run_ga(heft_schedule, False)
         # ga_schedule = _run_ga(None)
 
         tend = datetime.now()

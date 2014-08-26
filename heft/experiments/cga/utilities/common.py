@@ -7,6 +7,7 @@ import uuid
 from deap import tools
 import distance
 import math
+from scoop import futures
 from heft.algs.common.individuals import ListBasedIndividual
 from heft.algs.ga.coevolution.cga import rounddeciter
 from heft.algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
@@ -73,10 +74,10 @@ class ComparableMixin(object):
 
 
 def repeat(func, n):
-    # fs = [futures.submit(func) for i in range(n)]
-    # futures.wait(fs)
-    # return [f.result() for f in fs]
-    return [func() for i in range(n)]
+    fs = [futures.submit(func) for i in range(n)]
+    futures.wait(fs)
+    return [f.result() for f in fs]
+    # return [func() for i in range(n)]
 
 
 class OnlyUniqueMutant:
