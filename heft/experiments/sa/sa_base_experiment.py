@@ -1,9 +1,10 @@
+from pstats import Stats
 from deap import tools
 from deap.base import Toolbox
 
 from heft.algs.heft.DSimpleHeft import run_heft
 from heft.algs.heft.HeftHelper import HeftHelper
-from heft.algs.pso.sdpso import schedule_to_position
+from heft.algs.pso.sdpso import schedule_to_position, generate
 from heft.algs.sa.SimulatedAnnealingScheme import run_sa
 from heft.algs.sa.mappingops import energy, update_T, mapping_neighbor, transition_probability, State
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
@@ -21,38 +22,42 @@ estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transf
 sorted_tasks = HeftHelper.heft_rank(_wf, rm, estimator)
 
 heft_schedule = run_heft(_wf, rm, estimator)
-heft_mapping = schedule_to_position(heft_schedule).entity.mapping
+heft_mapping = schedule_to_position(heft_schedule).entity
+
+
 
 initial_state = State()
-initial_state.mapping = heft_mapping
+# initial_state.mapping = heft_mapping
+initial_state.mapping = generate(_wf, rm, estimator, 1)[0].entity
 initial_state.ordering = sorted_tasks
 
-T, N = 1000, 50
+T, N = 20, 1000
 
 
 
 toolbox = Toolbox()
 toolbox.register("energy", energy, _wf, rm, estimator)
 toolbox.register("update_T", update_T)
-toolbox.register("mapping_neighbor", mapping_neighbor, _wf, rm, estimator)
+toolbox.register("neighbor", mapping_neighbor, _wf, rm, estimator, 1)
 toolbox.register("transition_probability", transition_probability)
 
-
-
-
 logbook = tools.Logbook()
-logbook.header = ["gen", "T"]
+logbook.header = ["gen", "T", "val"]
+
+stats = tools.Statistics(lambda ind: ind.energy.values[0])
+stats.register("val", lambda arr: arr[0])
 
 def do_exp():
     best, log, current = run_sa(
         toolbox=toolbox,
         logbook=logbook,
-        stats=None,
+        stats=stats,
         initial_solution=initial_state, T=T, N=N
     )
 
-    solution =  {MAPPING_SPECIE: best.mapping, ORDERING_SPECIE: best.ordering}
+    solution = {MAPPING_SPECIE: [item for item in best.mapping.items()], ORDERING_SPECIE: best.ordering}
     schedule = build_schedule(_wf, estimator, rm, solution)
+    Utility.validate_static_schedule(_wf, schedule)
     makespan = Utility.makespan(schedule)
     print("Final makespan: {0}".format(makespan))
     pass

@@ -16,14 +16,14 @@ def run_sa(toolbox, stats, logbook, initial_solution, T, N):
     current_solution.energy = toolbox.energy(current_solution)
     g = 0
     ## whole run
-    while T > 0:
+    while round(T, 4) > 0.0:
 
-        data = stats.compile([current_solution]) if stats is not None else None
+        data = stats.compile([current_solution]) if stats is not None else {}
         if logbook is not None:
             logbook.record(gen=g, T=T,  **data)
             print(logbook.stream)
 
-        T = toolbox.update_T(T, N, g)
+
         new_sol = toolbox.neighbor(current_solution)
         new_sol.energy = toolbox.energy(new_sol)
         tprob = toolbox.transition_probability(current_solution, new_sol, T)
@@ -31,6 +31,7 @@ def run_sa(toolbox, stats, logbook, initial_solution, T, N):
             current_solution = new_sol
         best = max(best, current_solution, key=lambda x: x.energy)
 
+        T = toolbox.update_T(T, N, g)
         g += 1
         pass
 
