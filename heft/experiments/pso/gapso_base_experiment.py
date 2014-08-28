@@ -60,8 +60,12 @@ W, C1, C2 = 0.0, 0.3, 0.3
 # ga params
 CXPB, MU = 0.1, N
 
-creator.create("ParticleIndividual", base=FitAdapter, velocity=Velocity({}), best=None, ordering=None)
-ParticleIndividual = creator.ParticleIndividual
+class ParticleIndividual(FitAdapter):
+    def __init__(self):
+        velocity = Velocity({})
+        best = None
+        ordering = None
+    pass
 
 
 heft_particle = ParticleIndividual(Position(heft_mapping))

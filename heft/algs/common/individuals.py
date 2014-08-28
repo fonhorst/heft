@@ -11,8 +11,11 @@ which is useful for transferring information during an evolution process.
 but for the sake of simplicity and referring to deap examples of code, It have been decided use mentioned above scheme)
 
 """
-creator.create("FitnessStd", Fitness, weights=(-1.0, -1.0))
-FitnessStd = creator.FitnessStd
+
+
+class FitnessStd(Fitness):
+    weights = (-1.0, -1.0)
+
 
 # creator.create("DictBasedIndividual", dict, uid=lambda: uuid4())
 # DictBasedIndividual = creator.DictBasedIndividual

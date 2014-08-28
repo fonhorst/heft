@@ -43,7 +43,9 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
 
     ## initialization
     ## generates random solutions
-    pop = [toolbox.generate() for _ in range(pop_size)]
+    pop = toolbox.generate(pop_size)
+
+    best = None
 
     for i in range(iter_number):
         ## fitness estimation
@@ -55,9 +57,11 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
         pop = sorted(pop, key=lambda x: x.fitness)
         best = pop[0].fitness
         worst = pop[-1].fitness
-        max_diff = cannot_be_zero(best - worst)
+        # TODO: this is a hack
+        max_diff = best.values[0] - best.values[-1]
+        max_diff = cannot_be_zero(max_diff)
         for p in pop:
-            p.mass = (p.fitness - worst) / max_diff
+            p.mass = (p.fitness.values[0] - worst.values[0]) / max_diff
         ## convert to (0, 1) interval
         ## TODO: perhaps this should 'warn' message
         mass_sum = cannot_be_zero(sum(p.mass for p in pop))
@@ -76,6 +80,8 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
         logbook.record(gen=i, G=G, kbest=kbest, **record)
         print(logbook.stream)
 
+        best = max(pop, key=lambda x: x.fitness)
+
         ## compute new velocity and position
         position = toolbox.position if hasattr(toolbox, 'position') else None
         pop = [toolbox.velocity_and_position(p, fvm, position) for p in pop]
@@ -90,6 +96,6 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
             if hasattr(p, 'fitness'): del p.fitness
             if hasattr(p, 'acceleration'): del p.acceleration
         pass
-    return pop
+    return pop, logbook, best
 
 

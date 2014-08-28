@@ -9,6 +9,7 @@ from _ctypes import ArgumentError
 from copy import deepcopy
 from numbers import Number
 import random
+from uuid import uuid4
 from deap import tools
 from deap import creator
 import distance
@@ -17,18 +18,20 @@ from heft.algs.common.individuals import FitAdapter
 from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE
 from heft.algs.common.mapordschedule import fitness as basefitness
 from heft.algs.common.setbasedoperations import Position, Velocity
-from heft.experiments.cga.utilities.common import hamming_distances
 
 
-
-
-
-creator.create("Particle", base=FitAdapter, velocity=None, best=None)
-Particle = creator.Particle
+class Particle(FitAdapter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.uid = uuid4()
+        self.velocity = None
+        self.best = None
+    pass
 
 
 def _cutting_by_task(velocity, task):
     return [FitAdapter(node, (v,)) for (task, node), v in velocity.items()]
+
 
 def velocity_update(w, c1, c2, pbest, gbest, velocity, position, pop):
     # c3, c4, tasks, nodes

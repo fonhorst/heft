@@ -5,8 +5,12 @@ from deap import creator
 from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE, fitness
 
 
-creator.create("State", base=object, energy=None, mapping=None, ordering=None)
-State = creator.State
+class State(object):
+    def __init__(self):
+        energy = None
+        mapping = None
+        ordering = None
+    pass
 
 
 def energy(wf, rm, estimator, state):
