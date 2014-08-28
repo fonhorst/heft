@@ -15,8 +15,8 @@ def energy(wf, rm, estimator, state):
     return fitness(wf, rm, estimator, position)
 
 
-def update_T(T, N, g):
-    return T - ((T/N) * g)
+def update_T(T0, T, N, g):
+    return T0 - ((T0/N) * g)
 
 
 def mapping_neighbor(wf, rm, estimator, count, state):
@@ -60,3 +60,5 @@ def transition_probability(current_state, new_state, T):
         return 1
     diff = new_state.energy.values[0] - current_state.energy.values[0]
     return exp(-diff/T)
+
+

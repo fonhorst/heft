@@ -16,48 +16,11 @@ from heft.algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from heft.algs.common.individuals import FitAdapter
 from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE
 from heft.algs.common.mapordschedule import fitness as basefitness
+from heft.algs.common.setbasedoperations import Position, Velocity
 from heft.experiments.cga.utilities.common import hamming_distances
 
 
-class FrozenDict(dict):
-    # def __setitem__(self, key, value):
-    #     raise ValueError("Operation is not allowed for this type")
-    pass
 
-
-class Position(FrozenDict):
-    def __init__(self, d):
-        super().__init__(d)
-
-    def __sub__(self, other):
-        # return Position({k: self[k] for k in self.keys() - other.keys()})
-        return Velocity({item: 1.0 for item in self.items() - other.items()})
-
-    def __mul__(self, other):
-        if isinstance(other, Number):
-            return Velocity({k: other for k, v in self.items()})
-        raise ArgumentError("Other has not a suitable type for multiplication")
-    pass
-
-
-class Velocity(FrozenDict):
-
-    def __init__(self, d):
-        super().__init__(d)
-
-    def __mul__(self, other):
-        if isinstance(other, Number):
-            return Velocity({k: 1.0 if v * other > 1.0 else v * other for k, v in self.items()})
-        raise ArgumentError("{0} has not a suitable type for multiplication".format(other))
-
-    def __add__(self, other):
-        vel = Velocity({k: max(self.get(k, 0), other.get(k, 0)) for k in set(self.keys()).union(other.keys())})
-        return vel
-
-    def cutby(self, alpha):
-        return Velocity({k: v for k, v in self.items() if v >= alpha})
-
-    pass
 
 
 creator.create("Particle", base=FitAdapter, velocity=None, best=None)

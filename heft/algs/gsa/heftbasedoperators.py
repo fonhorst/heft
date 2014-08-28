@@ -38,12 +38,16 @@ def force_vector_matrix(rm, pop, kbest, G, e=0.0):
     ## calculate components of DIRECTED force vector
     # sub = lambda seq1, seq2: [0 if s1 == s2 else 1 for s1, s2 in zip(seq1, seq2)]
     ## pure hack to account it as preventing forces to change the position in particular dimension
-    sub = lambda seq1, seq2: [1 for s1, s2 in zip(seq1, seq2)]
+    sub = lambda seq1, seq2: [1 for _ in zip(seq1, seq2)]
     zero = lambda: [0 for _ in range(len(pop[0]))]
+
     def squared(a):
         val = (G*(a.mass * a.mass)/1)
         return [val for _ in range(len(pop[0]))]
-    dist = lambda a, b: sum([(0 if r1 == r2 else 1) + math.fabs(rm.byName(r1).flops - rm.byName(r2).flops)/(rm.byName(r1).flops + rm.byName(r2).flops) for r1, r2 in zip(a, b)])
+
+    def dist(a, b):
+        diff_by_flops = lambda r1, r2: math.fabs(rm.byName(r1).flops - rm.byName(r2).flops)/(rm.byName(r1).flops + rm.byName(r2).flops)
+        return sum([(0 if r1 == r2 else 1) + diff_by_flops(r1, r2) for r1, r2 in zip(a, b)])
 
     def estimate_force(a, b):
         a_string = a#mapping_as_vector(a)

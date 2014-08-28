@@ -8,3 +8,9 @@ def mapping_as_vector(mapping):
     return mapp_string
 
 
+def cannot_be_zero(number, replace_for_zero=0.000001):
+    return replace_for_zero if round(abs(number), 6) < 0.000001 else number
+
+
+
+

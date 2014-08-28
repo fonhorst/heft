@@ -24,10 +24,10 @@ heft_schedule = run_heft(_wf, rm, estimator)
 heft_mapping = schedule_to_position(heft_schedule)
 heft_mapping.velocity = Velocity({})
 
-heft_gen = lambda n: [deepcopy(heft_mapping) if random.random() > 1.00 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
+heft_gen = lambda n: [deepcopy(heft_mapping) if random.random() > 1.0 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
 
-W, C1, C2 = 0.1, 0.6, 0.2
-GEN, N = 100, 30
+W, C1, C2 = 0.9, 0.6, 0.2
+GEN, N = 500, 30
 
 toolbox = Toolbox()
 toolbox.register("population", heft_gen)

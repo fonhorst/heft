@@ -9,6 +9,7 @@ def run_sa(toolbox, stats, logbook, initial_solution, T, N):
     update_T
     neighbor
     transition_probability
+    attempts_count
     """
     ## initialization
     current_solution = initial_solution
@@ -23,12 +24,14 @@ def run_sa(toolbox, stats, logbook, initial_solution, T, N):
             logbook.record(gen=g, T=T,  **data)
             print(logbook.stream)
 
-
-        new_sol = toolbox.neighbor(current_solution)
-        new_sol.energy = toolbox.energy(new_sol)
-        tprob = toolbox.transition_probability(current_solution, new_sol, T)
-        if random.random() < tprob:
-            current_solution = new_sol
+        attempt_count = toolbox.attempts_count(T)
+        for _ in range(attempt_count):
+            new_sol = toolbox.neighbor(current_solution)
+            new_sol.energy = toolbox.energy(new_sol)
+            tprob = toolbox.transition_probability(current_solution, new_sol, T)
+            if random.random() < tprob:
+                current_solution = new_sol
+                break
         best = max(best, current_solution, key=lambda x: x.energy)
 
         T = toolbox.update_T(T, N, g)
