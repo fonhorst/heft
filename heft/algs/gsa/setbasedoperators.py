@@ -1,6 +1,9 @@
 from builtins import reduce
 import functools
+import operator
+import random
 from distance import hamming
+from heft.algs.pso.sdpso import position_update
 
 
 def force_vector_matrix(pop, kbest, G):
@@ -23,7 +26,15 @@ def force_vector_matrix(pop, kbest, G):
     return forces
 
 
-# def velocity_and_position(p, fvm, position_func):
-#     forces = fvm[p.uid]
-#     reduce(operators.add, forces)
+def velocity_and_position(p, fvm, position_func):
+    forces = fvm[p.uid]
+    force = reduce(operator.add, forces)
+    acceleration = force / p.mass
+    new_velocity = p.velocity + acceleration
+    new_position = position_update(p, new_velocity)
+    new_position.velocity = new_velocity
+    return new_position
+
+
+
 
