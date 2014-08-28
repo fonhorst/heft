@@ -19,7 +19,7 @@ from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.experiments.cga.utilities.common import repeat
 
-_wf = wf("Montage_50")
+_wf = wf("Montage_40")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
                                             ideal_flops=20, transfer_time=100)
@@ -35,7 +35,7 @@ toolbox = Toolbox()
 toolbox.register("generate", heft_gen)
 toolbox.register("fitness", fitness, _wf, rm, estimator, sorted_tasks)
 toolbox.register("force_vector_matrix", force_vector_matrix)
-toolbox.register("velocity_and_position", velocity_and_position)
+toolbox.register("velocity_and_position", velocity_and_position, beta=0.0)
 toolbox.register("G", G)
 toolbox.register("kbest", Kbest)
 
@@ -50,7 +50,7 @@ logbook.header = ("gen", "G", "kbest", "min", "avr", "max", "std")
 
 
 
-pop_size = 30
+pop_size = 40
 iter_number = 200
 kbest = pop_size
 ginit = 2

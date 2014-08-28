@@ -28,11 +28,11 @@ def force_vector_matrix(pop, kbest, G):
     return forces
 
 
-def velocity_and_position(p, fvm, position_func):
+def velocity_and_position(p, fvm, position_func, beta=1.0):
     forces = fvm[p.uid]
     force = functools.reduce(operator.add, forces)
     acceleration = force / p.mass
-    new_velocity = p.velocity + acceleration
+    new_velocity = p.velocity*beta + acceleration
     new_position = position_update(p.entity, new_velocity)
     new_particle = Particle(new_position)
     new_particle.velocity = new_velocity
