@@ -1,31 +1,40 @@
 import functools
 import json
 import os
+import numpy
 
 from heft.algs.ga.GAImplementation.GARunner import MixRunner
+from heft.algs.heft.DSimpleHeft import run_heft
+from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
+from heft.core.environment.Utility import wf, Utility
+from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.experiments.cga.utilities.common import UniqueNameSaver, repeat
+from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 
 
-wf_names = ['CyberShake_50']
+wf_names = ['Montage_25']
 # wf_names = ['Montage_50']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
 # wf_names = ['Epigenomics_100']
 # wf_names = ["CyberShake_50"]
 
+only_heft = False
+
 PARAMS = {
     "ideal_flops": 20,
-    "is_silent": True,
+    "is_silent": False,
     "is_visualized": False,
     "ga_params": {
-        "population": 200,
-        "crossover_probability": 0.8,
-        "replacing_mutation_probability": 0.5,
-        "sweep_mutation_probability": 0.4,
-        "generations": 300
+        "population": 50,
+        "crossover_probability": 0.3, #0.8
+        "replacing_mutation_probability": 0.1, #0.5
+        "sweep_mutation_probability": 0.3, #0.4
+        "generations": 200
     },
     "nodes_conf": [10, 15, 25, 30],
-    "transfer_time": 100
+    "transfer_time": 2000,
+    "heft_initial": False
 }
 
 run = functools.partial(MixRunner(), **PARAMS)
@@ -72,47 +81,26 @@ def do_exp_ga_schedule():
 if __name__ == '__main__':
     print("Population size: " + str(PARAMS["ga_params"]["population"]))
 
-    # repeat(do_exp, 1)
-    result = repeat(do_exp_heft_schedule, 1)
-    # result = repeat(do_exp_ga_schedule, 1)
+    _wf = wf(wf_names[0])
+    rm = ExperimentResourceManager(rg.r(PARAMS["nodes_conf"]))
+    estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
+                                            ideal_flops=PARAMS["ideal_flops"], transfer_time=PARAMS["transfer_time"])
 
-    print(result)
-
-    # result = []
-    # for entry in os.listdir(directory):
-    #     p = os.path.join(directory, entry)
-    #     if os.path.isfile(p):
-    #         with open(p, "r") as f:
-    #             a = float(f.read())
-    #             result.append(a)
-    #             pass
-    #         os.remove(p)
-    #     pass
-    #
-    dt = {
-        "metainfo": PARAMS,
-        "results": result
-    }
-
-    # with open(os.path.join(directory, "all_results.json"), "w") as f:
-    #     json.dump(dt, f)
+    heft_schedule = run_heft(_wf, rm, estimator)
+    heft_makespan = Utility.makespan(heft_schedule)
+    overall_transfer = Utility.overall_transfer_time(heft_schedule, _wf, estimator)
+    overall_execution = Utility.overall_execution_time(heft_schedule)
 
 
+    print("Heft makespan: {0}, Overall transfer time: {1}, Overall execution time: {2}".format(heft_makespan,
+                                                                                               overall_transfer,
+                                                                                               overall_execution))
+    if not only_heft:
+        result = repeat(do_exp_heft_schedule, 1)
+        mean = numpy.mean(result)
+        profit = (1 - mean / heft_makespan) * 100
+        print(result)
+        print("Mean: {0}".format(mean))
+        print("Profit: {0}".format(profit))
 
-
-
-    #res = [run(wf_name) for wf_name in wf_names for i in range(1)]
-    #print("RESULT: " + str([gam for gam, hm in res]))
-
-    ## TODO: remove it later
-    ## pop size equal to 200 is determined by the fact that cga uses 200 constructing of solutions
-    ## So, We takes the same size for ga pop to be honest.
-    ## TODO: need to implement ga operators as exacly as in "Science in the Cloud: Allocation and Execution of Data-Intesive Scientific Workflows."
-    # with open("D:/wspace/heft/temp/ga_results.txt", "w") as f:
-    #     f.write(str(res))
-    # list(futures.map(run, wf_names))
-    # for i in range(5):
-    #     print("ITERATION: " + str(i))
-    #     run(wf_names[0])
-    #     pass
 

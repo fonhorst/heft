@@ -1,4 +1,4 @@
-from copy import copy
+from copy import copy, deepcopy
 import functools
 
 ##just an enum
@@ -88,7 +88,6 @@ class Workflow:
         if self._parent_child_dict is None:
             self._build_ancestors_map()
         return self._parent_child_dict[id]
-
 
     ## TODO: for one-time use. Remove it later.
     def avr_runtime(self, package_name):

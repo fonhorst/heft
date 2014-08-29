@@ -1,4 +1,6 @@
 ##interface Algorithm
+import functools
+import operator
 
 
 class Algorithm:
@@ -202,7 +204,7 @@ class Schedule:
     def get_schedule_in_time(self, time):
         pass
 
-    def get_the_most_upcoming_item(self,time):
+    def get_the_most_upcoming_item(self, time):
         pass
 
 ##interface Executor

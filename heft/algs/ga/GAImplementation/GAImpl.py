@@ -7,6 +7,7 @@ from deap import creator
 from deap import base
 import deap
 from deap.tools import History
+import numpy
 from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
 from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.environment.ResourceManager import Schedule
@@ -187,8 +188,14 @@ class GAFactory:
 
                 hallOfFame = deap.tools.HallOfFame(5)
 
+                stats = tools.Statistics(key=lambda x: 1/x.fitness.values[0])
+                stats.register("min", numpy.min)
+                stats.register("max", numpy.max)
+                stats.register("avr", numpy.mean)
+                stats.register("std", numpy.std)
+
                 logbook = tools.Logbook()
-                #logbook.record(gen=0, evals=30, **record)
+                logbook.header = ["gen"] + stats.fields
 
 
                 # Evaluate the entire population
@@ -278,13 +285,15 @@ class GAFactory:
                     best = 1/max(fits)
                     avr = 1/mean
 
-                    logbook.record(iter=g, worst=worst, best=best, avr=avr)
+                    data = stats.compile(pop)
+                    logbook.record(gen=g, **data)
                     if not is_silent:
-                        print("-- Generation %i --" % g)
-                        print("  Worst %s" % str(worst))
-                        print("   Best %s" % str(best))
-                        print("    Avg %s" % str(avr))
-                        print("    Std %s" % str(1/std))
+                        print(logbook.stream)
+                        # print("-- Generation %i --" % g)
+                        # print("  Worst %s" % str(worst))
+                        # print("   Best %s" % str(best))
+                        # print("    Avg %s" % str(avr))
+                        # print("    Std %s" % str(1/std))
 
                     best = self._find_best(pop)
                     # the last component is iteration number when evolution stopped

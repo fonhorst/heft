@@ -73,7 +73,7 @@ class BaseRunner:
 
 
 class MixRunner(BaseRunner):
-    def __call__(self, wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEFAULT_GA_PARAMS, nodes_conf = None, transfer_time=100):
+    def __call__(self, wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEFAULT_GA_PARAMS, nodes_conf = None, transfer_time=100, heft_initial=True):
 
         print("Proccessing " + str(wf_name))
 
@@ -143,7 +143,10 @@ class MixRunner(BaseRunner):
          ## TODO: remove time measure
         tstart = datetime.now()
         # ga_schedule = heft_schedule
-        ga_schedule = _run_ga(heft_schedule, False)
+        if heft_initial:
+            ga_schedule = _run_ga(heft_schedule, False)
+        else:
+            ga_schedule = _run_ga(None, False)
         # ga_schedule = _run_ga(None)
 
         tend = datetime.now()

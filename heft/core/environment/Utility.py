@@ -1,5 +1,7 @@
 import cProfile
+import functools
 import json
+import operator
 import os
 import pstats
 import subprocess
@@ -339,6 +341,34 @@ class Utility:
 
         last_time = max([get_last_time(node_items) for (node, node_items) in schedule.mapping.items()])
         return last_time
+
+    @staticmethod
+    def overall_transfer_time(schedule, wf, estimator):
+        """
+        This method extracts OVERALL transfer time during execution.
+        It should be noted that common_transfer_time + common_execution_time != makespan,
+        due to as transfer as execution can be executed in parallel, so overlap may occur.
+        """
+        t_n = schedule.task_to_node()
+        # t_n = {task.id: node for task, node in t_n.items()}
+        tasks = wf.get_all_unique_tasks()
+        def calc(p, child):
+            print('{0}-{1}'.format(p, child))
+            return estimator.estimate_transfer_time(t_n[p], t_n[child], p, child)
+        relations_iter = (calc(p, child) for p in tasks if p != wf.head_task.id for child in p.children)
+        transfer_time = functools.reduce(operator.add, relations_iter)
+        return transfer_time
+
+    @staticmethod
+    def overall_execution_time(schedule):
+        """
+        This method extracts OVERALL execution time during execution.
+        It should be noted that common_transfer_time + common_execution_time != makespan,
+        due to as transfer as execution can be executed in parallel, so overlap may occur.
+        """
+        execution_iters = (item.end_time - item.start_time for node, items in schedule.mapping.items() for item in items)
+        execution_time = functools.reduce(operator.add, execution_iters)
+        return execution_time
 
     @staticmethod
     def build_bundle_decoder(head_task):
