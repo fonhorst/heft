@@ -61,6 +61,7 @@ def do_exp(wf_name, **params):
 
 
     data = {
+        "wf_name": wf_name,
         "params": BASE_PARAMS,
         "heft": {
             "makespan": heft_makespan,
