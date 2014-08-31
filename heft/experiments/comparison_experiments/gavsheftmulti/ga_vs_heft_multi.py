@@ -62,7 +62,7 @@ def do_exp(wf_name, **params):
 
     data = {
         "wf_name": wf_name,
-        "params": BASE_PARAMS,
+        "params": params,
         "heft": {
             "makespan": heft_makespan,
             "overall_transfer_time": Utility.overall_transfer_time(heft_schedule, _wf, estimator),
@@ -113,6 +113,6 @@ def real_run():
     pass
 
 if __name__ == '__main__':
-    # test_run()
-    real_run()
+    test_run()
+    # real_run()
     pass

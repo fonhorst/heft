@@ -3,8 +3,9 @@ import json
 import os
 import matplotlib.pyplot as plt
 import numpy
+from heft.settings import TEMP_PATH
 
-path = ""
+path = os.path.join(TEMP_PATH, "ga_vs_heft_multi_338cc5df-f8c1-46ce-beab-9261a824fb83")
 
 
 
@@ -13,7 +14,7 @@ wfs_colors = {
     "CyberShake": "-rD",
     "Inspiral": "-bD",
     "Sipht": "-yD",
-    "Epigenomics": "-fD"
+    "Epigenomics": "-mD"
 }
 
 
@@ -57,29 +58,48 @@ def extract_and_add(data, d):
 def plot_aggregate_results(data, property_name):
 
     aggr = lambda results: (1 - numpy.mean([r["g"] for r in results])/numpy.mean([r["h"] for r in results]))*100
+
+    def get_points_format(data):
+        if len(data) == 0:
+            raise ValueError("data is empty")
+        item = next(iter(data.items()))[1]
+        points = []
+        for value, results in item[property_name].items():
+            points.append((value, aggr(results)))
+        points = sorted(points, key=lambda x: x[0])
+        return points
+
+    format_points = get_points_format(data)
+
+    plt.grid(True)
+    ax = plt.gca()
+    # + 1 for legend box
+    ax.set_xlim(0, len(format_points) + 1)
+    ax.set_xscale('linear')
+    plt.xticks(range(0, len(format_points)))
+    ax.set_xticklabels([p[0] for p in format_points])
+    ax.set_title(property_name)
+    ax.set_ylabel("profit, %")
+
     for wf_name, item in data.items():
+        wf_name = wf_name.split("_")[0]
+        if wf_name not in wfs_colors:
+            continue
+        style = wfs_colors[wf_name]
+
         points = []
         for value, results in item[property_name].items():
             points.append((value, aggr(results)))
 
         points = sorted(points, key=lambda x: x[0])
 
-        plt.grid(True)
-        ax = plt.gca()
-        ax.set_xlim(0, len(points))
-        ax.set_xscale('linear')
-        plt.xticks(range(0, len(points)))
-        ax.set_xticklabels(points)
-        ax.set_title(property_name)
-        ax.set_ylabel("profit, %")
+
+
         # plt.setp(plt.xticks()[1], rotation=30, ha='right')
 
 
-        # gens = sorted(data["iterations"], key=lambda x: x["gen"])
-        # bests = [(points.index(gen["gen"]), -1*gen["solsstat"][0]["best"]) for gen in gens if gen["gen"] in points]
-
-        wf_name = wf_name.split("_")[0]
-        plt.plot([x[0] for x in points], [x[1] for x in points], wfs_colors[wf_name])
+        plt.plot([i for i in range(0, len(points))], [x[1] for x in points], style, label=wf_name)
+        ax.legend()
     pass
 
 transfer_plot = partial(plot_aggregate_results, property_name="transfer_time")
@@ -107,11 +127,19 @@ if __name__ == "__main__":
     data = {}
     for p in files:
         with open(p, "r") as f:
-            d = f.read()
-            d = json.load(d)
+            d = json.load(f)
             extract_and_add(data, d)
 
-    visualize(data, [transfer_plot, iflops_plot])
+    visualize(data, [transfer_plot, iflops_plot], os.path.join(TEMP_PATH, "gh.png"))
+    # files = [os.path.join(path, p) for p in os.listdir(path) if p.endswith(".json")]
+    # data = []
+    # for p in files:
+    #     with open(p, "r") as f:
+    #         d = json.load(f)
+    #         data.append(d)
+    # k = 0
+
+
 
 
 
