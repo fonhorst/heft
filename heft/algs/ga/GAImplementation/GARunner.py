@@ -1,3 +1,4 @@
+from copy import deepcopy
 from datetime import datetime
 
 from heft.algs.ga.GAImplementation.GAFunctions2 import mark_finished
@@ -5,6 +6,7 @@ from heft.algs.ga.GAImplementation.GAImpl import GAFactory
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentEstimator, ExperimentResourceManager
+from heft.core.environment.BaseElements import Workflow
 from heft.core.environment.ResourceManager import Schedule
 from heft.core.environment.Utility import GraphVisualizationUtility as viz, wf
 from heft.core.environment.ResourceGenerator import ResourceGenerator
@@ -58,14 +60,17 @@ class BaseRunner:
     def _validate(self, wf, estimator, schedule):
          max_makespan = Utility.makespan(schedule)
          seq_time_validaty = Utility.validateNodesSeq(schedule)
-         mark_finished(schedule)
-         dependency_validaty = Utility.validateParentsAndChildren(schedule, wf)
-         transfer_dependency_validaty = Utility.static_validateParentsAndChildren_transfer(schedule, wf, estimator)
-         print("=============Results====================")
-         print("              Makespan %s" % str(max_makespan))
-         print("          Seq validaty %s" % str(seq_time_validaty))
-         print("   Dependancy validaty %s" % str(dependency_validaty))
-         print("    Transfer validaty %s" % str(transfer_dependency_validaty))
+         sched = deepcopy(schedule)
+         mark_finished(sched)
+         Utility.validate_static_schedule(wf, schedule)
+         ## TODO: obsolete remove it later
+         # dependency_validaty = Utility.validateParentsAndChildren(sched, wf)
+         # transfer_dependency_validaty = Utility.static_validateParentsAndChildren_transfer(sched, wf, estimator)
+         # print("=============Results====================")
+         # print("              Makespan %s" % str(max_makespan))
+         # print("          Seq validaty %s" % str(seq_time_validaty))
+         # print("   Dependancy validaty %s" % str(dependency_validaty))
+         # print("    Transfer validaty %s" % str(transfer_dependency_validaty))
 
     def run(self, *args, **kwargs):
         pass
@@ -75,9 +80,17 @@ class BaseRunner:
 class MixRunner(BaseRunner):
     def __call__(self, wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEFAULT_GA_PARAMS, nodes_conf = None, transfer_time=100, heft_initial=True):
 
+        wf = None
+        ## TODO: I know This is a dirty hack
+        if isinstance(wf_name, Workflow):
+            wf = wf_name
+            wf_name = wf.name
+
         print("Proccessing " + str(wf_name))
 
-        (wf, resource_manager, estimator) = self._construct_environment(wf_name=wf_name, nodes_conf=nodes_conf, ideal_flops=ideal_flops,transfer_time=transfer_time)
+        (_wf, resource_manager, estimator) = self._construct_environment(wf_name=wf_name, nodes_conf=nodes_conf, ideal_flops=ideal_flops,transfer_time=transfer_time)
+
+        wf = wf if wf is not None else _wf
 
         alg_func = GAFactory.default().create_ga(silent=is_silent,
                                                  wf=wf,

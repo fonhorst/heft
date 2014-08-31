@@ -12,7 +12,7 @@ from heft.experiments.cga.utilities.common import UniqueNameSaver, repeat
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 
 
-wf_names = ['Montage_25']
+wf_names = ['CyberShake_30']
 # wf_names = ['Montage_50']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
@@ -26,25 +26,26 @@ PARAMS = {
     "is_silent": False,
     "is_visualized": False,
     "ga_params": {
+        "Kbest": 5,
         "population": 50,
         "crossover_probability": 0.3, #0.8
         "replacing_mutation_probability": 0.1, #0.5
         "sweep_mutation_probability": 0.3, #0.4
-        "generations": 200
+        "generations": 300
     },
     "nodes_conf": [10, 15, 25, 30],
     "transfer_time": 2000,
-    "heft_initial": False
+    "heft_initial": True
 }
 
 run = functools.partial(MixRunner(), **PARAMS)
 directory = "../../temp/ga_vs_heft_exp"
 saver = UniqueNameSaver("../../temp/ga_vs_heft_exp")
 
-def do_exp():
-    ga_makespan, heft_makespan, ga_schedule, heft_schedule = run(wf_names[0])
-    saver(ga_makespan)
-    return ga_makespan
+# def do_exp():
+#     ga_makespan, heft_makespan, ga_schedule, heft_schedule = run(wf_names[0])
+#     saver(ga_makespan)
+#     return ga_makespan
 
 def do_exp_schedule(takeHeftSchedule=True):
     saver = UniqueNameSaver("../../temp/ga_vs_heft_exp_heft_schedule")
@@ -91,15 +92,18 @@ if __name__ == '__main__':
     overall_transfer = Utility.overall_transfer_time(heft_schedule, _wf, estimator)
     overall_execution = Utility.overall_execution_time(heft_schedule)
 
-
     print("Heft makespan: {0}, Overall transfer time: {1}, Overall execution time: {2}".format(heft_makespan,
                                                                                                overall_transfer,
                                                                                                overall_execution))
+
     if not only_heft:
-        result = repeat(do_exp_heft_schedule, 1)
+        result = repeat(do_exp_heft_schedule, 10)
         mean = numpy.mean(result)
         profit = (1 - mean / heft_makespan) * 100
         print(result)
+        print("Heft makespan: {0}, Overall transfer time: {1}, Overall execution time: {2}".format(heft_makespan,
+                                                                                               overall_transfer,
+                                                                                               overall_execution))
         print("Mean: {0}".format(mean))
         print("Profit: {0}".format(profit))
 

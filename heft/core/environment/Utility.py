@@ -353,7 +353,6 @@ class Utility:
         # t_n = {task.id: node for task, node in t_n.items()}
         tasks = wf.get_all_unique_tasks()
         def calc(p, child):
-            print('{0}-{1}'.format(p, child))
             return estimator.estimate_transfer_time(t_n[p], t_n[child], p, child)
         relations_iter = (calc(p, child) for p in tasks if p != wf.head_task.id for child in p.children)
         transfer_time = functools.reduce(operator.add, relations_iter)

@@ -14,17 +14,27 @@ from heft.algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
 
 
 class UniqueNameSaver:
-    def __init__(self, directory):
+    @staticmethod
+    def save(data, directory, subdir_prefix):
+        UniqueNameSaver(directory, subdir_prefix)(data)
+        pass
+
+    def __init__(self, directory, subdir_prefix=None):
         self.directory = directory
+        self.subdir_prefix = subdir_prefix
+        self._sub_dir = "{0}_{1}".format(self.subdir_prefix, uuid.uuid4()) if self.subdir_prefix is not None else ""
+        pass
 
     def __call__(self, data):
-        if not os.path.exists(self.directory):
-            os.makedirs(self.directory)
+        path = os.path.join(self.directory, self._sub_dir)
+        if not os.path.exists(path):
+            os.makedirs(path)
         name = "{0}.json".format(uuid.uuid4())
-        path = os.path.join(self.directory, name)
+        path = os.path.join(path, name)
         with open(path, "w") as f:
             json.dump(data, f)
         return name
+    pass
 
 
 def load_data(path):
@@ -73,11 +83,13 @@ class ComparableMixin(object):
         return self._compare(other, lambda s, o: s != o)
 
 
-def repeat(func, n):
-    fs = [futures.submit(func) for i in range(n)]
+def multi_repeat(n, funcs):
+    fs = [futures.submit(func) for func in funcs for _ in range(n)]
     futures.wait(fs)
     return [f.result() for f in fs]
-    # return [func() for i in range(n)]
+
+def repeat(func, n):
+    return multi_repeat(n, func)
 
 
 class OnlyUniqueMutant:

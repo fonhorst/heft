@@ -109,6 +109,8 @@ class GAFactory:
         NGEN = ga_params.get('generations', self.DEFAULT_GENERATIONS)
         SWEEPMUTPB = ga_params.get('sweep_mutation_probability', self.DEFAULT_SWEEP_MUTATION_PROBABILITY)
 
+        Kbest = ga_params.get('Kbest', POPSIZE)
+
 
         ga_functions = kwargs.get("ga_functions", GAFunctions2(wf, rm, estimator))
 
@@ -142,8 +144,8 @@ class GAFactory:
 
         toolbox.register("mate", ga_functions.crossover)
         toolbox.register("mutate", ga_functions.mutation)
-        toolbox.register("select", tools.selTournament, tournsize=4)
-        # toolbox.register("select", tools.selRoulette)
+        # toolbox.register("select", tools.selTournament, tournsize=4)
+        toolbox.register("select", tools.selRoulette)
         # toolbox.register("select", tools.selBest)
         # toolbox.register("select", tools.selTournamentDCD)
         # toolbox.register("select", tools.selNSGA2)
@@ -240,7 +242,7 @@ class GAFactory:
 
                     # print("-- Generation %i --" % g)
                     # Select the next generation individuals
-                    offspring = toolbox.select(pop, len(pop))
+                    offspring = pop#toolbox.select(pop, len(pop))
                     # Clone the selected individuals
                     offspring = list(map(toolbox.clone, offspring))
                     # Apply crossover and mutation on the offspring
@@ -267,11 +269,12 @@ class GAFactory:
 
                     for ind, fit in zip(invalid_ind, fitnesses):
                         ind.fitness.values = fit
-                    pop[:] = offspring
+                    #pop[:] = offspring
 
                     # mix with the best individuals of the time
-                    sorted_pop = sorted(pop + list(hallOfFame), key=lambda x: x.fitness.values, reverse=True)
-                    pop = sorted_pop[:POPSIZE:]
+                    sorted_pop = sorted(pop + list(hallOfFame) + offspring, key=lambda x: x.fitness.values, reverse=True)
+                    pop = sorted_pop[:Kbest:] + toolbox.select(sorted_pop[Kbest:], POPSIZE - Kbest)
+
 
 
                     # Gather all the fitnesses in one list and print the stats
