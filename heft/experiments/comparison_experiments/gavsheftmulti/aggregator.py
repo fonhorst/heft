@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy
 from heft.settings import TEMP_PATH
 
-path = os.path.join(TEMP_PATH, "gh100")
+path = os.path.join(TEMP_PATH, "gh")
 FIX_TRANSFER = 100
 FIX_FLOPS = 20
 

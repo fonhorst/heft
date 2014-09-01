@@ -72,3 +72,6 @@ def ordering_from_schedule(schedule):
                       key=lambda x: x.start_time)
     ordering = [item.job.id for item in ordering]
     return ordering
+
+def ord_and_map(schedule):
+    return mapping_from_schedule(schedule), ordering_from_schedule(schedule)

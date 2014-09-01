@@ -18,13 +18,14 @@ from heft.algs.common.individuals import FitAdapter
 from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE
 from heft.algs.common.mapordschedule import fitness as basefitness
 from heft.algs.common.setbasedoperations import Position, Velocity
+from heft.algs.common.utilities import gather_info
 
 
 class Particle(FitAdapter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.uid = uuid4()
-        self.velocity = None
+        self.velocity = Velocity({})
         self.best = None
     pass
 
@@ -194,10 +195,7 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
                 best = deepcopy(p)
 
         # Gather all the fitnesses in one list and print the stats
-        data = stats.compile(pop) if stats is not None else None
-        if logbook is not None:
-            logbook.record(gen=g, evals=len(pop), **data)
-            print(logbook.stream)
+        gather_info(logbook, stats, pop)
 
         for p in pop:
             toolbox.update(w, c1, c2, p, best, pop)
