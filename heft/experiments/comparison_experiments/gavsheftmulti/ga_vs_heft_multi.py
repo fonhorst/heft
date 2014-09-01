@@ -11,7 +11,8 @@ from heft.settings import TEMP_PATH
 
 ## TODO: node name mapping (single for ga and heft, for schedule representation)
 
-EXPERIMENT_NAME = "ga_vs_heft_multi"
+REPEAT_COUNT = 10
+EXPERIMENT_NAME = "ga_vs_heft_multi_{0}".format(REPEAT_COUNT)
 
 BASE_PARAMS = {
     "ideal_flops": 20,
@@ -106,7 +107,7 @@ def real_run():
     })
 
     to_run = [partial(do_exp, wf_name, **params) for wf_name in wf_names for params in seq]
-    results = multi_repeat(10, to_run)
+    results = multi_repeat(REPEAT_COUNT, to_run)
     saver = UniqueNameSaver(TEMP_PATH, EXPERIMENT_NAME)
     for result in results:
         saver(result)

@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 import numpy
 from heft.settings import TEMP_PATH
 
-path = os.path.join(TEMP_PATH, "ga_vs_heft_multi_338cc5df-f8c1-46ce-beab-9261a824fb83")
-
+path = os.path.join(TEMP_PATH, "gh100")
+FIX_TRANSFER = 100
+FIX_FLOPS = 20
 
 
 wfs_colors = {
@@ -18,7 +19,7 @@ wfs_colors = {
 }
 
 
-def extract_and_add(data, d):
+def extract_and_add(fix_transfer, fix_flops, data, d):
     """
     Intermediate data representation for analysis
     {
@@ -42,14 +43,17 @@ def extract_and_add(data, d):
     default_entry = {"ideal_flops": {}, "transfer_time": {}}
     el = data.get(wf_name, default_entry)
 
+    ## check for experiments with {fix_flops, fix_transfer} configuration
+    ## to eliminate results match pattern {fix_flops, ...}
+    if fix_flops != ideal_flops or transfer_time == fix_transfer:
+        iflops_results = el["ideal_flops"].get(ideal_flops, [])
+        iflops_results.append({"h": heft_makespan, "g": ga_makespan})
+        el["ideal_flops"][ideal_flops] = iflops_results
 
-    iflops_results = el["ideal_flops"].get(ideal_flops, [])
-    iflops_results.append({"h": heft_makespan, "g": ga_makespan})
-    el["ideal_flops"][ideal_flops] = iflops_results
-
-    transfer_results = el["transfer_time"].get(transfer_time, [])
-    transfer_results.append({"h": heft_makespan, "g": ga_makespan})
-    el["transfer_time"][transfer_time] = transfer_results
+    if transfer_time != fix_transfer or ideal_flops == fix_flops:
+        transfer_results = el["transfer_time"].get(transfer_time, [])
+        transfer_results.append({"h": heft_makespan, "g": ga_makespan})
+        el["transfer_time"][transfer_time] = transfer_results
 
     data[wf_name] = el
 
@@ -128,7 +132,7 @@ if __name__ == "__main__":
     for p in files:
         with open(p, "r") as f:
             d = json.load(f)
-            extract_and_add(data, d)
+            extract_and_add(FIX_TRANSFER, FIX_FLOPS, data, d)
 
     visualize(data, [transfer_plot, iflops_plot], os.path.join(TEMP_PATH, "gh.png"))
     # files = [os.path.join(path, p) for p in os.listdir(path) if p.endswith(".json")]
