@@ -50,14 +50,15 @@ def run_ompso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=
                                            best=best)
 
         pop_pr, _, _ = toolbox.pso_ordering(None, None,
-                                           gen_curr=g, gen_step=1,
-                                           invalidate_fitness=False, initial_pop=pop,
-                                           best=best)
+                                            gen_curr=g, gen_step=1,
+                                            invalidate_fitness=False, initial_pop=pop,
+                                            best=best)
 
-        pop_pr, _, _ = toolbox.VNS(None, None,
-                                           gen_curr=g, gen_step=1,
-                                           invalidate_fitness=False, initial_pop=pop,
-                                           best=best)
+        if hasattr(toolbox, "VNS") and toolbox.VNS is not None:
+            pop_pr, _, _ = toolbox.VNS(None, None,
+                                       gen_curr=g, gen_step=1,
+                                       invalidate_fitness=False, initial_pop=pop,
+                                       best=best)
 
         best = max(pop_pr, key=lambda x: x.fitness)
 

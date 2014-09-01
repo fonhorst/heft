@@ -73,7 +73,9 @@ def build_pso_ordering_alg():
     return alg
 
 def build_VNS_alg():
-    raise NotImplementedError()
+    return None
+    # raise NotImplementedError()
+
 
 
 toolbox = Toolbox()
