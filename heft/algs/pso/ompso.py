@@ -1,11 +1,12 @@
 import random
 from heft.algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from heft.algs.common.individuals import FitAdapter
-from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE, ord_and_map
+from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE, ord_and_map, build_schedule as base_build_schedule
 from heft.algs.common.setbasedoperations import Position
 from heft.algs.common.utilities import gather_info
 from heft.algs.common.mapordschedule import fitness as basefitness
 from heft.algs.pso.sdpso import Particle
+from heft.core.environment.Utility import Utility
 
 
 class CompoundParticle(FitAdapter):
@@ -27,73 +28,99 @@ class CompoundParticle(FitAdapter):
 
     best = property(_get_best, _set_best)
     pass
+## it is succesful version and should be deleted later,
+## but for the first it is preferable to get sure It definetely will not become required
+# def run_ompso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=True, initial_pop=None, **params):
+#     """
+#     fusion of pso algorithms targeted to dealing with mapping and ordering for workflow scheduling
+#     toolbox must contain:
+#     generate,
+#     fitness,
+#     pso_mapping,
+#     pso_ordering,
+#     VNS if any
+#     """
+#
+#     #W, C1, C2 = params["w"], params["c1"], params["c2"]
+#
+#     # mappings = generate_initial_mappings(N) #toolbox
+#     # orderings = generate_initial_orderings(N) #toolbox
+#     # pop = combine(mappings, orderings) #toolbox
+#
+#     N = len(initial_pop) if initial_pop is not None else params["N"]
+#
+#     pop = initial_pop if initial_pop is not None else toolbox.generate(N)
+#
+#     best = None
+#     for g in range(gen_curr, gen_curr + gen_step):
+#
+#         for p in pop:
+#             p.fitness = toolbox.fitness(p)
+#
+#         best = max(pop, key=lambda x: x.fitness)
+#
+#         gather_info(logbook, stats, g, pop)
+#
+#         # toolbox and **params are already partially applied
+#         pop_pr, _, _ = toolbox.pso_mapping(logbook=None, stats=None,
+#                                            gen_curr=g, gen_step=1,
+#                                            invalidate_fitness=False, initial_pop=pop,
+#                                            best=best)
+#
+#         pop_pr, _, _ = toolbox.pso_ordering(logbook=None, stats=None,
+#                                             gen_curr=g, gen_step=1,
+#                                             invalidate_fitness=False, initial_pop=pop,
+#                                             best=best)
+#
+#         if hasattr(toolbox, "VNS") and toolbox.VNS is not None:
+#             pop_pr, _, _ = toolbox.VNS(logbook=None, stats=None,
+#                                        gen_curr=g, gen_step=1,
+#                                        invalidate_fitness=False, initial_pop=pop,
+#                                        best=best)
+#
+#         if invalidate_fitness:
+#             for p in pop:
+#                 del p.fitness
+#
+#         pass
+#     return pop, logbook, best
 
-
-def run_ompso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=True, initial_pop=None, **params):
-    """
-    fusion of pso algorithms targeted to dealing with mapping and ordering for workflow scheduling
-    toolbox must contain:
-    generate,
-    fitness,
-    pso_mapping,
-    pso_ordering,
-    VNS if any
-    """
-
-    #W, C1, C2 = params["w"], params["c1"], params["c2"]
-
-    # mappings = generate_initial_mappings(N) #toolbox
-    # orderings = generate_initial_orderings(N) #toolbox
-    # pop = combine(mappings, orderings) #toolbox
-
-    N = len(initial_pop) if initial_pop is not None else params["N"]
-
-    pop = initial_pop if initial_pop is not None else toolbox.generate(N)
-
-    best = None
-    for g in range(gen_curr, gen_curr + gen_step):
-
-        for p in pop:
-            p.fitness = toolbox.fitness(p)
-
-        best = max(pop, key=lambda x: x.fitness)
-
-        gather_info(logbook, stats, g, pop)
-
-        # toolbox and **params are already partially applied
-        pop_pr, _, _ = toolbox.pso_mapping(logbook=None, stats=None,
-                                           gen_curr=g, gen_step=1,
-                                           invalidate_fitness=False, initial_pop=pop,
-                                           best=best)
-
-        pop_pr, _, _ = toolbox.pso_ordering(logbook=None, stats=None,
-                                            gen_curr=g, gen_step=1,
-                                            invalidate_fitness=False, initial_pop=pop,
-                                            best=best)
-
-        if hasattr(toolbox, "VNS") and toolbox.VNS is not None:
-            pop_pr, _, _ = toolbox.VNS(logbook=None, stats=None,
-                                       gen_curr=g, gen_step=1,
-                                       invalidate_fitness=False, initial_pop=pop,
-                                       best=best)
-
-        if invalidate_fitness:
-            for p in pop:
-                del p.fitness
-
-        pass
-    return pop, logbook, best
 
 
 def construct_solution(position, sorted_tasks):
     return {MAPPING_SPECIE: [(t, position[t]) for t in sorted_tasks], ORDERING_SPECIE: sorted_tasks}
 
 
-def fitness(wf, rm, estimator, particle):
+def build_schedule(wf, rm, estimator, particle):
+
+    def recover_ordering(ordering):
+        corrected_ordering = []
+
+        while len(ordering) > 0:
+            ord_iter = iter(ordering)
+            while True:
+                t, v = next(ord_iter)
+                if Utility.is_enough_to_be_executed(wf, t, corrected_ordering):
+                    ordering.remove((t, v))
+                    corrected_ordering.append(t)
+                    break
+                pass
+            pass
+        return corrected_ordering
+
     sorted_tasks = wf.get_all_unique_task_ids()
-    ordering = [t for t, v in sorted(zip(sorted_tasks, particle.ordering.entity), key=lambda x: x[1])]
+    ordering = sorted(zip(sorted_tasks, particle.ordering.entity), key=lambda x: x[1])
+
+    ordering = recover_ordering(ordering)
+
     solution = construct_solution(particle.mapping.entity, ordering)
-    return basefitness(wf, rm, estimator, solution)
+    sched = base_build_schedule(wf, estimator, rm, solution)
+    return sched
+
+
+def fitness(wf, rm, estimator, particle):
+    sched = build_schedule(wf, rm, estimator, particle)
+    return basefitness(wf, rm, estimator, sched)
 
 
 def ordering_to_numseq(ordering, min=-1, max=1):

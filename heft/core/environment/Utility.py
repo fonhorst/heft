@@ -107,6 +107,12 @@ class Utility:
         pass
 
     @staticmethod
+    def is_enough_to_be_executed(wf, t_id, completed_tasks_ids):
+        pids = [p.id for p in wf.byId(t_id).parents if p != wf.head_task]
+        return all(pid in completed_tasks_ids for pid in pids)
+
+
+    @staticmethod
     def get_default_bundle():
         ## dedicated resource are the same for all bundles
         _wf = wf('CyberShake_30')
@@ -333,6 +339,14 @@ class Utility:
         if dependency_validaty is False:
             raise Exception("Dependency validaty check failed")
         pass
+
+    @staticmethod
+    def is_static_schedule_valid(_wf, schedule):
+        try:
+            Utility.validate_static_schedule(_wf, schedule)
+        except:
+            return False
+        return True
 
     @staticmethod
     def makespan(schedule):

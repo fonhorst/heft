@@ -1,11 +1,13 @@
 from copy import deepcopy
 import random
 from deap.base import Toolbox
-from heft.algs.pso.ompso import fitness, generate, construct_solution, ordering_update
+import numpy
+
+from heft.algs.pso.ompso import fitness, generate, build_schedule, ordering_update
 from heft.algs.pso.sdpso import run_pso
 from heft.algs.pso.sdpso import update as mapping_update
 from heft.core.environment.Utility import Utility
-from heft.algs.common.mapordschedule import build_schedule
+from heft.experiments.cga.utilities.common import repeat
 from heft.experiments.common import AbstractExperiment
 
 
@@ -40,17 +42,9 @@ class OmpsoBaseExperiment(AbstractExperiment):
             w=self.W, c1=self.C1, c2=self.C2, n=self.N,
         )
 
-
-        mapping, ordering = best.mapping.entity, best.ordering.entity
-
-        sorted_tasks = _wf.get_all_unique_task_ids()
-        ordering = [t for t, v in sorted(zip(sorted_tasks, ordering), key=lambda x: x[1])]
-
-        solution = construct_solution(mapping, ordering)
-        schedule = build_schedule(_wf, estimator, rm, solution)
+        schedule = build_schedule(_wf, rm, estimator,  best)
 
         Utility.validate_static_schedule(_wf, schedule)
-
         makespan = Utility.makespan(schedule)
         print("Final makespan: {0}".format(makespan))
         print("Heft makespan: {0}".format(Utility.makespan(heft_schedule)))
@@ -63,7 +57,7 @@ class OmpsoBaseExperiment(AbstractExperiment):
 
         heft_particle = generate(_wf, rm, estimator, heft_schedule)
 
-        heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 1.0 else generate(_wf, rm, estimator) for _ in range(n)]
+        heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 1.00 else generate(_wf, rm, estimator) for _ in range(n)]
 
         def componoud_update(w, c1, c2, p, best, pop, min=-1, max=1):
             mapping_update(w, c1, c2, p.mapping, best.mapping, pop)
@@ -80,11 +74,12 @@ class OmpsoBaseExperiment(AbstractExperiment):
 
 
 if __name__ == "__main__":
-    # result = repeat(do_exp, 1)
-    exp = OmpsoBaseExperiment(wf_name="Montage_25",
-                              W=0.1, C1=0.9, C2=0.6,
-                              GEN=20, N=10)
-    result = exp()
+    exp = OmpsoBaseExperiment(wf_name="Montage_100",
+                              W=0.1, C1=0.6, C2=0.2,
+                              GEN=300, N=100)
+    result = repeat(exp, 5)
+    # result = exp()
     print(result)
+    print("Average: {0}".format(numpy.mean(result)))
     pass
 

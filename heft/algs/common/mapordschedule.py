@@ -51,7 +51,15 @@ def _check_precedence(workflow, seq):
 
 
 def fitness(wf, rm, estimator, position):
-    sched = build_schedule(wf, estimator, rm, position)
+    if isinstance(position, Schedule):
+        sched = position
+    else:
+        sched = build_schedule(wf, estimator, rm, position)
+
+    # isvalid = Utility.is_static_schedule_valid(wf,sched)
+    # if not isvalid:
+    #     print("NOT VALID SCHEDULE!")
+
     makespan = Utility.makespan(sched)
     ## TODO: make a real estimation later
     cost = 0.0
