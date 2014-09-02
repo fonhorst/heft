@@ -77,8 +77,8 @@ if __name__ == "__main__":
     exp = OmpsoBaseExperiment(wf_name="Montage_100",
                               W=0.1, C1=0.6, C2=0.2,
                               GEN=300, N=100)
-    result = repeat(exp, 5)
-    # result = exp()
+    # result = repeat(exp, 5)
+    result = exp()
     print(result)
     print("Average: {0}".format(numpy.mean(result)))
     pass
