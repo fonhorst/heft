@@ -149,7 +149,7 @@ def position_update2(position, velocity):
 #         return self._pop, self._logbook, self._best
 
 
-def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=True, pop=None, **params):
+def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=True, initial_pop=None, **params):
 
     """
     :param w:
@@ -176,7 +176,10 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
     # pso = MappingPSO(w, c1, c2, gen, n, toolbox, stats, logbook)
     # return pso()
 
-    w, c1, c2, n = params["w"], params["c1"], params["c2"], params["n"]
+    pop = initial_pop
+
+    w, c1, c2 = params["w"], params["c1"], params["c2"]
+    n = len(pop) if pop is not None else params["n"]
     ## TODO: remove it later
     #w = w * (500 - gen_curr)/500
 
@@ -207,10 +210,6 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
     return pop, logbook, best
 
 
-
-
-
-
 def schedule_to_position(schedule):
     return Particle(Position({item.job.id: node.name for node, items in schedule.mapping.items() for item in items}))
 
@@ -231,8 +230,10 @@ def generate(wf, rm, estimator, n):
         pop.append(particle)
     return pop
 
+
 def construct_solution(position, sorted_tasks):
     return {MAPPING_SPECIE: [(t, position[t]) for t in sorted_tasks], ORDERING_SPECIE: sorted_tasks}
+
 
 def fitness(wf, rm, estimator, sorted_tasks, particle):
     position = particle.entity

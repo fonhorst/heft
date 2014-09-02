@@ -51,7 +51,7 @@ def do_exp():
         toolbox=toolbox,
         logbook=logbook,
         stats=stats,
-        gen_curr=0, gen_step=GEN, invalidate_fitness=True, pop=None,
+        gen_curr=0, gen_step=GEN, invalidate_fitness=True, initial_pop=None,
         w=W, c1=C1, c2=C2, n=N,
     )
 

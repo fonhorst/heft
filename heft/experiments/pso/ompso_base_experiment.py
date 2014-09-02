@@ -1,19 +1,11 @@
 from copy import deepcopy
-from functools import partial
 import random
-from deap import tools
 from deap.base import Toolbox
-import numpy
-from heft.algs.heft.DSimpleHeft import run_heft
-from heft.algs.heft.HeftHelper import HeftHelper
-from heft.algs.pso.ompso import run_ompso, fitness, generate, construct_solution, ordering_update
-from heft.algs.pso.sdpso import run_pso, update, schedule_to_position
-from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
-from heft.core.environment.Utility import Utility, wf
-from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE, ord_and_map
-from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
-from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
-from heft.experiments.cga.utilities.common import repeat
+from heft.algs.pso.ompso import fitness, generate, construct_solution, ordering_update
+from heft.algs.pso.sdpso import run_pso
+from heft.algs.pso.sdpso import update as mapping_update
+from heft.core.environment.Utility import Utility
+from heft.algs.common.mapordschedule import build_schedule
 from heft.experiments.common import AbstractExperiment
 
 
@@ -40,17 +32,20 @@ class OmpsoBaseExperiment(AbstractExperiment):
         _wf, rm, estimator = self.env()
         heft_schedule = self.heft_schedule()
 
-        pop, log, best = run_ompso(
+        pop, log, best = run_pso(
             toolbox=toolbox,
             logbook=logbook,
             stats=stats,
-            gen_curr=0, gen_step=self.GEN, invalidate_fitness=True, pop=None,
-            N=self.N,
+            gen_curr=0, gen_step=self.GEN, invalidate_fitness=True, initial_pop=None,
+            w=self.W, c1=self.C1, c2=self.C2, n=self.N,
         )
 
 
-
         mapping, ordering = best.mapping.entity, best.ordering.entity
+
+        sorted_tasks = _wf.get_all_unique_task_ids()
+        ordering = [t for t, v in sorted(zip(sorted_tasks, ordering), key=lambda x: x[1])]
+
         solution = construct_solution(mapping, ordering)
         schedule = build_schedule(_wf, estimator, rm, solution)
 
@@ -62,6 +57,7 @@ class OmpsoBaseExperiment(AbstractExperiment):
         return makespan
 
     def toolbox(self):
+
         _wf, rm, estimator = self.env()
         heft_schedule = self.heft_schedule()
 
@@ -69,57 +65,17 @@ class OmpsoBaseExperiment(AbstractExperiment):
 
         heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 1.0 else generate(_wf, rm, estimator) for _ in range(n)]
 
-        toolbox = Toolbox()
+        def componoud_update(w, c1, c2, p, best, pop, min=-1, max=1):
+            mapping_update(w, c1, c2, p.mapping, best.mapping, pop)
+            ordering_update(w, c1, c2, p.ordering, best.ordering, pop, min=min, max=max)
 
-        toolbox.register("generate", heft_gen)
+        toolbox = Toolbox()
+        toolbox.register("population", heft_gen)
         toolbox.register("fitness", fitness, _wf, rm, estimator)
-        toolbox.register("pso_mapping", self._build_pso_mapping_alg())
-        toolbox.register("pso_ordering", self._build_pso_ordering_alg())
-        # toolbox.register("VNS", self._build_vns_alg())
+        toolbox.register("update", componoud_update)
         return toolbox
 
-    def _check_fitness(self, x):
-        if hasattr(x, "fitness") and x.fitness is not None and x.fitness.valid:
-            return x.fitness
-        raise ValueError("Fitness is not valid")
 
-    def _build_pso_mapping_alg(self):
-        toolbox = Toolbox()
-
-        def population(n):
-            raise Exception("This function mustn't have been called")
-
-        def switching_update(w, c1, c2, p, best, pop):
-            return update(w, c1, c2, p.mapping, best.mapping, pop)
-
-        toolbox.register("population", population)
-        toolbox.register("fitness", self._check_fitness)
-        toolbox.register("update", switching_update)
-
-        alg = partial(run_pso, toolbox,
-                      w=self.W, c1=self.C1, c2=self.C2, n=self.N)
-        return alg
-
-    def _build_pso_ordering_alg(self):
-        toolbox = Toolbox()
-
-        def population(n):
-            raise Exception("This function mustn't have been called")
-
-        # def switching_update(w, c1, c2, p, best, pop):
-        #     return update(w, c1, c2, p.mapping, best.mapping, pop)
-
-        toolbox.register("population", population)
-        toolbox.register("fitness", self._check_fitness)
-        toolbox.register("update", ordering_update)
-
-        alg = partial(run_pso, toolbox,
-                      w=self.W, c1=self.C1, c2=self.C2, n=self.N)
-        return alg
-
-    def _build_vns_alg(self):
-        return None
-        # raise NotImplementedError()
     pass
 
 

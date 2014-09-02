@@ -2,6 +2,7 @@ import random
 from heft.algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from heft.algs.common.individuals import FitAdapter
 from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE, ord_and_map
+from heft.algs.common.setbasedoperations import Position
 from heft.algs.common.utilities import gather_info
 from heft.algs.common.mapordschedule import fitness as basefitness
 from heft.algs.pso.sdpso import Particle
@@ -12,7 +13,20 @@ class CompoundParticle(FitAdapter):
         super().__init__(None)
         self.mapping = mapping_particle
         self.ordering = ordering_particle
+        self._best = None
         pass
+
+    def _get_best(self):
+        return self._best
+
+    def _set_best(self, value):
+        self._best = value
+        self.mapping.best = value.mapping
+        self.ordering.best = value.ordering
+        pass
+
+    best = property(_get_best, _set_best)
+    pass
 
 
 def run_ompso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=True, initial_pop=None, **params):
@@ -42,26 +56,26 @@ def run_ompso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=
         for p in pop:
             p.fitness = toolbox.fitness(p)
 
+        best = max(pop, key=lambda x: x.fitness)
+
         gather_info(logbook, stats, g, pop)
 
         # toolbox and **params are already partially applied
-        pop_pr, _, _ = toolbox.pso_mapping(None, None,
+        pop_pr, _, _ = toolbox.pso_mapping(logbook=None, stats=None,
                                            gen_curr=g, gen_step=1,
                                            invalidate_fitness=False, initial_pop=pop,
                                            best=best)
 
-        pop_pr, _, _ = toolbox.pso_ordering(None, None,
+        pop_pr, _, _ = toolbox.pso_ordering(logbook=None, stats=None,
                                             gen_curr=g, gen_step=1,
                                             invalidate_fitness=False, initial_pop=pop,
                                             best=best)
 
         if hasattr(toolbox, "VNS") and toolbox.VNS is not None:
-            pop_pr, _, _ = toolbox.VNS(None, None,
+            pop_pr, _, _ = toolbox.VNS(logbook=None, stats=None,
                                        gen_curr=g, gen_step=1,
                                        invalidate_fitness=False, initial_pop=pop,
                                        best=best)
-
-        best = max(pop_pr, key=lambda x: x.fitness)
 
         if invalidate_fitness:
             for p in pop:
@@ -97,7 +111,7 @@ def generate(wf, rm, estimator, schedule=None):
     sched = schedule if schedule is not None else SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule()
     mapping, ordering = ord_and_map(sched)
     ordering = ordering_to_numseq(ordering)
-    ord_p, map_p = Particle(ordering), Particle(mapping)
+    ord_p, map_p = Particle(ordering), Particle(Position(mapping))
     return CompoundParticle(map_p, ord_p)
 
 
