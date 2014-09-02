@@ -195,7 +195,7 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
                 best = deepcopy(p)
 
         # Gather all the fitnesses in one list and print the stats
-        gather_info(logbook, stats, pop)
+        gather_info(logbook, stats, g, pop)
 
         for p in pop:
             toolbox.update(w, c1, c2, p, best, pop)

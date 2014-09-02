@@ -12,7 +12,7 @@ def cannot_be_zero(number, replace_for_zero=0.000001):
     return replace_for_zero if round(abs(number), 6) < 0.000001 else number
 
 
-def gather_info(logbook, stats, pop, need_to_print=True):
+def gather_info(logbook, stats, g, pop, need_to_print=True):
     data = stats.compile(pop) if stats is not None else None
     if logbook is not None:
         logbook.record(gen=g, evals=len(pop), **data)

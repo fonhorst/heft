@@ -39,9 +39,10 @@ def run_ompso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=
     best = None
     for g in range(gen_curr, gen_curr + gen_step):
 
-        toolbox.fitness(pop_pr)
+        for p in pop:
+            p.fitness = toolbox.fitness(p)
 
-        gather_info(logbook, stats, pop)
+        gather_info(logbook, stats, g, pop)
 
         # toolbox and **params are already partially applied
         pop_pr, _, _ = toolbox.pso_mapping(None, None,
@@ -75,7 +76,9 @@ def construct_solution(position, sorted_tasks):
 
 
 def fitness(wf, rm, estimator, particle):
-    solution = construct_solution(particle.mapping.entity, particle.ordering.entity)
+    sorted_tasks = wf.get_all_unique_task_ids()
+    ordering = [t for t, v in sorted(zip(sorted_tasks, particle.ordering.entity), key=lambda x: x[1])]
+    solution = construct_solution(particle.mapping.entity, ordering)
     return basefitness(wf, rm, estimator, solution)
 
 
@@ -92,7 +95,7 @@ def ordering_to_numseq(ordering, min=-1, max=1):
 
 def generate(wf, rm, estimator, schedule=None):
     sched = schedule if schedule is not None else SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule()
-    ordering, mapping = ord_and_map(sched)
+    mapping, ordering = ord_and_map(sched)
     ordering = ordering_to_numseq(ordering)
     ord_p, map_p = Particle(ordering), Particle(mapping)
     return CompoundParticle(map_p, ord_p)
