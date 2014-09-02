@@ -89,7 +89,7 @@ def multi_repeat(n, funcs):
     return [f.result() for f in fs]
 
 def repeat(func, n):
-    return multi_repeat(n, func)
+    return multi_repeat(n, [func])
 
 
 class OnlyUniqueMutant:
