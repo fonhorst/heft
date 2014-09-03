@@ -78,7 +78,7 @@ class BaseRunner:
 
 
 class MixRunner(BaseRunner):
-    def __call__(self, wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEFAULT_GA_PARAMS, nodes_conf = None, transfer_time=100, heft_initial=True):
+    def __call__(self, wf_name, ideal_flops, is_silent=False, is_visualized=True, ga_params=DEFAULT_GA_PARAMS, nodes_conf = None, transfer_time=100, heft_initial=True, **kwargs):
 
         wf = None
         ## TODO: I know This is a dirty hack

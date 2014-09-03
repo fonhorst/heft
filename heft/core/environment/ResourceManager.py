@@ -183,8 +183,6 @@ class Schedule:
         t_to_n = {item.job: node for (node, items) in self.mapping.items() for item in items}
         return t_to_n
 
-
-
     @staticmethod
     def insert_item(mapping, node, item):
         result = []

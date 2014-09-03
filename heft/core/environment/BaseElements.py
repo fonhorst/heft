@@ -71,9 +71,6 @@ class Workflow:
             self._unique_tasks = sorted(result, key=lambda x: x.id)
         return copy(self._unique_tasks)
 
-    def get_all_unique_task_ids(self):
-        return [t.id for t in self._unique_tasks]
-
     def get_tasks_id(self):
         return [t.id for t in self._unique_tasks]
 

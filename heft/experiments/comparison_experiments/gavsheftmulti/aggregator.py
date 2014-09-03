@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy
 from heft.settings import TEMP_PATH
 
-path = os.path.join(TEMP_PATH, "gh")
+PATH = os.path.join(TEMP_PATH, "ga_vs_heft_multi_coeff_test_3_b69dd9d6-7074-487d-b11a-e91869a6c4ed")
 FIX_TRANSFER = 100
 FIX_FLOPS = 20
 
@@ -58,6 +58,7 @@ def extract_and_add(fix_transfer, fix_flops, data, d):
     data[wf_name] = el
 
     return data
+
 
 def plot_aggregate_results(data, property_name):
 
@@ -126,7 +127,8 @@ def visualize(data, functions, path_to_save=None):
         plt.clf()
     pass
 
-if __name__ == "__main__":
+
+def aggregate(path, picture_path="gh.png"):
     files = [os.path.join(path, p) for p in os.listdir(path) if p.endswith(".json")]
     data = {}
     for p in files:
@@ -134,7 +136,12 @@ if __name__ == "__main__":
             d = json.load(f)
             extract_and_add(FIX_TRANSFER, FIX_FLOPS, data, d)
 
-    visualize(data, [transfer_plot, iflops_plot], os.path.join(TEMP_PATH, "gh.png"))
+    path = os.path.join(TEMP_PATH, picture_path) if not os.path.isabs(picture_path) else pic
+    visualize(data, [transfer_plot, iflops_plot], path)
+
+if __name__ == "__main__":
+    aggregate(PATH)
+
     # files = [os.path.join(path, p) for p in os.listdir(path) if p.endswith(".json")]
     # data = []
     # for p in files:

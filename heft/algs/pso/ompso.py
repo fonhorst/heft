@@ -108,7 +108,7 @@ def build_schedule(wf, rm, estimator, particle):
             pass
         return corrected_ordering
 
-    sorted_tasks = wf.get_all_unique_task_ids()
+    sorted_tasks = wf.get_tasks_id()
     ordering = sorted(zip(sorted_tasks, particle.ordering.entity), key=lambda x: x[1])
 
     ordering = recover_ordering(ordering)

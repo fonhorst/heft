@@ -20,20 +20,23 @@ class UniqueNameSaver:
         pass
 
     def __init__(self, directory, subdir_prefix=None):
-        self.directory = directory
-        self.subdir_prefix = subdir_prefix
-        self._sub_dir = "{0}_{1}".format(self.subdir_prefix, uuid.uuid4()) if self.subdir_prefix is not None else ""
+        sub_dir = "{0}_{1}".format(subdir_prefix, uuid.uuid4()) if subdir_prefix is not None else ""
+        self._directory = os.path.join(directory, sub_dir)
         pass
 
     def __call__(self, data):
-        path = os.path.join(self.directory, self._sub_dir)
-        if not os.path.exists(path):
-            os.makedirs(path)
+        if not os.path.exists(self._directory):
+            os.makedirs(self._directory)
         name = "{0}.json".format(uuid.uuid4())
-        path = os.path.join(path, name)
+        path = os.path.join(self._directory, name)
         with open(path, "w") as f:
             json.dump(data, f)
         return name
+
+    def get_directory(self):
+        return self._directory
+
+    directory = property(get_directory)
     pass
 
 

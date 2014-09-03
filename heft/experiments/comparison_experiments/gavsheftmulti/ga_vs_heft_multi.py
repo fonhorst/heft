@@ -7,12 +7,14 @@ from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.experiments.cga.utilities.common import multi_repeat, UniqueNameSaver
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
+from heft.experiments.comparison_experiments.gavsheftmulti.coeff_aggregator import aggregate as coeff_aggregate
 from heft.settings import TEMP_PATH
 
 ## TODO: node name mapping (single for ga and heft, for schedule representation)
 
+
 REPEAT_COUNT = 10
-EXPERIMENT_NAME = "ga_vs_heft_multi_{0}".format(REPEAT_COUNT)
+EXPERIMENT_NAME = "ga_vs_heft_multi_coeff_test_{0}".format(REPEAT_COUNT)
 
 BASE_PARAMS = {
     "ideal_flops": 20,
@@ -28,10 +30,10 @@ BASE_PARAMS = {
     },
     "nodes_conf": [10, 15, 25, 30],
     "transfer_time": 100,
-    "heft_initial": True
+    "heft_initial": True,
+    ## it is needed for coeff_run
+    "data_intensive_coeff": None
 }
-
-
 
 
 def copy_and_set(params, **kwargs):
@@ -80,6 +82,7 @@ def do_exp(wf_name, **params):
 
     return data
 
+
 def test_run():
     wf_names = ['Montage_25', 'CyberShake_30', 'Inspiral_30', 'Sipht_30', 'Epigenomics_24']
 
@@ -99,6 +102,7 @@ def test_run():
         saver(result)
     pass
 
+
 def real_run():
     wf_names = ['Montage_25', 'CyberShake_30', 'Inspiral_30', 'Sipht_30', 'Epigenomics_24']
     seq = make_linear_sequence(BASE_PARAMS, {
@@ -113,7 +117,46 @@ def real_run():
         saver(result)
     pass
 
+
+def coeff_run():
+    """
+    coefficient of compute/data intensivity
+    """
+    COMPUTE_INTENSIVE = 3
+    MEDIUM_INTENSIVE = 2.766
+    DATA_INTENSIVE = 0.5
+
+    wf_names = ['Montage_25', 'CyberShake_30', 'Inspiral_30', 'Sipht_30', 'Epigenomics_24']
+    # wf_names = ['Montage_25', 'CyberShake_30', 'Inspiral_30', 'Sipht_30', 'Epigenomics_24',
+
+
+
+    coeffs = [100, 50, 10, 5, 2.766, 1]
+
+    def transfer_time(max_runtime, c):
+        transfer = max_runtime * BASE_PARAMS["ideal_flops"] / c
+        return transfer
+
+    to_run = []
+    for wf_name in wf_names:
+        _wf = wf(wf_name)
+        max_runtime = max(_wf.get_all_unique_tasks(), key=lambda x: x.runtime).runtime
+        param_sets = [copy_and_set(BASE_PARAMS, transfer_time=transfer_time(max_runtime, c), data_intensive_coeff=c) for c in coeffs]
+        exps = [partial(do_exp, wf_name, **params) for params in param_sets]
+        to_run = to_run + exps
+
+    m_repeat = lambda n, funcs: [f() for f in funcs for _ in range(n)]
+    # results = m_repeat(REPEAT_COUNT, to_run)
+    results = multi_repeat(REPEAT_COUNT, to_run)
+    saver = UniqueNameSaver(TEMP_PATH, EXPERIMENT_NAME)
+    for result in results:
+        saver(result)
+
+    coeff_aggregate(saver.directory, "coeff.png")
+    pass
+
 if __name__ == '__main__':
-    test_run()
+    # test_run()
     # real_run()
+    coeff_run()
     pass
