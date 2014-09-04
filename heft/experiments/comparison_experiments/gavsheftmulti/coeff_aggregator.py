@@ -1,11 +1,12 @@
 from functools import partial
 import json
 import os
-from heft.experiments.comparison_experiments.gavsheftmulti.aggregator import plot_aggregate_results, visualize
+from heft.experiments.comparison_experiments.gavsheftmulti.aggregator import plot_aggregate_results, visualize, \
+    aggregate, WFS_COLORS_30, WFS_COLORS_75, WFS_COLORS_50, WFS_COLORS_100, WFS_COLORS
 from heft.settings import TEMP_PATH
 
-coeff_plot = partial(plot_aggregate_results, property_name="data_intensive_coeff")
-PATH = os.path.join(TEMP_PATH, "ga_vs_heft_multi_coeff_test_2_eb7c8a24-8593-47d3-9eb3-471c103d0314")
+
+PATH = os.path.join(TEMP_PATH, "coeff_exp")
 
 def extract_and_add_coeff(data, d):
     """
@@ -39,17 +40,14 @@ def extract_and_add_coeff(data, d):
 
     return data
 
-
-def aggregate(path, picture_path="gh.png"):
-    files = [os.path.join(path, p) for p in os.listdir(path) if p.endswith(".json")]
-    data = {}
-    for p in files:
-        with open(p, "r") as f:
-            d = json.load(f)
-            extract_and_add_coeff(data, d)
-
-    path = os.path.join(TEMP_PATH, picture_path) if not os.path.isabs(picture_path) else picture_path
-    visualize(data, [coeff_plot], path)
+coeff_plot = partial(plot_aggregate_results, property_name="data_intensive_coeff", wfs_colors=WFS_COLORS)
+coeff_aggregate = partial(aggregate, extract_and_add=extract_and_add_coeff, functions=[coeff_plot])
 
 if __name__ == "__main__":
-    aggregate(PATH)
+
+    # coeff_aggregate(PATH, "coeff.png")
+    wfs = [(WFS_COLORS_30, "30-series"), (WFS_COLORS_50, "50-series"),
+           (WFS_COLORS_75, "75-series"), (WFS_COLORS_100, "100-series")]
+    for wfs_colors, name in wfs:
+        f = partial(plot_aggregate_results, property_name="data_intensive_coeff", wfs_colors=wfs_colors)
+        aggregate(PATH,"coeff_{0}.png".format(name), extract_and_add=extract_and_add_coeff, functions=[f])

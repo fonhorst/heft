@@ -9,15 +9,49 @@ PATH = os.path.join(TEMP_PATH, "ga_vs_heft_multi_coeff_test_3_b69dd9d6-7074-487d
 FIX_TRANSFER = 100
 FIX_FLOPS = 20
 
-
-wfs_colors = {
-    "Montage": "-gD",
-    "CyberShake": "-rD",
-    "Inspiral": "-bD",
-    "Sipht": "-yD",
-    "Epigenomics": "-mD"
+WFS_COLORS_30 = {
+    # 30 - series
+    "Montage_25": "-gD",
+    "CyberShake_30": "-rD",
+    "Inspiral_30": "-bD",
+    "Sipht_30": "-yD",
+    "Epigenomics_24": "-mD",
 }
 
+WFS_COLORS_50 = {
+    # 50 - series
+    "Montage_50": "-gD",
+    "CyberShake_50": "-rD",
+    "Inspiral_50": "-bD",
+    "Sipht_60": "-yD",
+    "Epigenomics_46": "-mD",
+}
+
+
+WFS_COLORS_75 = {
+    # 75 - series
+    "Montage_75": "-gD",
+    "CyberShake_75": "-rD",
+    "Inspiral_72": "-bD",
+    "Sipht_73": "-yD",
+    "Epigenomics_72": "-mD",
+}
+
+
+WFS_COLORS_100 = {
+    # 100 - series
+    "Montage_100": "-gD",
+    "CyberShake_100": "-rD",
+    "Inspiral_100": "-bD",
+    "Sipht_100": "-yD",
+    "Epigenomics_100": "-mD",
+}
+
+WFS_COLORS = dict()
+WFS_COLORS.update(WFS_COLORS_30)
+WFS_COLORS.update(WFS_COLORS_50)
+WFS_COLORS.update(WFS_COLORS_75)
+WFS_COLORS.update(WFS_COLORS_100)
 
 def extract_and_add(fix_transfer, fix_flops, data, d):
     """
@@ -60,7 +94,7 @@ def extract_and_add(fix_transfer, fix_flops, data, d):
     return data
 
 
-def plot_aggregate_results(data, property_name):
+def plot_aggregate_results(data, property_name, wfs_colors=WFS_COLORS):
 
     aggr = lambda results: (1 - numpy.mean([r["g"] for r in results])/numpy.mean([r["h"] for r in results]))*100
 
@@ -87,7 +121,7 @@ def plot_aggregate_results(data, property_name):
     ax.set_ylabel("profit, %")
 
     for wf_name, item in data.items():
-        wf_name = wf_name.split("_")[0]
+        # wf_name = wf_name.split("_")[0]
         if wf_name not in wfs_colors:
             continue
         style = wfs_colors[wf_name]
@@ -128,19 +162,23 @@ def visualize(data, functions, path_to_save=None):
     pass
 
 
-def aggregate(path, picture_path="gh.png"):
+
+def aggregate(path,  picture_path="gh.png", extract_and_add=None, functions=None):
     files = [os.path.join(path, p) for p in os.listdir(path) if p.endswith(".json")]
     data = {}
     for p in files:
         with open(p, "r") as f:
             d = json.load(f)
-            extract_and_add(FIX_TRANSFER, FIX_FLOPS, data, d)
+            extract_and_add(data, d)
 
-    path = os.path.join(TEMP_PATH, picture_path) if not os.path.isabs(picture_path) else pic
-    visualize(data, [transfer_plot, iflops_plot], path)
+    path = os.path.join(TEMP_PATH, picture_path) if not os.path.isabs(picture_path) else picture_path
+    visualize(data, functions, path)
+
+extract = partial(extract_and_add, FIX_TRANSFER=FIX_TRANSFER, FIX_FLOPS=FIX_FLOPS)
+transf_flops_aggregate = partial(aggregate, extract_and_add=extract, functions=[transfer_plot, iflops_plot])
 
 if __name__ == "__main__":
-    aggregate(PATH)
+    transf_flops_aggregate(PATH)
 
     # files = [os.path.join(path, p) for p in os.listdir(path) if p.endswith(".json")]
     # data = []
