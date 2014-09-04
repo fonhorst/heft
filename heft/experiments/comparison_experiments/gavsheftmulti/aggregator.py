@@ -101,7 +101,16 @@ def plot_aggregate_results(data, property_name, wfs_colors=WFS_COLORS):
     def get_points_format(data):
         if len(data) == 0:
             raise ValueError("data is empty")
-        item = next(iter(data.items()))[1]
+
+        item = None
+        for wf_name, itm in data.items():
+            if wf_name in wfs_colors:
+                item = itm
+                break
+
+        if item is None:
+            raise ValueError("data don't contain iformation to plot according to wfs_colors limitations")
+
         points = []
         for value, results in item[property_name].items():
             points.append((value, aggr(results)))
@@ -134,7 +143,7 @@ def plot_aggregate_results(data, property_name, wfs_colors=WFS_COLORS):
 
 
 
-        # plt.setp(plt.xticks()[1], rotation=30, ha='right')
+        plt.setp(plt.xticks()[1], rotation=30, ha='right')
 
 
         plt.plot([i for i in range(0, len(points))], [x[1] for x in points], style, label=wf_name)

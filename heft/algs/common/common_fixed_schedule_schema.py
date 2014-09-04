@@ -8,6 +8,7 @@ from deap import base
 import deap
 from deap.tools import History
 import numpy
+from heft.algs.common.utilities import gather_info
 from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
 from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.environment.ResourceManager import Schedule
@@ -175,9 +176,7 @@ class GAFactory:
 
                 if initial_population is None:
                     initial_population = []
-
-                init_solutions = [creator.Individual(copy.deepcopy(ga_functions.initial_chromosome)) for _ in range(int(POPSIZE*0.9))]
-                pop = initial_population + toolbox.population(n=POPSIZE - len(initial_population) - len(init_solutions)) + init_solutions
+                pop = initial_population + toolbox.population(n=POPSIZE - len(initial_population))
 
                 ## TODO: experimental change
                 history = History()
@@ -349,8 +348,79 @@ class GAFactory:
     pass
 
 
+def run_ga(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=True, initial_pop=None, **params):
+
+    N = len(initial_pop) if initial_pop is not None else params["n"]
+    pop = initial_pop if initial_pop is not None else toolbox.generate(N)
+    CXPB, SWEEPMUTPB, MUTPB, KBEST = params["cxpb"], params["sweepmutpb"], params["mutpb"], params["kbest"]
+    IS_SILENT = params["is_silent"]
+
+    hallOfFame = deap.tools.HallOfFame(5)
 
 
+    # Evaluate the entire population
 
 
+    ## This should map operator taken from toolbox to provide facilities for future parallelization
+    ## EXAMPLE:
+    ## fitnesses = list(map(toolbox.evaluate, pop))
+    ## for ind, fit in zip(pop, fitnesses):
+    ##    ind.fitness.values = fit
+    for p in pop:
+        p.fitness = toolbox.evaluate(p)
 
+    best = None
+
+    for g in range(gen_curr, gen_step, 1):
+        # print("Iteration")
+        if self.is_stopped():
+            break
+
+        hallOfFame.update(pop)
+
+        # Select the next generation individuals
+
+        # parents = toolbox.select_parents(pop)
+        parents = zip(pop[::2], pop[1::2])
+         # Clone the selected individuals
+        offsprings = list(map(toolbox.clone, parents))
+        # Apply crossover and mutation on the offspring
+        for child1, child2 in offsprings:
+            if random.random() < CXPB:
+                toolbox.mate(child1, child2)
+                del child1.fitness.values
+                del child2.fitness.values
+
+        for mutant in offsprings:
+            if random.random() < SWEEPMUTPB:
+                toolbox.sweep_mutation(mutant)
+                del mutant.fitness.values
+                continue
+            if random.random() < MUTPB:
+                toolbox.mutate(mutant)
+                del mutant.fitness.values
+
+
+        # Evaluate the individuals with an invalid fitness
+        invalid_ind = [ind for ind in offsprings if not ind.fitness.valid]
+
+        ## This should map operator taken from toolbox to provide facilities for future parallelization
+        for p in invalid_ind:
+            p.fitness = toolbox.evaluate(p)
+
+        # mix with the best individuals of the time
+        sorted_pop = sorted(pop + list(hallOfFame) + offsprings, key=lambda x: x.fitness.values, reverse=True)
+        pop = sorted_pop[:KBEST:] + toolbox.select(sorted_pop[KBEST:], N - KBEST)
+
+        gather_info(logbook, stats, g, pop, need_to_print=IS_SILENT)
+
+        best = max(pop, lambda x: x.fitness)
+
+        # the last component is iteration number when evolution stopped
+        result = (best, pop, fixed_schedule_part, current_time, g)
+        self._save_result(result)
+        self._save_pop(pop)
+
+        pass
+
+    return pop, logbook, best

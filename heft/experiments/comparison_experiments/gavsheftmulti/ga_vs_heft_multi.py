@@ -13,8 +13,8 @@ from heft.settings import TEMP_PATH
 ## TODO: node name mapping (single for ga and heft, for schedule representation)
 
 
-REPEAT_COUNT = 10
-EXPERIMENT_NAME = "ga_vs_heft_multi_coeff_test_{0}".format(REPEAT_COUNT)
+REPEAT_COUNT = 100
+EXPERIMENT_NAME = "coeff_cyber_epig_100runs_100pop_{0}".format(REPEAT_COUNT)
 
 BASE_PARAMS = {
     "ideal_flops": 20,
@@ -22,7 +22,7 @@ BASE_PARAMS = {
     "is_visualized": False,
     "ga_params": {
         "Kbest": 5,
-        "population": 50,
+        "population": 100,
         "crossover_probability": 0.3,  # 0.8
         "replacing_mutation_probability": 0.1,  # 0.5
         "sweep_mutation_probability": 0.3,  # 0.4
@@ -125,13 +125,21 @@ def coeff_run():
 
     # wf_names = ['Montage_25', 'CyberShake_30', 'Inspiral_30', 'Sipht_30', 'Epigenomics_24']
     #all_coeffs = [1/100, 1/50, 1/10, 1/5, 1/2.766, 15, 20, 25, 30, 35, 40, 45, 75]
+    all_coeffs = [1/100, 1/50, 1/10, 1/5, 1/2.766, 1, 2.766] + list(range(5, 101, 5))
 
-    wf_names = [('Montage_25', [10]),
-                ('CyberShake_30', [0.1] + list(range(10, 46, 1))),
-                ('Inspiral_30', [10, 1, 1/2.766]),
-                ('Sipht_30', [0.02] + list(range(30, 50, 1)) + list(range(50, 101, 5))),
-                ('Epigenomics_24', list(range(5, 46, 1)) + list(range(45, 101, 5)))]
+    # wf_names = [('Montage_25', [10]),
+    #             ('CyberShake_30', [0.1] + list(range(10, 46, 1))),
+    #             ('Inspiral_30', [10, 1, 1/2.766]),
+    #             ('Sipht_30', [0.02] + list(range(30, 50, 1)) + list(range(50, 101, 5))),
+    #             ('Epigenomics_24', list(range(5, 46, 1)) + list(range(45, 101, 5)))]
 
+    # wf_names = [('Montage_25', [2.766])]
+
+    wf_names = [#('Montage_25', [10]),
+                ('CyberShake_30', all_coeffs),
+                #('Inspiral_30', [10, 1, 1/2.766]),
+                #('Sipht_30', [0.02] + list(range(30, 50, 1)) + list(range(50, 101, 5))),
+                ('Epigenomics_24', all_coeffs)]
 
 
     def transfer_time(max_runtime, c):
@@ -146,9 +154,9 @@ def coeff_run():
         exps = [partial(do_exp, wf_name, **params) for params in param_sets]
         to_run = to_run + exps
 
-    #m_repeat = lambda n, funcs: [f() for f in funcs for _ in range(n)]
-    # results = m_repeat(REPEAT_COUNT, to_run)
-    results = multi_repeat(REPEAT_COUNT, to_run)
+    m_repeat = lambda n, funcs: [f() for f in funcs for _ in range(n)]
+    results = m_repeat(REPEAT_COUNT, to_run)
+    # results = multi_repeat(REPEAT_COUNT, to_run)
     saver = UniqueNameSaver(TEMP_PATH, EXPERIMENT_NAME)
     for result in results:
         saver(result)

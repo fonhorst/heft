@@ -65,7 +65,7 @@ class GAFunctions2:
 
         res = random.random()
         # # # TODO:
-        if res > 0.90 and self.initial_chromosome is not None:
+        if res > 1.00 and self.initial_chromosome is not None:
              return self.initial_chromosome
 
         ##return [self.random_chromo() for j in range(self.size)]
