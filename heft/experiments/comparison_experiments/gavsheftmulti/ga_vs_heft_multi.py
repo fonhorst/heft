@@ -122,16 +122,9 @@ def coeff_run():
     """
     coefficient of compute/data intensivity
     """
-    COMPUTE_INTENSIVE = 3
-    MEDIUM_INTENSIVE = 2.766
-    DATA_INTENSIVE = 0.5
 
     wf_names = ['Montage_25', 'CyberShake_30', 'Inspiral_30', 'Sipht_30', 'Epigenomics_24']
-    # wf_names = ['Montage_25', 'CyberShake_30', 'Inspiral_30', 'Sipht_30', 'Epigenomics_24',
-
-
-
-    coeffs = [100, 50, 10, 5, 2.766, 1]
+    coeffs = [1/100, 1/50, 1/10, 1/5, 1/2.766, 15, 20, 25, 30, 35, 40, 45, 75]
 
     def transfer_time(max_runtime, c):
         transfer = max_runtime * BASE_PARAMS["ideal_flops"] / c
