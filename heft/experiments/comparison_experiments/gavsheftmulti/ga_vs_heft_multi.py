@@ -123,29 +123,37 @@ def coeff_run():
     coefficient of compute/data intensivity
     """
 
-    wf_names = ['Montage_25', 'CyberShake_30', 'Inspiral_30', 'Sipht_30', 'Epigenomics_24']
-    coeffs = [1/100, 1/50, 1/10, 1/5, 1/2.766, 15, 20, 25, 30, 35, 40, 45, 75]
+    # wf_names = ['Montage_25', 'CyberShake_30', 'Inspiral_30', 'Sipht_30', 'Epigenomics_24']
+    #all_coeffs = [1/100, 1/50, 1/10, 1/5, 1/2.766, 15, 20, 25, 30, 35, 40, 45, 75]
+
+    wf_names = [('Montage_25', [10]),
+                ('CyberShake_30', [0.1] + list(range(10, 46, 1))),
+                ('Inspiral_30', [10, 1, 1/2.766]),
+                ('Sipht_30', [0.02] + list(range(30, 50, 1)) + list(range(50, 101, 5))),
+                ('Epigenomics_24', list(range(5, 46, 1)) + list(range(45, 101, 5)))]
+
+
 
     def transfer_time(max_runtime, c):
         transfer = max_runtime * BASE_PARAMS["ideal_flops"] / c
         return transfer
 
     to_run = []
-    for wf_name in wf_names:
+    for wf_name, coeffs in wf_names:
         _wf = wf(wf_name)
         max_runtime = max(_wf.get_all_unique_tasks(), key=lambda x: x.runtime).runtime
         param_sets = [copy_and_set(BASE_PARAMS, transfer_time=transfer_time(max_runtime, c), data_intensive_coeff=c) for c in coeffs]
         exps = [partial(do_exp, wf_name, **params) for params in param_sets]
         to_run = to_run + exps
 
-    m_repeat = lambda n, funcs: [f() for f in funcs for _ in range(n)]
+    #m_repeat = lambda n, funcs: [f() for f in funcs for _ in range(n)]
     # results = m_repeat(REPEAT_COUNT, to_run)
     results = multi_repeat(REPEAT_COUNT, to_run)
     saver = UniqueNameSaver(TEMP_PATH, EXPERIMENT_NAME)
     for result in results:
         saver(result)
 
-    coeff_aggregate(saver.directory, "coeff.png")
+    # coeff_aggregate(saver.directory, "coeff.png")
     pass
 
 if __name__ == '__main__':
