@@ -73,7 +73,8 @@ def do_exp(wf_name, **params):
         "params": params,
         "result": {
             "makespan": Utility.makespan(resulted_schedule),
-            "overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, ESTIMATOR),
+            ## TODO: this function should be remade to adapt under conditions of dynamic env
+            #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
             "overall_execution_time": Utility.overall_execution_time(resulted_schedule)
         }
     }
@@ -82,17 +83,16 @@ def do_exp(wf_name, **params):
 
 def test_run():
     configs = []
-    # reliability = [1.0, 0.95, 0.9]
-    reliability = [1.0]
-    wf_name = "Montage_25"
+    reliability = [1.0, 0.95, 0.9]
+    wf_name = "CyberShake_30"
     for r in reliability:
         params = deepcopy(BASE_PARAMS)
         params["estimator_settings"]["reliability"] = r
         configs.append(params)
 
     to_run = [partial(do_exp, wf_name, **params) for params in configs]
-    results = [t() for t in to_run]
-    # results = multi_repeat(REPEAT_COUNT, to_run)
+    # results = [t() for t in to_run]
+    results = multi_repeat(REPEAT_COUNT, to_run)
 
     saver = UniqueNameSaver(os.path.join(TEMP_PATH, "gaheft_series"), EXPERIMENT_NAME)
     for result in results:

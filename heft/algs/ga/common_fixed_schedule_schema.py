@@ -136,10 +136,11 @@ def run_ga(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tru
 
         # Select the next generation individuals
 
+        parents = list(map(toolbox.clone, pop))
         # select_parents must return list of pairs [(par1,par2),]
-        parents  = toolbox.select_parents(pop) if hasattr(toolbox, "select_parents") else zip(pop[::2], pop[1::2])
+        offsprings = toolbox.select_parents(parents) if hasattr(toolbox, "select_parents") else zip(parents[::2], parents[1::2])
          # Clone the selected individuals
-        offsprings = list(map(toolbox.clone, parents))
+
         # Apply crossover and mutation on the offspring
         for child1, child2 in offsprings:
             if random.random() < CXPB:
@@ -165,12 +166,12 @@ def run_ga(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tru
             p.fitness = toolbox.evaluate(p)
 
         # mix with the best individuals of the time
-        sorted_pop = sorted(pop + list(hallOfFame) + offsprings, key=lambda x: x.fitness.values, reverse=True)
+        sorted_pop = sorted(pop + list(hallOfFame) + list(offsprings), key=lambda x: x.fitness.values, reverse=True)
         pop = sorted_pop[:KBEST:] + toolbox.select(sorted_pop[KBEST:], N - KBEST)
 
         gather_info(logbook, stats, g, pop, need_to_print=not IS_SILENT)
 
-        best = max(pop, lambda x: x.fitness)
+        best = max(pop, key=lambda x: x.fitness)
         pass
 
     return pop, logbook, best
