@@ -21,12 +21,13 @@ BASE_PARAMS = {
     "alg_name": "ga",
     "alg_params": {
         "kbest": 5,
-        "n": 100,
+        "n": 10,
         "cxpb": 0.3,  # 0.8
         "mutpb": 0.1,  # 0.5
         "sweepmutpb": 0.3,  # 0.4
         "gen_curr": 0,
-        "gen_step": 300
+        "gen_step": 30,
+        "is_silent": True
     },
     "executor_params": {
         "base_fail_duration": 40,
@@ -54,7 +55,7 @@ def do_exp(wf_name, **params):
     ga = create_pfga(_wf, rm, estimator,
                      params["init_sched_percent"],
                      logbook=None, stats=None,
-                     **params["ga_params"])
+                     **params["alg_params"])
     machine = GaHeftExecutor(heft_planner=dynamic_heft,
                              wf=_wf,
                              resource_manager=rm,
@@ -81,7 +82,8 @@ def do_exp(wf_name, **params):
 
 def test_run():
     configs = []
-    reliability = [1.0, 0.95, 0.9]
+    # reliability = [1.0, 0.95, 0.9]
+    reliability = [1.0]
     wf_name = "Montage_25"
     for r in reliability:
         params = deepcopy(BASE_PARAMS)

@@ -168,7 +168,7 @@ def run_ga(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tru
         sorted_pop = sorted(pop + list(hallOfFame) + offsprings, key=lambda x: x.fitness.values, reverse=True)
         pop = sorted_pop[:KBEST:] + toolbox.select(sorted_pop[KBEST:], N - KBEST)
 
-        gather_info(logbook, stats, g, pop, need_to_print=IS_SILENT)
+        gather_info(logbook, stats, g, pop, need_to_print=not IS_SILENT)
 
         best = max(pop, lambda x: x.fitness)
         pass

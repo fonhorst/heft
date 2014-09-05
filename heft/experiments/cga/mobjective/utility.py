@@ -20,10 +20,10 @@ class VMResGen:
 
 class SimpleTimeCostEstimator(ExperimentEstimator):
 
-    def __init__(self, **kwargs):
+    def __init__(self,comp_time_cost, transf_time_cost, **kwargs):
         super().__init__(**kwargs)
-        self.comp_time_cost = kwargs["comp_time_cost"]
-        self.transf_time_cost = kwargs["transf_time_cost"]
+        self.comp_time_cost = comp_time_cost
+        self.transf_time_cost = transf_time_cost
 
     def computation_cost(self, task, node):
         time = self.estimate_runtime(task, node)

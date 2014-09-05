@@ -12,7 +12,6 @@ but for the sake of simplicity and referring to deap examples of code, It have b
 
 """
 
-
 class FitnessStd(Fitness):
     weights = (-1.0, -1.0)
 
