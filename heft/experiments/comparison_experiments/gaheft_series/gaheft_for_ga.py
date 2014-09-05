@@ -10,7 +10,7 @@ from heft.settings import TEMP_PATH
 
 
 EXPERIMENT_NAME = "gaheft_for_ga"
-REPEAT_COUNT = 1
+REPEAT_COUNT = 25
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
@@ -18,12 +18,12 @@ BASE_PARAMS = {
     "alg_name": "ga",
     "alg_params": {
         "kbest": 5,
-        "n": 10,
+        "n": 50,
         "cxpb": 0.3,  # 0.8
         "mutpb": 0.1,  # 0.5
         "sweepmutpb": 0.3,  # 0.4
         "gen_curr": 0,
-        "gen_step": 30,
+        "gen_step": 300,
         "is_silent": True
     },
     "executor_params": {
@@ -49,7 +49,7 @@ ga_exp = partial(do_exp, alg_builder=create_pfga)
 
 def changing_reliability_run():
     configs = []
-    reliability = [1.0, 0.975, 0.95, 0.925, 0.9]
+    reliability = [0.975, 0.95, 0.925, 0.9]
     wf_names = ["CyberShake_30", "Montage_25"]
     for r in reliability:
         params = deepcopy(BASE_PARAMS)
@@ -67,5 +67,5 @@ def changing_reliability_run():
 
 
 if __name__ == "__main__":
-    test_run(ga_exp, BASE_PARAMS)
-    # changing_reliability_run()
+    # test_run(ga_exp, BASE_PARAMS)
+    changing_reliability_run()
