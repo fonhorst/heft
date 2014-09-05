@@ -1,20 +1,17 @@
 from copy import deepcopy
 from functools import partial
 import os
-from uuid import uuid4
+
 from heft.algs.common.algorithm_factory import create_pfga
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
-
-from heft.experiments.comparison_experiments.common.ComparisonBase import ResultSaver, ComparisonUtility
-from heft.experiments.comparison_experiments.common.VersusFunctors import GaHeftvsHeft
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
-from heft.experiments.comparison_experiments.common.utilities import make_linear_sequence
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
 from heft.settings import TEMP_PATH
+
 
 EXPERIMENT_NAME = "gaheft_for_ga"
 REPEAT_COUNT = 1
@@ -51,8 +48,8 @@ BASE_PARAMS = {
 
 def do_exp(wf_name, **params):
     _wf = wf("Montage_100")
-    rm = ExperimentResourceManager(rg.r(params["resource_set"]))
-    estimator = SimpleTimeCostEstimator(params["estimator_settings"])
+    rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
+    estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
     ga = create_pfga(_wf, rm, estimator,
                      params["init_sched_percent"],
@@ -92,7 +89,8 @@ def test_run():
         configs.append(params)
 
     to_run = [partial(do_exp, wf_name, **params) for params in configs]
-    results = multi_repeat(REPEAT_COUNT, to_run)
+    results = [t() for t in to_run]
+    # results = multi_repeat(REPEAT_COUNT, to_run)
 
     saver = UniqueNameSaver(os.path.join(TEMP_PATH, "gaheft_series"), EXPERIMENT_NAME)
     for result in results:

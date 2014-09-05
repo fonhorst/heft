@@ -8,6 +8,7 @@ from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
 
 
 ## TODO: remake interface later
+## do NOT use for anything except 'gaheft_series' experiments
 def create_pfga(wf, rm, estimator,
                 init_sched_percent=0.05,
                 **params):
@@ -33,7 +34,10 @@ def create_pfga(wf, rm, estimator,
         toolbox.register("mutate", ga_functions.mutation)
         # toolbox.register("select_parents", )
         toolbox.register("select", tools.selRoulette)
-        result = run_ga(toolbox=toolbox, **params)
+        pop, logbook, best = run_ga(toolbox=toolbox, **params)
+
+        resulted_schedule = ga_functions.build_schedule(best, fixed_schedule_part, current_time)
+        result = (best, pop, resulted_schedule, None), logbook
         return result
     return alg
 
