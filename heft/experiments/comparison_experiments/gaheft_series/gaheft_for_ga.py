@@ -87,6 +87,7 @@ def test_run():
     wf_name = "CyberShake_30"
     for r in reliability:
         params = deepcopy(BASE_PARAMS)
+        params["wf_name"] = wf_name
         params["estimator_settings"]["reliability"] = r
         configs.append(params)
 
@@ -99,5 +100,26 @@ def test_run():
         saver(result)
     pass
 
+
+def changing_reliability_run():
+    configs = []
+    reliability = [1.0, 0.975, 0.95, 0.925, 0.9]
+    wf_names = ["CyberShake_30", "Montage_25"]
+    for r in reliability:
+        params = deepcopy(BASE_PARAMS)
+        params["estimator_settings"]["reliability"] = r
+        configs.append(params)
+
+    to_run = [partial(do_exp, wf_name, **params) for wf_name in wf_names for params in configs]
+    # results = [t() for t in to_run]
+    results = multi_repeat(REPEAT_COUNT, to_run)
+
+    saver = UniqueNameSaver(os.path.join(TEMP_PATH, "gaheft_series"), EXPERIMENT_NAME)
+    for result in results:
+        saver(result)
+    pass
+
+
 if __name__ == "__main__":
-    test_run()
+    # test_run()
+    changing_reliability_run()
