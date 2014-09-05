@@ -1,3 +1,5 @@
+from copy import deepcopy
+from functools import partial
 import os
 from uuid import uuid4
 from heft.algs.common.algorithm_factory import create_pfga
@@ -5,14 +7,17 @@ from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
+from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
 
 from heft.experiments.comparison_experiments.common.ComparisonBase import ResultSaver, ComparisonUtility
 from heft.experiments.comparison_experiments.common.VersusFunctors import GaHeftvsHeft
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
+from heft.experiments.comparison_experiments.common.utilities import make_linear_sequence
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
+from heft.settings import TEMP_PATH
 
+EXPERIMENT_NAME = "gaheft_for_ga"
 REPEAT_COUNT = 1
-wf_name = "Montage_25"
 
 BASE_PARAMS = {
     "init_sched_percent": 0.05,
@@ -63,6 +68,8 @@ def do_exp(wf_name, **params):
     machine.run()
     resulted_schedule = machine.current_schedule
 
+    Utility.validate_dynamic_schedule(_wf, resulted_schedule)
+
     data = {
         "wf_name": wf_name,
         "params": params,
@@ -75,26 +82,22 @@ def do_exp(wf_name, **params):
 
     return data
 
+def test_run():
+    configs = []
+    reliability = [1.0, 0.95, 0.9]
+    wf_name = "Montage_25"
+    for r in reliability:
+        params = deepcopy(BASE_PARAMS)
+        params["estimator_settings"]["reliability"] = r
+        configs.append(params)
 
+    to_run = [partial(do_exp, wf_name, **params) for params in configs]
+    results = multi_repeat(REPEAT_COUNT, to_run)
 
+    saver = UniqueNameSaver(os.path.join(TEMP_PATH, "gaheft_series"), EXPERIMENT_NAME)
+    for result in results:
+        saver(result)
+    pass
 
-
-
-save_file_name = ComparisonUtility.build_save_path(wf_name + '\\GaHeftvsHeft_['+str(uuid4())+']')
-result_saver = ResultSaver(save_file_name)
-exp = GaHeftvsHeft(reliability, n=1)
-def calc(wf_name, out):
-    return result_saver(exp(wf_name, out))
-
-print("fail_duration: 40")
-print("reliability %s" % reliability)
-
-base_dir = "../../resources/experiment_1/"
-if not os.path.exists(base_dir):
-    os.makedirs(base_dir)
-output_file_template = base_dir + "[{0}]_[{1}]_[{2}].txt"
-out = lambda w_name: output_file_template.format(w_name, reliability, ComparisonUtility.cur_time())
-
-wf_names = [wf_name]
-
-[calc(wf_name, out(wf_name)) for wf_name in wf_names]
+if __name__ == "__main__":
+    test_run()

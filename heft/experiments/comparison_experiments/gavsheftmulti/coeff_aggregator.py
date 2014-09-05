@@ -6,7 +6,7 @@ from heft.experiments.comparison_experiments.gavsheftmulti.aggregator import plo
 from heft.settings import TEMP_PATH
 
 
-PATH = os.path.join(TEMP_PATH, "coeff_all_30_series_ext")
+PATH = os.path.join(TEMP_PATH, "coeff_cyber_epig_100runs")
 
 def extract_and_add_coeff(data, d):
     """
@@ -49,10 +49,10 @@ if __name__ == "__main__":
     # wfs = [(WFS_COLORS_30, "30-series"), (WFS_COLORS_50, "50-series"),
     #        (WFS_COLORS_75, "75-series"), (WFS_COLORS_100, "100-series")]
 
-    wfs = [({"Montage_25": "-gD"}, "montage"),
+    wfs = [#({"Montage_25": "-gD"}, "montage"),
             ({"CyberShake_30": "-rD"}, "cybershake"),
-            ({"Inspiral_30": "-bD"}, "inspiral"),
-            ({"Sipht_30": "-yD"}, "sipht"),
+            #({"Inspiral_30": "-bD"}, "inspiral"),
+            #({"Sipht_30": "-yD"}, "sipht"),
             ({"Epigenomics_24": "-mD"}, "epigenomics")]
     for wfs_colors, name in wfs:
         f = partial(plot_aggregate_results, property_name="data_intensive_coeff", wfs_colors=wfs_colors)

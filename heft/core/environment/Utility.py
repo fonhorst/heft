@@ -341,6 +341,17 @@ class Utility:
         pass
 
     @staticmethod
+    def validate_dynamic_schedule(_wf, schedule):
+        seq_time_validaty = Utility.validateNodesSeq(schedule)
+        dependency_validaty = Utility.validateParentsAndChildren(schedule, _wf, AllUnstartedMode=False)
+
+        if seq_time_validaty is False:
+            raise Exception("Sequence validaty check failed")
+        if dependency_validaty is False:
+            raise Exception("Dependency validaty check failed")
+        pass
+
+    @staticmethod
     def is_static_schedule_valid(_wf, schedule):
         try:
             Utility.validate_static_schedule(_wf, schedule)
