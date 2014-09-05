@@ -98,7 +98,8 @@ def do_exp(alg_builder, wf_name, **params):
             "makespan": Utility.makespan(resulted_schedule),
             ## TODO: this function should be remade to adapt under conditions of dynamic env
             #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
-            "overall_execution_time": Utility.overall_execution_time(resulted_schedule)
+            "overall_execution_time": Utility.overall_execution_time(resulted_schedule),
+            "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
         }
     }
 

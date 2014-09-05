@@ -395,6 +395,14 @@ class Utility:
         return execution_time
 
     @staticmethod
+    def overall_failed_tasks_count(schedule):
+        count = functools.reduce(operator.add,
+                                 (1 for node, items in schedule.mapping.items()
+                                 for item in items if item.state == ScheduleItem.FAILED),
+                                 0)
+        return count
+
+    @staticmethod
     def build_bundle_decoder(head_task):
         def get_all_tasks(task, all):
             for child in task.children:
