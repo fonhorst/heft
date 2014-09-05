@@ -1,4 +1,5 @@
 from copy import deepcopy
+from functools import partial
 
 from deap import tools
 from deap.base import Toolbox
@@ -11,8 +12,9 @@ from heft.algs.pso.sdpso import update as mapping_update
 
 ## TODO: remake interface later
 ## do NOT use it for anything except 'gaheft_series' experiments
-from heft.algs.pso.ompso import generate, ordering_update, fitness, build_schedule
+from heft.algs.pso.ompso import generate, ordering_update
 from heft.algs.pso.sdpso import run_pso
+from heft.experiments.comparison_experiments.gaheft_series.utilities import ParticleScheduleBuilder
 
 
 def create_pfga(wf, rm, estimator,
@@ -73,7 +75,10 @@ def create_pfpso(wf, rm, estimator,
                 init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
                 res = res + init_arr
             if n - init_ind_count > 0:
-                generated_arr = [generate(wf, rm, estimator)
+                generated_arr = [generate(wf, rm, estimator,
+                                          schedule=None,
+                                          fixed_schedule_part=fixed_schedule_part,
+                                          current_time=current_time)
                                  for _ in range(n - init_ind_count)]
                 res = res + generated_arr
             return res
@@ -82,14 +87,22 @@ def create_pfpso(wf, rm, estimator,
             mapping_update(w, c1, c2, p.mapping, best.mapping, pop)
             ordering_update(w, c1, c2, p.ordering, best.ordering, pop, min=min, max=max)
 
+        task_map = {task.id: task for task in wf.get_all_unique_tasks()}
+        node_map = {node.name: node for node in rm.get_nodes()}
+
+        schedule_builder = ParticleScheduleBuilder(wf, rm, estimator,
+                                                   task_map, node_map,
+                                                   fixed_schedule_part)
+        pf_fitness = partial(schedule_builder, current_time=current_time)
+
         toolbox = Toolbox()
         toolbox.register("population", generate_)
-        toolbox.register("fitness", fitness, wf, rm, estimator)
+        toolbox.register("fitness", pf_fitness)
         toolbox.register("update", componoud_update)
 
         pop, logbook, best = run_pso(toolbox=toolbox, **params)
 
-        resulted_schedule = build_schedule(best, fixed_schedule_part, current_time)
+        resulted_schedule = pf_fitness(best)
         result = (best, pop, resulted_schedule, None), logbook
         return result
     return alg

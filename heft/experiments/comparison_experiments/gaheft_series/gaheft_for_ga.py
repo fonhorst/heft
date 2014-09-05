@@ -2,14 +2,10 @@ from copy import deepcopy
 from functools import partial
 import os
 
-from heft.algs.common.algorithm_factory import create_pfga
-from heft.algs.heft.DSimpleHeft import DynamicHeft
-from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
-from heft.core.environment.Utility import wf, Utility
-from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
+
 from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
-from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
-from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
+from heft.experiments.comparison_experiments.gaheft_series.algorithm_factory import create_pfga
+from heft.experiments.comparison_experiments.gaheft_series.utilities import do_exp, test_run
 from heft.settings import TEMP_PATH
 
 
@@ -17,6 +13,7 @@ EXPERIMENT_NAME = "gaheft_for_ga"
 REPEAT_COUNT = 1
 
 BASE_PARAMS = {
+    "experiment_name": EXPERIMENT_NAME,
     "init_sched_percent": 0.05,
     "alg_name": "ga",
     "alg_params": {
@@ -47,58 +44,7 @@ BASE_PARAMS = {
     }
 }
 
-def do_exp(wf_name, **params):
-    _wf = wf("Montage_100")
-    rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
-    estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
-    dynamic_heft = DynamicHeft(_wf, rm, estimator)
-    ga = create_pfga(_wf, rm, estimator,
-                     params["init_sched_percent"],
-                     logbook=None, stats=None,
-                     **params["alg_params"])
-    machine = GaHeftExecutor(heft_planner=dynamic_heft,
-                             wf=_wf,
-                             resource_manager=rm,
-                             ga_builder=lambda: ga,
-                             **params["executor_params"])
-
-    machine.init()
-    machine.run()
-    resulted_schedule = machine.current_schedule
-
-    Utility.validate_dynamic_schedule(_wf, resulted_schedule)
-
-    data = {
-        "wf_name": wf_name,
-        "params": params,
-        "result": {
-            "makespan": Utility.makespan(resulted_schedule),
-            ## TODO: this function should be remade to adapt under conditions of dynamic env
-            #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
-            "overall_execution_time": Utility.overall_execution_time(resulted_schedule)
-        }
-    }
-
-    return data
-
-def test_run():
-    configs = []
-    reliability = [1.0, 0.95, 0.9]
-    wf_name = "CyberShake_30"
-    for r in reliability:
-        params = deepcopy(BASE_PARAMS)
-        params["wf_name"] = wf_name
-        params["estimator_settings"]["reliability"] = r
-        configs.append(params)
-
-    to_run = [partial(do_exp, wf_name, **params) for params in configs]
-    # results = [t() for t in to_run]
-    results = multi_repeat(REPEAT_COUNT, to_run)
-
-    saver = UniqueNameSaver(os.path.join(TEMP_PATH, "gaheft_series"), EXPERIMENT_NAME)
-    for result in results:
-        saver(result)
-    pass
+ga_exp = partial(do_exp, alg_builder=create_pfga)
 
 
 def changing_reliability_run():
@@ -110,7 +56,7 @@ def changing_reliability_run():
         params["estimator_settings"]["reliability"] = r
         configs.append(params)
 
-    to_run = [partial(do_exp, wf_name, **params) for wf_name in wf_names for params in configs]
+    to_run = [partial(ga_exp, wf_name=wf_name, **params) for wf_name in wf_names for params in configs]
     # results = [t() for t in to_run]
     results = multi_repeat(REPEAT_COUNT, to_run)
 
@@ -121,5 +67,5 @@ def changing_reliability_run():
 
 
 if __name__ == "__main__":
-    # test_run()
-    changing_reliability_run()
+    test_run(ga_exp, BASE_PARAMS)
+    # changing_reliability_run()

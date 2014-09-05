@@ -134,8 +134,8 @@ def ordering_to_numseq(ordering, min=-1, max=1):
     return ord_position
 
 
-def generate(wf, rm, estimator, schedule=None):
-    sched = schedule if schedule is not None else SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule()
+def generate(wf, rm, estimator, schedule=None, fixed_schedule_part=None, current_time=0.0):
+    sched = schedule if schedule is not None else SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule(fixed_schedule_part, current_time)
     mapping, ordering = ord_and_map(sched)
     ordering = ordering_to_numseq(ordering)
     ord_p, map_p = Particle(ordering), Particle(Position(mapping))
