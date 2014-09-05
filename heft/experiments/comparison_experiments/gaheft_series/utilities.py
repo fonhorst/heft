@@ -4,7 +4,7 @@ import os
 from heft.algs.common.NewSchedulerBuilder import NewScheduleBuilder
 from heft.algs.common.individuals import DictBasedIndividual
 from heft.algs.heft.DSimpleHeft import DynamicHeft
-from heft.algs.pso.ompso import CompoundParticle
+from heft.algs.pso.ompso import CompoundParticle, numseq_to_ordering
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
@@ -54,12 +54,13 @@ class ParticleScheduleBuilder(NewScheduleBuilder):
         """
         if isinstance(particle, CompoundParticle):
 
-            mapping = {node.name: [] for node in self.nodes}
-            for task_id in particle.ordering.entity:
+            ordering = numseq_to_ordering(self.workflow, particle)
+            chromo_mapping = {node.name: [] for node in self.nodes}
+            for task_id in ordering:
                 node_name = particle.mapping.entity[task_id]
-                mapping[node_name].append(task_id)
+                chromo_mapping[node_name].append(task_id)
                 pass
-            chromo = DictBasedIndividual(mapping)
+            chromo = DictBasedIndividual(chromo_mapping)
             return chromo
         raise ValueError("particle has a wrong type: {0}".format(type(particle)))
 

@@ -91,27 +91,10 @@ def construct_solution(position, sorted_tasks):
     return {MAPPING_SPECIE: [(t, position[t]) for t in sorted_tasks], ORDERING_SPECIE: sorted_tasks}
 
 
+
 def build_schedule(wf, rm, estimator, particle):
 
-    def recover_ordering(ordering):
-        corrected_ordering = []
-
-        while len(ordering) > 0:
-            ord_iter = iter(ordering)
-            while True:
-                t, v = next(ord_iter)
-                if Utility.is_enough_to_be_executed(wf, t, corrected_ordering):
-                    ordering.remove((t, v))
-                    corrected_ordering.append(t)
-                    break
-                pass
-            pass
-        return corrected_ordering
-
-    sorted_tasks = wf.get_tasks_id()
-    ordering = sorted(zip(sorted_tasks, particle.ordering.entity), key=lambda x: x[1])
-
-    ordering = recover_ordering(ordering)
+    ordering = numseq_to_ordering(wf, particle)
 
     solution = construct_solution(particle.mapping.entity, ordering)
     sched = base_build_schedule(wf, estimator, rm, solution)
@@ -132,6 +115,29 @@ def ordering_to_numseq(ordering, min=-1, max=1):
         initial += step
         ord_position.append(initial)
     return ord_position
+
+
+def numseq_to_ordering(wf, particle):
+    def recover_ordering(ordering):
+        corrected_ordering = []
+
+        while len(ordering) > 0:
+            ord_iter = iter(ordering)
+            while True:
+                t, v = next(ord_iter)
+                if Utility.is_enough_to_be_executed(wf, t, corrected_ordering):
+                    ordering.remove((t, v))
+                    corrected_ordering.append(t)
+                    break
+                pass
+            pass
+        return corrected_ordering
+
+    sorted_tasks = wf.get_tasks_id()
+    ordering = sorted(zip(sorted_tasks, particle.ordering.entity), key=lambda x: x[1])
+
+    ordering = recover_ordering(ordering)
+    return ordering
 
 
 def generate(wf, rm, estimator, schedule=None, fixed_schedule_part=None, current_time=0.0):
