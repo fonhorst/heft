@@ -92,7 +92,6 @@ class IteratedCheckpointedAlg:
         return result
 
 
-
 def partially_fixed_schedule():
     raise NotImplementedError()
 

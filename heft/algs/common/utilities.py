@@ -24,4 +24,3 @@ def gather_info(logbook, stats, g, pop, need_to_print=True):
 
 
 
-

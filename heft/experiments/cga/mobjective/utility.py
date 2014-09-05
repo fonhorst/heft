@@ -17,18 +17,29 @@ class VMResGen:
         return [res]
     pass
 
+
 class SimpleTimeCostEstimator(ExperimentEstimator):
+
     def __init__(self, comp_time_cost, transf_time_cost, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.comp_time_cost = comp_time_cost
         self.transf_time_cost = transf_time_cost
+
     def computation_cost(self, task, node):
         time = self.estimate_runtime(task, node)
         return time * self.comp_time_cost
+
     def transfer_cost(self, node1, node2, task1, task2):
         time = self.estimate_transfer_time(node1, node2, task1, task2)
         return time * self.transf_time_cost
+
+    def estimate_reliability(self, task, node):
+        """
+        homogeneous reliability estimation
+        """
+        return self.reliability
     pass
+
 
 def cost(schedule, estimator):
     tn = schedule.task_to_node()
