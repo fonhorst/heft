@@ -154,9 +154,9 @@ def coeff_run():
         exps = [partial(do_exp, wf_name, **params) for params in param_sets]
         to_run = to_run + exps
 
-    m_repeat = lambda n, funcs: [f() for f in funcs for _ in range(n)]
-    results = m_repeat(REPEAT_COUNT, to_run)
-    # results = multi_repeat(REPEAT_COUNT, to_run)
+    # m_repeat = lambda n, funcs: [f() for f in funcs for _ in range(n)]
+    # results = m_repeat(REPEAT_COUNT, to_run)
+    results = multi_repeat(REPEAT_COUNT, to_run)
     saver = UniqueNameSaver(TEMP_PATH, EXPERIMENT_NAME)
     for result in results:
         saver(result)
