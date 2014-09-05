@@ -6,10 +6,15 @@ from heft.algs.common.individuals import DictBasedIndividual, FitnessStd
 
 from heft.algs.ga.common_fixed_schedule_schema import run_ga
 from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
+from heft.algs.pso.sdpso import update as mapping_update
 
 
 ## TODO: remake interface later
 ## do NOT use it for anything except 'gaheft_series' experiments
+from heft.algs.pso.ompso import generate, ordering_update, fitness, build_schedule
+from heft.algs.pso.sdpso import run_pso
+
+
 def create_pfga(wf, rm, estimator,
                 init_sched_percent=0.05,
                 **params):
@@ -48,6 +53,43 @@ def create_pfga(wf, rm, estimator,
         pop, logbook, best = run_ga(toolbox=toolbox, **params)
 
         resulted_schedule = ga_functions.build_schedule(best, fixed_schedule_part, current_time)
+        result = (best, pop, resulted_schedule, None), logbook
+        return result
+    return alg
+
+
+## TODO: remake interface later
+## do NOT use it for anything except 'gaheft_series' experiments
+def create_pfpso(wf, rm, estimator,
+                init_sched_percent=0.05,
+                **params):
+    def alg(fixed_schedule_part, initial_schedule, current_time=0.0):
+
+        def generate_(n):
+            init_ind_count = int(n*init_sched_percent)
+            res = []
+            if initial_schedule is not None and init_ind_count > 0:
+                heft_particle = generate(wf, rm, estimator, initial_schedule)
+                init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
+                res = res + init_arr
+            if n - init_ind_count > 0:
+                generated_arr = [generate(wf, rm, estimator)
+                                 for _ in range(n - init_ind_count)]
+                res = res + generated_arr
+            return res
+
+        def componoud_update(w, c1, c2, p, best, pop, min=-1, max=1):
+            mapping_update(w, c1, c2, p.mapping, best.mapping, pop)
+            ordering_update(w, c1, c2, p.ordering, best.ordering, pop, min=min, max=max)
+
+        toolbox = Toolbox()
+        toolbox.register("population", generate_)
+        toolbox.register("fitness", fitness, wf, rm, estimator)
+        toolbox.register("update", componoud_update)
+
+        pop, logbook, best = run_pso(toolbox=toolbox, **params)
+
+        resulted_schedule = build_schedule(best, fixed_schedule_part, current_time)
         result = (best, pop, resulted_schedule, None), logbook
         return result
     return alg
