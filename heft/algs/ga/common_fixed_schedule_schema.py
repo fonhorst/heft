@@ -1,4 +1,6 @@
 import copy
+import functools
+import operator
 import random
 from threading import Lock
 
@@ -139,7 +141,7 @@ def run_ga(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tru
 
         parents = list(map(toolbox.clone, pop))
         # select_parents must return list of pairs [(par1,par2),]
-        offsprings = toolbox.select_parents(parents) if hasattr(toolbox, "select_parents") else zip(parents[::2], parents[1::2])
+        offsprings = toolbox.select_parents(parents) if hasattr(toolbox, "select_parents") else list(zip(parents[::2], parents[1::2]))
          # Clone the selected individuals
 
         # Apply crossover and mutation on the offspring
@@ -148,7 +150,7 @@ def run_ga(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tru
                 toolbox.mate(child1, child2)
                 del child1.fitness.values
                 del child2.fitness.values
-
+        offsprings = functools.reduce(operator.add, [[child1, child2] for child1, child2 in offsprings], [])
         for mutant in offsprings:
             if random.random() < SWEEPMUTPB:
                 toolbox.sweep_mutation(mutant)
@@ -167,7 +169,7 @@ def run_ga(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tru
             p.fitness = toolbox.evaluate(p)
 
         # mix with the best individuals of the time
-        sorted_pop = sorted(pop + list(hallOfFame) + list(offsprings), key=lambda x: x.fitness.values, reverse=True)
+        sorted_pop = sorted(pop + list(hallOfFame) + list(offsprings), key=lambda x: x.fitness, reverse=True)
         pop = sorted_pop[:KBEST:] + toolbox.select(sorted_pop[KBEST:], N - KBEST)
 
         gather_info(logbook, stats, g, pop, need_to_print=not IS_SILENT)
@@ -184,7 +186,8 @@ def generate(n, ga_functions, fixed_schedule_part,
     init_ind_count = int(n*init_sched_percent)
     res = []
     if initial_schedule is not None and init_ind_count > 0:
-        init_chromosome = DictBasedIndividual(GAFunctions2.schedule_to_chromosome(initial_schedule))
+        ga_functions.initial_chromosome = DictBasedIndividual(GAFunctions2.schedule_to_chromosome(initial_schedule))
+        init_chromosome = ga_functions.initial_chromosome
         init_arr = [copy.deepcopy(init_chromosome) for _ in range(init_ind_count)]
         res = res + init_arr
     if n - init_ind_count > 0:

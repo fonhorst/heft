@@ -136,9 +136,8 @@ def test_run(exp, base_params):
     pass
 
 
-def changing_reliability_run(exp, repeat_count, wf_names, base_params):
+def changing_reliability_run(exp, reliability, repeat_count, wf_names, base_params):
     configs = []
-    reliability = [0.99, 0.95, 0.9]
     for r in reliability:
         params = deepcopy(base_params)
         params["estimator_settings"]["reliability"] = r

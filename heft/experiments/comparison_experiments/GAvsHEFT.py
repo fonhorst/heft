@@ -12,7 +12,7 @@ from heft.experiments.cga.utilities.common import UniqueNameSaver, repeat
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 
 
-wf_names = ['CyberShake_30']
+wf_names = ['Montage_25']
 # wf_names = ['Montage_50']
 # wf_names = ['Montage_500']
 # wf_names = ['CyberShake_100']
@@ -34,7 +34,7 @@ PARAMS = {
         "generations": 300
     },
     "nodes_conf": [10, 15, 25, 30],
-    "transfer_time": 2000,
+    "transfer_time": 100,
     "heft_initial": True
 }
 

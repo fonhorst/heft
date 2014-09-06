@@ -32,7 +32,7 @@ def do_exp(wf_name):
     estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
                                                 ideal_flops=20, transfer_time=100)
 
-    empty_fixed_schedule_part = Schedule({node: []for node in rm.get_nodes()})
+    empty_fixed_schedule_part = Schedule({node: [] for node in rm.get_nodes()})
 
     heft_schedule = run_heft(_wf, rm, estimator)
 
@@ -61,6 +61,7 @@ def do_exp(wf_name):
     toolbox.register("sweep_mutation", ga_functions.sweep_mutation)
     toolbox.register("mutate", ga_functions.mutation)
     # toolbox.register("select_parents", )
+    # toolbox.register("select", tools.selTournament, tournsize=4)
     toolbox.register("select", tools.selRoulette)
     pop, logbook, best = run_ga(toolbox=toolbox,
                                 logbook=logbook,

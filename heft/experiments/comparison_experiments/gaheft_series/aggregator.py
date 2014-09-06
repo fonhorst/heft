@@ -50,7 +50,7 @@ def composite_extract_and_add(data, d, alg_names):
     return data
 
 
-def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS):
+def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=None):
 
     aggr = lambda results: numpy.mean(results)
 
@@ -73,7 +73,7 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS):
         points = sorted(points, key=lambda x: x[0])
         return points
 
-    format_points = get_points_format(data)
+    format_points = get_points_format(data) if reliability is None else [(str(r), 0) for r in reliability]
 
     plt.grid(True)
     ax = plt.gca()
@@ -91,7 +91,8 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS):
 
         points = []
         for value, results in item[wf_name]["reliability"].items():
-            points.append((value, aggr(results)))
+            if value in reliability or reliability is None:
+                points.append((value, aggr(results)))
 
         points = sorted(points, key=lambda x: x[0])
 
@@ -105,12 +106,12 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS):
     pass
 
 
-
 if __name__ == "__main__":
-    wf_name = "Montage_25"
-    alg_names = ["ga", "heft"]
-    path = os.path.join(TEMP_PATH, "to_analysis", "ga_and_heft_and_pso")
-    wf_plot = partial(plot_aggregate_results, wf_name=wf_name)
-    extract = partial(composite_extract_and_add, alg_names=alg_names)
-    aggregate(path=path,
-              picture_path="gaheft_series.png",extract_and_add=extract, functions=[wf_plot])
+    wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+    for wf_name in wf_names:
+        alg_names = ["pso", "heft"]
+        path = os.path.join(TEMP_PATH, "to_analysis", "all_pso")
+        wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99])
+        extract = partial(composite_extract_and_add, alg_names=alg_names)
+        aggregate(path=path,
+                  picture_path="gaheft_series_{0}.png".format(wf_name), extract_and_add=extract, functions=[wf_plot])
