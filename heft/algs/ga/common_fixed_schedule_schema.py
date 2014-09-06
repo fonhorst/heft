@@ -8,6 +8,7 @@ from deap import base
 import deap
 from deap.tools import History
 import numpy
+from heft.algs.common.individuals import FitnessStd, DictBasedIndividual
 from heft.algs.common.utilities import gather_info
 from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
 from heft.algs.heft.HeftHelper import HeftHelper
@@ -175,3 +176,26 @@ def run_ga(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tru
         pass
 
     return pop, logbook, best
+
+
+def generate(n, ga_functions, fixed_schedule_part,
+             current_time, init_sched_percent,
+             initial_schedule):
+    init_ind_count = int(n*init_sched_percent)
+    res = []
+    if initial_schedule is not None and init_ind_count > 0:
+        init_chromosome = DictBasedIndividual(GAFunctions2.schedule_to_chromosome(initial_schedule))
+        init_arr = [copy.deepcopy(init_chromosome) for _ in range(init_ind_count)]
+        res = res + init_arr
+    if n - init_ind_count > 0:
+        generated_arr = [DictBasedIndividual(ga_functions.random_chromo(fixed_schedule_part, current_time))
+                         for _ in range(n - init_ind_count)]
+        res = res + generated_arr
+    return res
+
+
+def fit_converter(func):
+    def wrap(*args, **kwargs):
+        x = func(*args, **kwargs)
+        return FitnessStd(values=(1/x[0], 0.0))
+    return wrap

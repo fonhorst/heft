@@ -109,6 +109,20 @@ def tracing(func):
     return wrap
 
 
+def signal_if_true(func):
+    def wrap(*args, **kwargs):
+        x = func(*args, **kwargs)
+        if isinstance(x, bool):
+            if x is True:
+                print("Event {0} appeared".format(func.__name__))
+            return x
+        else:
+            raise ValueError("result of function {0} is not of a boolean type".format(func.__name__))
+    return wrap
+
+
+
+
 class Utility:
     MIN_PIPELINE_SIZE = 10
     MAX_PIPELINE_SIZE = 40

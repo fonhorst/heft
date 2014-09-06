@@ -1,8 +1,7 @@
 from functools import partial
-import json
 import os
-from heft.experiments.comparison_experiments.gavsheftmulti.aggregator import plot_aggregate_results, visualize, \
-    aggregate, WFS_COLORS_30, WFS_COLORS_75, WFS_COLORS_50, WFS_COLORS_100, WFS_COLORS
+from heft.experiments.aggregate_utilities import aggregate, WFS_COLORS
+from heft.experiments.comparison_experiments.gavsheftmulti.aggregator import plot_aggregate_results
 from heft.settings import TEMP_PATH
 
 

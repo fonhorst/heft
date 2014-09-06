@@ -1,9 +1,11 @@
 import random
 
 from heft.core.CommonComponents.failers.FailBase import FailBase
+from heft.core.environment.Utility import signal_if_true
 
 
 class FailRandom(FailBase):
+    @signal_if_true
     def _check_fail(self, task, node):
         #TODO: remake it later
         if hasattr(self, "estimator"):

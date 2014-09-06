@@ -117,9 +117,9 @@ def do_exp(alg_builder, wf_name, **params):
 
 def test_run(exp, base_params):
     configs = []
-    reliability = [1.0, 0.95, 0.9]
+    # reliability = [1.0, 0.95, 0.9]
     # reliability = [1.0]
-    # reliability = [0.95]
+    reliability = [0.95]
     wf_name = "CyberShake_30"
     for r in reliability:
         params = deepcopy(base_params)
