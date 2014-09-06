@@ -4,6 +4,7 @@ from functools import partial
 from deap import tools
 from deap.base import Toolbox
 from heft.algs.common.individuals import DictBasedIndividual, FitnessStd
+from heft.algs.common.mapordschedule import validate_mapping_with_alive_nodes
 
 from heft.algs.ga.common_fixed_schedule_schema import run_ga
 from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
@@ -67,11 +68,11 @@ def create_pfpso(wf, rm, estimator,
                 init_sched_percent=0.05,
                 **params):
     def alg(fixed_schedule_part, initial_schedule, current_time=0.0):
-
         def generate_(n):
             init_ind_count = int(n*init_sched_percent)
             res = []
             if initial_schedule is not None and init_ind_count > 0:
+                # TODO: fix failed items
                 heft_particle = generate(wf, rm, estimator, initial_schedule)
                 init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
                 res = res + init_arr

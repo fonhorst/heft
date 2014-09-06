@@ -1,8 +1,10 @@
 from copy import deepcopy
 from functools import partial
 import os
+from timeit import timeit
 from heft.algs.common.NewSchedulerBuilder import NewScheduleBuilder
 from heft.algs.common.individuals import DictBasedIndividual
+from heft.algs.ga.GAImplementation.GAFunctions2 import unmoveable_tasks
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.algs.pso.ompso import CompoundParticle, numseq_to_ordering
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
@@ -48,13 +50,18 @@ EXAMPLE_BASE_PARAMS = {
 
 class ParticleScheduleBuilder(NewScheduleBuilder):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._unmoveable_tasks = unmoveable_tasks(self.fixed_schedule_part)
+        pass
+
+
     def _particle_to_chromo(self, particle):
         """
         Converts Particle representation of individual to chromosome representation used by GA operators
         """
         if isinstance(particle, CompoundParticle):
-
-            ordering = numseq_to_ordering(self.workflow, particle)
+            ordering = numseq_to_ordering(self.workflow, particle, self._unmoveable_tasks)
             chromo_mapping = {node.name: [] for node in self.nodes}
             for task_id in ordering:
                 node_name = particle.mapping.entity[task_id]
@@ -66,12 +73,14 @@ class ParticleScheduleBuilder(NewScheduleBuilder):
 
     def __call__(self, particle, current_time):
         chromo = self._particle_to_chromo(particle)
-        return super().__call__(chromo, current_time)
+        result = super().__call__(chromo, current_time)
+        return result
+
     pass
 
 
 def do_exp(alg_builder, wf_name, **params):
-    _wf = wf("Montage_100")
+    _wf = wf(wf_name)
     rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
@@ -105,10 +114,11 @@ def do_exp(alg_builder, wf_name, **params):
 
     return data
 
-
 def test_run(exp, base_params):
     configs = []
     reliability = [1.0, 0.95, 0.9]
+    # reliability = [1.0]
+    # reliability = [0.95]
     wf_name = "CyberShake_30"
     for r in reliability:
         params = deepcopy(base_params)

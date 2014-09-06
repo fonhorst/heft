@@ -1,4 +1,5 @@
 from functools import partial
+from heft.core.environment.Utility import profile_decorator
 
 from heft.experiments.comparison_experiments.gaheft_series.algorithm_factory import create_pfpso
 from heft.experiments.comparison_experiments.gaheft_series.utilities import do_exp, test_run
@@ -40,7 +41,10 @@ BASE_PARAMS = {
 
 pso_exp = partial(do_exp, alg_builder=create_pfpso)
 
+profile_test_run = profile_decorator(test_run)
 
 if __name__ == "__main__":
+
+    # profile_test_run(pso_exp, BASE_PARAMS)
     test_run(pso_exp, BASE_PARAMS)
     # changing_reliability_run()

@@ -19,6 +19,7 @@ from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE
 from heft.algs.common.mapordschedule import fitness as basefitness
 from heft.algs.common.setbasedoperations import Position, Velocity
 from heft.algs.common.utilities import gather_info
+from heft.core.environment.Utility import profile_decorator
 
 
 class Particle(FitAdapter):
@@ -30,8 +31,11 @@ class Particle(FitAdapter):
     pass
 
 
+# def _cutting_by_task(velocity, task):
+#     return [FitAdapter(node, (v,)) for (task, node), v in velocity.items()]
+
 def _cutting_by_task(velocity, task):
-    return [FitAdapter(node, (v,)) for (task, node), v in velocity.items()]
+    return [node for (task, node), v in velocity.items()]
 
 
 def velocity_update(w, c1, c2, pbest, gbest, velocity, position, pop):
@@ -62,14 +66,14 @@ def position_update(position, velocity):
     for task in position:
         available_nodes = _cutting_by_task(cut_velocity, task)
         if len(available_nodes) == 0:
-            available_nodes = [FitAdapter(position[task], (1.0,))]
+            available_nodes = [position[task]]
 
         #print("=== task: {0}; available nodes: {1}".format(task, [node.entity for node in available_nodes]))
 
         # new_node = tools.selRoulette(available_nodes, 1)[0].entity
         # new_node = max(available_nodes, key=lambda x: x.fitness).entity
         # new_node = tools.selTournament(available_nodes, 1, 2)[0].entity
-        new_node = available_nodes[random.randint(0, len(available_nodes) - 1)].entity
+        new_node = available_nodes[random.randint(0, len(available_nodes) - 1)]#.entity
         new_position[task] = new_node
     return Position(new_position)
 
@@ -148,7 +152,7 @@ def position_update2(position, velocity):
 #     def result(self):
 #         return self._pop, self._logbook, self._best
 
-
+# @profile_decorator
 def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=True, initial_pop=None, **params):
 
     """
@@ -196,13 +200,10 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
                 p.best = deepcopy(p)
             if not best or best.fitness < p.fitness:
                 best = deepcopy(p)
-
         # Gather all the fitnesses in one list and print the stats
         gather_info(logbook, stats, g, pop)
-
         for p in pop:
             toolbox.update(w, c1, c2, p, best, pop)
-
         if invalidate_fitness:
             for p in pop:
                 del p.fitness

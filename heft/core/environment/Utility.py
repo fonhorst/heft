@@ -99,6 +99,16 @@ class GraphVisualizationUtility:
         draw_graph()
         pass
 
+
+def tracing(func):
+    def wrap(*args, **kwargs):
+        print("function {0} started".format(func.__name__))
+        result = func(*args, **kwargs)
+        print("function {0} finished".format(func.__name__))
+        return result
+    return wrap
+
+
 class Utility:
     MIN_PIPELINE_SIZE = 10
     MAX_PIPELINE_SIZE = 40

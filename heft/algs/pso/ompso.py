@@ -1,11 +1,14 @@
 import random
 from heft.algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from heft.algs.common.individuals import FitAdapter
-from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE, ord_and_map, build_schedule as base_build_schedule
+from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE, ord_and_map, build_schedule as base_build_schedule, \
+    validate_mapping_with_alive_nodes
 from heft.algs.common.setbasedoperations import Position
 from heft.algs.common.utilities import gather_info
 from heft.algs.common.mapordschedule import fitness as basefitness
+from heft.algs.ga.GAImplementation.GAFunctions2 import unmoveable_tasks
 from heft.algs.pso.sdpso import Particle
+from heft.core.environment.ResourceManager import Schedule, ScheduleItem
 from heft.core.environment.Utility import Utility
 
 
@@ -117,7 +120,7 @@ def ordering_to_numseq(ordering, min=-1, max=1):
     return ord_position
 
 
-def numseq_to_ordering(wf, particle):
+def numseq_to_ordering(wf, particle, fixed_tasks_ids=[]):
     def recover_ordering(ordering):
         corrected_ordering = []
 
@@ -125,7 +128,7 @@ def numseq_to_ordering(wf, particle):
             ord_iter = iter(ordering)
             while True:
                 t, v = next(ord_iter)
-                if Utility.is_enough_to_be_executed(wf, t, corrected_ordering):
+                if Utility.is_enough_to_be_executed(wf, t, corrected_ordering + fixed_tasks_ids):
                     ordering.remove((t, v))
                     corrected_ordering.append(t)
                     break
@@ -133,7 +136,7 @@ def numseq_to_ordering(wf, particle):
             pass
         return corrected_ordering
 
-    sorted_tasks = wf.get_tasks_id()
+    sorted_tasks = [task_id for task_id in wf.get_tasks_id() if task_id not in fixed_tasks_ids]
     ordering = sorted(zip(sorted_tasks, particle.ordering.entity), key=lambda x: x[1])
 
     ordering = recover_ordering(ordering)
@@ -142,10 +145,19 @@ def numseq_to_ordering(wf, particle):
 
 def generate(wf, rm, estimator, schedule=None, fixed_schedule_part=None, current_time=0.0):
     sched = schedule if schedule is not None else SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule(fixed_schedule_part, current_time)
-    mapping, ordering = ord_and_map(sched)
+
+    un_tasks = unmoveable_tasks(fixed_schedule_part)
+    clean_sched = Schedule({node: [item for item in items if item.job.id not in un_tasks and item.state != ScheduleItem.FAILED]
+                      for node, items in sched.mapping.items()})
+
+
+    mapping, ordering = ord_and_map(clean_sched)
     ordering = ordering_to_numseq(ordering)
     ord_p, map_p = Particle(ordering), Particle(Position(mapping))
-    return CompoundParticle(map_p, ord_p)
+    result = CompoundParticle(map_p, ord_p)
+    if not validate_mapping_with_alive_nodes(result.mapping.entity, rm):
+        raise Exception("found invalid solution in generated array")
+    return result
 
 
 def ordering_update(w, c1, c2, p, best, pop, min=-1, max=1):

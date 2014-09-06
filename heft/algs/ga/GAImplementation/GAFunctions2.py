@@ -14,6 +14,16 @@ def mark_finished(schedule):
         for item in items:
             item.state = ScheduleItem.FINISHED
 
+def unmoveable_tasks(fixed_schedule_part):
+    def is_last_version_of_task_executing(item):
+        return item.state == ScheduleItem.EXECUTING \
+               or item.state == ScheduleItem.FINISHED \
+               or item.state == ScheduleItem.UNSTARTED
+    # there is only finished, executing and unstarted tasks planned by Heft, perhaps it should have been called unplanned tasks
+    finished_tasks = [item.job.id for (node, items) in fixed_schedule_part.mapping.items()
+                      for item in items if is_last_version_of_task_executing(item)]
+    return finished_tasks
+
 class GAFunctions2:
     ## A chromosome representation
     ##{
@@ -79,16 +89,19 @@ class GAFunctions2:
         chromo = GAFunctions2.schedule_to_chromosome(sched)
         if fixed_schedule_part is not None:
             # remove fixed_schedule_part from chromosome
-            def is_last_version_of_task_executing(item):
-                return item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.UNSTARTED
-            # there is only finished, executing and unstarted tasks planned by Heft, perhaps it should have been called unplanned tasks
-            finished_tasks = [item.job.id for (node, items) in fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)]
+            # def is_last_version_of_task_executing(item):
+            #     return item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.UNSTARTED
+            # # there is only finished, executing and unstarted tasks planned by Heft, perhaps it should have been called unplanned tasks
+            # finished_tasks = [item.job.id for (node, items) in fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)]
+            finished_tasks = unmoveable_tasks(fixed_schedule_part)
 
             # TODO: make common utility function with ScheduleBuilder and SimpleRandomizedHeuristic
             chromo = {node_name: [id for id in ids if not (id in finished_tasks)] for (node_name, ids) in chromo.items()}
 
 
         return chromo
+
+
 
     def build_fitness(self, fixed_schedule_part, current_time):
         # builder = ScheduleBuilder(self.workflow, self.resource_manager, self.estimator, self.task_map, self.node_map, fixed_schedule_part)
@@ -219,7 +232,7 @@ class GAFunctions2:
             return False
 
         #return chromosome
-        #TODO: make checking for all nodes are dead.(It's a very rare situation so it is not consider for now)
+        #TODO: make checking for all nodes are dead.(It's a very rare situation so it is not considered for now)
         alive_nodes = [node for node in self.nodes if node.state != Node.Down]
         node = alive_nodes[random.randint(0, len(alive_nodes) - 1)]
 

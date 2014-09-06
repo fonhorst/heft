@@ -1,6 +1,7 @@
 from deap.base import Fitness
 from heft.algs.common.NewSchedulerBuilder import place_task_to_schedule
-from heft.core.environment.ResourceManager import Schedule
+from heft.core.environment.BaseElements import Node
+from heft.core.environment.ResourceManager import Schedule, ScheduleItem
 from heft.core.environment.Utility import Utility
 
 MAPPING_SPECIE = "MappingSpecie"
@@ -70,8 +71,10 @@ def fitness(wf, rm, estimator, position):
     return fit
 
 
+
 def mapping_from_schedule(schedule):
-    mapping = {item.job.id: node.name for node, items in schedule.mapping.items() for item in items}
+    mapping = {item.job.id: node.name for node, items in schedule.mapping.items()
+               for item in items}
     return mapping
 
 
@@ -81,5 +84,22 @@ def ordering_from_schedule(schedule):
     ordering = [item.job.id for item in ordering]
     return ordering
 
+
 def ord_and_map(schedule):
     return mapping_from_schedule(schedule), ordering_from_schedule(schedule)
+
+
+def validate_mapping_with_alive_nodes(mapping, rm):
+    """
+    :param mapping: is a dict {(task_id):(node_name)}
+    :param rm: resource manager
+    :return:
+    """
+    alive_nodes = [node.name for node in rm.get_nodes() if node.state != Node.Down]
+    for task_id, node_name in mapping.items():
+        if node_name not in alive_nodes:
+            return False
+    return True
+
+
+

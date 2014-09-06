@@ -1,6 +1,8 @@
 from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import Schedule, ScheduleItem
+from heft.core.environment.Utility import tracing
+
 
 def _comm_ready_func(workflow,
                      estimator,
@@ -109,7 +111,6 @@ class NewScheduleBuilder:
 
         pass
 
-
     def _create_helping_structures(self, chromo):
         # copy fixed schedule
         # TODO: make common utility function with SimpleRandomizedHeuristic
@@ -149,7 +150,8 @@ class NewScheduleBuilder:
             raise Exception("There are not alive nodes")
 
         while len(ready_tasks) > 0:
-
+            if len(alive_nodes) == 0:
+                raise ValueError("Count of alive_nodes is zero")
             for node in alive_nodes:
                 if len(chromo_copy[node.name]) == 0:
                     continue
