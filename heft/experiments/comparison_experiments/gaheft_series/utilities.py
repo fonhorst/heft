@@ -10,7 +10,7 @@ from heft.algs.pso.ompso import CompoundParticle, numseq_to_ordering
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
-from heft.experiments.cga.utilities.common import UniqueNameSaver
+from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.settings import TEMP_PATH
@@ -114,6 +114,7 @@ def do_exp(alg_builder, wf_name, **params):
 
     return data
 
+
 def test_run(exp, base_params):
     configs = []
     reliability = [1.0, 0.95, 0.9]
@@ -128,6 +129,23 @@ def test_run(exp, base_params):
     to_run = [partial(exp, wf_name=wf_name, **params) for params in configs]
     results = [t() for t in to_run]
     # results = multi_repeat(REPEAT_COUNT, to_run)
+
+    saver = UniqueNameSaver(os.path.join(TEMP_PATH, "gaheft_series"), base_params["experiment_name"])
+    for result in results:
+        saver(result)
+    pass
+
+
+def changing_reliability_run(exp, repeat_count, wf_names, base_params):
+    configs = []
+    reliability = [0.99, 0.95, 0.9]
+    for r in reliability:
+        params = deepcopy(base_params)
+        params["estimator_settings"]["reliability"] = r
+        configs.append(params)
+
+    to_run = [partial(exp, wf_name=wf_name, **params) for wf_name in wf_names for params in configs]
+    results = multi_repeat(repeat_count, to_run)
 
     saver = UniqueNameSaver(os.path.join(TEMP_PATH, "gaheft_series"), base_params["experiment_name"])
     for result in results:

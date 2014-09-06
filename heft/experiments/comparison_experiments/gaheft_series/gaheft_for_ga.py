@@ -5,12 +5,13 @@ import os
 
 from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
 from heft.experiments.comparison_experiments.gaheft_series.algorithm_factory import create_pfga
-from heft.experiments.comparison_experiments.gaheft_series.utilities import do_exp, test_run
+from heft.experiments.comparison_experiments.gaheft_series.utilities import do_exp, test_run, changing_reliability_run
 from heft.settings import TEMP_PATH
 
 
 EXPERIMENT_NAME = "gaheft_for_ga"
-REPEAT_COUNT = 25
+REPEAT_COUNT = 10
+WF_NAMES = ["Montage_25"]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
@@ -46,26 +47,6 @@ BASE_PARAMS = {
 
 ga_exp = partial(do_exp, alg_builder=create_pfga)
 
-
-def changing_reliability_run():
-    configs = []
-    reliability = [0.975, 0.95, 0.925, 0.9]
-    wf_names = ["CyberShake_30", "Montage_25"]
-    for r in reliability:
-        params = deepcopy(BASE_PARAMS)
-        params["estimator_settings"]["reliability"] = r
-        configs.append(params)
-
-    to_run = [partial(ga_exp, wf_name=wf_name, **params) for wf_name in wf_names for params in configs]
-    # results = [t() for t in to_run]
-    results = multi_repeat(REPEAT_COUNT, to_run)
-
-    saver = UniqueNameSaver(os.path.join(TEMP_PATH, "gaheft_series"), EXPERIMENT_NAME)
-    for result in results:
-        saver(result)
-    pass
-
-
 if __name__ == "__main__":
     # test_run(ga_exp, BASE_PARAMS)
-    changing_reliability_run()
+    changing_reliability_run(ga_exp, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
