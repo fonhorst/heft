@@ -156,8 +156,8 @@ def test_run(exp, base_params):
     configs = []
     # reliability = [1.0, 0.95, 0.9]
     # reliability = [1.0]
-    reliability = [0.9]
-    wf_name = "CyberShake_30"
+    reliability = [0.99]
+    wf_name = "Montage_25"
     for r in reliability:
         params = deepcopy(base_params)
         params["estimator_settings"]["reliability"] = r

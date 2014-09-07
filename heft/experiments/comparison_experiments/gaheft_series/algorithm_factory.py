@@ -29,7 +29,14 @@ def create_old_ga(wf, rm, estimator,
     kwargs["wf"] = wf
     kwargs["resource_manager"] = rm
     kwargs["estimator"] = estimator
-    kwargs["ga_params"] = deepcopy(params)
+    kwargs["ga_params"] = {
+        "population": params["n"],
+        "crossover_probability": params["cxpb"],
+        "replacing_mutation_probability": params["mutpb"],
+        "generations": params["gen_step"],
+        "sweep_mutation_probability": params["sweepmutpb"],
+        "Kbest": params["kbest"]
+    }
     kwargs["silent"] = params["is_silent"]
     ga = partial(GAFactory.default().create_ga, **kwargs)
     return ga()

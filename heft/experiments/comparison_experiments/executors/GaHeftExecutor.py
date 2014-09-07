@@ -1,4 +1,5 @@
 from collections import namedtuple
+from copy import deepcopy
 import random
 
 from heft.core.CommonComponents.BaseExecutor import BaseExecutor
@@ -35,8 +36,11 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
     def init(self):
         self.current_schedule = Schedule({node: [] for node in self.heft_planner.get_nodes()})
 
+        initial_schedule = self.heft_planner.run(deepcopy(self.current_schedule))
+        #print("HEFT MAKESPAN: {0}".format(Utility.makespan(initial_schedule)))
         # TODO: change these two ugly records
-        result = self.ga_builder()(self.current_schedule, None)
+        result = self.ga_builder()(self.current_schedule, initial_schedule)
+        #print("INIT MAKESPAN: {0}".format(Utility.makespan(result[0][2])))
         self.current_schedule = result[0][2]
 
         self._post_new_events()
@@ -131,6 +135,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
                                    # self.back_cmp.initial_schedule,
                                    self.back_cmp.current_schedule,
                                    self.current_time)
+        print("CURRENT MAKESPAN: {0}".format(Utility.makespan(result[0][2])))
         return result
 
     def _check_event_for_ga_result(self, event):

@@ -97,7 +97,7 @@ if __name__ == '__main__':
                                                                                                overall_execution))
 
     if not only_heft:
-        result = repeat(do_exp_heft_schedule, 10)
+        result = repeat(do_exp_heft_schedule, 6)
         mean = numpy.mean(result)
         profit = (1 - mean / heft_makespan) * 100
         print(result)

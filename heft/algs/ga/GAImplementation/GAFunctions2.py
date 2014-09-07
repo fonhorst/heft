@@ -73,6 +73,12 @@ class GAFunctions2:
             for t in tasks:
                 chromosome[node].remove(t)
 
+        count = 0
+        for node, tasks in chromosome.items():
+            count += len(tasks)
+        if count == 0:
+            return None
+
         return chromosome
 
     def build_initial(self, fixed_schedule_part, current_time):
