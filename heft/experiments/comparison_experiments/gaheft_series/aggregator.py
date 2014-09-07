@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 from heft.settings import TEMP_PATH
 
 ALG_COLORS = {
-    #"ga": "-gD",
+    "ga": "-gD",
     "heft": "-rD",
-    "pso": "-yD"
+    # "pso": "-yD"
 }
 
 def extract_and_add(alg_name, data, d):
@@ -175,12 +175,15 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
 
 
 if __name__ == "__main__":
-    wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+    # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+    wf_names = ["Montage_25", "Montage_40", "Montage_50"]
     for wf_name in wf_names:
-        alg_names = ["pso", "heft"]
-        path = os.path.join(TEMP_PATH, "to_analysis", "all_pso")
-        # wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
-        wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], base_alg_name="heft")
+        alg_names = ["ga", "heft"]
+        # alg_names = ["pso", "heft"]
+        # path = os.path.join(TEMP_PATH, "to_analysis", "all_pso")
+        path = os.path.join(TEMP_PATH, "to_analysis", "ga_and_heft")
+        wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
+        # wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], base_alg_name="heft")
         extract = partial(composite_extract_and_add, alg_names=alg_names)
         aggregate(path=path,
                   picture_path="gaheft_series_{0}.png".format(wf_name), extract_and_add=extract, functions=[wf_plot])

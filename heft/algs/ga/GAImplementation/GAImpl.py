@@ -177,6 +177,7 @@ class GAFactory:
                     initial_population = []
 
                 if ga_functions.initial_chromosome is None:
+                    print("empty_init_solutions")
                     init_solutions = []
                 else:
                     init_solutions = [creator.Individual(copy.deepcopy(ga_functions.initial_chromosome)) for _ in range(int(POPSIZE*0.9))]

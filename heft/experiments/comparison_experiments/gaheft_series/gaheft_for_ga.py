@@ -5,9 +5,10 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import do_e
 
 
 EXPERIMENT_NAME = "gaheft_for_ga"
-REPEAT_COUNT = 10
+REPEAT_COUNT = 1
 WF_NAMES = ["Montage_25"]
-RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+# RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+RELIABILITY = [0.95]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,

@@ -128,7 +128,8 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         ## in other case current ga background computation would be dropped
         ## and we wouldn't get here at all
         result = self.ga_builder()(self.back_cmp.fixed_schedule,
-                                   self.back_cmp.initial_schedule,
+                                   # self.back_cmp.initial_schedule,
+                                   self.back_cmp.current_schedule,
                                    self.current_time)
         return result
 
