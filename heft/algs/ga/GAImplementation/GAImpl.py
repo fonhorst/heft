@@ -170,7 +170,7 @@ class GAFactory:
                 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 
-                ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule)
+                ga_functions.initial_chromosome = GAFunctions2.schedule_to_chromosome(initial_schedule, fixed_schedule_part)
 
 
                 if initial_population is None:

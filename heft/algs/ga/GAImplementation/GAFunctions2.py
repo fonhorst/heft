@@ -58,12 +58,21 @@ class GAFunctions2:
             pass
 
     @staticmethod
-    def schedule_to_chromosome(schedule):
+    def schedule_to_chromosome(schedule, fixed_schedule_part=None):
         if schedule is None:
             return None
         def ids(items):
             return [item.job.id for item in items if item.state != ScheduleItem.FAILED]
         chromosome = {node.name: ids(items) for (node, items) in schedule.mapping.items()}
+        if fixed_schedule_part is None:
+            return chromosome
+
+        fixed_chromosome = {node.name: ids(items) for (node, items) in fixed_schedule_part.mapping.items()}
+
+        for node, tasks in fixed_chromosome.items():
+            for t in tasks:
+                chromosome[node].remove(t)
+
         return chromosome
 
     def build_initial(self, fixed_schedule_part, current_time):

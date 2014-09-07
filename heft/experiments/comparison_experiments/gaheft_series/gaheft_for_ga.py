@@ -1,14 +1,14 @@
 from functools import partial
 
 from heft.experiments.comparison_experiments.gaheft_series.algorithm_factory import create_old_ga
-from heft.experiments.comparison_experiments.gaheft_series.utilities import do_exp, changing_reliability_run
+from heft.experiments.comparison_experiments.gaheft_series.utilities import do_exp, changing_reliability_run, test_run
 
 
 EXPERIMENT_NAME = "gaheft_for_ga"
-REPEAT_COUNT = 1
+REPEAT_COUNT = 20
 WF_NAMES = ["Montage_25"]
-# RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
-RELIABILITY = [0.95]
+RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+# RELIABILITY = [0.9]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
