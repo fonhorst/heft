@@ -1,13 +1,14 @@
 from functools import partial
-from heft.core.environment.Utility import profile_decorator
 
 from heft.experiments.comparison_experiments.gaheft_series.algorithm_factory import create_pfpso
-from heft.experiments.comparison_experiments.gaheft_series.utilities import do_exp, test_run, changing_reliability_run
+from heft.experiments.comparison_experiments.gaheft_series.utilities import changing_reliability_run, \
+    do_inherited_pop_exp, test_run
 
 
-EXPERIMENT_NAME = "gaheft_for_pso"
+
+EXPERIMENT_NAME = "igaheft_for_pso"
 REPEAT_COUNT = 10
-WF_NAMES = ["Montage_25"]
+WF_NAMES = ["Montage_40"]
 RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 
 BASE_PARAMS = {
@@ -18,9 +19,9 @@ BASE_PARAMS = {
         "w": 0.1,
         "c1": 0.6,
         "c2": 0.2,
-        "n": 50,
+        "n": 10,
         "gen_curr": 0,
-        "gen_step": 300,
+        "gen_step": 30,
 
     },
     "executor_params": {
@@ -41,12 +42,13 @@ BASE_PARAMS = {
     }
 }
 
-pso_exp = partial(do_exp, alg_builder=create_pfpso)
+pso_exp = partial(do_inherited_pop_exp, alg_builder=create_pfpso)
 
 # profile_test_run = profile_decorator(test_run)
 
 if __name__ == "__main__":
-
+    # TODO: Unworked version, it needs to be reworked properly. e.g. different experimental conditions should be added
+    raise NotImplementedError("Unworked version, it needs to be reworked properly. e.g. different experimental conditions should be added ")
     # profile_test_run(pso_exp, BASE_PARAMS)
-    # test_run(pso_exp, BASE_PARAMS)
-    changing_reliability_run(pso_exp, RELIABILITY, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
+    test_run(pso_exp, BASE_PARAMS)
+    # changing_reliability_run(pso_exp, RELIABILITY, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)

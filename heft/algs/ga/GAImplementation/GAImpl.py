@@ -176,7 +176,11 @@ class GAFactory:
                 if initial_population is None:
                     initial_population = []
 
-                init_solutions = [creator.Individual(copy.deepcopy(ga_functions.initial_chromosome)) for _ in range(int(POPSIZE*0.9))]
+                if ga_functions.initial_chromosome is None:
+                    init_solutions = []
+                else:
+                    init_solutions = [creator.Individual(copy.deepcopy(ga_functions.initial_chromosome)) for _ in range(int(POPSIZE*0.9))]
+
                 pop = initial_population + toolbox.population(n=POPSIZE - len(initial_population) - len(init_solutions)) + init_solutions
 
                 ## TODO: experimental change

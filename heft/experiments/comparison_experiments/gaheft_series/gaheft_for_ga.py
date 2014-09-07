@@ -1,17 +1,13 @@
-from copy import deepcopy
 from functools import partial
-import os
 
-
-from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
-from heft.experiments.comparison_experiments.gaheft_series.algorithm_factory import create_pfga
-from heft.experiments.comparison_experiments.gaheft_series.utilities import do_exp, test_run, changing_reliability_run
-from heft.settings import TEMP_PATH
+from heft.experiments.comparison_experiments.gaheft_series.algorithm_factory import create_old_ga
+from heft.experiments.comparison_experiments.gaheft_series.utilities import do_exp, changing_reliability_run
 
 
 EXPERIMENT_NAME = "gaheft_for_ga"
 REPEAT_COUNT = 10
 WF_NAMES = ["Montage_25"]
+RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
@@ -45,8 +41,8 @@ BASE_PARAMS = {
     }
 }
 
-ga_exp = partial(do_exp, alg_builder=create_pfga)
+ga_exp = partial(do_exp, alg_builder=create_old_ga)
 
 if __name__ == "__main__":
     # test_run(ga_exp, BASE_PARAMS)
-    changing_reliability_run(ga_exp, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
+    changing_reliability_run(ga_exp, RELIABILITY, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)

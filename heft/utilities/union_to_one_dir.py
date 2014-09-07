@@ -33,5 +33,5 @@ def union_pathes(output_path, *pathes):
 
 if __name__ == "__main__":
     output_path = os.path.join(TEMP_PATH, "to_analysis", "all_pso")
-    pathes = [os.path.join(TEMP_PATH, "to_analysis", "heft")]
+    pathes = [os.path.join(TEMP_PATH, "to_analysis", "additional_pso")]
     union_pathes(output_path, *pathes)

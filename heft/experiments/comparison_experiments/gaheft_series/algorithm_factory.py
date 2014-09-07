@@ -5,6 +5,7 @@ from deap import tools
 from deap.base import Toolbox
 from heft.algs.common.individuals import DictBasedIndividual, FitnessStd
 from heft.algs.common.mapordschedule import validate_mapping_with_alive_nodes
+from heft.algs.ga.GAImplementation.GAImpl import GAFactory
 
 from heft.algs.ga.common_fixed_schedule_schema import run_ga, fit_converter
 from heft.algs.ga.common_fixed_schedule_schema import generate as ga_generate
@@ -20,9 +21,25 @@ from heft.algs.pso.sdpso import run_pso
 from heft.core.environment.Utility import Utility
 from heft.experiments.comparison_experiments.gaheft_series.utilities import ParticleScheduleBuilder
 
+
+def create_old_ga(wf, rm, estimator,
+                  init_sched_percent=0.05,
+                  **params):
+    kwargs = {}
+    kwargs["wf"] = wf
+    kwargs["resource_manager"] = rm
+    kwargs["estimator"] = estimator
+    kwargs["ga_params"] = deepcopy(params)
+    kwargs["silent"] = params["is_silent"]
+    ga = partial(GAFactory.default().create_ga, **kwargs)
+    return ga()
+
+
 def create_pfga(wf, rm, estimator,
                 init_sched_percent=0.05,
                 **params):
+    ga_functions = GAFunctions2(wf, rm, estimator)
+
     def alg(fixed_schedule_part, initial_schedule, current_time=0.0):
 
 
