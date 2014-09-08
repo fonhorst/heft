@@ -83,7 +83,6 @@ def create_pfpso(wf, rm, estimator,
             init_ind_count = int(n*init_sched_percent)
             res = []
             if initial_schedule is not None and init_ind_count > 0:
-                # TODO: fix failed items
                 heft_particle = pso_generate(wf, rm, estimator, initial_schedule)
                 init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
                 res = res + init_arr

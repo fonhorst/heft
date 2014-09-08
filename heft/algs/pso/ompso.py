@@ -146,9 +146,12 @@ def numseq_to_ordering(wf, particle, fixed_tasks_ids=[]):
 def generate(wf, rm, estimator, schedule=None, fixed_schedule_part=None, current_time=0.0):
     sched = schedule if schedule is not None else SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule(fixed_schedule_part, current_time)
 
-    un_tasks = unmoveable_tasks(fixed_schedule_part)
-    clean_sched = Schedule({node: [item for item in items if item.job.id not in un_tasks and item.state != ScheduleItem.FAILED]
-                      for node, items in sched.mapping.items()})
+    if fixed_schedule_part is not None:
+        un_tasks = unmoveable_tasks(fixed_schedule_part)
+        clean_sched = Schedule({node: [item for item in items if item.job.id not in un_tasks and item.state != ScheduleItem.FAILED]
+                          for node, items in sched.mapping.items()})
+    else:
+        clean_sched = sched
 
 
     mapping, ordering = ord_and_map(clean_sched)

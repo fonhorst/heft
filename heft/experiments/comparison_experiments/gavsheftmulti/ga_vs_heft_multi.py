@@ -1,5 +1,6 @@
 from copy import deepcopy
 from functools import partial
+import numpy
 from heft.algs.ga.GAImplementation.GARunner import MixRunner
 from heft.algs.heft.DSimpleHeft import run_heft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
