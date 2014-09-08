@@ -12,6 +12,7 @@ from heft.experiments.comparison_experiments.common.ComparisonBase import Result
 from heft.core.environment.Utility import Utility, wf
 from heft.core.environment.ResourceGenerator import ResourceGenerator
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentEstimator, ExperimentResourceManager
+from heft.experiments.comparison_experiments.common.chromosome_cleaner import GaChromosomeCleaner
 from heft.experiments.comparison_experiments.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
 from heft.experiments.comparison_experiments.executors.HeftExecutor import HeftExecutor
@@ -261,6 +262,7 @@ class ExecutorsFactory:
         dynamic_heft = DynamicHeft(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
         # stat_saver = ResultSaver(self.DEFAULT_SAVE_PATH.format(kwargs["key_for_save"], ComparisonUtility.cur_time(), ComparisonUtility.uuid()))
         stat_saver = self.build_saver(*args, **kwargs)
+        chromosome_cleaner = GaChromosomeCleaner(kwargs["wf"], kwargs["resource_manager"], kwargs["estimator"])
         kwargs["silent"] = kwargs.get("silent", True)
         ga_machine = GaHeftOldPopExecutor(heft_planner=dynamic_heft,
                                           wf=kwargs["wf"],
@@ -271,7 +273,8 @@ class ExecutorsFactory:
                                           fixed_interval_for_ga=kwargs["fixed_interval_for_ga"],
                                           task_id_to_fail=kwargs["task_id_to_fail"],
                                           ga_builder=partial(GAFactory.default().create_ga, **kwargs),
-                                          stat_saver=kwargs.get("stat_saver", stat_saver))
+                                          stat_saver=kwargs.get("stat_saver", stat_saver),
+                                          chromosome_cleaner=kwargs.get("chromosome_cleaner", chromosome_cleaner))
 
         ga_machine.init()
         ga_machine.run()

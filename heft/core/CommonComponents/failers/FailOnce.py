@@ -4,6 +4,10 @@ from heft.core.CommonComponents.failers.FailBase import FailBase
 
 #TODO: detalize how constructor under inheritance works in Python
 class FailOnce(FailBase):
+
+    # estimator = None
+    # task_id_to_fail = None
+
     def _check_fail(self, task, node):
         if self.failed_once is not True:
             reliability = self.estimator.estimate_reliability(task, node)

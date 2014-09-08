@@ -156,8 +156,8 @@ def coeff_run():
         to_run = to_run + exps
 
     # m_repeat = lambda n, funcs: [f() for f in funcs for _ in range(n)]
-    results = m_repeat(REPEAT_COUNT, to_run)
-    # results = multi_repeat(REPEAT_COUNT, to_run)
+    #results = m_repeat(REPEAT_COUNT, to_run)
+    results = multi_repeat(REPEAT_COUNT, to_run)
     saver = UniqueNameSaver(TEMP_PATH, EXPERIMENT_NAME)
     for result in results:
         saver(result)
@@ -166,7 +166,7 @@ def coeff_run():
     pass
 
 if __name__ == '__main__':
-    # test_run()
+    test_run()
     # real_run()
-    coeff_run()
+    #coeff_run()
     pass

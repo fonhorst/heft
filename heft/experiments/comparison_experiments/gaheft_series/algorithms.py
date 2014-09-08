@@ -19,6 +19,7 @@ from heft.algs.pso.ompso import ordering_update
 from heft.algs.pso.ompso import generate as pso_generate
 from heft.algs.pso.sdpso import run_pso
 from heft.core.environment.Utility import Utility
+from heft.experiments.comparison_experiments.common.chromosome_cleaner import GaChromosomeCleaner
 from heft.experiments.comparison_experiments.gaheft_series.utilities import ParticleScheduleBuilder
 
 
@@ -125,4 +126,60 @@ def create_pfpso(wf, rm, estimator,
         result = (best, pop, resulted_schedule, None), logbook
         return result
     return alg
+
+
+def create_pfgsa(wf, rm, estimator,
+                init_sched_percent=0.05,
+                **params):
+    def alg(fixed_schedule_part, initial_schedule, current_time=0.0):
+        def generate_(n):
+            init_ind_count = int(n*init_sched_percent)
+            res = []
+            if initial_schedule is not None and init_ind_count > 0:
+                heft_particle = gsa_generate(wf, rm, estimator, initial_schedule)
+                init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
+                res = res + init_arr
+            if n - init_ind_count > 0:
+                generated_arr = [gsa_generate(wf, rm, estimator,
+                                          schedule=None,
+                                          fixed_schedule_part=fixed_schedule_part,
+                                          current_time=current_time)
+                                 for _ in range(n - init_ind_count)]
+                res = res + generated_arr
+            return res
+
+        def fit_converter(func):
+            def wrap(*args, **kwargs):
+                x = func(*args, **kwargs)
+                m = Utility.makespan(x)
+                return FitnessStd(values=(m, 0.0))
+            return wrap
+
+        def componoud_update(w, c1, c2, p, best, pop, min=-1, max=1):
+            mapping_update(w, c1, c2, p.mapping, best.mapping, pop)
+            ordering_update(w, c1, c2, p.ordering, best.ordering, pop, min=min, max=max)
+
+        task_map = {task.id: task for task in wf.get_all_unique_tasks()}
+        node_map = {node.name: node for node in rm.get_nodes()}
+
+        schedule_builder = ParticleScheduleBuilder(wf, rm, estimator,
+                                                   task_map, node_map,
+                                                   fixed_schedule_part)
+        pf_schedule = partial(schedule_builder, current_time=current_time)
+
+        toolbox = Toolbox()
+        toolbox.register("population", generate_)
+        toolbox.register("fitness", fit_converter(pf_schedule))
+        toolbox.register("update", componoud_update)
+
+        pop, logbook, best = run_pso(toolbox=toolbox, **params)
+
+        resulted_schedule = pf_schedule(best)
+        result = (best, pop, resulted_schedule, None), logbook
+        return result
+    return alg
+
+
+def create_ga_cleaner(wf, rm, estimator):
+    return GaChromosomeCleaner(wf, rm, estimator)
 

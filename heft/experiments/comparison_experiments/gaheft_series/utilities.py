@@ -80,84 +80,13 @@ class ParticleScheduleBuilder(NewScheduleBuilder):
     pass
 
 
-def do_exp(alg_builder, wf_name, **params):
-    _wf = wf(wf_name)
-    rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
-    estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
-    dynamic_heft = DynamicHeft(_wf, rm, estimator)
-    ga = alg_builder(_wf, rm, estimator,
-                     params["init_sched_percent"],
-                     logbook=None, stats=None,
-                     **params["alg_params"])
-    machine = GaHeftExecutor(heft_planner=dynamic_heft,
-                             wf=_wf,
-                             resource_manager=rm,
-                             ga_builder=lambda: ga,
-                             **params["executor_params"])
-
-    machine.init()
-    machine.run()
-    resulted_schedule = machine.current_schedule
-
-    Utility.validate_dynamic_schedule(_wf, resulted_schedule)
-
-    data = {
-        "wf_name": wf_name,
-        "params": params,
-        "result": {
-            "makespan": Utility.makespan(resulted_schedule),
-            ## TODO: this function should be remade to adapt under conditions of dynamic env
-            #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
-            "overall_execution_time": Utility.overall_execution_time(resulted_schedule),
-            "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
-        }
-    }
-
-    return data
-
-
-def do_inherited_pop_exp(alg_builder, wf_name, **params):
-    _wf = wf(wf_name)
-    rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
-    estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
-    dynamic_heft = DynamicHeft(_wf, rm, estimator)
-    ga = alg_builder(_wf, rm, estimator,
-                     params["init_sched_percent"],
-                     logbook=None, stats=None,
-                     **params["alg_params"])
-    machine = GaHeftOldPopExecutor(heft_planner=dynamic_heft,
-                             wf=_wf,
-                             resource_manager=rm,
-                             ga_builder=lambda: ga,
-                             **params["executor_params"])
-
-    machine.init()
-    machine.run()
-    resulted_schedule = machine.current_schedule
-
-    Utility.validate_dynamic_schedule(_wf, resulted_schedule)
-
-    data = {
-        "wf_name": wf_name,
-        "params": params,
-        "result": {
-            "makespan": Utility.makespan(resulted_schedule),
-            ## TODO: this function should be remade to adapt under conditions of dynamic env
-            #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
-            "overall_execution_time": Utility.overall_execution_time(resulted_schedule),
-            "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
-        }
-    }
-
-    return data
-
-
 def test_run(exp, base_params):
     configs = []
     # reliability = [1.0, 0.95, 0.9]
     # reliability = [1.0]
-    reliability = [0.99]
+    reliability = [0.95]
     wf_name = "Montage_25"
+
     for r in reliability:
         params = deepcopy(base_params)
         params["estimator_settings"]["reliability"] = r
@@ -173,7 +102,7 @@ def test_run(exp, base_params):
     pass
 
 
-def changing_reliability_run(exp, reliability, repeat_count, wf_names, base_params):
+def changing_reliability_run(exp, reliability, repeat_count, wf_names, base_params, save_path=None):
     configs = []
     for r in reliability:
         params = deepcopy(base_params)
@@ -183,7 +112,27 @@ def changing_reliability_run(exp, reliability, repeat_count, wf_names, base_para
     to_run = [partial(exp, wf_name=wf_name, **params) for wf_name in wf_names for params in configs]
     results = multi_repeat(repeat_count, to_run)
 
-    saver = UniqueNameSaver(os.path.join(TEMP_PATH, "gaheft_series"), base_params["experiment_name"])
+    path = save_path if save_path is not None else os.path.join(TEMP_PATH, "gaheft_series")
+    saver = UniqueNameSaver(path, base_params["experiment_name"])
+    for result in results:
+        saver(result)
+    pass
+
+
+def inherited_pop_run(exp, wf_tasksids_mapping, repeat_count, base_params, save_path=None):
+    to_run = []
+    for wf_name, ids in wf_tasksids_mapping.items():
+        for id in ids:
+            params = deepcopy(base_params)
+            params["executor_params"]["task_id_to_fail"] = id
+            func = partial(exp, wf_name=wf_name, **params)
+            to_run.append(func)
+
+    results = [t() for t in to_run for _ in range(repeat_count)]
+    # results = multi_repeat(repeat_count, to_run)
+
+    path = save_path if save_path is not None else os.path.join(TEMP_PATH, "igaheft_series")
+    saver = UniqueNameSaver(path, base_params["experiment_name"])
     for result in results:
         saver(result)
     pass

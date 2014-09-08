@@ -1,7 +1,8 @@
 from functools import partial
 
-from heft.experiments.comparison_experiments.gaheft_series.algorithm_factory import create_old_ga
-from heft.experiments.comparison_experiments.gaheft_series.utilities import do_exp, changing_reliability_run, test_run
+from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_old_ga
+from heft.experiments.comparison_experiments.gaheft_series.experiments import do_gaheft_exp
+from heft.experiments.comparison_experiments.gaheft_series.utilities import changing_reliability_run, test_run
 
 
 EXPERIMENT_NAME = "gaheft_for_ga"
@@ -42,7 +43,7 @@ BASE_PARAMS = {
     }
 }
 
-ga_exp = partial(do_exp, alg_builder=create_old_ga)
+ga_exp = partial(do_gaheft_exp, alg_builder=create_old_ga)
 
 if __name__ == "__main__":
     # test_run(ga_exp, BASE_PARAMS)

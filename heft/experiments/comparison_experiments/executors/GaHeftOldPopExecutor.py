@@ -18,6 +18,7 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
         self.task_id_to_fail = kwargs["task_id_to_fail"]
         self.estimator = kwargs["estimator"]
         self.stat_saver = kwargs["stat_saver"]
+        self.chromosome_cleaner = kwargs["chromosome_cleaner"]
 
         pass
 
@@ -82,6 +83,8 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
         ##=====================================
         print("GaHeft WITH OLD POP: ")
         cleaned_schedule = self.back_cmp.fixed_schedule
+
+        # initial_pop = [self._clean_chromosome(ind, self.current_event, cleaned_schedule) for ind in self.past_pop]
         initial_pop = [self._clean_chromosome(ind, self.current_event, cleaned_schedule) for ind in self.past_pop]
         ## TODO: rethink this hack
         result = self.ga_builder()(self.back_cmp.fixed_schedule,
@@ -126,38 +129,46 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
     ## TODO: merge with GAOldPopExecutor
     #@timing
     def _clean_chromosome(self, chromosome, event, current_cleaned_schedule):
-
-        not_scheduled_tasks = [item.job.id for (node, items) in current_cleaned_schedule.mapping.items() for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.UNSTARTED]
-
-        for (node_name, ids) in chromosome.items():
-            for_removing = []
-            for id in ids:
-                if id in not_scheduled_tasks:
-                    for_removing.append(id)
-                pass
-            for r in for_removing:
-                ids.remove(r)
-                pass
-            pass
-
+        print("Current event {0}".format(event))
         if isinstance(event, NodeFailed):
-            tasks = chromosome[event.node.name]
-            ## TODO: here must be a procedure of getting currently alive nodes
-            working_nodes = list(chromosome.keys() - set([event.node.name]))
-            for t in tasks:
-                lt = len(working_nodes) - 1
-                new_node = 0 if lt == 0 else random.randint(0, lt )
-                node_name = working_nodes[new_node]
-                length = len(chromosome[node_name])
-                # TODO: correct 0 and length
-                new_place = 0 if length == 0 else random.randint(0, length)
-                chromosome[node_name].insert(new_place, t)
-            chromosome[event.node.name] = []
-            return chromosome
+            return self.chromosome_cleaner(chromosome, current_cleaned_schedule)
         elif isinstance(event, NodeUp):
             return chromosome
         else:
             raise Exception("Unhandled event: {0}".format(event))
         pass
+
+        # not_scheduled_tasks = [item.job.id for (node, items) in current_cleaned_schedule.mapping.items() for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.UNSTARTED]
+        #
+        # for (node_name, ids) in chromosome.items():
+        #     for_removing = []
+        #     for id in ids:
+        #         if id in not_scheduled_tasks:
+        #             for_removing.append(id)
+        #         pass
+        #     for r in for_removing:
+        #         ids.remove(r)
+        #         pass
+        #     pass
+        #
+        # if isinstance(event, NodeFailed):
+        #     tasks = chromosome[event.node.name]
+        #     ## TODO: here must be a procedure of getting currently alive nodes
+        #     working_nodes = list(chromosome.keys() - set([event.node.name]))
+        #     for t in tasks:
+        #         lt = len(working_nodes) - 1
+        #         new_node = 0 if lt == 0 else random.randint(0, lt )
+        #         node_name = working_nodes[new_node]
+        #         length = len(chromosome[node_name])
+        #         # TODO: correct 0 and length
+        #         new_place = 0 if length == 0 else random.randint(0, length)
+        #         chromosome[node_name].insert(new_place, t)
+        #     chromosome[event.node.name] = []
+        #     return chromosome
+        # elif isinstance(event, NodeUp):
+        #     return chromosome
+        # else:
+        #     raise Exception("Unhandled event: {0}".format(event))
+        # pass
 
     pass
