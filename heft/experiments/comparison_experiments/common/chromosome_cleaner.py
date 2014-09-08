@@ -1,6 +1,8 @@
 from functools import reduce
 import operator
 import random
+from heft.algs.pso.ompso import CompoundParticle
+from heft.algs.pso.sdpso import Particle
 from heft.core.environment.BaseElements import Node
 
 from heft.core.environment.ResourceManager import ScheduleItem
@@ -19,7 +21,6 @@ class GaChromosomeCleaner(ChromosomeCleaner):
         pass
 
     def __call__(self, chromosome, current_cleaned_schedule):
-        #old_size = reduce(operator.add, (len(tasks) for _, tasks in chromosome.items()), 0)
 
         not_scheduled_tasks = [item.job.id for (node, items) in current_cleaned_schedule.mapping.items()
                                for item in items if item.state == ScheduleItem.FINISHED or
@@ -56,14 +57,42 @@ class GaChromosomeCleaner(ChromosomeCleaner):
             if node_name not in working_nodes:
                 chromosome[node_name] = []
 
-        #assert reduce(operator.add, (len(tasks) for _, tasks in chromosome.items()), 0) == old_size, "Chromosome size changed"
-
         return chromosome
 
 
 class PSOChromosomeCleaner(ChromosomeCleaner):
+    def __init__(self, wf, rm, estimator):
+        self._wf = wf
+        self._rm = rm
+        self._estimator = estimator
+        pass
+
     def __call__(self, chromosome, current_cleaned_schedule):
-        raise NotImplementedError()
+        if not isinstance(chromosome, CompoundParticle):
+            raise ValueError("Chromosome is not of CompoundParticle type: {0}".format(type(chromosome)))
+
+        not_scheduled_tasks = [item.job.id for (node, items) in current_cleaned_schedule.mapping.items()
+                               for item in items if item.state == ScheduleItem.FINISHED or
+                               item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.UNSTARTED]
+
+        working_nodes = [node.name for node in self._rm.get_nodes() if node.state != Node.Down]
+        if len(working_nodes) == 0:
+            raise ValueError("All nodes are down. This case can not be handled")
+
+        for t in not_scheduled_tasks:
+            del chromosome.mapping.entity[t]
+
+        # we don't need to clean the ordering, because of it isn't linked with failed nodes
+
+        tasks_to_reschedule = [t for t, node in chromosome.mapping.entity.items() if node not in working_nodes]
+
+        for t in tasks_to_reschedule:
+            lt = len(working_nodes) - 1
+            new_node = 0 if lt == 0 else random.randint(0, lt)
+            node_name = working_nodes[new_node]
+            chromosome.mapping.entity[t] = node_name
+
+        return chromosome
     pass
 
 

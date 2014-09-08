@@ -19,7 +19,7 @@ from heft.algs.pso.ompso import ordering_update
 from heft.algs.pso.ompso import generate as pso_generate
 from heft.algs.pso.sdpso import run_pso
 from heft.core.environment.Utility import Utility
-from heft.experiments.comparison_experiments.common.chromosome_cleaner import GaChromosomeCleaner
+from heft.experiments.comparison_experiments.common.chromosome_cleaner import GaChromosomeCleaner, PSOChromosomeCleaner
 from heft.experiments.comparison_experiments.gaheft_series.utilities import ParticleScheduleBuilder
 
 
@@ -46,9 +46,13 @@ def create_old_ga(wf, rm, estimator,
 def create_pfga(wf, rm, estimator,
                 init_sched_percent=0.05,
                 **params):
+    ##TODO: add initial_population for run_ga
+    raise NotImplementedError()
+
     ga_functions = GAFunctions2(wf, rm, estimator)
 
-    def alg(fixed_schedule_part, initial_schedule, current_time=0.0):
+    def alg(fixed_schedule_part, initial_schedule, current_time=0.0, initial_population=None):
+
 
 
         ga_functions = GAFunctions2(wf, rm, estimator)
@@ -79,15 +83,21 @@ def create_pfga(wf, rm, estimator,
 def create_pfpso(wf, rm, estimator,
                 init_sched_percent=0.05,
                 **params):
-    def alg(fixed_schedule_part, initial_schedule, current_time=0.0):
+    def alg(fixed_schedule_part, initial_schedule, current_time=0.0, initial_population=None):
         def generate_(n):
             init_ind_count = int(n*init_sched_percent)
             res = []
-            if initial_schedule is not None and init_ind_count > 0:
+            init_pop_size = 0 if initial_population is None else len(initial_population)
+            if init_pop_size > 0:
+                if init_pop_size > n:
+                    raise ValueError("size of initial population is bigger than parameter n: {0} > {1}".
+                                         format(init_pop_size, n))
+                res = res + initial_population
+            if initial_schedule is not None and init_ind_count > 0 and n - init_pop_size > 0:
                 heft_particle = pso_generate(wf, rm, estimator, initial_schedule)
                 init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
                 res = res + init_arr
-            if n - init_ind_count > 0:
+            if n - init_ind_count - init_pop_size > 0:
                 generated_arr = [pso_generate(wf, rm, estimator,
                                           schedule=None,
                                           fixed_schedule_part=fixed_schedule_part,
@@ -131,6 +141,9 @@ def create_pfpso(wf, rm, estimator,
 def create_pfgsa(wf, rm, estimator,
                 init_sched_percent=0.05,
                 **params):
+
+    raise NotImplementedError()
+
     def alg(fixed_schedule_part, initial_schedule, current_time=0.0):
         def generate_(n):
             init_ind_count = int(n*init_sched_percent)
@@ -182,4 +195,8 @@ def create_pfgsa(wf, rm, estimator,
 
 def create_ga_cleaner(wf, rm, estimator):
     return GaChromosomeCleaner(wf, rm, estimator)
+
+
+def create_pso_cleaner(wf, rm, estimator):
+    return PSOChromosomeCleaner(wf, rm, estimator)
 

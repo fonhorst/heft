@@ -1,6 +1,7 @@
 from functools import partial
 
-from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_old_ga, create_pfpso
+from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_old_ga, create_pfpso, \
+    create_ga_cleaner, create_pso_cleaner
 from heft.experiments.comparison_experiments.gaheft_series.experiments import do_inherited_pop_exp
 from heft.experiments.comparison_experiments.gaheft_series.utilities import test_run, \
     inherited_pop_run
@@ -44,7 +45,7 @@ BASE_PARAMS = {
     }
 }
 
-pso_exp = partial(do_inherited_pop_exp, alg_builder=create_pfpso)
+pso_exp = partial(do_inherited_pop_exp, alg_builder=create_pfpso, chromosome_cleaner_builder=create_pso_cleaner)
 
 # profile_test_run = profile_decorator(test_run)
 
