@@ -18,6 +18,7 @@ from heft.algs.pso.sdpso import update as mapping_update
 from heft.algs.pso.ompso import ordering_update
 from heft.algs.pso.ompso import generate as pso_generate
 from heft.algs.pso.sdpso import run_pso
+from heft.core.environment.BaseElements import Node
 from heft.core.environment.Utility import Utility
 from heft.experiments.comparison_experiments.common.chromosome_cleaner import GaChromosomeCleaner, PSOChromosomeCleaner
 from heft.experiments.comparison_experiments.gaheft_series.utilities import ParticleScheduleBuilder
@@ -87,11 +88,23 @@ def create_pfpso(wf, rm, estimator,
         def generate_(n):
             init_ind_count = int(n*init_sched_percent)
             res = []
+            # init_pop_size = 0
             init_pop_size = 0 if initial_population is None else len(initial_population)
             if init_pop_size > 0:
                 if init_pop_size > n:
                     raise ValueError("size of initial population is bigger than parameter n: {0} > {1}".
                                          format(init_pop_size, n))
+
+                def validate_alive(particle):
+                    mapping = particle.mapping.entity
+                    alive = [node.name for node in rm.get_nodes() if node.state != Node.Down]
+                    if any((node_name not in alive) for t_id, node_name in mapping.items()):
+                        raise ValueError("Invalid particle in initial population")
+                    pass
+                for p in initial_population:
+                    validate_alive(p)
+
+
                 res = res + initial_population
             if initial_schedule is not None and init_ind_count > 0 and n - init_pop_size > 0:
                 heft_particle = pso_generate(wf, rm, estimator, initial_schedule)

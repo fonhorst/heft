@@ -1,20 +1,14 @@
 from copy import deepcopy
 from functools import partial
 import os
-from timeit import timeit
+
 from heft.algs.common.NewSchedulerBuilder import NewScheduleBuilder
 from heft.algs.common.individuals import DictBasedIndividual
 from heft.algs.ga.GAImplementation.GAFunctions2 import unmoveable_tasks
-from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.algs.pso.ompso import CompoundParticle, numseq_to_ordering
-from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
-from heft.core.environment.Utility import wf, Utility
-from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
-from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
-from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
-from heft.experiments.comparison_experiments.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
 from heft.settings import TEMP_PATH
+
 
 EXAMPLE_BASE_PARAMS = {
     "experiment_name": None,

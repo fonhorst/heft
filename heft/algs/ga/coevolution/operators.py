@@ -4,7 +4,7 @@ import random
 from deap import tools
 import numpy
 from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividual
-from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE, _check_precedence
+from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE, check_precedence
 from heft.algs.ga.coevolution.cga import Specie, Env
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.algs.heft.HeftHelper import HeftHelper
@@ -373,7 +373,7 @@ def ordering_default_initialize(ctx, size):
     env = ctx['env']
     sorted_tasks = HeftHelper.heft_rank(env.wf, env.rm, env.estimator)
 
-    assert _check_precedence(env.wf, sorted_tasks), "Check precedence failed"
+    assert check_precedence(env.wf, sorted_tasks), "Check precedence failed"
 
     result = [ListBasedIndividual(ordering_default_mutate(ctx, deepcopy(sorted_tasks))) for i in range(size)]
     return result

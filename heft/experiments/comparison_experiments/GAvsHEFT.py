@@ -27,7 +27,7 @@ PARAMS = {
     "is_visualized": False,
     "ga_params": {
         "Kbest": 5,
-        "population": 50,
+        "population": 100,
         "crossover_probability": 0.3, #0.8
         "replacing_mutation_probability": 0.1, #0.5
         "sweep_mutation_probability": 0.3, #0.4
@@ -97,7 +97,7 @@ if __name__ == '__main__':
                                                                                                overall_execution))
 
     if not only_heft:
-        result = repeat(do_exp_heft_schedule, 6)
+        result = repeat(do_exp_heft_schedule, 1)
         mean = numpy.mean(result)
         profit = (1 - mean / heft_makespan) * 100
         print(result)

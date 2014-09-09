@@ -1,3 +1,6 @@
+from copy import deepcopy
+from functools import reduce
+import operator
 from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import Schedule, ScheduleItem
@@ -85,8 +88,6 @@ def place_task_to_schedule(workflow,
         return (st_time, end_time)
 
 
-
-
 class NewScheduleBuilder:
 
     def __init__(self,
@@ -138,18 +139,30 @@ class NewScheduleBuilder:
 
         return (schedule_mapping, finished_tasks, ready_tasks, chrmo_mapping, task_to_node)
 
-
     def __call__(self, chromo, current_time):
+
+        alive_nodes = [node for node in self.nodes if node.state != Node.Down]
+
+        alive_nodes_names = [node.name for node in alive_nodes]
+        for node_name, tasks in chromo.items():
+            if node_name not in alive_nodes_names:
+                raise ValueError("Chromo is invalid. There is a task assigned to a dead node")
 
         (schedule_mapping, finished_tasks, ready_tasks, chrmo_mapping, task_to_node) = self._create_helping_structures(chromo)
 
-        chromo_copy = {nd_name: [item for item in items] for (nd_name, items) in chromo.items()}
+        #chromo_copy = {nd_name: [item for item in items] for (nd_name, items) in chromo.items()}
+        chromo_copy = deepcopy(chromo)
 
-        alive_nodes = [node for node in self.nodes if node.state != Node.Down]
+
         if len(alive_nodes) == 0:
             raise Exception("There are not alive nodes")
 
+        count_of_left_tasks = lambda: reduce(operator.add, (len(tasks) for node, tasks in chromo_copy.items()), 0)
+
+
+
         while len(ready_tasks) > 0:
+            count_before = count_of_left_tasks()
             if len(alive_nodes) == 0:
                 raise ValueError("Count of alive_nodes is zero")
             for node in alive_nodes:
@@ -186,6 +199,10 @@ class NewScheduleBuilder:
                     ready_children = self._get_ready_tasks(task.children, finished_tasks)
                     for child in ready_children:
                         ready_tasks.append(child.id)
+            count_after = count_of_left_tasks()
+            if count_before == count_after:
+                raise Exception("Unable to properly process a chromosome."
+                                " Perhaps, due to invalid fixed_schedule_part or the chromosome.")
         schedule = Schedule(schedule_mapping)
         return schedule
 

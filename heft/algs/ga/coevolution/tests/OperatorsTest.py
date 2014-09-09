@@ -2,7 +2,7 @@ import unittest
 from heft.algs.ga.coevolution.cga import Env
 
 from heft.core.environment.Utility import wf as WF
-from heft.algs.ga.coevolution.operators import _check_precedence, ordering_default_mutate
+from heft.algs.ga.coevolution.operators import check_precedence, ordering_default_mutate
 
 
 def _topological_sort(wf):
@@ -37,14 +37,14 @@ class OperatorsTest(unittest.TestCase):
                'ID00015_000', 'ID00019_000', 'ID00018_000', 'ID00020_000', 'ID00021_000',
                'ID00017_000', 'ID00016_000', 'ID00024_000', 'ID00022_000', 'ID00023_000']
 
-        assert not _check_precedence(self.wf, seq)
+        assert not check_precedence(self.wf, seq)
 
     def test_ordering_mutate(self):
         mutant = _topological_sort(self.wf)
-        assert _check_precedence(self.wf, mutant)
+        assert check_precedence(self.wf, mutant)
 
         mutant = ordering_default_mutate({'env': self.env}, mutant)
-        assert _check_precedence(self.wf, mutant)
+        assert check_precedence(self.wf, mutant)
 
     pass
 if __name__ == "main":

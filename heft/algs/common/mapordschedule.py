@@ -22,7 +22,7 @@ def build_schedule(workflow, estimator, resource_manager, solution):
     ms = solution[MAPPING_SPECIE]
     os = solution[ORDERING_SPECIE]
 
-    assert _check_precedence(workflow, os), "Precedence is violated"
+    assert check_precedence(workflow, os), "Precedence is violated"
 
     ms = {t: resource_manager.byName(n) for t, n in ms}
     schedule_mapping = {n: [] for n in set(ms.values())}
@@ -41,12 +41,12 @@ def build_schedule(workflow, estimator, resource_manager, solution):
     return schedule
 
 
-def _check_precedence(workflow, seq):
-    for i in range(len(seq)):
-        task = workflow.byId(seq[i])
+def check_precedence(workflow, task_seq):
+    for i in range(len(task_seq)):
+        task = workflow.byId(task_seq[i])
         pids = [p.id for p in task.parents]
-        for j in range(i + 1, len(seq)):
-            if seq[j] in pids:
+        for j in range(i + 1, len(task_seq)):
+            if task_seq[j] in pids:
                 return False
     return True
 

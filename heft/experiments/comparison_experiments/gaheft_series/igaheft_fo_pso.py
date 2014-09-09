@@ -1,10 +1,9 @@
 from functools import partial
 
-from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_old_ga, create_pfpso, \
-    create_ga_cleaner, create_pso_cleaner
+from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_pfpso, \
+    create_pso_cleaner
 from heft.experiments.comparison_experiments.gaheft_series.experiments import do_inherited_pop_exp
-from heft.experiments.comparison_experiments.gaheft_series.utilities import test_run, \
-    inherited_pop_run
+from heft.experiments.comparison_experiments.gaheft_series.utilities import inherited_pop_run
 
 
 EXPERIMENT_NAME = "igaheft_for_ga"
