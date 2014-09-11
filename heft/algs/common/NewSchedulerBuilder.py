@@ -141,12 +141,18 @@ class NewScheduleBuilder:
 
     def __call__(self, chromo, current_time):
 
+        count_of_tasks = lambda mapping: reduce(operator.add, (len(tasks) for node, tasks in mapping.items()), 0)
         alive_nodes = [node for node in self.nodes if node.state != Node.Down]
 
         alive_nodes_names = [node.name for node in alive_nodes]
         for node_name, tasks in chromo.items():
-            if node_name not in alive_nodes_names:
+            if node_name not in alive_nodes_names and len(tasks) > 0:
                 raise ValueError("Chromo is invalid. There is a task assigned to a dead node")
+        if count_of_tasks(chromo) + len(self.fixed_schedule_part.get_unfailed_tasks_ids()) != len(self.workflow.get_all_unique_tasks()):
+            raise Exception("Not full chromosome")
+
+        # TODO: add not to schedule
+        #if count_of_tasks(chromo) + count_of_tasks(self.fixed_schedule_part.mapping) !=
 
         (schedule_mapping, finished_tasks, ready_tasks, chrmo_mapping, task_to_node) = self._create_helping_structures(chromo)
 
@@ -157,12 +163,17 @@ class NewScheduleBuilder:
         if len(alive_nodes) == 0:
             raise Exception("There are not alive nodes")
 
-        count_of_left_tasks = lambda: reduce(operator.add, (len(tasks) for node, tasks in chromo_copy.items()), 0)
 
 
-
+        #print("Building started...")
         while len(ready_tasks) > 0:
-            count_before = count_of_left_tasks()
+
+            # ## TODO: only for debug. Remove it later.
+            # print("alive nodes: {0}".format(alive_nodes))
+            # for node_name, tasks in chromo_copy.items():
+            #     print("Node: {0}, tasks count: {1}".format(node_name, len(tasks)))
+
+            count_before = count_of_tasks(chromo_copy)
             if len(alive_nodes) == 0:
                 raise ValueError("Count of alive_nodes is zero")
             for node in alive_nodes:
@@ -199,10 +210,11 @@ class NewScheduleBuilder:
                     ready_children = self._get_ready_tasks(task.children, finished_tasks)
                     for child in ready_children:
                         ready_tasks.append(child.id)
-            count_after = count_of_left_tasks()
+            count_after = count_of_tasks(chromo_copy)
             if count_before == count_after:
                 raise Exception("Unable to properly process a chromosome."
                                 " Perhaps, due to invalid fixed_schedule_part or the chromosome.")
+            pass
         schedule = Schedule(schedule_mapping)
         return schedule
 

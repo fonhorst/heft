@@ -3,19 +3,19 @@ from functools import partial
 
 from deap import tools
 from deap.base import Toolbox
-from heft.algs.common.individuals import DictBasedIndividual, FitnessStd
-from heft.algs.common.mapordschedule import validate_mapping_with_alive_nodes
-from heft.algs.ga.GAImplementation.GAImpl import GAFactory
 
+from heft.algs.common.individuals import FitnessStd
+from heft.algs.ga.GAImplementation.GAImpl import GAFactory
 from heft.algs.ga.common_fixed_schedule_schema import run_ga, fit_converter
 from heft.algs.ga.common_fixed_schedule_schema import generate as ga_generate
 from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
-from heft.algs.pso.sdpso import update as mapping_update
+from heft.algs.pso.sdpso import update as mapping_update, MappingParticle
+
 
 
 ## TODO: remake interface later
 ## do NOT use it for anything except 'gaheft_series' experiments
-from heft.algs.pso.ompso import ordering_update
+from heft.algs.pso.ompso import ordering_update, CompoundParticle
 from heft.algs.pso.ompso import generate as pso_generate
 from heft.algs.pso.sdpso import run_pso
 from heft.core.environment.BaseElements import Node
@@ -84,6 +84,24 @@ def create_pfga(wf, rm, estimator,
 def create_pfpso(wf, rm, estimator,
                 init_sched_percent=0.05,
                 **params):
+
+    ## TODO: only for debug. remove it later.
+    def validate_alive(particle):
+        if isinstance(particle, CompoundParticle):
+            mapping = particle.mapping.entity
+            velocity = particle.mapping.velocity
+        elif isinstance(particle, MappingParticle):
+            mapping = particle.entity
+            velocity = particle.velocity
+        else:
+            raise ValueError("Not supported type of particle")
+        alive = [node.name for node in rm.get_nodes() if node.state != Node.Down]
+        if any(node_name not in alive for t_id, node_name in mapping.items()):
+            raise ValueError("Invalid particle in initial population")
+        if any(node_name not in alive for (t_id, node_name), _ in velocity.items()):
+            raise ValueError("Invalid particle in initial population")
+        pass
+
     def alg(fixed_schedule_part, initial_schedule, current_time=0.0, initial_population=None):
         def generate_(n):
             init_ind_count = int(n*init_sched_percent)
@@ -95,20 +113,21 @@ def create_pfpso(wf, rm, estimator,
                     raise ValueError("size of initial population is bigger than parameter n: {0} > {1}".
                                          format(init_pop_size, n))
 
-                def validate_alive(particle):
-                    mapping = particle.mapping.entity
-                    alive = [node.name for node in rm.get_nodes() if node.state != Node.Down]
-                    if any((node_name not in alive) for t_id, node_name in mapping.items()):
-                        raise ValueError("Invalid particle in initial population")
-                    pass
+                ## TODO: only for debug. remove it later.
                 for p in initial_population:
                     validate_alive(p)
+                for p in initial_population:
+                    p.created_by = "init_pop"
+
+                print("ALL INIT POPULATION OK")
 
 
                 res = res + initial_population
             if initial_schedule is not None and init_ind_count > 0 and n - init_pop_size > 0:
                 heft_particle = pso_generate(wf, rm, estimator, initial_schedule)
                 init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
+                for p in init_arr:
+                    p.created_by = "heft_particle"
                 res = res + init_arr
             if n - init_ind_count - init_pop_size > 0:
                 generated_arr = [pso_generate(wf, rm, estimator,
@@ -116,6 +135,8 @@ def create_pfpso(wf, rm, estimator,
                                           fixed_schedule_part=fixed_schedule_part,
                                           current_time=current_time)
                                  for _ in range(n - init_ind_count)]
+                for p in generated_arr:
+                    p.created_by = "generator"
                 res = res + generated_arr
             return res
 
@@ -126,8 +147,32 @@ def create_pfpso(wf, rm, estimator,
                 return FitnessStd(values=(m, 0.0))
             return wrap
 
+
+        ## TODO: only for debug. remove it later.
+        def update_wrapper(func):
+            def wrap(w, c1, c2, p_mapping, best_mapping, pop):
+
+                backup_pop = deepcopy(pop)
+
+                ## TODO: only for debug. remove it later.
+                for p in pop:
+                    validate_alive(p)
+
+                validate_alive(p_mapping)
+                validate_alive(best_mapping)
+
+                func(w, c1, c2, p_mapping, best_mapping, pop)
+
+                ## TODO: only for debug. remove it later.
+                for p in pop:
+                    validate_alive(p)
+
+                pass
+            return wrap
+
+
         def componoud_update(w, c1, c2, p, best, pop, min=-1, max=1):
-            mapping_update(w, c1, c2, p.mapping, best.mapping, pop)
+            update_wrapper(mapping_update)(w, c1, c2, p.mapping, best.mapping, pop)
             ordering_update(w, c1, c2, p.ordering, best.ordering, pop, min=min, max=max)
 
         task_map = {task.id: task for task in wf.get_all_unique_tasks()}
@@ -211,5 +256,6 @@ def create_ga_cleaner(wf, rm, estimator):
 
 
 def create_pso_cleaner(wf, rm, estimator):
+    # return AlternativePSOChromosomeCleaner(wf, rm, estimator)
     return PSOChromosomeCleaner(wf, rm, estimator)
 

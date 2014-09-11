@@ -3,7 +3,7 @@ import operator
 from distance import hamming
 from heft.algs.common.setbasedoperations import Velocity
 from heft.algs.common.utilities import cannot_be_zero
-from heft.algs.pso.sdpso import position_update, Particle
+from heft.algs.pso.sdpso import position_update, MappingParticle
 
 
 def force_vector_matrix(pop, kbest, G):
@@ -34,7 +34,7 @@ def velocity_and_position(p, fvm, position_func, beta=1.0):
     acceleration = force / p.mass
     new_velocity = p.velocity*beta + acceleration
     new_position = position_update(p.entity, new_velocity)
-    new_particle = Particle(new_position)
+    new_particle = MappingParticle(new_position)
     new_particle.velocity = new_velocity
     return new_particle
 

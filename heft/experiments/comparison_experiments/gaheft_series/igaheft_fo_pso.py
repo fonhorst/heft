@@ -6,7 +6,7 @@ from heft.experiments.comparison_experiments.gaheft_series.experiments import do
 from heft.experiments.comparison_experiments.gaheft_series.utilities import inherited_pop_run
 
 
-EXPERIMENT_NAME = "igaheft_for_ga"
+EXPERIMENT_NAME = "igaheft_for_pso"
 REPEAT_COUNT = 2
 WF_TASKIDS_MAPPING = {
     "Montage_100": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
@@ -18,12 +18,12 @@ BASE_PARAMS = {
     "init_sched_percent": 0.05,
     "alg_name": "pso",
     "alg_params": {
-        "w": 0.1,
-        "c1": 0.6,
-        "c2": 0.2,
+        "w": 0.0, #0.1
+        "c1": 0.0, #0.6
+        "c2": 0.0, #0.2
         "n": 5,
         "gen_curr": 0,
-        "gen_step": 10,
+        "gen_step": 4,
     },
     "executor_params": {
         "base_fail_duration": 40,

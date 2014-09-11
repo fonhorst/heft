@@ -6,6 +6,7 @@ from heft.algs.common.NewSchedulerBuilder import NewScheduleBuilder
 from heft.algs.common.individuals import DictBasedIndividual
 from heft.algs.ga.GAImplementation.GAFunctions2 import unmoveable_tasks
 from heft.algs.pso.ompso import CompoundParticle, numseq_to_ordering
+from heft.core.environment.BaseElements import Node
 from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
 from heft.settings import TEMP_PATH
 
@@ -66,7 +67,18 @@ class ParticleScheduleBuilder(NewScheduleBuilder):
             return chromo
         raise ValueError("particle has a wrong type: {0}".format(type(particle)))
 
+
     def __call__(self, particle, current_time):
+
+        #TODO: only for debug. remove it later.
+        backup_copy = deepcopy(particle)
+        alive = [node.name for node in self.nodes if node.state != Node.Down]
+        down_nodes = [node.name for node in self.nodes if node.state == Node.Down]
+        #print("particle_builder Down_nodes: {0}".format(down_nodes))
+        for task_id, node_name in particle.mapping.entity.items():
+            if node_name not in alive:
+                raise Exception("Exception!")
+
         chromo = self._particle_to_chromo(particle)
         result = super().__call__(chromo, current_time)
         return result

@@ -14,7 +14,7 @@ from heft.algs.ga.nsga2 import run_nsga2
 from heft.algs.heft.DSimpleHeft import run_heft
 from heft.algs.heft.HeftHelper import HeftHelper
 from heft.algs.pso.gapso import run_gapso
-from heft.algs.pso.sdpso import run_pso, update, schedule_to_position, construct_solution, Particle, \
+from heft.algs.pso.sdpso import run_pso, update, schedule_to_position, construct_solution, MappingParticle, \
     Velocity, Position
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import Utility, wf

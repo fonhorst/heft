@@ -1,3 +1,4 @@
+from copy import deepcopy
 import random
 
 from heft.core.CommonComponents.failers.FailOnce import FailOnce
@@ -85,12 +86,15 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
         cleaned_schedule = self.back_cmp.fixed_schedule
 
         # initial_pop = [self._clean_chromosome(ind, self.current_event, cleaned_schedule) for ind in self.past_pop]
+        backup_copy = deepcopy(self.past_pop)
         initial_pop = [self._clean_chromosome(ind, self.current_event, cleaned_schedule) for ind in self.past_pop]
+        backup_copy_init_pop = deepcopy(initial_pop)
         ## TODO: rethink this hack
         result = self.ga_builder()(self.back_cmp.fixed_schedule,
                                    self.back_cmp.initial_schedule,
                                    self.current_time,
                                    initial_population=initial_pop)
+                                   # initial_population=None)
 
         ((best_op, pop_op, schedule_op, stopped_iteration_op), logbook_op) = result
 

@@ -3,10 +3,12 @@ import random
 from deap import tools
 from deap.base import Toolbox
 import numpy
+from heft.algs.common.particle_operations import MappingParticle
 from heft.algs.heft.DSimpleHeft import run_heft
 from heft.algs.heft.HeftHelper import HeftHelper
-from heft.algs.pso.sdpso import run_pso, generate, update, schedule_to_position, fitness, construct_solution, Particle, \
-    Velocity
+from heft.algs.pso.mapping_operators import schedule_to_position, fitness, update, generate, construct_solution
+from heft.algs.pso.sdpso import run_pso
+
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import Utility, wf
 from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE
@@ -22,12 +24,16 @@ sorted_tasks = HeftHelper.heft_rank(_wf, rm, estimator)
 
 heft_schedule = run_heft(_wf, rm, estimator)
 heft_mapping = schedule_to_position(heft_schedule)
-heft_mapping.velocity = Velocity({})
+
+
+
+
+heft_mapping.velocity = MappingParticle.Velocity({})
 
 heft_gen = lambda n: [deepcopy(heft_mapping) if random.random() > 1.0 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
 
 W, C1, C2 = 0.9, 0.6, 0.2
-GEN, N = 500, 30
+GEN, N = 10, 5
 
 toolbox = Toolbox()
 toolbox.register("population", heft_gen)
@@ -57,8 +63,7 @@ def do_exp():
 
 
 
-    best_position = best.entity
-    solution = construct_solution(best_position, sorted_tasks)
+    solution = construct_solution(best, sorted_tasks)
     schedule = build_schedule(_wf, estimator, rm, solution)
 
     Utility.validate_static_schedule(_wf, schedule)
