@@ -97,6 +97,3 @@ class PSOChromosomeCleaner(ChromosomeCleaner):
 
         return chromosome
     pass
-
-
-

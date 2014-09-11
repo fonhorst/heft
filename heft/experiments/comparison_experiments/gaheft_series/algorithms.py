@@ -1,5 +1,6 @@
 from copy import deepcopy
 from functools import partial
+import random
 
 from deap import tools
 from deap.base import Toolbox
@@ -9,11 +10,13 @@ from heft.algs.ga.GAImplementation.GAImpl import GAFactory
 from heft.algs.ga.common_fixed_schedule_schema import run_ga, fit_converter
 from heft.algs.ga.common_fixed_schedule_schema import generate as ga_generate
 from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
+from heft.algs.ga.multipopGA.MPGA import create_mpga
 from heft.algs.pso.mapping_operators import update as mapping_update
 
 from heft.algs.pso.ordering_operators import generate as pso_generate, ordering_update
 from heft.algs.pso.sdpso import run_pso
 from heft.core.environment.Utility import Utility
+from heft.experiments.cga.utilities.island_ga import equal_social_migration_scheme
 from heft.experiments.comparison_experiments.common.chromosome_cleaner import GaChromosomeCleaner, PSOChromosomeCleaner
 from heft.experiments.comparison_experiments.gaheft_series.utilities import ParticleScheduleBuilder
 
@@ -196,6 +199,47 @@ def create_pfgsa(wf, rm, estimator,
     return alg
 
 
+def create_pfmpga(wf, rm, estimator,
+                init_sched_percent=0.05,
+                **params):
+
+    "merged_pop_iters"
+    "migrCount"
+    "all_iters_count"
+
+    def emigrant_selection(pop, k):
+        size = len(pop)
+        if k > size:
+            raise Exception("Count of emigrants is greater than population: {0}>{1}".format(k, size))
+        res = []
+        for i in range(k):
+            r = random.randint(0, size - 1)
+            while r in res:
+                r = random.randint(0, size - 1)
+            res.append(r)
+        return [pop[r] for r in res]
+
+
+    kwargs = {}
+    kwargs["wf"] = wf
+    kwargs["resource_manager"] = rm
+    kwargs["estimator"] = estimator
+    kwargs["ga_params"] = {
+        "population": params["n"],
+        "crossover_probability": params["cxpb"],
+        "replacing_mutation_probability": params["mutpb"],
+        "generations": params["gen_step"],
+        "sweep_mutation_probability": params["sweepmutpb"],
+        "Kbest": params["kbest"],
+        "merged_pop_iters": params["merged_pop_iters"]
+    }
+    kwargs["silent"] = params["is_silent"]
+    kwargs["migrCount"] = params["migrCount"]
+    kwargs["emigrant_selection"] = emigrant_selection
+    kwargs["all_iters_count"] = params["all_iters_count"]
+    ga = partial(create_mpga, **kwargs)
+    return ga()
+
 def create_ga_cleaner(wf, rm, estimator):
     return GaChromosomeCleaner(wf, rm, estimator)
 
@@ -203,4 +247,7 @@ def create_ga_cleaner(wf, rm, estimator):
 def create_pso_cleaner(wf, rm, estimator):
     # return AlternativePSOChromosomeCleaner(wf, rm, estimator)
     return PSOChromosomeCleaner(wf, rm, estimator)
+
+
+
 

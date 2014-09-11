@@ -110,12 +110,12 @@ def create_mpga(*args, **kwargs):
                            current_time=current_time,
                            initial_population=pop)
                     new_pops.append(npop)
-                    for rec in logbook:
-                        iter = k*GENERATIONS + rec["iter"]
-                        mp = iter_map.get(iter, [])
-                        mp.append({"worst": rec["worst"], "best": rec["best"], "avr": rec["avr"]})
-                        iter_map[iter] = mp
-                        pass
+                    # for rec in logbook:
+                    #     iter = k*GENERATIONS + rec["iter"]
+                    #     mp = iter_map.get(iter, [])
+                    #     mp.append({"worst": rec["worst"], "best": rec["best"], "avr": rec["avr"]})
+                    #     iter_map[iter] = mp
+                    #     pass
                 for iter, items in iter_map.items():
                     best = max(it["best"] for it in items)
                     avr = sum(it["avr"] for it in items)/len(items)
@@ -136,10 +136,10 @@ def create_mpga(*args, **kwargs):
                            current_time=current_time,
                            initial_population=common_pop)
                 common_pop = npop
-                for rec in logbook:
-                    iter = (all_iters_count - MERGED_POP) + rec["iter"]
-                    common_logbook.record(iter=iter, worst=rec["worst"], best=rec["best"], avr=rec["avr"])
-                    pass
+                # for rec in logbook:
+                #     iter = (all_iters_count - MERGED_POP) + rec["iter"]
+                #     common_logbook.record(iter=iter, worst=rec["worst"], best=rec["best"], avr=rec["avr"])
+                #     pass
                 result = quick_save()
                 pass
 
