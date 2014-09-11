@@ -1,12 +1,11 @@
 from functools import partial
 
-from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_old_ga, create_ga_cleaner, \
-    create_old_pfmpga
+from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_pfpso, create_pso_cleaner, create_pfmpga
 from heft.experiments.comparison_experiments.gaheft_series.experiments import do_island_inherited_pop_exp
 from heft.experiments.comparison_experiments.gaheft_series.utilities import inherited_pop_run
 
 
-EXPERIMENT_NAME = "migaheft_for_ga"
+EXPERIMENT_NAME = "migaheft_for_pso"
 REPEAT_COUNT = 1
 WF_TASKIDS_MAPPING = {
     "Montage_100": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
@@ -18,13 +17,12 @@ BASE_PARAMS = {
     "init_sched_percent": 0.05,
     "alg_name": "pso",
     "alg_params": {
-        "kbest": 5,
-        "n": 10,
-        "cxpb": 0.3,  # 0.8
-        "mutpb": 0.1,  # 0.5
-        "sweepmutpb": 0.3,  # 0.4
+        "w": 0.1,
+        "c1": 0.6,
+        "c2": 0.2,
+        "n": 5,
         "gen_curr": 0,
-        "gen_step": 30,
+        "gen_step": 4,
         "is_silent": True,
         "merged_pop_iters": 10,
         "migrCount": 1,
@@ -49,8 +47,9 @@ BASE_PARAMS = {
     }
 }
 
-ga_exp = partial(do_island_inherited_pop_exp, alg_builder=create_old_ga, mp_alg_builder=create_old_pfmpga,
-                 chromosome_cleaner_builder=create_ga_cleaner)
+
+ga_exp = partial(do_island_inherited_pop_exp, alg_builder=create_pfpso, mp_alg_builder=create_pfmpga,
+                 chromosome_cleaner_builder=create_pso_cleaner)
 
 # profile_test_run = profile_decorator(test_run)
 

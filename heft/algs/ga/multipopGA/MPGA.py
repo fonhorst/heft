@@ -32,10 +32,12 @@ def create_mpga(*args, **kwargs):
     ga_functions = GAFunctions2(wf, rm, estimator)
     kwargs["ga_functions"] = ga_functions
 
+    alg_builder = kwargs.get("alg_builder", lambda : GAFactory.default().create_ga(**kwargs))
+
     ##==========================
     ## create ga_alg
     ##==========================
-    ga_alg = GAFactory.default().create_ga(**kwargs)
+    ga_alg = alg_builder()
 
     class MPGAComputation(SynchronizedCheckpointedGA):
 
@@ -45,14 +47,9 @@ def create_mpga(*args, **kwargs):
 
         #@profile_decorator
         def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None, only_new_pops=False):
-
-
-
             ##==========================
             ## create populations
             ##==========================
-
-
             ##TODO: remake it
             creator.create("FitnessMax", base.Fitness, weights=(1.0,))
             creator.create("Individual", dict, fitness=creator.FitnessMax)

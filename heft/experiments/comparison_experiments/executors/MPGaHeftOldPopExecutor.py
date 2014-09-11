@@ -25,6 +25,7 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
         pass
 
     def _actual_ga_run(self):
+        ## TODO: correct this.
         heft_initial = GAFunctions2.schedule_to_chromosome(self.back_cmp.current_schedule)
         heft_initial = self._clean_chromosome(heft_initial, self.back_cmp.event, self.back_cmp.fixed_schedule)
 

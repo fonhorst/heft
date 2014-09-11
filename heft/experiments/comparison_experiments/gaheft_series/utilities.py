@@ -1,6 +1,7 @@
 from copy import deepcopy
 from functools import partial
 import os
+import random
 
 from heft.algs.common.NewSchedulerBuilder import NewScheduleBuilder
 from heft.algs.common.individuals import DictBasedIndividual
@@ -143,3 +144,16 @@ def inherited_pop_run(exp, wf_tasksids_mapping, repeat_count, base_params, save_
     for result in results:
         saver(result)
     pass
+
+
+def emigrant_selection(pop, k):
+    size = len(pop)
+    if k > size:
+        raise Exception("Count of emigrants is greater than population: {0}>{1}".format(k, size))
+    res = []
+    for i in range(k):
+        r = random.randint(0, size - 1)
+        while r in res:
+            r = random.randint(0, size - 1)
+        res.append(r)
+    return [pop[r] for r in res]

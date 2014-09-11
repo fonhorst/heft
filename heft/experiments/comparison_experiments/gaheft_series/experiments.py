@@ -94,8 +94,18 @@ def do_island_inherited_pop_exp(alg_builder, mp_alg_builder, chromosome_cleaner_
                      params["init_sched_percent"],
                      logbook=None, stats=None,
                      **params["alg_params"])
+
+    ## TODO: remake this part later.
+    def reverse_interface_adapter(func):
+        def wrap(*args, **kwargs):
+            (best, pop, resulted_schedule, _), logbook = func(*args, **kwargs)
+            return pop, logbook, best
+        return wrap
+
+
     mpga = mp_alg_builder(_wf, rm, estimator,
                           params["init_sched_percent"],
+                          alg=reverse_interface_adapter(ga),
                           logbook=None, stats=None,
                           **params["alg_params"])
 

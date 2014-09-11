@@ -4,6 +4,7 @@ import random
 
 from deap import tools
 from deap.base import Toolbox
+from deap.tools.migration import migRing
 
 from heft.algs.common.individuals import FitnessStd
 from heft.algs.ga.GAImplementation.GAImpl import GAFactory
@@ -11,6 +12,7 @@ from heft.algs.ga.common_fixed_schedule_schema import run_ga, fit_converter
 from heft.algs.ga.common_fixed_schedule_schema import generate as ga_generate
 from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
 from heft.algs.ga.multipopGA.MPGA import create_mpga
+from heft.algs.ga.multipopGA.mpga_refactored import run_mpga
 from heft.algs.pso.mapping_operators import update as mapping_update
 
 from heft.algs.pso.ordering_operators import generate as pso_generate, ordering_update
@@ -18,7 +20,7 @@ from heft.algs.pso.sdpso import run_pso
 from heft.core.environment.Utility import Utility
 from heft.experiments.cga.utilities.island_ga import equal_social_migration_scheme
 from heft.experiments.comparison_experiments.common.chromosome_cleaner import GaChromosomeCleaner, PSOChromosomeCleaner
-from heft.experiments.comparison_experiments.gaheft_series.utilities import ParticleScheduleBuilder
+from heft.experiments.comparison_experiments.gaheft_series.utilities import ParticleScheduleBuilder, emigrant_selection
 
 
 def create_old_ga(wf, rm, estimator,
@@ -74,7 +76,6 @@ def create_pfga(wf, rm, estimator,
         result = (best, pop, resulted_schedule, None), logbook
         return result
     return alg
-
 
 ## TODO: remake interface later
 ## do NOT use it for anything except 'gaheft_series' experiments
@@ -199,7 +200,7 @@ def create_pfgsa(wf, rm, estimator,
     return alg
 
 
-def create_pfmpga(wf, rm, estimator,
+def create_old_pfmpga(wf, rm, estimator,
                 init_sched_percent=0.05,
                 **params):
 
@@ -207,17 +208,7 @@ def create_pfmpga(wf, rm, estimator,
     "migrCount"
     "all_iters_count"
 
-    def emigrant_selection(pop, k):
-        size = len(pop)
-        if k > size:
-            raise Exception("Count of emigrants is greater than population: {0}>{1}".format(k, size))
-        res = []
-        for i in range(k):
-            r = random.randint(0, size - 1)
-            while r in res:
-                r = random.randint(0, size - 1)
-            res.append(r)
-        return [pop[r] for r in res]
+
 
 
     kwargs = {}
@@ -239,6 +230,61 @@ def create_pfmpga(wf, rm, estimator,
     kwargs["all_iters_count"] = params["all_iters_count"]
     ga = partial(create_mpga, **kwargs)
     return ga()
+
+
+def create_pfmpga(wf, rm, estimator,
+                  init_sched_percent=0.05,
+                  alg=None,
+                  **params):
+    if alg is None:
+        raise ValueError("Algorithm cannot be none")
+    def alg(fixed_schedule_part, initial_schedule, current_time=0.0, initial_population=None, only_new_pops=False):
+
+        n = params["n"]
+
+        ### generate heft_based population
+        init_ind_count = int(n * init_sched_percent)
+        heft_particle = pso_generate(wf, rm, estimator, initial_schedule)
+        init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
+        generated_arr = [pso_generate(wf, rm, estimator,
+                                          schedule=None,
+                                          fixed_schedule_part=fixed_schedule_part,
+                                          current_time=current_time)
+                                 for _ in range(n - init_ind_count)]
+        heft_based_population = init_arr + generated_arr
+
+        ### generate new population
+        random_population = [pso_generate(wf, rm, estimator,
+                                          schedule=None,
+                                          fixed_schedule_part=fixed_schedule_part,
+                                          current_time=current_time)
+                                 for _ in range(n)]
+
+        populations = {
+            "inherited": initial_population,
+            "heft_based": heft_based_population,
+            "random": random_population
+        }
+
+        migration = migRing(selection=emigrant_selection)
+
+        toolbox = Toolbox()
+        toolbox.register("run_alg", alg)
+        toolbox.register("migration", migration)
+
+        task_map = {task.id: task for task in wf.get_all_unique_tasks()}
+        node_map = {node.name: node for node in rm.get_nodes()}
+        schedule_builder = ParticleScheduleBuilder(wf, rm, estimator,
+                                                   task_map, node_map,
+                                                   fixed_schedule_part)
+        pf_schedule = partial(schedule_builder, current_time=current_time)
+
+        pop, logbook, best = run_mpga(toolbox=toolbox, logbook=None, stats=None, initial_populations=populations, **params)
+        resulted_schedule = pf_schedule(best)
+        result = (best, pop, resulted_schedule, None), logbook
+        return result
+    return alg
+
 
 def create_ga_cleaner(wf, rm, estimator):
     return GaChromosomeCleaner(wf, rm, estimator)
