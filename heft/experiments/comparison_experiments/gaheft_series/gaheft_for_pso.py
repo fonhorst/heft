@@ -7,7 +7,7 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import test
 
 
 EXPERIMENT_NAME = "gaheft_for_pso"
-REPEAT_COUNT = 10
+REPEAT_COUNT = 1
 WF_NAMES = ["Montage_25"]
 RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 
@@ -19,9 +19,9 @@ BASE_PARAMS = {
         "w": 0.1,
         "c1": 0.6,
         "c2": 0.2,
-        "n": 50,
+        "n": 5,
         "gen_curr": 0,
-        "gen_step": 300,
+        "gen_step": 10,
 
     },
     "executor_params": {
@@ -49,5 +49,5 @@ pso_exp = partial(do_gaheft_exp, alg_builder=create_pfpso)
 if __name__ == "__main__":
 
     # profile_test_run(pso_exp, BASE_PARAMS)
-    #test_run(pso_exp, BASE_PARAMS)
+    # test_run(pso_exp, BASE_PARAMS)
     changing_reliability_run(pso_exp, RELIABILITY, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)

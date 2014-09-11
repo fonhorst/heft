@@ -9,16 +9,10 @@ from heft.algs.ga.GAImplementation.GAImpl import GAFactory
 from heft.algs.ga.common_fixed_schedule_schema import run_ga, fit_converter
 from heft.algs.ga.common_fixed_schedule_schema import generate as ga_generate
 from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
-from heft.algs.pso.sdpso import update as mapping_update, MappingParticle
+from heft.algs.pso.mapping_operators import update as mapping_update
 
-
-
-## TODO: remake interface later
-## do NOT use it for anything except 'gaheft_series' experiments
-from heft.algs.pso.ompso import ordering_update, CompoundParticle
-from heft.algs.pso.ompso import generate as pso_generate
+from heft.algs.pso.ordering_operators import generate as pso_generate, ordering_update
 from heft.algs.pso.sdpso import run_pso
-from heft.core.environment.BaseElements import Node
 from heft.core.environment.Utility import Utility
 from heft.experiments.comparison_experiments.common.chromosome_cleaner import GaChromosomeCleaner, PSOChromosomeCleaner
 from heft.experiments.comparison_experiments.gaheft_series.utilities import ParticleScheduleBuilder
@@ -85,23 +79,6 @@ def create_pfpso(wf, rm, estimator,
                 init_sched_percent=0.05,
                 **params):
 
-    ## TODO: only for debug. remove it later.
-    def validate_alive(particle):
-        if isinstance(particle, CompoundParticle):
-            mapping = particle.mapping.entity
-            velocity = particle.mapping.velocity
-        elif isinstance(particle, MappingParticle):
-            mapping = particle.entity
-            velocity = particle.velocity
-        else:
-            raise ValueError("Not supported type of particle")
-        alive = [node.name for node in rm.get_nodes() if node.state != Node.Down]
-        if any(node_name not in alive for t_id, node_name in mapping.items()):
-            raise ValueError("Invalid particle in initial population")
-        if any(node_name not in alive for (t_id, node_name), _ in velocity.items()):
-            raise ValueError("Invalid particle in initial population")
-        pass
-
     def alg(fixed_schedule_part, initial_schedule, current_time=0.0, initial_population=None):
         def generate_(n):
             init_ind_count = int(n*init_sched_percent)
@@ -112,14 +89,6 @@ def create_pfpso(wf, rm, estimator,
                 if init_pop_size > n:
                     raise ValueError("size of initial population is bigger than parameter n: {0} > {1}".
                                          format(init_pop_size, n))
-
-                ## TODO: only for debug. remove it later.
-                for p in initial_population:
-                    validate_alive(p)
-                for p in initial_population:
-                    p.created_by = "init_pop"
-
-                print("ALL INIT POPULATION OK")
 
 
                 res = res + initial_population
@@ -147,32 +116,8 @@ def create_pfpso(wf, rm, estimator,
                 return FitnessStd(values=(m, 0.0))
             return wrap
 
-
-        ## TODO: only for debug. remove it later.
-        def update_wrapper(func):
-            def wrap(w, c1, c2, p_mapping, best_mapping, pop):
-
-                backup_pop = deepcopy(pop)
-
-                ## TODO: only for debug. remove it later.
-                for p in pop:
-                    validate_alive(p)
-
-                validate_alive(p_mapping)
-                validate_alive(best_mapping)
-
-                func(w, c1, c2, p_mapping, best_mapping, pop)
-
-                ## TODO: only for debug. remove it later.
-                for p in pop:
-                    validate_alive(p)
-
-                pass
-            return wrap
-
-
         def componoud_update(w, c1, c2, p, best, pop, min=-1, max=1):
-            update_wrapper(mapping_update)(w, c1, c2, p.mapping, best.mapping, pop)
+            mapping_update(w, c1, c2, p.mapping, best.mapping, pop)
             ordering_update(w, c1, c2, p.ordering, best.ordering, pop, min=min, max=max)
 
         task_map = {task.id: task for task in wf.get_all_unique_tasks()}

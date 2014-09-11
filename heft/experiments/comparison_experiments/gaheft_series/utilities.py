@@ -4,8 +4,9 @@ import os
 
 from heft.algs.common.NewSchedulerBuilder import NewScheduleBuilder
 from heft.algs.common.individuals import DictBasedIndividual
+from heft.algs.common.particle_operations import CompoundParticle
 from heft.algs.ga.GAImplementation.GAFunctions2 import unmoveable_tasks
-from heft.algs.pso.ompso import CompoundParticle, numseq_to_ordering
+from heft.algs.pso.ordering_operators import numseq_to_ordering
 from heft.core.environment.BaseElements import Node
 from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
 from heft.settings import TEMP_PATH
@@ -57,7 +58,7 @@ class ParticleScheduleBuilder(NewScheduleBuilder):
         Converts Particle representation of individual to chromosome representation used by GA operators
         """
         if isinstance(particle, CompoundParticle):
-            ordering = numseq_to_ordering(self.workflow, particle, self._unmoveable_tasks)
+            ordering = numseq_to_ordering(self.workflow, particle.ordering, self._unmoveable_tasks)
             chromo_mapping = {node.name: [] for node in self.nodes}
             for task_id in ordering:
                 node_name = particle.mapping.entity[task_id]

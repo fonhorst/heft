@@ -144,8 +144,12 @@ class CompoundParticle(Particle):
 
     def _set_best(self, value):
         self._best = value
-        self.mapping.best = value.mapping
-        self.ordering.best = value.ordering
+        if value is not None:
+            self.mapping.best = value.mapping
+            self.ordering.best = value.ordering
+        else:
+            self.mapping.best = None
+            self.ordering.best = None
         pass
 
     best = property(_get_best, _set_best)
