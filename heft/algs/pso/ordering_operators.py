@@ -6,13 +6,15 @@ from heft.algs.common.mapordschedule import ord_and_map, build_schedule as base_
     validate_mapping_with_alive_nodes
 from heft.algs.common.mapordschedule import fitness as basefitness
 from heft.algs.pso.sdpso import velocity_update
-from heft.core.environment.ResourceManager import Schedule
+from heft.core.environment.ResourceManager import Schedule, ScheduleItem
 from heft.core.environment.Utility import Utility
 
 
 def build_schedule(wf, rm, estimator, particle):
-    ordering = numseq_to_ordering(wf, particle)
-    solution = construct_solution(particle.mapping.entity, ordering)
+    ordering_particle = particle.ordering
+    mapping_particle = particle.mapping
+    ordering = numseq_to_ordering(wf, ordering_particle)
+    solution = construct_solution(mapping_particle, ordering)
     sched = base_build_schedule(wf, estimator, rm, solution)
     return sched
 
@@ -70,6 +72,8 @@ def generate(wf, rm, estimator, schedule=None, fixed_schedule_part=None, current
     ordering_map = {task_id: val for task_id, val in zip(ordering, ordering_numseq)}
 
     ord_p, map_p = OrderingParticle(ordering_map), MappingParticle(mapping)
+    ord_p.velocity = OrderingParticle.Velocity({})
+    map_p.velocity = MappingParticle.Velocity({})
     result = CompoundParticle(map_p, ord_p)
     if not validate_mapping_with_alive_nodes(result.mapping.entity, rm):
         raise Exception("found invalid solution in generated array")
@@ -77,15 +81,10 @@ def generate(wf, rm, estimator, schedule=None, fixed_schedule_part=None, current
 
 
 def ordering_update(w, c1, c2, p, best, pop, min=-1, max=1):
-    def limit_velocity(velocity):
-        v = [(el - min)/abs(el - min) * abs(max - min) if abs(el - min) > abs(max - min) else el for el in velocity]
-        return v
-
-    def limit_position(position):
-        pos = [max if p > max else min if p < min else p for p in position]
-        return pos
-    new_velocity = velocity_update(w, c1, c2, p.best.entity, best.entity, p.velocity, p.entity, pop)
-    new_velocity = limit_velocity(new_velocity)
-    p.entity = limit_position(p.entity + new_velocity)
+    new_velocity = velocity_update(w, c1, c2, p.best, best, p.velocity, p, pop)
+    new_velocity.limit_by(min, max)
+    new_entity = (p + new_velocity)
+    new_entity.limit_by(min, max)
+    p.entity = new_entity.entity
     p.velocity = new_velocity
     pass

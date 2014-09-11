@@ -2,10 +2,10 @@ from copy import deepcopy
 import random
 from deap.base import Toolbox
 import numpy
+from heft.algs.pso.ordering_operators import build_schedule, generate, ordering_update, fitness
 
-from heft.algs.pso.ompso import fitness, generate, build_schedule, ordering_update
 from heft.algs.pso.sdpso import run_pso
-from heft.algs.pso.sdpso import update as mapping_update
+from heft.algs.pso.mapping_operators import update as mapping_update
 from heft.core.environment.Utility import Utility
 from heft.experiments.cga.utilities.common import repeat
 from heft.experiments.common import AbstractExperiment
@@ -74,9 +74,9 @@ class OmpsoBaseExperiment(AbstractExperiment):
 
 
 if __name__ == "__main__":
-    exp = OmpsoBaseExperiment(wf_name="Montage_100",
+    exp = OmpsoBaseExperiment(wf_name="Montage_25",
                               W=0.1, C1=0.6, C2=0.2,
-                              GEN=300, N=100)
+                              GEN=10, N=5)
     # result = repeat(exp, 5)
     result = exp()
     print(result)

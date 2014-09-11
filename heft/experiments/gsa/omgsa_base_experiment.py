@@ -5,6 +5,7 @@ import numpy
 from heft.algs.gsa.SimpleGsaScheme import run_gsa
 from heft.algs.gsa.operators import G, Kbest
 from heft.algs.gsa.setbasedoperators import velocity_and_position, force_vector_matrix
+from heft.algs.pso.ordering_operators import generate, ordering_update, fitness
 
 from heft.algs.pso.sdpso import run_pso
 from heft.algs.pso.sdpso import update as mapping_update

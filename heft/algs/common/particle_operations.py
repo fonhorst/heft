@@ -62,6 +62,14 @@ class MappingParticle(Particle):
 
 class OrderingParticle(Particle):
 
+    @staticmethod
+    def _to_limit(val, min, max):
+        if val > max:
+            return max
+        if val < min:
+            return min
+        return val
+
     def __init__(self, ordering):
         """
         :param ordering: has the following form
@@ -78,6 +86,22 @@ class OrderingParticle(Particle):
         velocity = OrderingParticle.Velocity({task_id: self.entity[task_id] - other.entity[task_id]
                                               for task_id in self.entity})
         return velocity
+
+    def __add__(self, other):
+        if not isinstance(other, OrderingParticle.Velocity):
+            raise ValueError("Invalid type of the argument for this operation: {0}".format(type(other)))
+
+        if len(other) == 0:
+            return OrderingParticle({task_id: self.entity[task_id] for task_id in self.entity})
+
+        velocity = OrderingParticle({task_id: self.entity[task_id] + other[task_id]
+                                              for task_id in self.entity})
+        return velocity
+
+    def limit_by(self, min=-1, max=-1):
+        for t in self.entity:
+            self.entity[t] = OrderingParticle._to_limit(self.entity[t], min, max)
+        pass
 
     class Velocity(dict):
 
@@ -99,8 +123,10 @@ class OrderingParticle(Particle):
                 return self.__mul__(1/denumenator)
             raise ValueError("{0} has not a suitable type for division".format(denumenator))
 
-        def cutby(self, alpha):
-            return self
+        def limit_by(self, min=-1, max=1):
+            for t in self:
+                self[t] = OrderingParticle._to_limit(self[t], min, max)
+            pass
         pass
     pass
 
@@ -121,6 +147,8 @@ class CompoundParticle(Particle):
         self.mapping.best = value.mapping
         self.ordering.best = value.ordering
         pass
+
+    best = property(_get_best, _set_best)
     pass
 
 
