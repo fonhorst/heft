@@ -1,5 +1,7 @@
 from copy import deepcopy
 from functools import partial
+import functools
+import operator
 import random
 
 from deap import tools
@@ -7,6 +9,7 @@ from deap.base import Toolbox
 from deap.tools.migration import migRing
 
 from heft.algs.common.individuals import FitnessStd
+from heft.algs.common.particle_operations import CompoundParticle
 from heft.algs.ga.GAImplementation.GAImpl import GAFactory
 from heft.algs.ga.common_fixed_schedule_schema import run_ga, fit_converter
 from heft.algs.ga.common_fixed_schedule_schema import generate as ga_generate
@@ -77,6 +80,28 @@ def create_pfga(wf, rm, estimator,
         return result
     return alg
 
+def create_pso_alg(pf_schedule, generate_, **params):
+    def fit_converter(func):
+        def wrap(*args, **kwargs):
+            x = func(*args, **kwargs)
+            m = Utility.makespan(x)
+            return FitnessStd(values=(m, 0.0))
+        return wrap
+
+    def componoud_update(w, c1, c2, p, best, pop, min=-1, max=1):
+        mapping_update(w, c1, c2, p.mapping, best.mapping, pop)
+        ordering_update(w, c1, c2, p.ordering, best.ordering, pop, min=min, max=max)
+
+
+    toolbox = Toolbox()
+    toolbox.register("population", generate_)
+    toolbox.register("fitness", fit_converter(pf_schedule))
+    toolbox.register("update", componoud_update)
+
+    pso_alg = partial(run_pso, toolbox=toolbox, **params)
+    return pso_alg
+
+
 ## TODO: remake interface later
 ## do NOT use it for anything except 'gaheft_series' experiments
 def create_pfpso(wf, rm, estimator,
@@ -113,31 +138,15 @@ def create_pfpso(wf, rm, estimator,
                 res = res + generated_arr
             return res
 
-        def fit_converter(func):
-            def wrap(*args, **kwargs):
-                x = func(*args, **kwargs)
-                m = Utility.makespan(x)
-                return FitnessStd(values=(m, 0.0))
-            return wrap
-
-        def componoud_update(w, c1, c2, p, best, pop, min=-1, max=1):
-            mapping_update(w, c1, c2, p.mapping, best.mapping, pop)
-            ordering_update(w, c1, c2, p.ordering, best.ordering, pop, min=min, max=max)
-
         task_map = {task.id: task for task in wf.get_all_unique_tasks()}
         node_map = {node.name: node for node in rm.get_nodes()}
-
         schedule_builder = ParticleScheduleBuilder(wf, rm, estimator,
-                                                   task_map, node_map,
-                                                   fixed_schedule_part)
+                                                   task_map, node_map, fixed_schedule_part)
+
         pf_schedule = partial(schedule_builder, current_time=current_time)
 
-        toolbox = Toolbox()
-        toolbox.register("population", generate_)
-        toolbox.register("fitness", fit_converter(pf_schedule))
-        toolbox.register("update", componoud_update)
-
-        pop, logbook, best = run_pso(toolbox=toolbox, **params)
+        pso = create_pso_alg(pf_schedule, generate_, **params)
+        pop, logbook, best = pso()
 
         resulted_schedule = pf_schedule(best)
         result = (best, pop, resulted_schedule, None), logbook
@@ -234,9 +243,9 @@ def create_old_pfmpga(wf, rm, estimator,
 
 def create_pfmpga(wf, rm, estimator,
                   init_sched_percent=0.05,
-                  alg=None,
+                  algorithm=None,
                   **params):
-    if alg is None:
+    if algorithm is None:
         raise ValueError("Algorithm cannot be none")
     def alg(fixed_schedule_part, initial_schedule, current_time=0.0, initial_population=None, only_new_pops=False):
 
@@ -244,7 +253,8 @@ def create_pfmpga(wf, rm, estimator,
 
         ### generate heft_based population
         init_ind_count = int(n * init_sched_percent)
-        heft_particle = pso_generate(wf, rm, estimator, initial_schedule)
+        heft_particle = initial_schedule if isinstance(initial_schedule, CompoundParticle) \
+            else pso_generate(wf, rm, estimator, initial_schedule)
         init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
         generated_arr = [pso_generate(wf, rm, estimator,
                                           schedule=None,
@@ -266,11 +276,11 @@ def create_pfmpga(wf, rm, estimator,
             "random": random_population
         }
 
-        migration = migRing(selection=emigrant_selection)
+        def migration(populations, k):
+            pops = [pop for name, pop in sorted(populations.items(), key=lambda x: x[0])]
+            migRing(pops, k, selection=emigrant_selection)
 
-        toolbox = Toolbox()
-        toolbox.register("run_alg", alg)
-        toolbox.register("migration", migration)
+
 
         task_map = {task.id: task for task in wf.get_all_unique_tasks()}
         node_map = {node.name: node for node in rm.get_nodes()}
@@ -279,7 +289,11 @@ def create_pfmpga(wf, rm, estimator,
                                                    fixed_schedule_part)
         pf_schedule = partial(schedule_builder, current_time=current_time)
 
-        pop, logbook, best = run_mpga(toolbox=toolbox, logbook=None, stats=None, initial_populations=populations, **params)
+        toolbox = Toolbox()
+        toolbox.register("run_alg", algorithm(pf_schedule=pf_schedule))
+        toolbox.register("migration", migration)
+
+        pop, logbook, best = run_mpga(toolbox=toolbox, initial_populations=populations, **params)
         resulted_schedule = pf_schedule(best)
         result = (best, pop, resulted_schedule, None), logbook
         return result
@@ -294,6 +308,13 @@ def create_pso_cleaner(wf, rm, estimator):
     # return AlternativePSOChromosomeCleaner(wf, rm, estimator)
     return PSOChromosomeCleaner(wf, rm, estimator)
 
+
+def create_schedule_to_ga_chromosome_converter(wf, rm, estimator):
+    return GAFunctions2.schedule_to_chromosome
+
+
+def create_schedule_to_pso_chromosome_converter(wf, rm, estimator):
+    return partial(pso_generate, wf, rm, estimator)
 
 
 

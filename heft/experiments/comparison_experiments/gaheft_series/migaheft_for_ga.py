@@ -1,7 +1,8 @@
 from functools import partial
+from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
 
 from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_old_ga, create_ga_cleaner, \
-    create_old_pfmpga
+    create_old_pfmpga, create_schedule_to_ga_chromosome_converter
 from heft.experiments.comparison_experiments.gaheft_series.experiments import do_island_inherited_pop_exp
 from heft.experiments.comparison_experiments.gaheft_series.utilities import inherited_pop_run
 
@@ -49,8 +50,8 @@ BASE_PARAMS = {
     }
 }
 
-ga_exp = partial(do_island_inherited_pop_exp, alg_builder=create_old_ga, mp_alg_builder=create_old_pfmpga,
-                 chromosome_cleaner_builder=create_ga_cleaner)
+ga_exp = partial(do_island_inherited_pop_exp, alg_builder=create_old_ga, mp_alg_builder=create_old_pfmpga, algorithm_builder= lambda **kwargs: None,
+                 chromosome_cleaner_builder=create_ga_cleaner, schedule_to_chromosome_converter_builder=create_schedule_to_ga_chromosome_converter)
 
 # profile_test_run = profile_decorator(test_run)
 

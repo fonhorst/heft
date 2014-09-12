@@ -37,7 +37,7 @@ def run_mpga(toolbox, logbook, stats, gen_curr=0, gen_step=1, invalidate_fitness
             return populations
         new_populations = {}
         for name, p in populations.items():
-            pop, _, bst = toolbox.run_alg(initial_pop=p, gen_curr=gen_curr, gen_step=gen_step)
+            pop, _, bst = toolbox.run_alg(logbook=None, stats=None, initial_pop=p, gen_curr=gen_curr, gen_step=gen_step)
             new_populations[name] = pop
             best = acquire_best(bst)
 
@@ -59,7 +59,7 @@ def run_mpga(toolbox, logbook, stats, gen_curr=0, gen_step=1, invalidate_fitness
 
     ## process period without migrations and merged population
     whole_population = merge_populations(populations)
-    pop, _, bst = toolbox.run_alg(initial_pop=whole_population,
+    pop, _, bst = toolbox.run_alg(logbook=None, stats=None, initial_pop=whole_population,
                                          gen_curr=gen_isolation_length*migrationInterval + remainings,
                                          gen_step=gen_after_merge)
 

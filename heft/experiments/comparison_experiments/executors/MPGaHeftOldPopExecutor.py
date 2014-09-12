@@ -10,6 +10,7 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
         self.mpga_builder = kwargs["mpga_builder"]
+        self.schedule_to_chromosome_converter = kwargs["schedule_to_chromosome_converter"]
 
         self.migrCount = kwargs["migrCount"]
         self.emigrant_selection = kwargs["emigrant_selection"]
@@ -26,7 +27,7 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
 
     def _actual_ga_run(self):
         ## TODO: correct this.
-        heft_initial = GAFunctions2.schedule_to_chromosome(self.back_cmp.current_schedule)
+        heft_initial = self.schedule_to_chromosome_converter(self.back_cmp.current_schedule)
         heft_initial = self._clean_chromosome(heft_initial, self.back_cmp.event, self.back_cmp.fixed_schedule)
 
          ##=====================================

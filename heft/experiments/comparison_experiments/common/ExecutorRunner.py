@@ -1,5 +1,6 @@
 from functools import partial
 import random
+from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
 
 from heft.algs.ga.GAImplementation.GAImpl import GAFactory
 from heft.algs.ga.multipopGA.MPGA import create_mpga
@@ -315,6 +316,7 @@ class ExecutorsFactory:
         kwargs["mpga_builder"] = partial(create_mpga, **kwargs)
         kwargs["merged_pop_iters"] = kwargs.get("merged_pop_iters", 0)
         kwargs["check_evolution_for_stopping"] = kwargs.get("check_evolution_for_stopping", True)
+        kwargs["schedule_to_chromosome_converter"] = kwargs.get("schedule_to_chromosome_converter", GAFunctions2.schedule_to_chromosome)
 
 
         ga_machine = MPGaHeftOldPopExecutor(**kwargs)

@@ -1,3 +1,4 @@
+from functools import partial
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import wf, Utility
@@ -84,7 +85,7 @@ def do_inherited_pop_exp(alg_builder, chromosome_cleaner_builder, wf_name, **par
     return data
 
 
-def do_island_inherited_pop_exp(alg_builder, mp_alg_builder, chromosome_cleaner_builder, wf_name, **params):
+def do_island_inherited_pop_exp(alg_builder, mp_alg_builder, algorithm_builder, chromosome_cleaner_builder, schedule_to_chromosome_converter_builder, wf_name, **params):
     _wf = wf(wf_name)
     rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
@@ -96,16 +97,17 @@ def do_island_inherited_pop_exp(alg_builder, mp_alg_builder, chromosome_cleaner_
                      **params["alg_params"])
 
     ## TODO: remake this part later.
-    def reverse_interface_adapter(func):
-        def wrap(*args, **kwargs):
-            (best, pop, resulted_schedule, _), logbook = func(*args, **kwargs)
-            return pop, logbook, best
-        return wrap
+    # def reverse_interface_adapter(func):
+    #     def wrap(*args, **kwargs):
+    #         (best, pop, resulted_schedule, _), logbook = func(*args, **kwargs)
+    #         return pop, logbook, best
+    #     return wrap
 
 
     mpga = mp_alg_builder(_wf, rm, estimator,
                           params["init_sched_percent"],
-                          alg=reverse_interface_adapter(ga),
+                          algorithm= partial(algorithm_builder, **params["alg_params"]),
+                          #algorithm=reverse_interface_adapter(ga),
                           logbook=None, stats=None,
                           **params["alg_params"])
 
@@ -125,6 +127,7 @@ def do_island_inherited_pop_exp(alg_builder, mp_alg_builder, chromosome_cleaner_
                                      mixed_init_pop=False,
                                      emigrant_selection=None,
                                      check_evolution_for_stopping=False,
+                                     schedule_to_chromosome_converter=schedule_to_chromosome_converter_builder(wf, rm, estimator),
                                      **kwargs)
 
     machine.init()
