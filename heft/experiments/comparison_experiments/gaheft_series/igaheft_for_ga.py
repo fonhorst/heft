@@ -8,14 +8,14 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import test
 
 EXPERIMENT_NAME = "igaheft_for_ga"
 REPEAT_COUNT = 1
-# WF_TASKIDS_MAPPING = {
-#     "Montage_75": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
-#                     "ID00050_000", "ID00070_000"]
-# }
-
 WF_TASKIDS_MAPPING = {
-    "Montage_75": ["ID00000_000"]
+    "Montage_75": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
+                    "ID00050_000", "ID00070_000"]
 }
+
+# WF_TASKIDS_MAPPING = {
+#     "Montage_75": ["ID00000_000"]
+# }
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
@@ -23,12 +23,12 @@ BASE_PARAMS = {
     "alg_name": "pso",
     "alg_params": {
         "kbest": 5,
-        "n": 10,
+        "n": 50,
         "cxpb": 0.3,  # 0.8
         "mutpb": 0.1,  # 0.5
         "sweepmutpb": 0.3,  # 0.4
         "gen_curr": 0,
-        "gen_step": 30,
+        "gen_step": 300,
         "is_silent": True
     },
     "executor_params": {

@@ -8,7 +8,7 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import inhe
 
 
 EXPERIMENT_NAME = "migaheft_for_pso"
-REPEAT_COUNT = 1
+REPEAT_COUNT = 20
 WF_TASKIDS_MAPPING = {
     "Montage_75": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
                     "ID00050_000", "ID00070_000"]
