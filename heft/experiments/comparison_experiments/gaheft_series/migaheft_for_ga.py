@@ -20,16 +20,16 @@ BASE_PARAMS = {
     "alg_name": "pso",
     "alg_params": {
         "kbest": 5,
-        "n": 10,
+        "n": 50,
         "cxpb": 0.3,  # 0.8
         "mutpb": 0.1,  # 0.5
         "sweepmutpb": 0.3,  # 0.4
         "gen_curr": 0,
-        "gen_step": 30,
+        "gen_step": 300,
         "is_silent": True,
-        "merged_pop_iters": 10,
-        "migrCount": 1,
-        "all_iters_count": 30
+        "merged_pop_iters": 100,
+        "migrCount": 5,
+        "all_iters_count": 300
     },
     "executor_params": {
         "base_fail_duration": 40,
@@ -50,7 +50,10 @@ BASE_PARAMS = {
     }
 }
 
-ga_exp = partial(do_island_inherited_pop_exp, alg_builder=create_old_ga, mp_alg_builder=create_old_pfmpga, algorithm_builder= lambda **kwargs: None,
+def algorithm_builder(**kwargs):
+    return None
+
+ga_exp = partial(do_island_inherited_pop_exp, alg_builder=create_old_ga, mp_alg_builder=create_old_pfmpga, algorithm_builder=algorithm_builder,
                  chromosome_cleaner_builder=create_ga_cleaner, schedule_to_chromosome_converter_builder=create_schedule_to_ga_chromosome_converter)
 
 # profile_test_run = profile_decorator(test_run)

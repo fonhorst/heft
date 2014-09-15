@@ -112,8 +112,8 @@ def do_island_inherited_pop_exp(alg_builder, mp_alg_builder, algorithm_builder, 
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
     ga = alg_builder(_wf, rm, estimator,
                      params["init_sched_percent"],
-                     logbook=None, stats=None,
-                     **params["alg_params"])
+                     log_book=None, stats=None,
+                     alg_params=params["alg_params"])
 
     ## TODO: remake this part later.
     # def reverse_interface_adapter(func):
@@ -127,8 +127,8 @@ def do_island_inherited_pop_exp(alg_builder, mp_alg_builder, algorithm_builder, 
                           params["init_sched_percent"],
                           algorithm= partial(algorithm_builder, **params["alg_params"]),
                           #algorithm=reverse_interface_adapter(ga),
-                          logbook=None, stats=None,
-                          **params["alg_params"])
+                          log_book=None, stats=None,
+                          alg_params=params["alg_params"])
 
     kwargs = dict(params["executor_params"])
     kwargs.update(params["alg_params"])
@@ -152,6 +152,7 @@ def do_island_inherited_pop_exp(alg_builder, mp_alg_builder, algorithm_builder, 
     machine.init()
     machine.run()
     resulted_schedule = machine.current_schedule
+    stat_data = machine.executor_stat_data
 
     Utility.validate_dynamic_schedule(_wf, resulted_schedule)
 

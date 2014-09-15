@@ -12,12 +12,12 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
         self.mpga_builder = kwargs["mpga_builder"]
         self.schedule_to_chromosome_converter = kwargs["schedule_to_chromosome_converter"]
 
-        self.migrCount = kwargs["migrCount"]
-        self.emigrant_selection = kwargs["emigrant_selection"]
-        self.all_iters_count = kwargs["all_iters_count"]
+        #self.migrCount = kwargs["migrCount"]
+        #self.emigrant_selection = kwargs["emigrant_selection"]
+        #self.all_iters_count = kwargs["all_iters_count"]
         self.mixed_init_pop = kwargs["mixed_init_pop"]
-        self.merged_pop_iters = kwargs["merged_pop_iters"]
-        self.check_evolution_for_stopping = kwargs["check_evolution_for_stopping"]
+        #self.merged_pop_iters = kwargs["merged_pop_iters"]
+        #self.check_evolution_for_stopping = kwargs["check_evolution_for_stopping"]
         self.mpnewVSmpoldmode = kwargs["mpnewVSmpoldmode"]
         self.params = kwargs["ga_params"]
 

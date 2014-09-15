@@ -216,6 +216,7 @@ def create_pfgsa(wf, rm, estimator,
 def create_old_pfmpga(wf, rm, estimator,
                 init_sched_percent=0.05,
                 log_book=None, stats=None,
+                algorithm=None,
                 alg_params=None):
 
     "merged_pop_iters"
@@ -230,31 +231,32 @@ def create_old_pfmpga(wf, rm, estimator,
     kwargs["resource_manager"] = rm
     kwargs["estimator"] = estimator
     kwargs["ga_params"] = {
-        "population": params["n"],
-        "crossover_probability": params["cxpb"],
-        "replacing_mutation_probability": params["mutpb"],
-        "generations": params["gen_step"],
-        "sweep_mutation_probability": params["sweepmutpb"],
-        "Kbest": params["kbest"],
-        "merged_pop_iters": params["merged_pop_iters"]
+        "population": alg_params["n"],
+        "crossover_probability": alg_params["cxpb"],
+        "replacing_mutation_probability": alg_params["mutpb"],
+        "generations": alg_params["gen_step"],
+        "sweep_mutation_probability": alg_params["sweepmutpb"],
+        "Kbest": alg_params["kbest"],
+        "merged_pop_iters": alg_params["merged_pop_iters"]
     }
-    kwargs["silent"] = params["is_silent"]
-    kwargs["migrCount"] = params["migrCount"]
+    kwargs["silent"] = alg_params["is_silent"]
+    kwargs["migrCount"] = alg_params["migrCount"]
     kwargs["emigrant_selection"] = emigrant_selection
-    kwargs["all_iters_count"] = params["all_iters_count"]
+    kwargs["all_iters_count"] = alg_params["all_iters_count"]
     ga = partial(create_mpga, **kwargs)
     return ga()
 
 
 def create_pfmpga(wf, rm, estimator,
                   init_sched_percent=0.05,
+                  log_book=None, stats=None,
                   algorithm=None,
-                  **params):
+                  alg_params=None):
     if algorithm is None:
         raise ValueError("Algorithm cannot be none")
     def alg(fixed_schedule_part, initial_schedule, current_time=0.0, initial_population=None, only_new_pops=False):
 
-        n = params["n"]
+        n = alg_params["n"]
 
         ### generate heft_based population
         init_ind_count = int(n * init_sched_percent)
@@ -298,7 +300,9 @@ def create_pfmpga(wf, rm, estimator,
         toolbox.register("run_alg", algorithm(pf_schedule=pf_schedule))
         toolbox.register("migration", migration)
 
-        pop, logbook, best = run_mpga(toolbox=toolbox, initial_populations=populations, **params)
+        lb, st = deepcopy(log_book), deepcopy(stats)
+
+        pop, logbook, best = run_mpga(toolbox=toolbox, logbook=lb, stats=st, initial_populations=populations, **alg_params)
         resulted_schedule = pf_schedule(best)
         result = (best, pop, resulted_schedule, None), logbook
         return result
