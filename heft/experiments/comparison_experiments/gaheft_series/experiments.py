@@ -1,4 +1,7 @@
 from functools import partial
+from deap import tools
+from deap.tools import Logbook
+import numpy
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import wf, Utility
@@ -16,8 +19,8 @@ def do_gaheft_exp(alg_builder, wf_name, **params):
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
     ga = alg_builder(_wf, rm, estimator,
                      params["init_sched_percent"],
-                     logbook=None, stats=None,
-                     **params["alg_params"])
+                     log_book=None, stats=None,
+                     alg_params=params["alg_params"])
     machine = GaHeftExecutor(heft_planner=dynamic_heft,
                              wf=_wf,
                              resource_manager=rm,
@@ -51,10 +54,20 @@ def do_inherited_pop_exp(alg_builder, chromosome_cleaner_builder, wf_name, **par
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
     chromosome_cleaner = chromosome_cleaner_builder(_wf, rm, estimator)
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
+
+    logbook = Logbook()
+
+    stats = tools.Statistics(lambda ind: ind.fitness.values[0])
+    stats.register("avg", numpy.mean)
+    stats.register("std", numpy.std)
+    stats.register("min", numpy.min)
+    stats.register("max", numpy.max)
+
     ga = alg_builder(_wf, rm, estimator,
                      params["init_sched_percent"],
-                     logbook=None, stats=None,
-                     **params["alg_params"])
+                     log_book=logbook, stats=stats,
+                     alg_params=params["alg_params"])
+
     machine = GaHeftOldPopExecutor(heft_planner=dynamic_heft,
                              wf=_wf,
                              resource_manager=rm,
@@ -65,8 +78,12 @@ def do_inherited_pop_exp(alg_builder, chromosome_cleaner_builder, wf_name, **par
                              **params["executor_params"])
 
     machine.init()
+    print("Executor start")
     machine.run()
+    print("Executor stop")
+
     resulted_schedule = machine.current_schedule
+    stat_data = machine.executor_stat_data
 
     Utility.validate_dynamic_schedule(_wf, resulted_schedule)
 
@@ -74,6 +91,8 @@ def do_inherited_pop_exp(alg_builder, chromosome_cleaner_builder, wf_name, **par
         "wf_name": wf_name,
         "params": params,
         "result": {
+            "random_init_logbook": stat_data["random_init_logbook"],
+            "inherited_init_logbook": stat_data["inherited_init_logbook"],
             "makespan": Utility.makespan(resulted_schedule),
             ## TODO: this function should be remade to adapt under conditions of dynamic env
             #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),

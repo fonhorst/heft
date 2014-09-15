@@ -28,27 +28,29 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import Part
 
 def create_old_ga(wf, rm, estimator,
                   init_sched_percent=0.05,
-                  **params):
+                  log_book=None, stats=None,
+                  alg_params=None):
     kwargs = {}
     kwargs["wf"] = wf
     kwargs["resource_manager"] = rm
     kwargs["estimator"] = estimator
     kwargs["ga_params"] = {
-        "population": params["n"],
-        "crossover_probability": params["cxpb"],
-        "replacing_mutation_probability": params["mutpb"],
-        "generations": params["gen_step"],
-        "sweep_mutation_probability": params["sweepmutpb"],
-        "Kbest": params["kbest"]
+        "population": alg_params["n"],
+        "crossover_probability": alg_params["cxpb"],
+        "replacing_mutation_probability": alg_params["mutpb"],
+        "generations": alg_params["gen_step"],
+        "sweep_mutation_probability": alg_params["sweepmutpb"],
+        "Kbest": alg_params["kbest"]
     }
-    kwargs["silent"] = params["is_silent"]
+    kwargs["silent"] = alg_params["is_silent"]
     ga = partial(GAFactory.default().create_ga, **kwargs)
     return ga()
 
 
 def create_pfga(wf, rm, estimator,
                 init_sched_percent=0.05,
-                **params):
+                log_book=None, stats=None,
+                alg_params=None):
     ##TODO: add initial_population for run_ga
     raise NotImplementedError()
 
@@ -73,7 +75,7 @@ def create_pfga(wf, rm, estimator,
         toolbox.register("mutate", ga_functions.mutation)
         # toolbox.register("select_parents", )
         toolbox.register("select", tools.selRoulette)
-        pop, logbook, best = run_ga(toolbox=toolbox, **params)
+        pop, logbook, best = run_ga(toolbox=toolbox, **alg_params)
 
         resulted_schedule = ga_functions.build_schedule(best, fixed_schedule_part, current_time)
         result = (best, pop, resulted_schedule, None), logbook
@@ -105,9 +107,9 @@ def create_pso_alg(pf_schedule, generate_, **params):
 ## TODO: remake interface later
 ## do NOT use it for anything except 'gaheft_series' experiments
 def create_pfpso(wf, rm, estimator,
-                init_sched_percent=0.05,
-                **params):
-
+                 init_sched_percent=0.05,
+                 log_book=None, stats=None,
+                 alg_params=None):
     def alg(fixed_schedule_part, initial_schedule, current_time=0.0, initial_population=None):
         def generate_(n):
             init_ind_count = int(n*init_sched_percent)
@@ -145,7 +147,9 @@ def create_pfpso(wf, rm, estimator,
 
         pf_schedule = partial(schedule_builder, current_time=current_time)
 
-        pso = create_pso_alg(pf_schedule, generate_, **params)
+        lb, st = deepcopy(log_book), deepcopy(stats)
+
+        pso = create_pso_alg(pf_schedule, generate_, logbook=lb, stats=st, **alg_params)
         pop, logbook, best = pso()
 
         resulted_schedule = pf_schedule(best)
@@ -211,7 +215,8 @@ def create_pfgsa(wf, rm, estimator,
 
 def create_old_pfmpga(wf, rm, estimator,
                 init_sched_percent=0.05,
-                **params):
+                log_book=None, stats=None,
+                alg_params=None):
 
     "merged_pop_iters"
     "migrCount"

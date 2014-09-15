@@ -17,12 +17,12 @@ BASE_PARAMS = {
     "alg_name": "ga",
     "alg_params": {
         "kbest": 5,
-        "n": 50,
+        "n": 10,
         "cxpb": 0.3,  # 0.8
         "mutpb": 0.1,  # 0.5
         "sweepmutpb": 0.3,  # 0.4
         "gen_curr": 0,
-        "gen_step": 300,
+        "gen_step": 30,
         "is_silent": True
     },
     "executor_params": {

@@ -20,6 +20,9 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
         self.estimator = kwargs["estimator"]
         self.stat_saver = kwargs["stat_saver"]
         self.chromosome_cleaner = kwargs["chromosome_cleaner"]
+        self.replace_anyway = True
+
+        self.executor_stat_data = None
 
         pass
 
@@ -100,6 +103,16 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
 
         self.past_pop = pop_op
 
+        ## save logbook data
+        self.executor_stat_data = {
+            "event": str(self.current_event),
+            "random_init_logbook": logbook_r,
+            "inherited_init_logbook": logbook_op
+
+        }
+
+
+        ## TODO: obsolete. remove it later
         ##=====================================
         ##Save stat to stat_saver
         ##=====================================

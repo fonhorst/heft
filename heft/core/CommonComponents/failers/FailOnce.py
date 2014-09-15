@@ -22,5 +22,6 @@ class FailOnce(FailBase):
             # print("Checking failed {0} == {1}: {2} ".format(self.task_id_to_fail, task.id, r))
             if failed is True:
                 self.failed_once = True
+                print("Generate fail on {0}".format(task.id))
                 return True
         return False

@@ -15,7 +15,7 @@ REPEAT_COUNT = 1
 # }
 
 WF_TASKIDS_MAPPING = {
-    "Montage_100": ["ID00000_000"]
+    "Montage_75": ["ID00000_000"]
 }
 
 BASE_PARAMS = {
