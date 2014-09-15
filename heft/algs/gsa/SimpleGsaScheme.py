@@ -1,6 +1,6 @@
 import functools
 import random
-from heft.algs.common.utilities import cannot_be_zero
+from heft.algs.common.utilities import cannot_be_zero, gather_info
 
 
 def _randvecsum(vectors):
@@ -21,7 +21,7 @@ def calculate_velocity_and_position(p, fvm, estimate_position):
     p = estimate_position(p)
     return p
 
-def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
+def run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit, w):
     """
     This method is targeted to propose a prototype implementation of
     Gravitational Search Algorithm(gsa). It is intended only for initial steps
@@ -32,14 +32,16 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
     2) generate() - generation of initial solutions
     3) fitness(p) (with mofit field)
     4) mass(p, worst, best)
-    5) force_vector_matrix(pop, kbest, G)
-    6) position(p, velocity) - function of getting new position
+    5) estimate_force(p, pop, kbest, G)
+    6) update(p) - function of getting new position
     7) G(g, i) - changing of G-constant, where i - a number of a current iteration
     8) kbest(kbest, i) - changing of kbest
+    9) w - inertia koeff
     """
 
     G = ginit
     kbest_init = kbest
+    W = w
 
     ## initialization
     ## generates random solutions
@@ -55,13 +57,13 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
         ## mass estimation
         ## It is assumed that a minimization task is solved
         pop = sorted(pop, key=lambda x: x.fitness)
-        best = pop[0].fitness
-        worst = pop[-1].fitness
+        best_fit = pop[0].fitness
+        worst_fit = pop[-1].fitness
         # TODO: this is a hack
-        max_diff = best.values[0] - best.values[-1]
+        max_diff = best_fit.values[0] - worst_fit.values[-1]
         max_diff = cannot_be_zero(max_diff)
         for p in pop:
-            p.mass = (p.fitness.values[0] - worst.values[0]) / max_diff
+            p.mass = cannot_be_zero((p.fitness.values[0] - worst_fit.values[0]) / max_diff)
         ## convert to (0, 1) interval
         ## TODO: perhaps this should 'warn' message
         mass_sum = cannot_be_zero(sum(p.mass for p in pop))
@@ -72,19 +74,23 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
         ## fvm is a matrix of VECTORS(due to the fact we are operating in d-dimensional space) size of 'pop_size x kbest'
         ## in fact we can use wrapper for the entity of pop individual but python has duck typing,
         ## so why don't use it, if you use it carefully?
-        fvm = toolbox.force_vector_matrix(pop, kbest, G)
-
+        for p in pop:
+            p.force = toolbox.estimate_force(p, pop, kbest, G)
 
         ##statistics gathering
-        record = statistics.compile(pop)
-        logbook.record(gen=i, G=G, kbest=kbest, **record)
-        print(logbook.stream)
+        gather_info(logbook, stats, i, pop, need_to_print=True)
 
-        best = max(pop, key=lambda x: x.fitness)
+        new_best = max(pop, key=lambda x: x.fitness)
+        if best is None:
+            best = new_best
+        else:
+            best = max(best, new_best, key=lambda x: x.fitness)
 
         ## compute new velocity and position
-        position = toolbox.position if hasattr(toolbox, 'position') else None
-        pop = [toolbox.velocity_and_position(p, fvm, position) for p in pop]
+        for p in pop:
+            toolbox.update(W, p)
+        # position = toolbox.position if hasattr(toolbox, 'position') else None
+        # pop = [toolbox.velocity_and_position(p, forces, position) for p, f in zip(pop, fvm)]
 
         ## change gravitational constants
         G = toolbox.G(ginit, i, iter_number)
@@ -92,7 +98,6 @@ def run_gsa(toolbox, statistics, logbook, pop_size, iter_number, kbest, ginit):
 
         ##removing temporary elements
         for p in pop:
-            if hasattr(p, 'mass'): del p.mass
             if hasattr(p, 'fitness'): del p.fitness
             if hasattr(p, 'acceleration'): del p.acceleration
         pass

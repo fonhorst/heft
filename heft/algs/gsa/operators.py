@@ -19,34 +19,6 @@ from heft.experiments.cga.utilities.common import hamming_distances
 from heft.algs import SimpleRandomizedHeuristic
 
 
-class Position(dict):
-    def __init__(self, mapping=None, ordering=None):
-        super().__setitem__(MAPPING_SPECIE, mapping)
-        super().__setitem__(ORDERING_SPECIE, ordering)
-
-    def as_vector(self):
-        """
-        converts position to a single vector by joining mapping and ordering structure
-        all workflow tasks is sorted by task.id and thus it provides idempotentity for multiple runs
-        """
-        mapp_string = mapping_as_vector(super().__getitem__(MAPPING_SPECIE))
-        ord_string = super().__getitem__[ORDERING_SPECIE]
-        return mapp_string + ord_string
-
-    def __setitem__(self, key, value):
-        raise RuntimeError("This operation is not permitted for this data structure")
-
-    def __delitem__(self, key):
-        raise RuntimeError("This operation is not permitted for this data structure")
-
-    def __len__(self):
-        return len(self.__getitem__(MAPPING_SPECIE)) + len(self.__getitem__(ORDERING_SPECIE))
-    pass
-
-class Velocity:
-    def __init__(self):
-        pass
-
 def generate(wf, rm, estimator):
     sched = SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule()
     return schedule_to_position(sched)

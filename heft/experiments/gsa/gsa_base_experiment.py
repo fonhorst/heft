@@ -1,41 +1,63 @@
 from copy import deepcopy
 import random
-from deap import creator
+
 from deap.base import Toolbox
 from deap.tools import Statistics, Logbook
 import numpy
-from heft.algs.common.individuals import FitnessStd
-from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE, build_schedule
 
 from heft.algs.gsa.SimpleGsaScheme import run_gsa
 from heft.algs.gsa.operators import G, Kbest
-from heft.algs.gsa.setbasedoperators import force_vector_matrix, velocity_and_position
+from heft.algs.gsa.ordering_mapping_operators import force, mapping_update, ordering_update, CompoundParticle
 from heft.algs.heft.DSimpleHeft import run_heft
-from heft.algs.heft.HeftHelper import HeftHelper
-from heft.algs.pso.sdpso import schedule_to_position, generate, fitness
+from heft.algs.pso.ordering_operators import generate, fitness, build_schedule
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
-from heft.experiments.cga.utilities.common import repeat
 
-_wf = wf("Montage_40")
+
+_wf = wf("Montage_25")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
-                                            ideal_flops=20, transfer_time=100)
-sorted_tasks = HeftHelper.heft_rank(_wf, rm, estimator)
-
+                                    ideal_flops=20, transfer_time=100)
 heft_schedule = run_heft(_wf, rm, estimator)
-heft_mapping = schedule_to_position(heft_schedule)
+def gen(initial_schedule=None):
+    particle = generate(_wf, rm, estimator, initial_schedule)
+    particle = CompoundParticle(particle.mapping, particle.ordering)
+    return particle
 
-heft_gen = lambda n: [deepcopy(heft_mapping) if random.random() > 1.0 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
+heft_particle = gen(heft_schedule)
+
+# heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 0.95 else gen() for _ in range(n)]
+
+def heft_gen(n):
+    heft_count = int(n*0.00)
+    pop = [deepcopy(heft_particle) for _ in range(heft_count)]
+    for _ in range(n - heft_count):
+        variant = gen()
+        hp = deepcopy(heft_particle)
+        variant.ordering = hp.ordering
+        pop.append(variant)
+    return pop
+
+
+def compound_force(p, pop, kbest, G):
+    mapping_force = force(p.mapping, (p.mapping for p in pop), kbest, G)
+    ordering_force = force(p.ordering, (p.ordering for p in pop), kbest, G)
+    return (mapping_force, ordering_force)
+
+def compound_update(w, p, min=-1, max=1):
+    mapping_update(w, p.mapping)
+    #ordering_update(w, p.ordering, min, max)
+    pass
+
 
 toolbox = Toolbox()
 # toolbox.register("generate", generate, _wf, rm, estimator)
 toolbox.register("generate", heft_gen)
-toolbox.register("fitness", fitness, _wf, rm, estimator, sorted_tasks)
-toolbox.register("force_vector_matrix", force_vector_matrix)
-toolbox.register("velocity_and_position", velocity_and_position, beta=0.0)
+toolbox.register("fitness", fitness, _wf, rm, estimator)
+toolbox.register("estimate_force", compound_force)
+toolbox.register("update", compound_update)
 toolbox.register("G", G)
 toolbox.register("kbest", Kbest)
 
@@ -46,27 +68,29 @@ stats.register("max", lambda pop: numpy.max([p.fitness.mofit for p in pop]))
 stats.register("std", lambda pop: numpy.std([p.fitness.mofit for p in pop]))
 
 logbook = Logbook()
-logbook.header = ("gen", "G", "kbest", "min", "avr", "max", "std")
+logbook.header = ["gen", "G", "kbest"] + stats.fields
 
 
-
-pop_size = 40
-iter_number = 200
+pop_size = 20
+iter_number = 500
 kbest = pop_size
 ginit = 2
+W = 1.0
+
 
 def do_exp():
-    pop, _logbook, best = run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit)
-    solution = {MAPPING_SPECIE: list(best.entity.items()), ORDERING_SPECIE: sorted_tasks}
-    schedule = build_schedule(_wf, estimator, rm, solution)
+    pop, _logbook, best = run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit, W)
+
+    schedule = build_schedule(_wf, rm, estimator,  best)
     Utility.validate_static_schedule(_wf, schedule)
     makespan = Utility.makespan(schedule)
     print("Final makespan: {0}".format(makespan))
-    print("Final makespan: {0}".format(makespan))
+    print("Heft makespan: {0}".format(Utility.makespan(heft_schedule)))
     return makespan
 
 
 if __name__ == "__main__":
-    result = repeat(do_exp, 1)
+    # result = repeat(do_exp, 1)
+    result = do_exp()
     print(result)
     pass

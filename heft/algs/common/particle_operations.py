@@ -1,5 +1,6 @@
 from numbers import Number
 from uuid import uuid4
+import math
 from heft.algs.common.individuals import FitAdapter
 
 
@@ -34,7 +35,7 @@ class MappingParticle(Particle):
 
     def __mul__(self, other):
         if isinstance(other, Number):
-            return MappingParticle.Velocity({k: other for k, v in self.items()})
+            return MappingParticle.Velocity({k: other for k, v in self.entity.items()})
         raise ValueError("Other has not a suitable type for multiplication")
 
     class Velocity(dict):
@@ -56,6 +57,9 @@ class MappingParticle(Particle):
 
         def cutby(self, alpha):
             return MappingParticle.Velocity({k: v for k, v in self.items() if v >= alpha})
+
+        def vector_length(self):
+            return len(self)
         pass
     pass
 
@@ -98,6 +102,7 @@ class OrderingParticle(Particle):
                                               for task_id in self.entity})
         return velocity
 
+
     def limit_by(self, min=-1, max=-1):
         for t in self.entity:
             self.entity[t] = OrderingParticle._to_limit(self.entity[t], min, max)
@@ -127,6 +132,10 @@ class OrderingParticle(Particle):
             for t in self:
                 self[t] = OrderingParticle._to_limit(self[t], min, max)
             pass
+
+        def vector_length(self):
+            return math.sqrt(sum(val*val for t, val in self.items()))/len(self)
+
         pass
     pass
 
