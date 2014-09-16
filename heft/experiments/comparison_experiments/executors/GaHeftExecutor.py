@@ -5,17 +5,19 @@ import random
 from heft.core.CommonComponents.BaseExecutor import BaseExecutor
 from heft.core.CommonComponents.failers.FailRandom import FailRandom
 from heft.core.environment.Utility import Utility
-from heft.core.environment.EventMachine import TaskFinished, NodeFailed, NodeUp
+from heft.core.environment.EventMachine import TaskFinished, NodeFailed, NodeUp, TaskStart
 from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import ScheduleItem, Schedule
+from heft.utilities.common import trace
 
 
 BackCmp = namedtuple('BackCmp', ['fixed_schedule', 'initial_schedule', 'current_schedule', 'event', 'creation_time', 'time_to_stop'])
 
 class GaHeftExecutor(FailRandom, BaseExecutor):
+    #@trace
     def __init__(self, **kwargs):
 
-        super().__init__()
+        super().__init__(**kwargs)
 
         self.workflow = kwargs["wf"]
         self.resource_manager = kwargs["resource_manager"]
@@ -27,7 +29,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self.current_schedule = None
         self.fixed_interval_for_ga = kwargs["fixed_interval_for_ga"]
         self.ga_builder = kwargs["ga_builder"]
-        self.replace_anyway = kwargs.get("replace_anyway", False)
+        self.replace_anyway = kwargs.get("replace_anyway", True)
 
         self.back_cmp = None
 
@@ -58,6 +60,9 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
         item.state = ScheduleItem.EXECUTING
 
+        if len(nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down) == 1:
+            return
+
         if self._check_fail(event.task, node):
             # generate fail time, post it
             duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
@@ -83,6 +88,18 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         pass
 
     def _node_failed_handler(self, event):
+
+        if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 1:
+            print("DECLINE NODE DOWN")
+
+            st = ""
+            for nd in self.resource_manager.get_nodes():
+                st += "{0} - {1}".format(nd.name, nd.state)
+
+            print("STATE INFORMATION(node failed handler): " + st)
+
+            return
+
         ## interrupt ga
         self._stop_ga()
         # check node down
@@ -139,15 +156,20 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         return result
 
     def _check_event_for_ga_result(self, event):
+
         # check for time to get result from GA running background
         if self.back_cmp is None or self.back_cmp.time_to_stop != self.current_time:
             return False
         else:
+            print("Event {0}".format(event))
+            if isinstance(event, TaskStart):
+                print("Task id {0}".format(event.task.id))
             result = self._actual_ga_run()
 
         if result is not None:
             t1 = Utility.makespan(result[0][2])
             t2 = Utility.makespan(self.current_schedule)
+            print("Replace anyway - {0}".format(self.replace_anyway))
             if self.replace_anyway is True or t1 < t2:
                 ## generate new events
                 self._replace_current_schedule(event, result[0][2])
@@ -167,6 +189,8 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self._clean_events(event)
         self.current_schedule = new_schedule
         self._post_new_events()
+
+        self.back_cmp = None
         pass
 
     def _run_ga_in_background(self, event):

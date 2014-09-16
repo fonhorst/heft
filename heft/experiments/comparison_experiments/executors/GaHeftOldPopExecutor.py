@@ -6,9 +6,11 @@ from heft.core.environment.Utility import Utility
 from heft.core.environment.EventMachine import NodeFailed, NodeUp, TaskFinished
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
 from heft.core.environment.ResourceManager import ScheduleItem
+from heft.utilities.common import trace
 
 
 class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
+    #@trace
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -18,7 +20,7 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
 
         self.task_id_to_fail = kwargs["task_id_to_fail"]
         self.estimator = kwargs["estimator"]
-        self.stat_saver = kwargs["stat_saver"]
+        self.stat_saver = kwargs.get("stat_saver", None)
         self.chromosome_cleaner = kwargs["chromosome_cleaner"]
         self.replace_anyway = True
 

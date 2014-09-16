@@ -119,7 +119,17 @@ def changing_reliability_run(exp, reliability, repeat_count, wf_names, base_para
         configs.append(params)
 
     to_run = [partial(exp, wf_name=wf_name, **params) for wf_name in wf_names for params in configs]
-    results = multi_repeat(repeat_count, to_run)
+
+    i = 0
+    results = []
+    for _ in range(repeat_count):
+        for t in to_run:
+            print("//////////////////////RUN NUMBER {0}=================".format(i))
+            i += 1
+            results.append(t())
+
+    #results = [t() for t in to_run for _ in range(repeat_count)]
+    # results = multi_repeat(repeat_count, to_run)
 
     path = save_path if save_path is not None else os.path.join(TEMP_PATH, "gaheft_series")
     saver = UniqueNameSaver(path, base_params["experiment_name"])

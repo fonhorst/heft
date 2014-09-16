@@ -84,14 +84,15 @@ def position(wf, rm, estimator, position, velocity):
     new_position = Position.from_vector(new_vector)
     return new_position
 
-def G(ginit, i, iter_number):
-    ng = ginit*(1 - i/iter_number)
+def G(ginit, i, iter_number, all_iter_number=None):
+    ng = ginit*(1 - i/iter_number) if all_iter_number is None else ginit*(1 - i/all_iter_number)
     return ng
 
-def Kbest(kbest_init, kbest, i, iter_number):
+def Kbest(kbest_init, kbest, i, iter_number, all_iter_number=None):
     """
     basic implementation of kbest decreasing
     """
+    iter_number = iter_number if all_iter_number is None else all_iter_number
     d = iter_number / kbest_init
     nkbest = math.ceil(abs(kbest_init - i/d))
     return nkbest

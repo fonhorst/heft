@@ -66,7 +66,8 @@ if __name__ == "__main__":
                     "ID00050_000", "ID00070_000"]
 
     # path = os.path.join(TEMP_PATH, "igaheft_analysis", "igaheft_for_ga_m75_20")
-    path = os.path.join(TEMP_PATH, "igaheft_analysis", "igaheft_for_pso_m75_20")
+    # path = os.path.join(TEMP_PATH, "igaheft_analysis", "igaheft_for_pso_m75_20")
+    path = os.path.join(TEMP_PATH, "igaheft_analysis", "igaheft_for_gsa_m75_5")
 
     extract = partial(extract_and_add, wf_name)
 

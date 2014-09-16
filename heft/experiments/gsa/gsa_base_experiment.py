@@ -7,9 +7,9 @@ import numpy
 
 from heft.algs.gsa.SimpleGsaScheme import run_gsa
 from heft.algs.gsa.operators import G, Kbest
-from heft.algs.gsa.ordering_mapping_operators import force, mapping_update, ordering_update, CompoundParticle
+from heft.algs.gsa.ordering_mapping_operators import force, mapping_update, ordering_update, CompoundParticle, generate
 from heft.algs.heft.DSimpleHeft import run_heft
-from heft.algs.pso.ordering_operators import generate, fitness, build_schedule
+from heft.algs.pso.ordering_operators import fitness, build_schedule
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.core.environment.Utility import wf, Utility
@@ -22,12 +22,9 @@ rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
                                     ideal_flops=20, transfer_time=100)
 heft_schedule = run_heft(_wf, rm, estimator)
-def gen(initial_schedule=None):
-    particle = generate(_wf, rm, estimator, initial_schedule)
-    particle = CompoundParticle(particle.mapping, particle.ordering)
-    return particle
 
-heft_particle = gen(heft_schedule)
+
+heft_particle = generate(heft_schedule)
 
 heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 1.00 else gen() for _ in range(n)]
 

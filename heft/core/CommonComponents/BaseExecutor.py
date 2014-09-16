@@ -3,11 +3,12 @@ from collections import deque
 from heft.core.environment.EventMachine import TaskStart, TaskFinished, NodeFailed, NodeUp
 from heft.core.environment.EventMachine import EventMachine
 from heft.core.environment.ResourceManager import ScheduleItem, Schedule
+from heft.utilities.common import trace
 
 
 class BaseExecutor(EventMachine):
-
-    def __init__(self):
+    #@trace
+    def __init__(self, *args, **kwargs):
         super().__init__()
 
     def event_arrived(self, event):

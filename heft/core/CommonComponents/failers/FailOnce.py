@@ -3,7 +3,14 @@ import random
 from heft.core.CommonComponents.failers.FailBase import FailBase
 
 #TODO: detalize how constructor under inheritance works in Python
+from heft.utilities.common import trace
+
+
 class FailOnce(FailBase):
+
+    #@trace
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     # estimator = None
     # task_id_to_fail = None

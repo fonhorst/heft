@@ -1,11 +1,13 @@
 from functools import partial
 from deap import tools
 from deap.tools import Logbook
+from gi.overrides import deprecated
 import numpy
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
+from heft.experiments.comparison_experiments.executors.MIGaHeftExecutor import MIGaHeftExecutor
 from heft.experiments.comparison_experiments.executors.MPGaHeftOldPopExecutor import MPGaHeftOldPopExecutor
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
 from heft.experiments.comparison_experiments.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
@@ -13,6 +15,7 @@ from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 
 
 def do_gaheft_exp(alg_builder, wf_name, **params):
+    print("EXPERIMENT RUN START===========================")
     _wf = wf(wf_name)
     rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
@@ -44,7 +47,7 @@ def do_gaheft_exp(alg_builder, wf_name, **params):
             "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
         }
     }
-
+    print("EXPERIMENT RUN END=========================")
     return data
 
 
@@ -104,6 +107,52 @@ def do_inherited_pop_exp(alg_builder, chromosome_cleaner_builder, wf_name, **par
     return data
 
 
+def do_triple_island_exp(alg_builder, chromosome_cleaner_builder, schedule_to_chromosome_converter_builder, wf_name, **params):
+    _wf = wf(wf_name)
+    rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
+    estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
+    chromosome_cleaner = chromosome_cleaner_builder(_wf, rm, estimator)
+    dynamic_heft = DynamicHeft(_wf, rm, estimator)
+
+
+    mpga = alg_builder(_wf, rm, estimator,
+                          params["init_sched_percent"],
+                          log_book=None, stats=None,
+                          alg_params=params["alg_params"])
+
+
+
+    machine = MIGaHeftExecutor(heft_planner=dynamic_heft,
+                               wf=_wf,
+                               resource_manager=rm,
+                               estimator=estimator,
+                               ga_builder=lambda: mpga,
+                               chromosome_cleaner=chromosome_cleaner,
+                               schedule_to_chromosome_converter=schedule_to_chromosome_converter_builder(wf, rm, estimator),
+                               **params["executor_params"])
+
+    machine.init()
+    machine.run()
+    resulted_schedule = machine.current_schedule
+    stat_data = machine.executor_stat_data
+
+    Utility.validate_dynamic_schedule(_wf, resulted_schedule)
+
+    data = {
+        "wf_name": wf_name,
+        "params": params,
+        "result": {
+            "makespan": Utility.makespan(resulted_schedule),
+            ## TODO: this function should be remade to adapt under conditions of dynamic env
+            #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
+            "overall_execution_time": Utility.overall_execution_time(resulted_schedule),
+            "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
+        }
+    }
+
+    return data
+
+## TODO: deprecated
 def do_island_inherited_pop_exp(alg_builder, mp_alg_builder, algorithm_builder, chromosome_cleaner_builder, schedule_to_chromosome_converter_builder, wf_name, **params):
     _wf = wf(wf_name)
     rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))

@@ -1,4 +1,5 @@
 from collections import deque
+from heft.utilities.common import trace
 
 
 class BaseEvent:
@@ -38,6 +39,7 @@ class NodeUp(BaseEvent):
         return "NodeUp"
 
 class EventMachine:
+    #@trace
     def __init__(self):
         self.queue = deque()
         self.current_time = 0

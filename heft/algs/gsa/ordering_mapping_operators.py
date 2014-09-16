@@ -5,6 +5,7 @@ import random
 from heft.algs.common.particle_operations import MappingParticle, Particle
 from heft.algs.common.utilities import cannot_be_zero
 from heft.algs.pso.mapping_operators import position_update
+from heft.algs.pso.ordering_operators import generate as pso_generate
 
 
 def force(p, pop, kbest, G):
@@ -85,4 +86,10 @@ class CompoundParticle(Particle):
     mass = property(_get_mass, _set_mass)
     force = property(_get_force, _set_force)
     pass
+
+
+def generate(wf, rm, estimator, schedule=None, fixed_schedule_part=None, current_time=0.0):
+    particle = pso_generate(wf, rm, estimator, schedule, fixed_schedule_part, current_time)
+    particle = CompoundParticle(particle.mapping, particle.ordering)
+    return particle
 

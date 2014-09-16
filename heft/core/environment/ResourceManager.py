@@ -210,6 +210,13 @@ class Schedule:
     def get_the_most_upcoming_item(self, time):
         pass
 
+    def __str__(self):
+        return str(self.mapping)
+
+    def __repr__(self):
+        return str(self.mapping)
+
+
 ##interface Executor
 #class Executor:
 #    def __init__(self):

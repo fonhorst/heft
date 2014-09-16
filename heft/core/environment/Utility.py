@@ -370,8 +370,15 @@ class Utility:
         dependency_validaty = Utility.validateParentsAndChildren(schedule, _wf, AllUnstartedMode=False)
 
         if seq_time_validaty is False:
+            print("Schedule===================================")
+            print("===========================================")
+            print(schedule)
             raise Exception("Sequence validaty check failed")
         if dependency_validaty is False:
+
+            print("Schedule===================================")
+            print("===========================================")
+            print(schedule)
             raise Exception("Dependency validaty check failed")
         pass
 

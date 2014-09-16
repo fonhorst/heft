@@ -26,6 +26,7 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import gene
 from heft.algs.gsa.ordering_mapping_operators import CompoundParticle as GsaCompoundParticle
 from heft.algs.gsa.ordering_mapping_operators import mapping_update as gsa_mapping_update
 from heft.algs.gsa.ordering_mapping_operators import ordering_update as gsa_ordering_update
+from heft.algs.gsa.ordering_mapping_operators import generate as gsa_generate
 
 
 def create_old_ga(wf, rm, estimator,
@@ -158,13 +159,15 @@ def create_gsa_alg(pf_schedule, generate_, **params):
 
     W, C = params["w"], params["w"]
 
+    all_iterations_count = int(params["generations_count_before_merge"]) + int(params["generations_count_after_merge"])
+
     toolbox = Toolbox()
     toolbox.register("generate", generate_)
     toolbox.register("fitness", fit_converter(pf_schedule))
     toolbox.register("estimate_force", compound_force)
     toolbox.register("update", compound_update, W, C)
-    toolbox.register("G", G)
-    toolbox.register("kbest", Kbest)
+    toolbox.register("G", partial(G, all_iter_number=all_iterations_count))
+    toolbox.register("kbest", partial(Kbest, all_iter_number=all_iterations_count))
 
     pso_alg = partial(run_gsa, toolbox=toolbox, **params)
     return pso_alg
@@ -244,6 +247,7 @@ def create_pfmpga(wf, rm, estimator,
                   init_sched_percent=0.05,
                   log_book=None, stats=None,
                   algorithm=None,
+                  generate_func=None,
                   alg_params=None):
     if algorithm is None:
         raise ValueError("Algorithm cannot be none")
@@ -253,10 +257,10 @@ def create_pfmpga(wf, rm, estimator,
 
         ### generate heft_based population
         init_ind_count = int(n * init_sched_percent)
-        heft_particle = initial_schedule if isinstance(initial_schedule, CompoundParticle) \
-            else pso_generate(wf, rm, estimator, initial_schedule)
+        heft_particle = initial_schedule if isinstance(initial_schedule, (CompoundParticle, GsaCompoundParticle)) \
+            else generate_func(wf, rm, estimator, initial_schedule)
         init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
-        generated_arr = [pso_generate(wf, rm, estimator,
+        generated_arr = [generate_func(wf, rm, estimator,
                                           schedule=None,
                                           fixed_schedule_part=fixed_schedule_part,
                                           current_time=current_time)
@@ -264,17 +268,20 @@ def create_pfmpga(wf, rm, estimator,
         heft_based_population = init_arr + generated_arr
 
         ### generate new population
-        random_population = [pso_generate(wf, rm, estimator,
+        random_population = [generate_func(wf, rm, estimator,
                                           schedule=None,
                                           fixed_schedule_part=fixed_schedule_part,
                                           current_time=current_time)
                                  for _ in range(n)]
 
         populations = {
-            "inherited": initial_population,
-            "heft_based": heft_based_population,
+            #"inherited": initial_population,
+            #"heft_based": heft_based_population,
             "random": random_population
         }
+
+        if "inherited" in populations and(populations["inherited"] is None or len(populations["inherited"])):
+            del populations["inherited"]
 
         def migration(populations, k):
             pops = [pop for name, pop in sorted(populations.items(), key=lambda x: x[0])]
@@ -290,7 +297,7 @@ def create_pfmpga(wf, rm, estimator,
         pf_schedule = partial(schedule_builder, current_time=current_time)
 
         toolbox = Toolbox()
-        toolbox.register("run_alg", algorithm(pf_schedule=pf_schedule))
+        toolbox.register("run_alg", algorithm(pf_schedule=pf_schedule, generate_=lambda n: None, **alg_params))
         toolbox.register("migration", migration)
 
         lb, st = deepcopy(log_book), deepcopy(stats)
@@ -317,6 +324,9 @@ def create_schedule_to_ga_chromosome_converter(wf, rm, estimator):
 
 def create_schedule_to_pso_chromosome_converter(wf, rm, estimator):
     return partial(pso_generate, wf, rm, estimator)
+
+def create_schedule_to_gsa_chromosome_converter(wf, rm, estimator):
+    return partial(gsa_generate, wf, rm, estimator)
 
 
 

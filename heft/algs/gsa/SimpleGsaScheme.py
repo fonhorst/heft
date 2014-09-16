@@ -24,7 +24,7 @@ def calculate_velocity_and_position(p, fvm, estimate_position):
     p = estimate_position(p)
     return p
 
-def run_gsa(toolbox, stats, logbook, n, gen_curr, gen_step, kbest, ginit, w, c):
+def run_gsa(toolbox, stats, logbook, n, gen_curr, gen_step, initial_pop, kbest, ginit, **params):
     """
     This method is targeted to propose a prototype implementation of
     Gravitational Search Algorithm(gsa). It is intended only for initial steps
@@ -47,11 +47,11 @@ def run_gsa(toolbox, stats, logbook, n, gen_curr, gen_step, kbest, ginit, w, c):
 
     ## initialization
     ## generates random solutions
-    pop = toolbox.generate(n)
+    pop = toolbox.generate(n) if initial_pop is None else initial_pop
 
     best = None
 
-    for i in range(gen_curr, gen_step):
+    for i in range(gen_curr, gen_curr + gen_step):
         ## fitness estimation
         for p in pop:
             ## toolbox.fitness must return Fitness
@@ -103,8 +103,8 @@ def run_gsa(toolbox, stats, logbook, n, gen_curr, gen_step, kbest, ginit, w, c):
         # pop = [toolbox.velocity_and_position(p, forces, position) for p, f in zip(pop, fvm)]
 
         ## change gravitational constants
-        G = toolbox.G(ginit, i, gen_curr - gen_step)
-        kbest = toolbox.kbest(kbest_init, kbest, i, gen_curr - gen_step)
+        G = toolbox.G(ginit, i, gen_step)
+        kbest = toolbox.kbest(kbest_init, kbest, i, gen_step)
 
         ##removing temporary elements
         for p in pop:
