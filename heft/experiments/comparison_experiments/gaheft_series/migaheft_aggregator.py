@@ -1,9 +1,13 @@
+## TODO: make it to the end later.
 def extract_and_add(data, d):
+    alg_name = d["alg_name"]
     wf_name = d["wf_name"]
     pop_size = d["params"]["alg_params"]["n"]
+    makespan = d["result"]["makespan"]
 
     wf_data = data.get(wf_name, [])
-    wf_data.append(d)
+    pop_size_data = wf_data.get(pop_size, [])
+    pop_size_data.append(makespan)
     data[wf_name] = wf_data
     return data
 
@@ -55,6 +59,8 @@ def plot_aggregate_migaheft_results(data, points):
     pass
 
 if __name__ == "__main__":
+
+    raise NotImplementedError()
     wf_name = "Montage_75"
     points = [0, 1, 5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 299]
     task_ids = ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",

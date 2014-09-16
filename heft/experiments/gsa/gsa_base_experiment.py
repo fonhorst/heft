@@ -32,7 +32,7 @@ heft_particle = gen(heft_schedule)
 heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 1.00 else gen() for _ in range(n)]
 
 # def heft_gen(n):
-#     heft_count = int(n*0.00)
+#     heft_count = int(n*0.05)
 #     pop = [deepcopy(heft_particle) for _ in range(heft_count)]
 #     for _ in range(n - heft_count):
 #         variant = gen()
@@ -41,15 +41,21 @@ heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 1.00 else gen
 #         pop.append(variant)
 #     return pop
 
+pop_size = 20
+iter_number = 350
+kbest = pop_size
+ginit = 10
+W, C = 0.2, 0.5
+
 
 def compound_force(p, pop, kbest, G):
     mapping_force = force(p.mapping, (p.mapping for p in pop), kbest, G)
     ordering_force = force(p.ordering, (p.ordering for p in pop), kbest, G)
     return (mapping_force, ordering_force)
 
-def compound_update(w, p, min=-1, max=1):
-    mapping_update(w, p.mapping)
-    ordering_update(w, p.ordering, min, max)
+def compound_update(w, c, p, min=-1, max=1):
+    mapping_update(w, c, p.mapping)
+    ordering_update(w, c,  p.ordering, min, max)
     pass
 
 
@@ -58,7 +64,7 @@ toolbox = Toolbox()
 toolbox.register("generate", heft_gen)
 toolbox.register("fitness", fitness, _wf, rm, estimator)
 toolbox.register("estimate_force", compound_force)
-toolbox.register("update", compound_update)
+toolbox.register("update", compound_update, W, C)
 toolbox.register("G", G)
 toolbox.register("kbest", Kbest)
 
@@ -72,15 +78,11 @@ logbook = Logbook()
 logbook.header = ["gen", "G", "kbest"] + stats.fields
 
 
-pop_size = 20
-iter_number = 500
-kbest = pop_size
-ginit = 20
-W = 1.0
+
 
 
 def do_exp():
-    pop, _logbook, best = run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit, W)
+    pop, _logbook, best = run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit)
 
     schedule = build_schedule(_wf, rm, estimator,  best)
     Utility.validate_static_schedule(_wf, schedule)
@@ -91,7 +93,7 @@ def do_exp():
 
 
 if __name__ == "__main__":
-    # result = repeat(do_exp, 5)
-    result = do_exp()
+    result = repeat(do_exp, 5)
+    # result = do_exp()
     print(result)
     pass

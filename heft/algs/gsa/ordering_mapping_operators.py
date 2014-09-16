@@ -14,7 +14,8 @@ def force(p, pop, kbest, G):
         p must be a Particle with overriden operators
         """
         diff = p1 - p2
-        dist = diff.vector_length()
+        dist = 1#diff.vector_length()
+        #print("dist: {0}".format(dist))
         dist = cannot_be_zero(dist)
         f_abs = G * (p1.mass * p2.mass) / dist
         force = diff * f_abs
@@ -24,25 +25,25 @@ def force(p, pop, kbest, G):
     active_elements = pop[0:kbest]
     # if p in active_elements:
     #     return p.emptify()
-    forces = [mutual_force(p, a) for a in active_elements ]
+    forces = [mutual_force(p, a) for a in active_elements]
     common_force = functools.reduce(operator.add, forces)
     return common_force
 
 
-def mapping_update(w, p):
+def mapping_update(w, c, p):
     acceleration = p.force/p.mass
     alpha = random.random()
-    new_velocity = p.velocity*alpha + acceleration
+    new_velocity = p.velocity*w + acceleration*c*alpha
     new_entity = position_update(p, new_velocity)
     p.entity = new_entity
     p.velocity = new_velocity
     pass
 
 
-def ordering_update(w, p, min=-1, max=1):
+def ordering_update(w, c, p, min=-1, max=1):
     acceleration = p.force/p.mass
     alpha = random.random()
-    new_velocity = p.velocity*alpha + acceleration
+    new_velocity = p.velocity*w + acceleration*c*alpha
     new_position = (p + new_velocity)
     new_position.limit_by(min, max)
     p.entity = new_position.entity

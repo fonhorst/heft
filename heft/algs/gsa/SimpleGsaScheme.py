@@ -1,5 +1,6 @@
 from copy import deepcopy
 import functools
+import operator
 import random
 from heft.algs.common.utilities import cannot_be_zero, gather_info
 
@@ -22,7 +23,7 @@ def calculate_velocity_and_position(p, fvm, estimate_position):
     p = estimate_position(p)
     return p
 
-def run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit, w):
+def run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit):
     """
     This method is targeted to propose a prototype implementation of
     Gravitational Search Algorithm(gsa). It is intended only for initial steps
@@ -42,7 +43,6 @@ def run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit, w):
 
     G = ginit
     kbest_init = kbest
-    W = w
 
     ## initialization
     ## generates random solutions
@@ -67,9 +67,13 @@ def run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit, w):
             p.mass = cannot_be_zero((p.fitness.values[0] - worst_fit.values[0]) / max_diff)
         ## convert to (0, 1) interval
         ## TODO: perhaps this should 'warn' message
-        mass_sum = cannot_be_zero(sum(p.mass for p in pop))
-        for p in pop:
-            p.mass = p.mass/mass_sum
+        # mass_sum = cannot_be_zero(sum(p.mass for p in pop))
+        # for p in pop:
+        #     p.mass = p.mass/mass_sum
+
+        ## TODO: only for debug. remove it later.
+        #print(functools.reduce(operator.add, (" " + str(round(p.mass, 4)) for p in pop), ""))
+
 
         ## estimate all related forces
         ## fvm is a matrix of VECTORS(due to the fact we are operating in d-dimensional space) size of 'pop_size x kbest'
@@ -93,7 +97,7 @@ def run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit, w):
             best = deepcopy(max(best, new_best, key=lambda x: x.fitness))
         ## compute new velocity and position
         for p in pop:
-            toolbox.update(W, p)
+            toolbox.update(p)
         # position = toolbox.position if hasattr(toolbox, 'position') else None
         # pop = [toolbox.velocity_and_position(p, forces, position) for p, f in zip(pop, fvm)]
 
