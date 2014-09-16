@@ -14,9 +14,10 @@ from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceMa
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
+from heft.experiments.cga.utilities.common import repeat
 
 
-_wf = wf("Montage_25")
+_wf = wf("Montage_75")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
                                     ideal_flops=20, transfer_time=100)
@@ -28,17 +29,17 @@ def gen(initial_schedule=None):
 
 heft_particle = gen(heft_schedule)
 
-# heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 0.95 else gen() for _ in range(n)]
+heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 1.00 else gen() for _ in range(n)]
 
-def heft_gen(n):
-    heft_count = int(n*0.00)
-    pop = [deepcopy(heft_particle) for _ in range(heft_count)]
-    for _ in range(n - heft_count):
-        variant = gen()
-        hp = deepcopy(heft_particle)
-        variant.ordering = hp.ordering
-        pop.append(variant)
-    return pop
+# def heft_gen(n):
+#     heft_count = int(n*0.00)
+#     pop = [deepcopy(heft_particle) for _ in range(heft_count)]
+#     for _ in range(n - heft_count):
+#         variant = gen()
+#         hp = deepcopy(heft_particle)
+#         variant.ordering = hp.ordering
+#         pop.append(variant)
+#     return pop
 
 
 def compound_force(p, pop, kbest, G):
@@ -48,7 +49,7 @@ def compound_force(p, pop, kbest, G):
 
 def compound_update(w, p, min=-1, max=1):
     mapping_update(w, p.mapping)
-    #ordering_update(w, p.ordering, min, max)
+    ordering_update(w, p.ordering, min, max)
     pass
 
 
@@ -74,7 +75,7 @@ logbook.header = ["gen", "G", "kbest"] + stats.fields
 pop_size = 20
 iter_number = 500
 kbest = pop_size
-ginit = 2
+ginit = 20
 W = 1.0
 
 
@@ -90,7 +91,7 @@ def do_exp():
 
 
 if __name__ == "__main__":
-    # result = repeat(do_exp, 1)
+    # result = repeat(do_exp, 5)
     result = do_exp()
     print(result)
     pass

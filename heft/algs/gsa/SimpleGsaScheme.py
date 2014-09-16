@@ -1,3 +1,4 @@
+from copy import deepcopy
 import functools
 import random
 from heft.algs.common.utilities import cannot_be_zero, gather_info
@@ -78,14 +79,18 @@ def run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit, w):
             p.force = toolbox.estimate_force(p, pop, kbest, G)
 
         ##statistics gathering
-        gather_info(logbook, stats, i, pop, need_to_print=True)
+        ## TODO: replace it back
+        data = stats.compile(pop) if stats is not None else None
+        if logbook is not None:
+            logbook.record(gen=i, kbest=kbest, G=G, evals=len(pop), **data)
+            print(logbook.stream)
+        # gather_info(logbook, stats, i, pop, need_to_print=True)
 
         new_best = max(pop, key=lambda x: x.fitness)
         if best is None:
-            best = new_best
+            best = deepcopy(new_best)
         else:
-            best = max(best, new_best, key=lambda x: x.fitness)
-
+            best = deepcopy(max(best, new_best, key=lambda x: x.fitness))
         ## compute new velocity and position
         for p in pop:
             toolbox.update(W, p)

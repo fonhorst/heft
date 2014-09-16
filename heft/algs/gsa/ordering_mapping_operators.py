@@ -22,7 +22,9 @@ def force(p, pop, kbest, G):
 
     pop = sorted(pop, key=lambda x: x.mass)
     active_elements = pop[0:kbest]
-    forces = [mutual_force(p, a) for a in active_elements]
+    # if p in active_elements:
+    #     return p.emptify()
+    forces = [mutual_force(p, a) for a in active_elements ]
     common_force = functools.reduce(operator.add, forces)
     return common_force
 

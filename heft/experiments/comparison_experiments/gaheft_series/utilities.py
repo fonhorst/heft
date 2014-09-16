@@ -136,8 +136,8 @@ def inherited_pop_run(exp, wf_tasksids_mapping, repeat_count, base_params, save_
             func = partial(exp, wf_name=wf_name, **params)
             to_run.append(func)
 
-    results = [t() for t in to_run for _ in range(repeat_count)]
-    # results = multi_repeat(repeat_count, to_run)
+    # results = [t() for t in to_run for _ in range(repeat_count)]
+    results = multi_repeat(repeat_count, to_run)
 
     path = save_path if save_path is not None else os.path.join(TEMP_PATH, "igaheft_series")
     saver = UniqueNameSaver(path, base_params["experiment_name"])

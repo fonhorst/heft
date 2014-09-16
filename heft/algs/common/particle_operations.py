@@ -38,6 +38,9 @@ class MappingParticle(Particle):
             return MappingParticle.Velocity({k: other for k, v in self.entity.items()})
         raise ValueError("Other has not a suitable type for multiplication")
 
+    def emptify(self):
+        return MappingParticle.Velocity({})
+
     class Velocity(dict):
         def __mul__(self, other):
             if isinstance(other, Number):
@@ -60,6 +63,8 @@ class MappingParticle(Particle):
 
         def vector_length(self):
             return len(self)
+
+
         pass
     pass
 
@@ -102,11 +107,13 @@ class OrderingParticle(Particle):
                                               for task_id in self.entity})
         return velocity
 
-
     def limit_by(self, min=-1, max=-1):
         for t in self.entity:
             self.entity[t] = OrderingParticle._to_limit(self.entity[t], min, max)
         pass
+
+    def emptify(self):
+        return OrderingParticle.Velocity({k: 0.0 for k in self.entity})
 
     class Velocity(dict):
 
@@ -135,7 +142,6 @@ class OrderingParticle(Particle):
 
         def vector_length(self):
             return math.sqrt(sum(val*val for t, val in self.items()))/len(self)
-
         pass
     pass
 
