@@ -11,6 +11,7 @@ from heft.algs.pso.ordering_operators import numseq_to_ordering
 from heft.core.environment.BaseElements import Node
 from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
 from heft.settings import TEMP_PATH
+from heft.algs.gsa.ordering_mapping_operators import CompoundParticle as GsaCompoundParticle
 
 
 EXAMPLE_BASE_PARAMS = {
@@ -58,7 +59,7 @@ class ParticleScheduleBuilder(NewScheduleBuilder):
         """
         Converts Particle representation of individual to chromosome representation used by GA operators
         """
-        if isinstance(particle, CompoundParticle):
+        if isinstance(particle, (CompoundParticle, GsaCompoundParticle)):
             ordering = numseq_to_ordering(self.workflow, particle.ordering, self._unmoveable_tasks)
             chromo_mapping = {node.name: [] for node in self.nodes}
             for task_id in ordering:
@@ -157,3 +158,33 @@ def emigrant_selection(pop, k):
             r = random.randint(0, size - 1)
         res.append(r)
     return [pop[r] for r in res]
+
+
+def generate(n,
+             wf, rm, estimator,
+              fixed_schedule_part, current_time,
+              base_generate,
+              init_sched_percent,
+              initial_schedule=None, initial_population=None):
+    init_ind_count = int(n*init_sched_percent)
+    res = []
+    # init_pop_size = 0
+    init_pop_size = 0 if initial_population is None else len(initial_population)
+    if init_pop_size > 0:
+        if init_pop_size > n:
+            raise ValueError("size of initial population is bigger than parameter n: {0} > {1}".
+                             format(init_pop_size, n))
+        res = res + initial_population
+    if initial_schedule is not None and init_ind_count > 0 and n - init_pop_size > 0:
+        heft_particle = base_generate(wf, rm, estimator, initial_schedule)
+        init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
+        for p in init_arr:
+            p.created_by = "heft_particle"
+        res = res + init_arr
+    if n - init_ind_count - init_pop_size > 0:
+        generated_arr = [base_generate(wf, rm, estimator, schedule=None,
+                                      fixed_schedule_part=fixed_schedule_part,
+                                      current_time=current_time)
+                                 for _ in range(n - init_ind_count)]
+        res = res + generated_arr
+    return res

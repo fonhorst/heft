@@ -3,6 +3,7 @@ import functools
 import operator
 import random
 from heft.algs.common.utilities import cannot_be_zero, gather_info
+from heft.core.environment.Utility import profile_decorator
 
 
 def _randvecsum(vectors):
@@ -23,7 +24,7 @@ def calculate_velocity_and_position(p, fvm, estimate_position):
     p = estimate_position(p)
     return p
 
-def run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit):
+def run_gsa(toolbox, stats, logbook, n, gen_curr, gen_step, kbest, ginit, w, c):
     """
     This method is targeted to propose a prototype implementation of
     Gravitational Search Algorithm(gsa). It is intended only for initial steps
@@ -46,11 +47,11 @@ def run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit):
 
     ## initialization
     ## generates random solutions
-    pop = toolbox.generate(pop_size)
+    pop = toolbox.generate(n)
 
     best = None
 
-    for i in range(iter_number):
+    for i in range(gen_curr, gen_step):
         ## fitness estimation
         for p in pop:
             ## toolbox.fitness must return Fitness
@@ -102,8 +103,8 @@ def run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit):
         # pop = [toolbox.velocity_and_position(p, forces, position) for p, f in zip(pop, fvm)]
 
         ## change gravitational constants
-        G = toolbox.G(ginit, i, iter_number)
-        kbest = toolbox.kbest(kbest_init, kbest, i, iter_number)
+        G = toolbox.G(ginit, i, gen_curr - gen_step)
+        kbest = toolbox.kbest(kbest_init, kbest, i, gen_curr - gen_step)
 
         ##removing temporary elements
         for p in pop:

@@ -40,7 +40,7 @@ class OmgsaBaseExperiment(AbstractExperiment):
             toolbox=toolbox,
             logbook=logbook,
             statistics=stats,
-            pop_size=self.N,
+            n=self.N,
             iter_number=self.GEN,
             kbest=self.KBEST,
             ginit=self.G

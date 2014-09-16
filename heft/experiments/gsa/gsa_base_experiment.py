@@ -41,8 +41,8 @@ heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 1.00 else gen
 #         pop.append(variant)
 #     return pop
 
-pop_size = 20
-iter_number = 350
+pop_size = 50
+iter_number = 300
 kbest = pop_size
 ginit = 10
 W, C = 0.2, 0.5
@@ -82,7 +82,7 @@ logbook.header = ["gen", "G", "kbest"] + stats.fields
 
 
 def do_exp():
-    pop, _logbook, best = run_gsa(toolbox, stats, logbook, pop_size, iter_number, kbest, ginit)
+    pop, _logbook, best = run_gsa(toolbox, stats, logbook, pop_size, 0, iter_number, kbest, ginit, W, C)
 
     schedule = build_schedule(_wf, rm, estimator,  best)
     Utility.validate_static_schedule(_wf, schedule)
@@ -93,7 +93,7 @@ def do_exp():
 
 
 if __name__ == "__main__":
-    result = repeat(do_exp, 5)
-    # result = do_exp()
+    # result = repeat(do_exp, 5)
+    result = do_exp()
     print(result)
     pass

@@ -31,7 +31,8 @@ class MappingParticle(Particle):
 
     def __sub__(self, other):
         # return Position({k: self[k] for k in self.keys() - other.keys()})
-        return MappingParticle.Velocity({item: 1.0 for item in self.entity.items() - other.entity.items()})
+        return MappingParticle.Velocity({item: 1.0 for item in self.entity.items() #- other.entity.items()
+        })
 
     def __mul__(self, other):
         if isinstance(other, Number):
