@@ -5,6 +5,7 @@ import random
 from heft.algs.common.particle_operations import CompoundParticle, MappingParticle, OrderingParticle
 from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import ScheduleItem
+from heft.algs.gsa.ordering_mapping_operators import CompoundParticle as GsaCompoundParticle
 
 
 class ChromosomeCleaner:
@@ -68,7 +69,7 @@ class PSOChromosomeCleaner(ChromosomeCleaner):
         pass
 
     def __call__(self, chromosome, current_cleaned_schedule):
-        if not isinstance(chromosome, CompoundParticle):
+        if not isinstance(chromosome, (CompoundParticle, GsaCompoundParticle)):
             raise ValueError("Chromosome is not of CompoundParticle type: {0}".format(type(chromosome)))
 
         not_scheduled_tasks = current_cleaned_schedule.get_unfailed_tasks_ids()

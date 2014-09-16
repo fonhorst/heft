@@ -7,13 +7,13 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import test
 
 
 EXPERIMENT_NAME = "gaheft_for_gsa"
-# REPEAT_COUNT = 20
-# WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-# RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+REPEAT_COUNT = 20
+WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 
-REPEAT_COUNT = 1
-WF_NAMES = ["Montage_25"]
-RELIABILITY = [1.0]
+# REPEAT_COUNT = 1
+# WF_NAMES = ["Montage_25"]
+# RELIABILITY = [0.95]
 
 
 BASE_PARAMS = {
