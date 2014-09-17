@@ -51,7 +51,8 @@ def do_gaheft_exp(saver, alg_builder, wf_name, **params):
     }
     print("EXPERIMENT RUN END=========================")
 
-    saver(data)
+    if saver is not None:
+        saver(data)
     return data
 
 
@@ -108,7 +109,8 @@ def do_inherited_pop_exp(saver, alg_builder, chromosome_cleaner_builder, wf_name
         }
     }
 
-    saver(data)
+    if saver is not None:
+        saver(data)
 
     return data
 
@@ -156,7 +158,8 @@ def do_triple_island_exp(saver, alg_builder, chromosome_cleaner_builder, schedul
         }
     }
 
-    saver(data)
+    if saver is not None:
+        saver(data)
 
     return data
 

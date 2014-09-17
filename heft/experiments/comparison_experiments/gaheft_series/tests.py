@@ -24,10 +24,10 @@ TEST_BASE_PARAMS = deepcopy(EXAMPLE_BASE_PARAMS)
 
 class GaheftSeriesTest(TestCase):
 
-    raise NotImplementedError("Broken test. It is needed to rewrite saving to directory")
+    #raise NotImplementedError("Broken test. It is needed to rewrite saving to directory")
     RELIABILITY = [0.95]
-    REPEAT_COUNT = 5
-    WF_NAMES = ["Montage_25"]
+    REPEAT_COUNT = 100
+    WF_NAMES = ["Montage_25", "Montage_75"]
     INDIVIDUALS_COUNTS = [10]
 
 
