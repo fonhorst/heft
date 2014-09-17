@@ -60,7 +60,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
         item.state = ScheduleItem.EXECUTING
 
-        if len(nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down) == 1:
+        if len(list(nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down)) == 1:
             return
 
         if self._check_fail(event.task, node):
@@ -78,7 +78,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
             self.post(event_failed)
             self.post(event_nodeup)
 
-            self._remove_events(lambda ev: not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id))
+
         pass
 
     def _task_finished_handler(self, event):
@@ -92,6 +92,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 1:
             print("DECLINE NODE DOWN")
 
+
             st = ""
             for nd in self.resource_manager.get_nodes():
                 st += "{0} - {1}".format(nd.name, nd.state)
@@ -99,6 +100,8 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
             print("STATE INFORMATION(node failed handler): " + st)
 
             return
+
+        self._remove_events(lambda ev: not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id))
 
         ## interrupt ga
         self._stop_ga()

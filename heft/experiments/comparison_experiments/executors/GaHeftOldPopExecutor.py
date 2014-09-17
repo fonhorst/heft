@@ -61,7 +61,7 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
 
             # remove TaskFinished event
             ##TODO: make a function for this purpose in the base class
-            self._remove_events(lambda ev: not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id))
+            #self._remove_events(lambda ev: not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id))
         pass
 
     def _node_failed_handler(self, event):
