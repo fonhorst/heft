@@ -34,34 +34,37 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
         pass
 
     def _task_start_handler(self, event):
+        #
+        # res = self._check_event_for_ga_result(event)
+        # if res:
+        #     return
+        #
+        #
+        # # check task as executing
+        # # self.current_schedule.change_state(event.task, ScheduleItem.EXECUTING)
+        # # try to find nodes in cloud
+        # # check if failed and post
+        # (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
+        # item.state = ScheduleItem.EXECUTING
+        #
+        # ## TODO: may be it should be moved to specific mixin?
+        # if self._check_fail(event.task, node):
+        #     # generate fail time, post it
+        #     duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
+        #     time_of_fail = (item.end_time - self.current_time)*random.random()
+        #     time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
+        #
+        #     event_failed = NodeFailed(node, event.task)
+        #     event_failed.time_happened = time_of_fail
+        #
+        #     self.post(event_failed)
+        #
+        #     # remove TaskFinished event
+        #     ##TODO: make a function for this purpose in the base class
+        #     #self._remove_events(lambda ev: not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id))
 
-        res = self._check_event_for_ga_result(event)
-        if res:
-            return
+        super()._task_start_handler(event)
 
-
-        # check task as executing
-        # self.current_schedule.change_state(event.task, ScheduleItem.EXECUTING)
-        # try to find nodes in cloud
-        # check if failed and post
-        (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
-        item.state = ScheduleItem.EXECUTING
-
-        ## TODO: may be it should be moved to specific mixin?
-        if self._check_fail(event.task, node):
-            # generate fail time, post it
-            duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
-            time_of_fail = (item.end_time - self.current_time)*random.random()
-            time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
-
-            event_failed = NodeFailed(node, event.task)
-            event_failed.time_happened = time_of_fail
-
-            self.post(event_failed)
-
-            # remove TaskFinished event
-            ##TODO: make a function for this purpose in the base class
-            #self._remove_events(lambda ev: not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id))
         pass
 
     def _node_failed_handler(self, event):
@@ -140,7 +143,7 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
             self.stat_saver(stat_data)
 
         #TODO: remove this hack later
-        #self.stop()
+        self.stop()
 
         self._stop_ga()
         return result
@@ -152,42 +155,12 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
         if isinstance(event, NodeFailed):
             return self.chromosome_cleaner(chromosome, current_cleaned_schedule)
         elif isinstance(event, NodeUp):
-            return chromosome
+             return self.chromosome_cleaner(chromosome, current_cleaned_schedule)
+            #return chromosome
         else:
             raise Exception("Unhandled event: {0}".format(event))
         pass
 
-        # not_scheduled_tasks = [item.job.id for (node, items) in current_cleaned_schedule.mapping.items() for item in items if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.UNSTARTED]
-        #
-        # for (node_name, ids) in chromosome.items():
-        #     for_removing = []
-        #     for id in ids:
-        #         if id in not_scheduled_tasks:
-        #             for_removing.append(id)
-        #         pass
-        #     for r in for_removing:
-        #         ids.remove(r)
-        #         pass
-        #     pass
-        #
-        # if isinstance(event, NodeFailed):
-        #     tasks = chromosome[event.node.name]
-        #     ## TODO: here must be a procedure of getting currently alive nodes
-        #     working_nodes = list(chromosome.keys() - set([event.node.name]))
-        #     for t in tasks:
-        #         lt = len(working_nodes) - 1
-        #         new_node = 0 if lt == 0 else random.randint(0, lt )
-        #         node_name = working_nodes[new_node]
-        #         length = len(chromosome[node_name])
-        #         # TODO: correct 0 and length
-        #         new_place = 0 if length == 0 else random.randint(0, length)
-        #         chromosome[node_name].insert(new_place, t)
-        #     chromosome[event.node.name] = []
-        #     return chromosome
-        # elif isinstance(event, NodeUp):
-        #     return chromosome
-        # else:
-        #     raise Exception("Unhandled event: {0}".format(event))
-        # pass
+
 
     pass

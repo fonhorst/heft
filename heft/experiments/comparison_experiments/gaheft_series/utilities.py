@@ -32,7 +32,7 @@ EXAMPLE_BASE_PARAMS = {
         "base_fail_duration": 40,
         "base_fail_dispersion": 1,
         "fixed_interval_for_ga": 15,
-        "fail_count_upper_limit": 10,
+        "fail_count_upper_limit": 15,
         "task_id_to_fail": None
     },
     "resource_set": {

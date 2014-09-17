@@ -188,16 +188,24 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self.back_cmp = None
         pass
 
+    # def _is_a_fail_possible(self):
+    #     if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 1:
+    #         print("DECLINE NODE DOWN")
+    #         st = functools.reduce(operator.add, (" {0} - {1}".format(nd.name, nd.state) for nd in self.resource_manager.get_nodes()), "")
+    #         print("STATE INFORMATION: " + st)
+    #         return False
+    #     return True
+
     def _is_a_fail_possible(self):
-        if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 1:
-            print("DECLINE NODE DOWN")
-            st = functools.reduce(operator.add, (" {0} - {1}".format(nd.name, nd.state) for nd in self.resource_manager.get_nodes()), "")
-            print("STATE INFORMATION: " + st)
-            return False
         return True
 
 
+
     def _run_ga_in_background(self, event):
+
+        if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 0:
+            return
+
         current_schedule = self.current_schedule
         current_time = self.current_time
         ## TODO: replace by log call

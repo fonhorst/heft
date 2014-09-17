@@ -149,6 +149,12 @@ class NewScheduleBuilder:
             if node_name not in alive_nodes_names and len(tasks) > 0:
                 raise ValueError("Chromo is invalid. There is a task assigned to a dead node")
         if count_of_tasks(chromo) + len(self.fixed_schedule_part.get_unfailed_tasks_ids()) != len(self.workflow.get_all_unique_tasks()):
+
+            print("==Chromosome==================================")
+            print(chromo)
+            print("=fixed_schedule_part===================================")
+            print(self.fixed_schedule_part)
+
             raise Exception("The chromosome not a full. Chromo length: {0}, Fixed part length: {1}, workflow size: {2}".
                             format(count_of_tasks(chromo), len(self.fixed_schedule_part.get_unfailed_tasks_ids()),
                                    len(self.workflow.get_all_unique_tasks())))

@@ -1,4 +1,5 @@
 from collections import deque
+from heft.core.environment.BaseElements import Node
 
 from heft.core.environment.EventMachine import TaskStart, TaskFinished, NodeFailed, NodeUp
 from heft.core.environment.EventMachine import EventMachine
@@ -78,6 +79,10 @@ class BaseExecutor(EventMachine):
     def _reschedule(self, event):
         self.heft_planner.current_time = self.current_time
         current_cleaned_schedule = self._clean_events(event)
+
+        if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 0:
+            return
+
         self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
 
         ## TODO: remove it later.

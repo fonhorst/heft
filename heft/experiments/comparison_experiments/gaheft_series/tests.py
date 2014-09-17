@@ -27,7 +27,7 @@ class GaheftSeriesTest(TestCase):
     #raise NotImplementedError("Broken test. It is needed to rewrite saving to directory")
     RELIABILITY = [0.95]
     REPEAT_COUNT = 100
-    WF_NAMES = ["Montage_25", "Montage_75"]
+    WF_NAMES = ["Montage_25"]
     INDIVIDUALS_COUNTS = [10]
 
 

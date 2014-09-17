@@ -1,5 +1,6 @@
 from copy import deepcopy
 from heft.core.CommonComponents.failers.FailRandom import FailRandom
+from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
 from heft.experiments.comparison_experiments.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
 from heft.utilities.common import trace
 import inspect
