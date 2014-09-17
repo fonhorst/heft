@@ -130,6 +130,10 @@ def test_run(exp, base_params):
 
 
 def changing_reliability_run(exp, reliability, individuals_counts, repeat_count, wf_names, base_params, is_debug=False):
+
+    path = os.path.join(TEMP_PATH, "gaheft_series")
+    saver = UniqueNameSaver(path, base_params["experiment_name"])
+
     configs = []
     for r in reliability:
         for ind_count in individuals_counts:
@@ -139,7 +143,7 @@ def changing_reliability_run(exp, reliability, individuals_counts, repeat_count,
             params["alg_params"]["migrCount"] = int(0.1*ind_count)
             configs.append(params)
 
-    to_run = [partial(exp, wf_name=wf_name, **params) for wf_name in wf_names for params in configs]
+    to_run = [partial(exp, saver=saver, wf_name=wf_name, **params) for wf_name in wf_names for params in configs]
 
     # i = 0
     # results = []
@@ -162,12 +166,16 @@ def changing_reliability_run(exp, reliability, individuals_counts, repeat_count,
 
 
 def inherited_pop_run(exp, wf_tasksids_mapping, repeat_count, base_params, is_debug=False):
+
+    path = os.path.join(TEMP_PATH, "igaheft_series")
+    saver = UniqueNameSaver(path, base_params["experiment_name"])
+
     to_run = []
     for wf_name, ids in wf_tasksids_mapping.items():
         for id in ids:
             params = deepcopy(base_params)
             params["executor_params"]["task_id_to_fail"] = id
-            func = partial(exp, wf_name=wf_name, **params)
+            func = partial(exp, saver=saver, wf_name=wf_name, **params)
             to_run.append(func)
 
     if is_debug:

@@ -46,7 +46,7 @@ BASE_PARAMS = {
         "base_fail_dispersion": 1,
         "fixed_interval_for_ga": 15,
         "task_id_to_fail": "ID00000",
-        "fail_count_upper_limit": 7
+        "fail_count_upper_limit": 15
     },
     "resource_set": {
         "nodes_conf": [10, 15, 25, 30],

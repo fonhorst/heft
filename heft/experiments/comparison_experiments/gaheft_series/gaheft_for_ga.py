@@ -8,8 +8,8 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 EXPERIMENT_NAME = "gaheft_for_ga"
 REPEAT_COUNT = 10
 WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
-INDIVIDUALS_COUNTS = [50]
+RELIABILITY = [0.95]
+INDIVIDUALS_COUNTS = [20, 35, 50]
 # RELIABILITY = [0.9]
 
 BASE_PARAMS = {
@@ -18,18 +18,19 @@ BASE_PARAMS = {
     "alg_name": "ga",
     "alg_params": {
         "kbest": 5,
-        "n": 10,
+        "n": 50,
         "cxpb": 0.3,  # 0.8
         "mutpb": 0.1,  # 0.5
         "sweepmutpb": 0.3,  # 0.4
         "gen_curr": 0,
-        "gen_step": 30,
+        "gen_step": 300,
         "is_silent": True
     },
     "executor_params": {
         "base_fail_duration": 40,
         "base_fail_dispersion": 1,
-        "fixed_interval_for_ga": 15
+        "fixed_interval_for_ga": 15,
+        "fail_count_upper_limit": 15
     },
     "resource_set": {
         "nodes_conf": [10, 15, 25, 30],

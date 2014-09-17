@@ -7,9 +7,10 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import test
 
 
 EXPERIMENT_NAME = "gaheft_for_pso"
-REPEAT_COUNT = 100
-WF_NAMES = ["Montage_25"]
-RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+REPEAT_COUNT = 10
+WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+RELIABILITY = [0.95]
+INDIVIDUALS_COUNTS = [20, 35, 50]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
@@ -19,9 +20,9 @@ BASE_PARAMS = {
         "w": 0.1,
         "c1": 0.6,
         "c2": 0.2,
-        "n": 10,
+        "n": 50,
         "gen_curr": 0,
-        "gen_step": 10,
+        "gen_step": 300,
 
     },
     "executor_params": {
@@ -29,6 +30,7 @@ BASE_PARAMS = {
         "base_fail_dispersion": 1,
         "fixed_interval_for_ga": 15,
         "fail_count_upper_limit": 7,
+        "fail_count_upper_limit": 15
     },
     "resource_set": {
         "nodes_conf": [10, 15, 25, 30],

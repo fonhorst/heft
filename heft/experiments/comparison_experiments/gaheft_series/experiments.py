@@ -17,7 +17,7 @@ from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.settings import TEMP_PATH
 
 
-def do_gaheft_exp(alg_builder, wf_name, **params):
+def do_gaheft_exp(saver, alg_builder, wf_name, **params):
     print("EXPERIMENT RUN START===========================")
     _wf = wf(wf_name)
     rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
@@ -51,10 +51,12 @@ def do_gaheft_exp(alg_builder, wf_name, **params):
         }
     }
     print("EXPERIMENT RUN END=========================")
+
+    saver(data)
     return data
 
 
-def do_inherited_pop_exp(alg_builder, chromosome_cleaner_builder, wf_name, **params):
+def do_inherited_pop_exp(saver, alg_builder, chromosome_cleaner_builder, wf_name, **params):
     _wf = wf(wf_name)
     rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
@@ -107,15 +109,12 @@ def do_inherited_pop_exp(alg_builder, chromosome_cleaner_builder, wf_name, **par
         }
     }
 
-    ##TODO: hack. Remove it later
-    path = os.path.join(TEMP_PATH, "gaheft_series")
-    saver = UniqueNameSaver(path, params["experiment_name"])
     saver(data)
 
     return data
 
 
-def do_triple_island_exp(alg_builder, chromosome_cleaner_builder, schedule_to_chromosome_converter_builder, wf_name, **params):
+def do_triple_island_exp(saver, alg_builder, chromosome_cleaner_builder, schedule_to_chromosome_converter_builder, wf_name, **params):
     _wf = wf(wf_name)
     rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
@@ -158,9 +157,6 @@ def do_triple_island_exp(alg_builder, chromosome_cleaner_builder, schedule_to_ch
         }
     }
 
-    ##TODO: hack. Remove it later
-    path = os.path.join(TEMP_PATH, "migaheft_series")
-    saver = UniqueNameSaver(path, params["experiment_name"])
     saver(data)
 
     return data
