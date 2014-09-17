@@ -24,7 +24,7 @@ BASE_PARAMS = {
         "w": 0.1,
         "c1": 0.6,
         "c2": 0.2,
-        "n": 10,#50,
+        "n": 50,#50,
         ## param for init run
         "gen_curr": 0,
         ## param for init run
@@ -59,11 +59,11 @@ BASE_PARAMS = {
     }
 }
 
-saver_decorator = SaveToDirectory("migaheft_series", EXPERIMENT_NAME)
+
 ga_exp = partial(do_triple_island_exp, alg_builder=partial(create_pfmpga, algorithm=create_pso_alg, generate_func=generate),
                  chromosome_cleaner_builder=create_pso_cleaner,
                  schedule_to_chromosome_converter_builder=create_schedule_to_pso_chromosome_converter)
-ga_exp = saver_decorator(ga_exp)
+
 
 # profile_test_run = profile_decorator(test_run)
 

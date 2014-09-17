@@ -61,11 +61,10 @@ BASE_PARAMS = {
     }
 }
 
-saver_decorator = SaveToDirectory("migaheft_series", EXPERIMENT_NAME)
 ga_exp = partial(do_triple_island_exp, alg_builder=partial(create_pfmpga, algorithm=create_gsa_alg, generate_func=generate),
                  chromosome_cleaner_builder=create_pso_cleaner,
                  schedule_to_chromosome_converter_builder=create_schedule_to_gsa_chromosome_converter)
-ga_exp = saver_decorator(ga_exp)
+
 
 # profile_test_run = profile_decorator(test_run)
 

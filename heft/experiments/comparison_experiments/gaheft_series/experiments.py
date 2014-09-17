@@ -1,4 +1,5 @@
 from functools import partial
+import os
 from deap import tools
 from deap.tools import Logbook
 from gi.overrides import deprecated
@@ -7,11 +8,13 @@ from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
+from heft.experiments.cga.utilities.common import UniqueNameSaver
 from heft.experiments.comparison_experiments.executors.MIGaHeftExecutor import MIGaHeftExecutor
 from heft.experiments.comparison_experiments.executors.MPGaHeftOldPopExecutor import MPGaHeftOldPopExecutor
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
 from heft.experiments.comparison_experiments.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
+from heft.settings import TEMP_PATH
 
 
 def do_gaheft_exp(alg_builder, wf_name, **params):
@@ -104,6 +107,11 @@ def do_inherited_pop_exp(alg_builder, chromosome_cleaner_builder, wf_name, **par
         }
     }
 
+    ##TODO: hack. Remove it later
+    path = os.path.join(TEMP_PATH, "gaheft_series")
+    saver = UniqueNameSaver(path, params["experiment_name"])
+    saver(data)
+
     return data
 
 
@@ -149,6 +157,11 @@ def do_triple_island_exp(alg_builder, chromosome_cleaner_builder, schedule_to_ch
             "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
         }
     }
+
+    ##TODO: hack. Remove it later
+    path = os.path.join(TEMP_PATH, "migaheft_series")
+    saver = UniqueNameSaver(path, params["experiment_name"])
+    saver(data)
 
     return data
 

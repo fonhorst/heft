@@ -24,6 +24,7 @@ TEST_BASE_PARAMS = deepcopy(EXAMPLE_BASE_PARAMS)
 
 class GaheftSeriesTest(TestCase):
 
+    raise NotImplementedError("Broken test. It is needed to rewrite saving to directory")
     RELIABILITY = [0.95]
     REPEAT_COUNT = 5
     WF_NAMES = ["Montage_25"]
@@ -34,7 +35,7 @@ class GaheftSeriesTest(TestCase):
         self.save_path = os.path.join(TEMP_PATH, TEST_DIRECTORY_NAME)
 
     def tearDown(self):
-        #shutil.rmtree(self.save_path)
+        shutil.rmtree(self.save_path)
         pass
 
 
