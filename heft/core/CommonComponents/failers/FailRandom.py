@@ -22,13 +22,6 @@ class FailRandom(FailBase):
         if self._fail_count_upper_limit is not None and self._failed_counts >= self._fail_count_upper_limit:
             return False
 
-        st = ""
-        for nd in self.resource_manager.get_nodes():
-            st += "{0} - {1}".format(nd.name, nd.state)
-
-        print("STATE INFORMATION: " + st)
-
-
 
         #TODO: remake it later
         if hasattr(self, "estimator"):

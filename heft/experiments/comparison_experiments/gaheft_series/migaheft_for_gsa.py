@@ -11,9 +11,10 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import inhe
 #raise NotImplementedError()
 
 EXPERIMENT_NAME = "migaheft_for_gsa"
-REPEAT_COUNT = 1
-WF_NAMES = ["Montage_25"]
+REPEAT_COUNT = 10
+WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
 RELIABILITY = [0.95]
+INDIVIDUALS_COUNTS = [20, 35, 50]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
@@ -34,8 +35,8 @@ BASE_PARAMS = {
         "migrCount": 5,
         #"all_iters_count": 300,
         #"merged_pop_iters": 100,
-        "generations_count_before_merge": 20,
-        "generations_count_after_merge": 10,
+        "generations_count_before_merge": 200,
+        "generations_count_after_merge": 100,
         "migrationInterval": 10,
 
     },
@@ -43,7 +44,8 @@ BASE_PARAMS = {
         "base_fail_duration": 40,
         "base_fail_dispersion": 1,
         "fixed_interval_for_ga": 15,
-        "task_id_to_fail": "ID00000"
+        "task_id_to_fail": "ID00000",
+        "fail_count_upper_limit": 7
     },
     "resource_set": {
         "nodes_conf": [10, 15, 25, 30],
@@ -66,6 +68,6 @@ ga_exp = partial(do_triple_island_exp, alg_builder=partial(create_pfmpga, algori
 # profile_test_run = profile_decorator(test_run)
 
 if __name__ == "__main__":
-    changing_reliability_run(ga_exp, RELIABILITY, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
+    changing_reliability_run(ga_exp, RELIABILITY, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
     # test_run(ga_exp, BASE_PARAMS)
 

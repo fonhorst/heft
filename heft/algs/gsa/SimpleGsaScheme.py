@@ -24,7 +24,7 @@ def calculate_velocity_and_position(p, fvm, estimate_position):
     p = estimate_position(p)
     return p
 
-def run_gsa(toolbox, stats, logbook, n, gen_curr, gen_step, initial_pop, kbest, ginit, **params):
+def run_gsa(toolbox, stats, logbook, n, gen_curr, gen_step, initial_pop=None, kbest=None, ginit=None, **params):
     """
     This method is targeted to propose a prototype implementation of
     Gravitational Search Algorithm(gsa). It is intended only for initial steps

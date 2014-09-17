@@ -32,7 +32,8 @@ from heft.algs.gsa.ordering_mapping_operators import generate as gsa_generate
 def create_old_ga(wf, rm, estimator,
                   init_sched_percent=0.05,
                   log_book=None, stats=None,
-                  alg_params=None):
+                  **params):
+    alg_params = params["alg_params"]
     kwargs = {}
     kwargs["wf"] = wf
     kwargs["resource_manager"] = rm
@@ -84,6 +85,8 @@ def create_pfga(wf, rm, estimator,
         result = (best, pop, resulted_schedule, None), logbook
         return result
     return alg
+
+
 
 def create_pso_alg(pf_schedule, generate_, **params):
     def fit_converter(func):
@@ -159,7 +162,10 @@ def create_gsa_alg(pf_schedule, generate_, **params):
 
     W, C = params["w"], params["w"]
 
-    all_iterations_count = int(params["generations_count_before_merge"]) + int(params["generations_count_after_merge"])
+    if "generations_count_before_merge" in params and "generations_count_after_merge" in params:
+        all_iterations_count = int(params["generations_count_before_merge"]) + int(params["generations_count_after_merge"])
+    else:
+        all_iterations_count = None
 
     toolbox = Toolbox()
     toolbox.register("generate", generate_)
@@ -214,11 +220,6 @@ def create_old_pfmpga(wf, rm, estimator,
                 log_book=None, stats=None,
                 algorithm=None,
                 alg_params=None):
-
-    "merged_pop_iters"
-    "migrCount"
-    "all_iters_count"
-
 
 
 
@@ -275,8 +276,8 @@ def create_pfmpga(wf, rm, estimator,
                                  for _ in range(n)]
 
         populations = {
-            #"inherited": initial_population,
-            #"heft_based": heft_based_population,
+            "inherited": initial_population,
+            "heft_based": heft_based_population,
             "random": random_population
         }
 

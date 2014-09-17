@@ -6,7 +6,7 @@ import random
 from heft.algs.common.NewSchedulerBuilder import NewScheduleBuilder
 from heft.algs.common.individuals import DictBasedIndividual
 from heft.algs.common.particle_operations import CompoundParticle
-from heft.algs.ga.GAImplementation.GAFunctions2 import unmoveable_tasks
+from heft.algs.ga.GAImplementation.GAFunctions2 import unmoveable_tasks, GAFunctions2
 from heft.algs.pso.ordering_operators import numseq_to_ordering
 from heft.core.environment.BaseElements import Node
 from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
@@ -31,7 +31,9 @@ EXAMPLE_BASE_PARAMS = {
     "executor_params": {
         "base_fail_duration": 40,
         "base_fail_dispersion": 1,
-        "fixed_interval_for_ga": 15
+        "fixed_interval_for_ga": 15,
+        "fail_count_upper_limit": 10,
+        "task_id_to_fail": None
     },
     "resource_set": {
         "nodes_conf": [10, 15, 25, 30],
@@ -89,6 +91,22 @@ class ParticleScheduleBuilder(NewScheduleBuilder):
     pass
 
 
+class SaveToDirectory:
+    def __init__(self, dir_name, experiment_name):
+        if os.path.isabs(dir_name):
+            path = dir_name
+        else:
+            path = os.path.join(TEMP_PATH, dir_name)
+        self._saver = UniqueNameSaver(path, experiment_name)
+
+    def __call__(self, func):
+        def wrap(*args, **kwargs):
+            data = func(*args, **kwargs)
+            self._saver(data)
+            return data
+        return wrap
+
+
 def test_run(exp, base_params):
     configs = []
     # reliability = [1.0, 0.95, 0.9]
@@ -111,34 +129,39 @@ def test_run(exp, base_params):
     pass
 
 
-def changing_reliability_run(exp, reliability, repeat_count, wf_names, base_params, save_path=None):
+def changing_reliability_run(exp, reliability, individuals_counts, repeat_count, wf_names, base_params, is_debug=False):
     configs = []
     for r in reliability:
-        params = deepcopy(base_params)
-        params["estimator_settings"]["reliability"] = r
-        configs.append(params)
+        for ind_count in individuals_counts:
+            params = deepcopy(base_params)
+            params["estimator_settings"]["reliability"] = r
+            params["alg_params"]["n"] = ind_count
+            params["alg_params"]["migrCount"] = int(0.1*ind_count)
+            configs.append(params)
 
     to_run = [partial(exp, wf_name=wf_name, **params) for wf_name in wf_names for params in configs]
 
-    i = 0
-    results = []
-    for _ in range(repeat_count):
-        for t in to_run:
-            print("//////////////////////RUN NUMBER {0}=================".format(i))
-            i += 1
-            results.append(t())
+    # i = 0
+    # results = []
+    # for _ in range(repeat_count):
+    #     for t in to_run:
+    #         print("//////////////////////RUN NUMBER {0}=================".format(i))
+    #         i += 1
+    #         results.append(t())
 
-    #results = [t() for t in to_run for _ in range(repeat_count)]
-    # results = multi_repeat(repeat_count, to_run)
+    if is_debug:
+        results = [t() for t in to_run for _ in range(repeat_count)]
+    else:
+        results = multi_repeat(repeat_count, to_run)
 
-    path = save_path if save_path is not None else os.path.join(TEMP_PATH, "gaheft_series")
-    saver = UniqueNameSaver(path, base_params["experiment_name"])
-    for result in results:
-        saver(result)
+    # path = save_path if save_path is not None else os.path.join(TEMP_PATH, "gaheft_series")
+    # saver = UniqueNameSaver(path, base_params["experiment_name"])
+    # for result in results:
+    #     saver(result)
     pass
 
 
-def inherited_pop_run(exp, wf_tasksids_mapping, repeat_count, base_params, save_path=None):
+def inherited_pop_run(exp, wf_tasksids_mapping, repeat_count, base_params, is_debug=False):
     to_run = []
     for wf_name, ids in wf_tasksids_mapping.items():
         for id in ids:
@@ -147,13 +170,15 @@ def inherited_pop_run(exp, wf_tasksids_mapping, repeat_count, base_params, save_
             func = partial(exp, wf_name=wf_name, **params)
             to_run.append(func)
 
-    # results = [t() for t in to_run for _ in range(repeat_count)]
-    results = multi_repeat(repeat_count, to_run)
+    if is_debug:
+        results = [t() for t in to_run for _ in range(repeat_count)]
+    else:
+        results = multi_repeat(repeat_count, to_run)
 
-    path = save_path if save_path is not None else os.path.join(TEMP_PATH, "igaheft_series")
-    saver = UniqueNameSaver(path, base_params["experiment_name"])
-    for result in results:
-        saver(result)
+    # path = save_path if save_path is not None else os.path.join(TEMP_PATH, "igaheft_series")
+    # saver = UniqueNameSaver(path, base_params["experiment_name"])
+    # for result in results:
+    #     saver(result)
     pass
 
 
@@ -198,3 +223,10 @@ def generate(n,
                                  for _ in range(n - init_ind_count)]
         res = res + generated_arr
     return res
+
+
+def ga_generate(wf, rm, estimator, schedule=None, fixed_schedule_part=None, current_time=0.0):
+    if schedule is not None:
+        return GAFunctions2.schedule_to_chromosome(schedule, fixed_schedule_part)
+    gafunctions = GAFunctions2(wf, rm, estimator)
+    return gafunctions.build_initial(fixed_schedule_part, current_time)

@@ -6,9 +6,10 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 
 
 EXPERIMENT_NAME = "gaheft_for_ga"
-REPEAT_COUNT = 20
-WF_NAMES = ["Montage_25"]
+REPEAT_COUNT = 10
+WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
 RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+INDIVIDUALS_COUNTS = [50]
 # RELIABILITY = [0.9]
 
 BASE_PARAMS = {
@@ -47,4 +48,4 @@ ga_exp = partial(do_gaheft_exp, alg_builder=create_old_ga)
 
 if __name__ == "__main__":
     # test_run(ga_exp, BASE_PARAMS)
-    changing_reliability_run(ga_exp, RELIABILITY, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
+    changing_reliability_run(ga_exp, RELIABILITY, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)

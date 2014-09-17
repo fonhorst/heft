@@ -7,6 +7,7 @@ from deap import base, tools, creator
 from deap.tools import migRing
 from heft.algs.ga.GAImplementation.GAFunctions2 import GAFunctions2
 from heft.algs.ga.GAImplementation.GAImpl import GAFactory, SynchronizedCheckpointedGA
+from heft.core.environment.ResourceManager import Schedule
 
 
 def create_mpga(*args, **kwargs):
@@ -71,7 +72,7 @@ def create_mpga(*args, **kwargs):
                 newpop = toolbox.population(n=POPSIZE)
                 #heft_initial = GAFunctions2.schedule_to_chromosome(initial_schedule)
                 # TODO: this is a stub. Rearchitect information flows and entities responsibilities as soon as you will get the first positive results.
-                heft_initial = initial_schedule
+                heft_initial = initial_schedule if not isinstance(initial_schedule, Schedule) else GAFunctions2.schedule_to_chromosome(initial_schedule, fixed_schedule_part)
                 heft_initial = tools.initIterate(creator.Individual, lambda: heft_initial)
                 heft_pop = [ga_functions.mutation(deepcopy(heft_initial)) for i in range(POPSIZE)]
                 populations = [old_pop, newpop, heft_pop]

@@ -10,7 +10,7 @@ EXPERIMENT_NAME = "gaheft_for_gsa"
 REPEAT_COUNT = 20
 WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
 RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
-
+INDIVIDUALS_COUNTS = [50]
 # REPEAT_COUNT = 1
 # WF_NAMES = ["Montage_25"]
 # RELIABILITY = [0.95]
@@ -55,4 +55,4 @@ if __name__ == "__main__":
 
     # profile_test_run(pso_exp, BASE_PARAMS)
     # test_run(pso_exp, BASE_PARAMS)
-    changing_reliability_run(pso_exp, RELIABILITY, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
+    changing_reliability_run(pso_exp, RELIABILITY, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)

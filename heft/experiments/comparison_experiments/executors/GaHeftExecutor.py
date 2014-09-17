@@ -1,5 +1,7 @@
 from collections import namedtuple
 from copy import deepcopy
+import functools
+import operator
 import random
 
 from heft.core.CommonComponents.BaseExecutor import BaseExecutor
@@ -39,10 +41,10 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self.current_schedule = Schedule({node: [] for node in self.heft_planner.get_nodes()})
 
         initial_schedule = self.heft_planner.run(deepcopy(self.current_schedule))
-        #print("HEFT MAKESPAN: {0}".format(Utility.makespan(initial_schedule)))
+
         # TODO: change these two ugly records
         result = self.ga_builder()(self.current_schedule, initial_schedule)
-        #print("INIT MAKESPAN: {0}".format(Utility.makespan(result[0][2])))
+
         self.current_schedule = result[0][2]
 
         self._post_new_events()
@@ -60,7 +62,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
         item.state = ScheduleItem.EXECUTING
 
-        if len(list(nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down)) == 1:
+        if not self._is_a_fail_possible():
             return
 
         if self._check_fail(event.task, node):
@@ -89,16 +91,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
     def _node_failed_handler(self, event):
 
-        if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 1:
-            print("DECLINE NODE DOWN")
-
-
-            st = ""
-            for nd in self.resource_manager.get_nodes():
-                st += "{0} - {1}".format(nd.name, nd.state)
-
-            print("STATE INFORMATION(node failed handler): " + st)
-
+        if not self._is_a_fail_possible():
             return
 
         self._remove_events(lambda ev: not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id))
@@ -112,7 +105,6 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         ##self.current_schedule.change_state(event.task, ScheduleItem.FAILED)
         it = [item for item in self.current_schedule.mapping[event.node] if item.job.id == event.task.id and item.state == ScheduleItem.EXECUTING]
         if len(it) != 1:
-            ## TODO: raise exception here
             raise Exception(" Trouble in finding of the task: count of found tasks {0}".format(len(it)))
 
         it[0].state = ScheduleItem.FAILED
@@ -195,6 +187,15 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
         self.back_cmp = None
         pass
+
+    def _is_a_fail_possible(self):
+        if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 1:
+            print("DECLINE NODE DOWN")
+            st = functools.reduce(operator.add, (" {0} - {1}".format(nd.name, nd.state) for nd in self.resource_manager.get_nodes()), "")
+            print("STATE INFORMATION: " + st)
+            return False
+        return True
+
 
     def _run_ga_in_background(self, event):
         current_schedule = self.current_schedule

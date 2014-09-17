@@ -24,9 +24,9 @@ estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transf
 heft_schedule = run_heft(_wf, rm, estimator)
 
 
-heft_particle = generate(heft_schedule)
+heft_particle = generate(_wf, rm, estimator, heft_schedule)
 
-heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 1.00 else gen() for _ in range(n)]
+heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 1.00 else generate(_wf, rm, estimator) for _ in range(n)]
 
 # def heft_gen(n):
 #     heft_count = int(n*0.05)
@@ -79,7 +79,7 @@ logbook.header = ["gen", "G", "kbest"] + stats.fields
 
 
 def do_exp():
-    pop, _logbook, best = run_gsa(toolbox, stats, logbook, pop_size, 0, iter_number, kbest, ginit, W, C)
+    pop, _logbook, best = run_gsa(toolbox, stats, logbook, pop_size, 0, iter_number, None, kbest, ginit, **{"w":W, "c":C})
 
     schedule = build_schedule(_wf, rm, estimator,  best)
     Utility.validate_static_schedule(_wf, schedule)

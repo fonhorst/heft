@@ -9,9 +9,9 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 
 EXPERIMENT_NAME = "gaheft_for_heft"
 REPEAT_COUNT = 200
-# WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-WF_NAMES = ["Montage_25"]
-RELIABILITY = [0.9]
+WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+INDIVIDUALS_COUNTS = [50]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
@@ -65,4 +65,4 @@ def heft_exp(wf_name, **params):
 
 if __name__ == "__main__":
     # test_run(heft_exp, BASE_PARAMS)
-    changing_reliability_run(heft_exp, RELIABILITY, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
+    changing_reliability_run(heft_exp, RELIABILITY, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
