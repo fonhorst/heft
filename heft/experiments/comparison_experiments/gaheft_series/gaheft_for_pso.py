@@ -53,4 +53,4 @@ if __name__ == "__main__":
 
     # profile_test_run(pso_exp, BASE_PARAMS)
     # test_run(pso_exp, BASE_PARAMS)
-    changing_reliability_run(pso_exp, RELIABILITY, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
+    changing_reliability_run(pso_exp, RELIABILITY, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
