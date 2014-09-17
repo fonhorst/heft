@@ -106,6 +106,15 @@ class SaveToDirectory:
             return data
         return wrap
 
+def randomize_order(seq):
+    result = []
+    while len(seq) > 0:
+        r = 0 if len(seq) - 1 == 0 else random.randint(0, len(seq) - 1)
+        el = seq[r]
+        result.append(el)
+        seq.remove(el)
+    return result
+
 
 def test_run(exp, base_params):
     configs = []
@@ -144,6 +153,8 @@ def changing_reliability_run(exp, reliability, individuals_counts, repeat_count,
             configs.append(params)
 
     to_run = [partial(exp, saver=saver, wf_name=wf_name, **params) for wf_name in wf_names for params in configs]
+    to_run = randomize_order(to_run)
+
 
     # i = 0
     # results = []
@@ -177,6 +188,8 @@ def inherited_pop_run(exp, wf_tasksids_mapping, repeat_count, base_params, is_de
             params["executor_params"]["task_id_to_fail"] = id
             func = partial(exp, saver=saver, wf_name=wf_name, **params)
             to_run.append(func)
+
+    to_run = randomize_order(to_run)
 
     if is_debug:
         results = [t() for t in to_run for _ in range(repeat_count)]
