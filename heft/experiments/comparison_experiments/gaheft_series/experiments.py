@@ -2,7 +2,6 @@ from functools import partial
 import os
 from deap import tools
 from deap.tools import Logbook
-from gi.overrides import deprecated
 import numpy
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
