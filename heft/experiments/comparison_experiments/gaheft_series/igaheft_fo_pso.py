@@ -25,7 +25,7 @@ BASE_PARAMS = {
         "c2": 0.2,
         "n": 50,
         "gen_curr": 0,
-        "gen_step": 100,
+        "gen_step": 300,
         "is_silent": True
     },
     "executor_params": {
