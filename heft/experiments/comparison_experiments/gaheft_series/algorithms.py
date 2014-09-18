@@ -259,7 +259,7 @@ def create_pfmpga(wf, rm, estimator,
         ### generate heft_based population
         init_ind_count = int(n * init_sched_percent)
         heft_particle = initial_schedule if isinstance(initial_schedule, (CompoundParticle, GsaCompoundParticle)) \
-            else generate_func(wf, rm, estimator, initial_schedule)
+            else generate_func(wf, rm, estimator, initial_schedule, fixed_schedule_part, current_time)
         init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
         generated_arr = [generate_func(wf, rm, estimator,
                                           schedule=None,
