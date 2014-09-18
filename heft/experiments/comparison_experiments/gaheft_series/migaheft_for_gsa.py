@@ -20,7 +20,7 @@ INDIVIDUALS_COUNTS = [20, 35, 50]
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
     "init_sched_percent": 0.00,
-    "alg_name": "pso",
+    "alg_name": "gsa",
     "alg_params": {
         "w": 0.2,
         "c": 0.5,
