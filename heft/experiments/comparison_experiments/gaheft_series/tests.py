@@ -27,8 +27,8 @@ class GaheftSeriesTest(TestCase):
     #raise NotImplementedError("Broken test. It is needed to rewrite saving to directory")
     RELIABILITY = [0.95]
     REPEAT_COUNT = 100
-    WF_NAMES = ["Montage_25"]
-    INDIVIDUALS_COUNTS = [10]
+    WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+    INDIVIDUALS_COUNTS = [20]
 
 
     def setUp(self):
@@ -50,7 +50,7 @@ class GaheftSeriesTest(TestCase):
             "w": 0.1,
             "c1": 0.6,
             "c2": 0.2,
-            "n": 10,
+            "n": 50,
             "gen_curr": 0,
             "gen_step": 10,
         }

@@ -232,7 +232,8 @@ def generate(n,
                              format(init_pop_size, n))
         res = res + initial_population
     if initial_schedule is not None and init_ind_count > 0 and n - init_pop_size > 0:
-        heft_particle = base_generate(wf, rm, estimator, initial_schedule)
+
+        heft_particle = base_generate(wf, rm, estimator, initial_schedule, fixed_schedule_part, current_time)
         init_arr = [deepcopy(heft_particle) for _ in range(init_ind_count)]
         for p in init_arr:
             p.created_by = "heft_particle"
