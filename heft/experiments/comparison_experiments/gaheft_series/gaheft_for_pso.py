@@ -7,14 +7,15 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import test
 
 
 EXPERIMENT_NAME = "gaheft_for_pso"
-REPEAT_COUNT = 10
+REPEAT_COUNT = 50
 WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
 RELIABILITY = [0.95]
 INDIVIDUALS_COUNTS = [20, 35, 50]
+# INDIVIDUALS_COUNTS = [60, 105, 150]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
-    "init_sched_percent": 0.05,
+    "init_sched_percent": 0.00,
     "alg_name": "pso",
     "alg_params": {
         "w": 0.1,

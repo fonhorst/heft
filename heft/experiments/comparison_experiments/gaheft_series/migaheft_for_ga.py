@@ -10,7 +10,7 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import inhe
 
 
 EXPERIMENT_NAME = "migaheft_for_ga"
-REPEAT_COUNT = 10
+REPEAT_COUNT = 50
 WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
 RELIABILITY = [0.95]
 INDIVIDUALS_COUNTS = [20, 35, 50]

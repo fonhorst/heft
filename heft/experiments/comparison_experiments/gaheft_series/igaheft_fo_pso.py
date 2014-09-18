@@ -7,19 +7,17 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import inhe
 
 
 EXPERIMENT_NAME = "igaheft_for_pso"
-REPEAT_COUNT = 20
+REPEAT_COUNT = 50
 WF_TASKIDS_MAPPING = {
     "Montage_75": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
                     "ID00050_000", "ID00070_000"]
 }
 
-# WF_TASKIDS_MAPPING = {
-#     "Montage_75": ["ID00000_000", "ID00010_000"]
-# }
+
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
-    "init_sched_percent": 0.05,
+    "init_sched_percent": 0.00,
     "alg_name": "pso",
     "alg_params": {
         "w": 0.1,
