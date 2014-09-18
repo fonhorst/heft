@@ -13,9 +13,9 @@ WF_TASKIDS_MAPPING = {
                     "ID00050_000", "ID00070_000"]
 }
 
-WF_TASKIDS_MAPPING = {
-    "Montage_75": ["ID00000_000"]
-}
+# WF_TASKIDS_MAPPING = {
+#     "Montage_75": ["ID00000_000"]
+# }
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,

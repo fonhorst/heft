@@ -9,9 +9,10 @@ from heft.experiments.comparison_experiments.gaheft_series.algorithms import cre
     create_pfmpga, create_pso_alg, create_pso_cleaner, create_schedule_to_pso_chromosome_converter, \
     create_schedule_to_gsa_chromosome_converter, create_gsa_alg, create_ga_cleaner, \
     create_schedule_to_ga_chromosome_converter, create_old_pfmpga
-from heft.experiments.comparison_experiments.gaheft_series.experiments import do_gaheft_exp, do_triple_island_exp
+from heft.experiments.comparison_experiments.gaheft_series.experiments import do_gaheft_exp, do_triple_island_exp, \
+    do_inherited_pop_exp
 from heft.experiments.comparison_experiments.gaheft_series.utilities import EXAMPLE_BASE_PARAMS, \
-    changing_reliability_run, SaveToDirectory
+    changing_reliability_run, SaveToDirectory, inherited_pop_run
 from heft.settings import TEMP_PATH, TEST_DIRECTORY_NAME
 from heft.algs.pso.ordering_operators import generate as pso_generate
 from heft.algs.gsa.ordering_mapping_operators import generate as gsa_generate
@@ -26,16 +27,20 @@ class GaheftSeriesTest(TestCase):
 
     #raise NotImplementedError("Broken test. It is needed to rewrite saving to directory")
     RELIABILITY = [0.95]
-    REPEAT_COUNT = 100
-    WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+    REPEAT_COUNT = 50
+    WF_NAMES = ["Montage_25"]
     INDIVIDUALS_COUNTS = [20]
 
+    WF_TASKIDS_MAPPING = {
+        "Montage_75": ["ID00000_000", "ID00010_000"]
+    }
 
     def setUp(self):
         self.save_path = os.path.join(TEMP_PATH, TEST_DIRECTORY_NAME)
 
     def tearDown(self):
-        shutil.rmtree(self.save_path)
+        if os.path.exists(self.save_path):
+            shutil.rmtree(self.save_path)
         pass
 
 
@@ -198,7 +203,59 @@ class GaheftSeriesTest(TestCase):
          changing_reliability_run(pso_exp, self.RELIABILITY, self.INDIVIDUALS_COUNTS, self.REPEAT_COUNT, self.WF_NAMES, params, is_debug=True)
          pass
 
+    def test_igaheft_ga(self):
+        params = deepcopy(TEST_BASE_PARAMS)
+        params["experiment_name"] = "test_igaheft_for_ga"
+        params["alg_name"] = "ga"
+        params["alg_params"] = {
+            "kbest": 5,
+            "n": 10,
+            "cxpb": 0.3,  # 0.8
+            "mutpb": 0.1,  # 0.5
+            "sweepmutpb": 0.3,  # 0.4
+            "gen_curr": 0,
+            "gen_step": 10,
+            "is_silent": True
+        }
 
+        ga_exp = partial(do_inherited_pop_exp, alg_builder=create_old_ga, chromosome_cleaner_builder=create_ga_cleaner)
+        inherited_pop_run(ga_exp, self.WF_TASKIDS_MAPPING, self.REPEAT_COUNT, params, is_debug=True)
+        pass
+
+    def test_igaheft_pso(self):
+        params = deepcopy(TEST_BASE_PARAMS)
+        params["experiment_name"] = "test_igaheft_for_pso"
+        params["alg_name"] = "pso"
+        params["alg_params"] = {
+            "w": 0.1,
+            "c1": 0.6,
+            "c2": 0.2,
+            "n": 10,
+            "gen_curr": 0,
+            "gen_step": 10,
+            "is_silent": True
+        }
+
+        ga_exp = partial(do_inherited_pop_exp, alg_builder=create_pfpso, chromosome_cleaner_builder=create_pso_cleaner)
+        inherited_pop_run(ga_exp, self.WF_TASKIDS_MAPPING, self.REPEAT_COUNT, params, is_debug=True)
+        pass
+
+    def test_igaheft_gsa(self):
+        params = deepcopy(TEST_BASE_PARAMS)
+        params["experiment_name"] = "test_igaheft_for_gsa"
+        params["alg_name"] = "gsa"
+        params["alg_params"] = {
+            "w": 0.2,
+            "c": 0.5,
+            "n": 10,
+            "gen_curr": 0,
+            "gen_step": 10,
+            "ginit": 10
+        }
+
+        ga_exp = partial(do_inherited_pop_exp, alg_builder=create_pfgsa, chromosome_cleaner_builder=create_pso_cleaner)
+        inherited_pop_run(ga_exp, self.WF_TASKIDS_MAPPING, self.REPEAT_COUNT, params, is_debug=True)
+        pass
 
 
     pass

@@ -142,7 +142,7 @@ def do_triple_island_exp(saver, alg_builder, chromosome_cleaner_builder, schedul
     machine.init()
     machine.run()
     resulted_schedule = machine.current_schedule
-    stat_data = machine.executor_stat_data
+
 
     Utility.validate_dynamic_schedule(_wf, resulted_schedule)
 
