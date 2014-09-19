@@ -1,7 +1,11 @@
 import json
 import os
+import math
 import matplotlib.pyplot as plt
 from heft.settings import TEMP_PATH
+from scipy import stats
+import scipy
+import numpy
 
 WFS_COLORS_30 = {
     # 30 - series
@@ -75,3 +79,13 @@ def aggregate(pathes,  picture_path="gh.png", extract_and_add=None, functions=No
 
     path = os.path.join(TEMP_PATH, picture_path) if not os.path.isabs(picture_path) else picture_path
     visualize(data, functions, path)
+
+
+
+def interval_statistics(points, confidence_level=0.95):
+    s = numpy.array(points)
+    n, min_max, mean, var, skew, kurt = stats.describe(s)
+    std = math.sqrt(var)
+    left, right = stats.norm.interval(confidence_level, loc=mean, scale=std)
+    mn, mx = min_max
+    return mean, mn, mx, std, left, right

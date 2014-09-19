@@ -1,14 +1,15 @@
 from functools import partial
 import os
 import numpy
-from heft.experiments.aggregate_utilities import WFS_COLORS, aggregate
+from heft.experiments.aggregate_utilities import WFS_COLORS, aggregate, interval_statistics
 import matplotlib.pyplot as plt
 from heft.settings import TEMP_PATH
 
 ALG_COLORS = {
-    "ga": "-gD",
+    # "ga": "-gD",
     "heft": "-rD",
-   # "pso": "-yD"
+    # "pso": "-yD",
+    "gsa": "-mD"
 }
 
 def extract_and_add(alg_name, data, d):
@@ -52,7 +53,7 @@ def composite_extract_and_add(data, d, alg_names):
 
 def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=None):
 
-    aggr = lambda results: numpy.mean(results)
+    aggr = lambda results: interval_statistics(results)
 
     def get_points_format(data):
         if len(data) == 0:
@@ -103,7 +104,18 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=Non
         plt.setp(plt.xticks()[1], rotation=30, ha='right')
 
 
-        plt.plot([i for i in range(0, len(points))], [x[1] for x in points], style, label=alg_name)
+        plt.plot([i for i in range(0, len(points))], [x[1][0] for x in points], style, label=alg_name)
+
+        # plt.errorbar([i for i in range(0, len(points))], [x[1][0] for x in points],
+        #              yerr=([x[1][4] for x in points],
+        #                         [x[1][5] for x in points]))
+
+        # for i, p in zip(range(0, len(points)), points):
+        #     val, stat = p
+        #     mean, mn, mx, std, left, right = stat
+        #     plt.errorbar(i, mean, yerr=[left, right])
+
+
         ax.legend()
     pass
 
@@ -182,14 +194,27 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
 
 if __name__ == "__main__":
     wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+    # wf_names = ["Montage_25"]
     # wf_names = ["Montage_25", "Montage_40", "Montage_50"]
     for wf_name in wf_names:
-        alg_names = ["ga", "heft"]
-        #alg_names = ["pso", "heft"]
-        #path = os.path.join(TEMP_PATH, "to_analysis", "pso_and_heft")
-        path = os.path.join(TEMP_PATH, "to_analysis", "ga_and_heft")
-        #wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
-        wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], base_alg_name="heft")
+        # alg_names = ["ga", "heft"]
+        # alg_names = ["pso", "heft"]
+        alg_names = ["gsa", "heft"]
+
+        path = os.path.join(TEMP_PATH, "all_results_sorted_and_merged", "gaheft_0.99-0.9_series")
+        alg_1_path = os.path.join(TEMP_PATH, "all_gsa_series_")
+        # alg_1_path = os.path.join(TEMP_PATH, "all_gaheft_series_m25")
+
+        # alg_1_path = os.path.join(path, "gaheft_for_ga_[0.99-0.9]x[m25-m75]x50")
+        # alg_1_path = os.path.join(path, "gaheft_for_pso_[0.99-0.9]x[m25-m75]x50")
+        # alg_1_path = os.path.join(path, "gaheft_for_gsa_[0.99-0.9]x[m25-m75]x100")
+
+        # alg_2_path = os.path.join(path, "gaheft_for_heft_[0.99-0.9]x[m25-m75]x200")
+        alg_2_path = os.path.join(TEMP_PATH, "gaheft_for_heft_1000")
+        wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
+        # wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], base_alg_name="heft")
         extract = partial(composite_extract_and_add, alg_names=alg_names)
-        aggregate(path=[path],
-                  picture_path="gaheft_series_{0}.png".format(wf_name), extract_and_add=extract, functions=[wf_plot])
+        picture_path = os.path.join("all_results_sorted_and_merged", "gaheft_0.99-0.9_series", "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
+        # picture_path = os.path.join(TEMP_PATH, "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
+        aggregate(pathes=[alg_1_path, alg_2_path],
+                  picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])

@@ -7,17 +7,22 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import test
 
 
 EXPERIMENT_NAME = "gaheft_for_gsa"
-REPEAT_COUNT = 50
-WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-RELIABILITY = [0.95]
-INDIVIDUALS_COUNTS = [20, 35, 50]
+# REPEAT_COUNT = 50
+# WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+# RELIABILITY = [0.95]
+# INDIVIDUALS_COUNTS = [20, 35, 50]
 # INDIVIDUALS_COUNTS = [60, 105, 150]
+
+REPEAT_COUNT = 1
+WF_NAMES = ["Montage_50"]
+RELIABILITY = [1.0]
+INDIVIDUALS_COUNTS = [50]
 
 
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
-    "init_sched_percent": 0.00,
+    "init_sched_percent": 0.05,
     "alg_name": "gsa",
     "alg_params": {
         "w": 0.2,

@@ -44,7 +44,7 @@ coeff_aggregate = partial(aggregate, extract_and_add=extract_and_add_coeff, func
 
 if __name__ == "__main__":
 
-    # coeff_aggregate(PATH, "coeff.png")
+    # coeff_aggregate([PATH], "coeff.png")
     # wfs = [(WFS_COLORS_30, "30-series"), (WFS_COLORS_50, "50-series"),
     #        (WFS_COLORS_75, "75-series"), (WFS_COLORS_100, "100-series")]
 

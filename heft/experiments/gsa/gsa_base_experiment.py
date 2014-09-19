@@ -17,7 +17,7 @@ from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.experiments.cga.utilities.common import repeat
 
 
-_wf = wf("Montage_75")
+_wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
                                     ideal_flops=20, transfer_time=100)

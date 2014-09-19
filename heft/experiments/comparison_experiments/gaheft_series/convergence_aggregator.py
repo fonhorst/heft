@@ -67,11 +67,14 @@ if __name__ == "__main__":
 
     # path = os.path.join(TEMP_PATH, "igaheft_analysis", "igaheft_for_ga_m75_20")
     # path = os.path.join(TEMP_PATH, "igaheft_analysis", "igaheft_for_pso_m75_20")
-    path = os.path.join(TEMP_PATH, "igaheft_analysis", "igaheft_for_gsa_m75_5")
+    # path = os.path.join(TEMP_PATH, "igaheft_analysis", "igaheft_for_gsa_m75_5")
+    path = os.path.join(TEMP_PATH, "all_results_sorted_and_merged", "igaheft_series", "igaheft_for_gsa_m75x100")
+
 
     extract = partial(extract_and_add, wf_name)
 
     for task_id in task_ids:
         wf_plot = partial(plot_aggregate_igaheft_results, wf_name=wf_name, task_id=task_id, points=points)
-        aggregate(path=[path], picture_path="igaheft_series_{0}.png".format(task_id),
+        picture_path = os.path.join(TEMP_PATH, "all_results_sorted_and_merged", "igaheft_series",  "igaheft_series_{0}.png".format(task_id))
+        aggregate(pathes=[path], picture_path=picture_path,
                   extract_and_add=extract, functions=[wf_plot])

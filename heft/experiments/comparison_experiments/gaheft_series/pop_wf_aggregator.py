@@ -8,7 +8,11 @@ from heft.settings import TEMP_PATH
 POP_SIZE_COLORS = {
     20: "-gD",
     35: "-rD",
-    50: "-yD"
+    50: "-yD",
+
+    60: "-gD",
+    105: "-rD",
+    150: "-yD",
 }
 
 def extract_and_add(alg_name, data, d):
@@ -96,11 +100,12 @@ if __name__ == "__main__":
 
     alg_names = ["pso"]
 
-    path = os.path.join(TEMP_PATH, "migaheft_for_gsa_[20,35,50]x[m25-m50]x50")
+    path = os.path.join(TEMP_PATH, "all_results_sorted_and_merged", "migaheft_series", "migaheft_for_pso_[20, 35, 50]x[m25-m75]x50")
 
     for alg_name in alg_names:
         wf_plot = partial(plot_aggregate_results, alg_name=alg_name)
         extract = partial(extract_and_add, alg_name)
-        aggregate(path=[path],
-                  picture_path="migaheft_series_{0}.png".format(alg_name), extract_and_add=extract, functions=[wf_plot])
+        picture_path = os.path.join("all_results_sorted_and_merged", "migaheft_series", "migaheft_series_{0}.png".format(alg_name))
+        aggregate(pathes=[path],
+                  picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
 
