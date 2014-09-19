@@ -73,5 +73,5 @@ if __name__ == "__main__":
 
     for task_id in task_ids:
         wf_plot = partial(plot_aggregate_igaheft_results, wf_name=wf_name, task_id=task_id, points=points)
-        aggregate(path=path, picture_path="igaheft_series_{0}.png".format(task_id),
+        aggregate(path=[path], picture_path="igaheft_series_{0}.png".format(task_id),
                   extract_and_add=extract, functions=[wf_plot])

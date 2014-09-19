@@ -101,6 +101,6 @@ if __name__ == "__main__":
     for alg_name in alg_names:
         wf_plot = partial(plot_aggregate_results, alg_name=alg_name)
         extract = partial(extract_and_add, alg_name)
-        aggregate(path=path,
+        aggregate(path=[path],
                   picture_path="migaheft_series_{0}.png".format(alg_name), extract_and_add=extract, functions=[wf_plot])
 

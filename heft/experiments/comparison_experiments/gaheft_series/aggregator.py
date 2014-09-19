@@ -191,5 +191,5 @@ if __name__ == "__main__":
         #wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
         wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], base_alg_name="heft")
         extract = partial(composite_extract_and_add, alg_names=alg_names)
-        aggregate(path=path,
+        aggregate(path=[path],
                   picture_path="gaheft_series_{0}.png".format(wf_name), extract_and_add=extract, functions=[wf_plot])

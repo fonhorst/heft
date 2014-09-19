@@ -65,8 +65,8 @@ def visualize(data, functions, path_to_save=None):
     pass
 
 
-def aggregate(path,  picture_path="gh.png", extract_and_add=None, functions=None):
-    files = [os.path.join(path, p) for p in os.listdir(path) if p.endswith(".json")]
+def aggregate(pathes,  picture_path="gh.png", extract_and_add=None, functions=None):
+    files = [os.path.join(path, p) for path in pathes for p in os.listdir(path) if p.endswith(".json")]
     data = {}
     for p in files:
         with open(p, "r") as f:

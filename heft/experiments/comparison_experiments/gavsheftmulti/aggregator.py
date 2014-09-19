@@ -119,7 +119,7 @@ extract = partial(extract_and_add, FIX_TRANSFER=FIX_TRANSFER, FIX_FLOPS=FIX_FLOP
 transf_flops_aggregate = partial(aggregate, extract_and_add=extract, functions=[transfer_plot, iflops_plot])
 
 if __name__ == "__main__":
-    transf_flops_aggregate(PATH)
+    transf_flops_aggregate([PATH])
 
 
 

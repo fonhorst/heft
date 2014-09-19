@@ -36,7 +36,7 @@ BASE_PARAMS = {
     }
 }
 
-def heft_exp(wf_name, **params):
+def heft_exp(saver, wf_name, **params):
     _wf = wf(wf_name)
     rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
@@ -61,6 +61,9 @@ def heft_exp(wf_name, **params):
             "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
         }
     }
+
+    if saver is not None:
+        saver(data)
 
     return data
 

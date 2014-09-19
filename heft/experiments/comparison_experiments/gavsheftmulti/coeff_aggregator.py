@@ -55,4 +55,4 @@ if __name__ == "__main__":
             ({"Epigenomics_24": "-mD"}, "epigenomics")]
     for wfs_colors, name in wfs:
         f = partial(plot_aggregate_results, property_name="data_intensive_coeff", wfs_colors=wfs_colors)
-        aggregate(PATH,"coeff_{0}.png".format(name), extract_and_add=extract_and_add_coeff, functions=[f])
+        aggregate([PATH],"coeff_{0}.png".format(name), extract_and_add=extract_and_add_coeff, functions=[f])
