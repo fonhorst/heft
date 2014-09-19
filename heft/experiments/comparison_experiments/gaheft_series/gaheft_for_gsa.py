@@ -7,16 +7,12 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import test
 
 
 EXPERIMENT_NAME = "gaheft_for_gsa"
-# REPEAT_COUNT = 50
-# WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-# RELIABILITY = [0.95]
+REPEAT_COUNT = 200
+WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+INDIVIDUALS_COUNTS = [50]
 # INDIVIDUALS_COUNTS = [20, 35, 50]
 # INDIVIDUALS_COUNTS = [60, 105, 150]
-
-REPEAT_COUNT = 1
-WF_NAMES = ["Montage_50"]
-RELIABILITY = [1.0]
-INDIVIDUALS_COUNTS = [50]
 
 
 

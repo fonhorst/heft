@@ -80,8 +80,8 @@ class BaseExecutor(EventMachine):
         self.heft_planner.current_time = self.current_time
         current_cleaned_schedule = self._clean_events(event)
 
-        if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 0:
-            return
+        # if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 0:
+        #     return
 
         self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
 

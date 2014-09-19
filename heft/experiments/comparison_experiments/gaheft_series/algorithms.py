@@ -209,15 +209,15 @@ def create_pfgsa(wf, rm, estimator,
         lb, st = deepcopy(log_book), deepcopy(stats)
 
         ## TODO: remove it later
-        stats1 = Statistics()
-        stats1.register("min", lambda pop: numpy.min([p.fitness.values[0] for p in pop]))
-        stats1.register("avr", lambda pop: numpy.average([p.fitness.values[0] for p in pop]))
-        stats1.register("max", lambda pop: numpy.max([p.fitness.values[0] for p in pop]))
-        stats1.register("std", lambda pop: numpy.std([p.fitness.values[0] for p in pop]))
-
-        logbook1 = Logbook()
-        logbook1.header = ["gen", "G", "kbest"] + stats1.fields
-        lb, st = logbook1, stats1
+        # stats1 = Statistics()
+        # stats1.register("min", lambda pop: numpy.min([p.fitness.values[0] for p in pop]))
+        # stats1.register("avr", lambda pop: numpy.average([p.fitness.values[0] for p in pop]))
+        # stats1.register("max", lambda pop: numpy.max([p.fitness.values[0] for p in pop]))
+        # stats1.register("std", lambda pop: numpy.std([p.fitness.values[0] for p in pop]))
+        #
+        # logbook1 = Logbook()
+        # logbook1.header = ["gen", "G", "kbest"] + stats1.fields
+        # lb, st = logbook1, stats1
         ############################
 
         pso = create_gsa_alg(pf_schedule, generate_, logbook=lb, stats=st, kbest=alg_params["n"], **alg_params)

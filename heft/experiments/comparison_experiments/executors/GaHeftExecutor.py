@@ -173,7 +173,8 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
             else:
                 ## TODO: run_ga_yet_another_with_old_genome
                 # self.ga_computation_manager.run(self.current_schedule, self.current_time)
-                self._run_ga_in_background(event)
+                #self._run_ga_in_background(event)
+                return False
         return False
 
     def _replace_current_schedule(self, event, new_schedule):
