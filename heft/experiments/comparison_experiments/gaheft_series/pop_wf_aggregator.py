@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
     alg_names = ["pso"]
 
-    path = os.path.join(TEMP_PATH, "migaheft_for_gsa_[m25-m75]x50")
+    path = os.path.join(TEMP_PATH, "migaheft_for_gsa_[20,35,50]x[m25-m50]x50")
 
     for alg_name in alg_names:
         wf_plot = partial(plot_aggregate_results, alg_name=alg_name)

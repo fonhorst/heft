@@ -11,8 +11,13 @@ from heft.core.environment.EventMachine import NodeFailed, NodeUp, TaskFinished
 
 class HeftExecutor(FailRandom, BaseExecutor):
 
-    def __init__(self, heft_planner, base_fail_duration, base_fail_dispersion ,
+    def __init__(self,resource_manager, heft_planner, base_fail_duration, base_fail_dispersion,
+                 fail_count_upper_limit=None,
                  initial_schedule = None, logger=None):
+        super().__init__(heft_planner, base_fail_duration, base_fail_dispersion,
+                 fail_count_upper_limit,
+                 initial_schedule, logger)
+
         ## TODO: remake it later
         self.queue = deque()
         self.current_time = 0
@@ -22,6 +27,9 @@ class HeftExecutor(FailRandom, BaseExecutor):
         self.base_fail_dispersion = base_fail_dispersion
         self.initial_schedule = initial_schedule
         self.current_schedule = initial_schedule
+
+        self.resource_manager = resource_manager
+        self._fail_count_upper_limit = fail_count_upper_limit
 
         self.logger = logger
 

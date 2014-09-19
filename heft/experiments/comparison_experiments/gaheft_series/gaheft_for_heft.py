@@ -20,7 +20,8 @@ BASE_PARAMS = {
     },
     "executor_params": {
         "base_fail_duration": 40,
-        "base_fail_dispersion": 1
+        "base_fail_dispersion": 1,
+        "fail_count_upper_limit": 15,
     },
     "resource_set": {
         "nodes_conf": [10, 15, 25, 30],
@@ -41,7 +42,7 @@ def heft_exp(wf_name, **params):
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
 
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
-    heft_machine = HeftExecutor(heft_planner=dynamic_heft,
+    heft_machine = HeftExecutor(rm, heft_planner=dynamic_heft,
                                 **params["executor_params"])
     heft_machine.init()
     heft_machine.run()
