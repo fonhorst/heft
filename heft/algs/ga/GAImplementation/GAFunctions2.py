@@ -40,7 +40,7 @@ class GAFunctions2:
             self.estimator = estimator
             self.resource_manager = resource_manager
 
-            nodes = list(HeftHelper.to_nodes(resource_manager.get_resources()))
+            nodes = resource_manager.get_nodes()#list(HeftHelper.to_nodes(resource_manager.get_resources()))
             ranking = HeftHelper.build_ranking_func(nodes, lambda job, agent: estimator.estimate_runtime(job, agent),
                                                            lambda ni, nj, A, B: estimator.estimate_transfer_time(A, B, ni, nj))
             sorted_tasks = ranking(self.workflow)

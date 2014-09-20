@@ -202,8 +202,12 @@ if __name__ == "__main__":
         alg_names = ["gsa", "heft"]
 
         path = os.path.join(TEMP_PATH, "all_results_sorted_and_merged", "gaheft_0.99-0.9_series")
-        alg_1_path = os.path.join(TEMP_PATH, "all_gsa_series_")
+        # alg_1_path = os.path.join(TEMP_PATH, "all_gsa_series_")
         # alg_1_path = os.path.join(TEMP_PATH, "all_gaheft_series_m25")
+
+        # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft", "gaheft_for_ga")
+        # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft", "gaheft_for_pso")
+        alg_1_path = os.path.join(TEMP_PATH, "new_gaheft", "gaheft_for_gsa")
 
         # alg_1_path = os.path.join(path, "gaheft_for_ga_[0.99-0.9]x[m25-m75]x50")
         # alg_1_path = os.path.join(path, "gaheft_for_pso_[0.99-0.9]x[m25-m75]x50")
@@ -214,7 +218,8 @@ if __name__ == "__main__":
         wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
         # wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], base_alg_name="heft")
         extract = partial(composite_extract_and_add, alg_names=alg_names)
-        picture_path = os.path.join("all_results_sorted_and_merged", "gaheft_0.99-0.9_series", "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
+        # picture_path = os.path.join("all_results_sorted_and_merged", "gaheft_0.99-0.9_series", "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
+        picture_path = os.path.join(TEMP_PATH, "new_gaheft_pictures", "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
         # picture_path = os.path.join(TEMP_PATH, "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
         aggregate(pathes=[alg_1_path, alg_2_path],
                   picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])

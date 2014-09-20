@@ -192,12 +192,15 @@ class Schedule:
     def insert_item(mapping, node, item):
         result = []
         i = 0
-        while i < len(mapping[node]):
-            ## TODO: potential problem with double comparing
-            if mapping[node][i].start_time >= item.end_time:
-                break
-            i += 1
-        mapping[node].insert(i, item)
+        try:
+            while i < len(mapping[node]):
+                ## TODO: potential problem with double comparing
+                if mapping[node][i].start_time >= item.end_time:
+                    break
+                i += 1
+            mapping[node].insert(i, item)
+        except:
+            k = 1
 
 
     def get_items_in_time(self, time):

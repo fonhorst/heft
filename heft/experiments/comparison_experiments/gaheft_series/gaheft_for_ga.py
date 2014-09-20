@@ -30,7 +30,8 @@ BASE_PARAMS = {
         "base_fail_duration": 40,
         "base_fail_dispersion": 1,
         "fixed_interval_for_ga": 15,
-        "fail_count_upper_limit": 15
+        "fail_count_upper_limit": 15,
+        "replace_anyway": False
     },
     "resource_set": {
         "nodes_conf": [10, 15, 25, 30],

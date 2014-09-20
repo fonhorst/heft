@@ -1,5 +1,5 @@
 from collections import namedtuple
-from copy import deepcopy
+from copy import deepcopy, copy
 import functools
 import operator
 import random
@@ -40,14 +40,41 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
     def init(self):
         self.current_schedule = Schedule({node: [] for node in self.heft_planner.get_nodes()})
 
-        initial_schedule = self.heft_planner.run(deepcopy(self.current_schedule))
+        initial_schedule = self.heft_planner.run(Schedule({node: [] for node in self.heft_planner.get_nodes()}))
+
+        # print("heft solution!")
+        # fsh = [hash(key) for key in initial_schedule.mapping.keys()]
+        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
+        # if any(((h not in fsh) for h in rm_hashes)):
+        #     raise Exception("Fixed schedule is broken")
+
 
         # TODO: change these two ugly records
         result = self.ga_builder()(self.current_schedule, initial_schedule)
 
-        self.current_schedule = result[0][2]
 
-        self._post_new_events()
+        # print("Ga solution is broken!")
+        # fsh = [hash(key) for key in result[0][2].mapping.keys()]
+        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
+        # if any(((h not in fsh) for h in rm_hashes)):
+        #     raise Exception("Fixed schedule is broken")
+
+
+
+        if not self._apply_mh_if_better(None, heuristic_resulted_schedule=initial_schedule,
+                           metaheuristic_resulted_schedule=result[0][2]):
+            self.current_schedule = initial_schedule
+            self._post_new_events()
+
+        # print("Before Before!")
+        # fsh = [hash(key) for key in self.current_schedule.mapping.keys()]
+        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
+        # if any(((h not in fsh) for h in rm_hashes)):
+        #     raise Exception("Fixed schedule is broken")
+
+
+        #self.current_schedule = result[0][2]
+        #self._post_new_events()
         return result
 
     def _task_start_handler(self, event):
@@ -94,6 +121,8 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         if not self._is_a_fail_possible():
             return
 
+
+
         self._remove_events(lambda ev: not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id))
 
         ## interrupt ga
@@ -110,8 +139,22 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         it[0].state = ScheduleItem.FAILED
         it[0].end_time = self.current_time
 
+        # print("Before!")
+        # fsh = [hash(key) for key in self.current_schedule.mapping.keys()]
+        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
+        # if any(((h not in fsh) for h in rm_hashes)):
+        #     raise Exception("Fixed schedule is broken")
+
         # run HEFT
         self._reschedule(event)
+
+        # print("After!")
+        # fsh = [hash(key) for key in self.current_schedule.mapping.keys()]
+        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
+        # if any(((h not in fsh) for h in rm_hashes)):
+        #     raise Exception("Fixed schedule is broken")
+
+
         #run GA
         self._run_ga_in_background(event)
         pass
@@ -121,7 +164,20 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self._stop_ga()
         # check node up
         self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
+
+        # print("Before!")
+        # fsh = [hash(key) for key in self.current_schedule.mapping.keys()]
+        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
+        # if any(((h not in fsh) for h in rm_hashes)):
+        #     raise Exception("Fixed schedule is broken")
+
         self._reschedule(event)
+
+        # print("After!")
+        # fsh = [hash(key) for key in self.current_schedule.mapping.keys()]
+        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
+        # if any(((h not in fsh) for h in rm_hashes)):
+        #     raise Exception("Fixed schedule is broken")
         #run GA
         self._run_ga_in_background(event)
         pass
@@ -162,19 +218,9 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
             result = self._actual_ga_run()
 
         if result is not None:
-            t1 = Utility.makespan(result[0][2])
-            t2 = Utility.makespan(self.current_schedule)
-            print("Replace anyway - {0}".format(self.replace_anyway))
-            if self.replace_anyway is True or t1 < t2:
-                ## generate new events
-                self._replace_current_schedule(event, result[0][2])
-                ## if event is TaskStarted event the return value means skip further processing
-                return True
-            else:
-                ## TODO: run_ga_yet_another_with_old_genome
-                # self.ga_computation_manager.run(self.current_schedule, self.current_time)
-                #self._run_ga_in_background(event)
-                return False
+            return self._apply_mh_if_better(event, heuristic_resulted_schedule=self.current_schedule,
+                                      metaheuristic_resulted_schedule=result[0][2])
+
         return False
 
     def _replace_current_schedule(self, event, new_schedule):
@@ -182,11 +228,29 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         # remove all events related with the old schedule
         # replace current with new
         # generate events of new schedule and post their
-        self._clean_events(event)
+        if event is not None:
+            self._clean_events(event)
         self.current_schedule = new_schedule
         self._post_new_events()
 
         self.back_cmp = None
+        pass
+
+    def _apply_mh_if_better(self, event, heuristic_resulted_schedule, metaheuristic_resulted_schedule):
+        t1 = Utility.makespan(metaheuristic_resulted_schedule)
+        t2 = Utility.makespan(heuristic_resulted_schedule)
+        print("Replace anyway - {0}".format(self.replace_anyway))
+        if self.replace_anyway is True or t1 < t2:
+            ## generate new events
+            self._replace_current_schedule(event, metaheuristic_resulted_schedule)
+            ## if event is TaskStarted event the return value means skip further processing
+            return True
+        else:
+            ## TODO: run_ga_yet_another_with_old_genome
+            # self.ga_computation_manager.run(self.current_schedule, self.current_time)
+            #self._run_ga_in_background(event)
+            self.back_cmp = None
+            return False
         pass
 
     # def _is_a_fail_possible(self):
@@ -274,6 +338,11 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
                 print("Fixed schedule is complete. There is no use to run ga.")
                 return
 
+            fsh = [hash(key) for key in fixed_schedule.mapping.keys()]
+            rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
+            if any(((h not in fsh) for h in rm_hashes)):
+                raise Exception("Fixed schedule is broken")
+
             self.back_cmp = BackCmp(fixed_schedule, None, self.current_schedule, event, current_time, front_event.end_time)
             pass
 
@@ -284,5 +353,11 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         else:
             self.back_cmp = None
             run_ga(current_schedule)
+
+
+        ## TODO: only for debug. remove it later.
+        # print("==================FIXED SCHEDULE PART=================")
+        # print(self.back_cmp.fixed_schedule)
+        # print("======================================================")
 
     pass

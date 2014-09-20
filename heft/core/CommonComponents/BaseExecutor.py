@@ -85,6 +85,9 @@ class BaseExecutor(EventMachine):
 
         self.current_schedule = self.heft_planner.run(current_cleaned_schedule)
 
+        ## TODO: only for debug. remove it later
+
+
         ## TODO: remove it later.
         # makespan = Utility.makespan(self.current_schedule)
         # id = "{0} {1}".format(event.task.id, event.node.flops) if isinstance(event, NodeFailed) else "?"

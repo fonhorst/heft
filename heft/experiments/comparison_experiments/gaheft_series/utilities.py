@@ -33,7 +33,8 @@ EXAMPLE_BASE_PARAMS = {
         "base_fail_dispersion": 1,
         "fixed_interval_for_ga": 15,
         "fail_count_upper_limit": 15,
-        "task_id_to_fail": None
+        "task_id_to_fail": None,
+        "replace_anyway": False
     },
     "resource_set": {
         "nodes_conf": [10, 15, 25, 30],

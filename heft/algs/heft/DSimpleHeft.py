@@ -11,6 +11,7 @@ class DynamicHeft(StaticHeftPlanner):
         resources = self.resource_manager.get_resources()
         nodes = HeftHelper.to_nodes(resources)
         return nodes
+        # return self.resource_manager.get_nodes()
 
     def __init__(self, workflow, resource_manager, estimator, ranking=None):
         self.current_schedule = Schedule(dict())
