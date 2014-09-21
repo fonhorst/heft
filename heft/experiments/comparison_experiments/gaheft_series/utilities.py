@@ -2,6 +2,7 @@ from copy import deepcopy
 from functools import partial
 import os
 import random
+import numpy
 
 from heft.algs.common.NewSchedulerBuilder import NewScheduleBuilder
 from heft.algs.common.individuals import DictBasedIndividual
@@ -9,6 +10,7 @@ from heft.algs.common.particle_operations import CompoundParticle
 from heft.algs.ga.GAImplementation.GAFunctions2 import unmoveable_tasks, GAFunctions2
 from heft.algs.pso.ordering_operators import numseq_to_ordering
 from heft.core.environment.BaseElements import Node
+from heft.experiments.aggregate_utilities import interval_statistics
 from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
 from heft.settings import TEMP_PATH
 from heft.algs.gsa.ordering_mapping_operators import CompoundParticle as GsaCompoundParticle
@@ -253,3 +255,10 @@ def ga_generate(wf, rm, estimator, schedule=None, fixed_schedule_part=None, curr
         return GAFunctions2.schedule_to_chromosome(schedule, fixed_schedule_part)
     gafunctions = GAFunctions2(wf, rm, estimator)
     return gafunctions.build_initial(fixed_schedule_part, current_time)
+
+
+def confidence_aggr(results):
+    mean, mn, mx, std, left, right = interval_statistics(results)
+    ## TODO: I know this is not comletely right..
+    confidence_values = [r for r in results if left <= r <= right]
+    return numpy.mean(confidence_values) if len(confidence_values) > 0 else mean

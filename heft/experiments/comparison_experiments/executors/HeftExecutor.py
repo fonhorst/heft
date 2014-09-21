@@ -8,7 +8,7 @@ from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import Schedule, ScheduleItem
 from heft.core.environment.EventMachine import NodeFailed, NodeUp, TaskFinished
 
-
+## TODO: refactor relations between HeftExecutor, BaseExecutor and GaheftExecutor
 class HeftExecutor(FailRandom, BaseExecutor):
 
     def __init__(self,resource_manager, heft_planner, base_fail_duration, base_fail_dispersion,
