@@ -8,7 +8,7 @@ from heft.experiments.comparison_experiments.executors.HeftExecutor import HeftE
 from heft.experiments.comparison_experiments.gaheft_series.utilities import changing_reliability_run, test_run
 
 EXPERIMENT_NAME = "gaheft_for_heft"
-REPEAT_COUNT = 200
+REPEAT_COUNT = 500
 WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
 RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 INDIVIDUALS_COUNTS = [50]

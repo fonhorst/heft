@@ -3,7 +3,7 @@ import os
 from matplotlib import pyplot as plt
 import numpy
 from heft.experiments.aggregate_utilities import aggregate
-from heft.experiments.comparison_experiments.gaheft_series.utilities import confidence_aggr
+from heft.experiments.comparison_experiments.gaheft_series.visualization_utilities import confidence_aggr
 from heft.settings import TEMP_PATH
 
 

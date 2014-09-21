@@ -3,6 +3,7 @@ import os
 import numpy
 from heft.experiments.aggregate_utilities import WFS_COLORS, aggregate
 import matplotlib.pyplot as plt
+from heft.experiments.comparison_experiments.gaheft_series.visualization_utilities import confidence_aggr
 from heft.settings import TEMP_PATH
 
 POP_SIZE_COLORS = {
@@ -45,7 +46,7 @@ def extract_and_add(alg_name, data, d):
 
 def plot_aggregate_results(data, alg_name, pop_size_colors=POP_SIZE_COLORS):
 
-    aggr = lambda results: numpy.mean(results)
+    # aggr = lambda results: numpy.mean(results)
 
     def get_points_format(data):
         if len(data) == 0:
@@ -83,7 +84,7 @@ def plot_aggregate_results(data, alg_name, pop_size_colors=POP_SIZE_COLORS):
         style = pop_size_colors[pop_size]
         points = []
         for wf_name, sizes in sorted(data.items(), key=lambda x: x[0]):
-            points.append(aggr(sizes[pop_size]))
+            points.append(confidence_aggr(sizes[pop_size]))
 
         plt.plot([i for i in range(0, len(points))], [x for x in points], style, label=pop_size)
 

@@ -3,7 +3,7 @@ import os
 import numpy
 from heft.experiments.aggregate_utilities import WFS_COLORS, aggregate, interval_statistics
 import matplotlib.pyplot as plt
-from heft.experiments.comparison_experiments.gaheft_series.utilities import confidence_aggr
+from heft.experiments.comparison_experiments.gaheft_series.visualization_utilities import confidence_aggr
 from heft.settings import TEMP_PATH
 
 ALG_COLORS = {
@@ -74,7 +74,7 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=Non
 
         points = []
         for value, results in item[wf_name]["reliability"].items():
-            points.append((value, aggr(results)))
+            points.append((value, confidence_aggr(results)))
         points = sorted(points, key=lambda x: x[0])
         return points
 
