@@ -13,8 +13,10 @@ from heft.algs.common.individuals import FitAdapter
 from heft.algs.common.mapordschedule import MAPPING_SPECIE, ORDERING_SPECIE
 from heft.algs.common.mapordschedule import fitness as basefitness
 from heft.algs.common.utilities import gather_info
+from heft.core.environment.Utility import timing, RepeatableTiming
 
 
+#@RepeatableTiming(100)
 def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=True, initial_pop=None, **params):
 
     """

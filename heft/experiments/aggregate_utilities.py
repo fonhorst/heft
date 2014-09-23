@@ -64,6 +64,9 @@ def visualize(data, functions, path_to_save=None):
     if path_to_save is None:
         plt.show()
     else:
+        directory = os.path.dirname(path_to_save)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         plt.savefig(path_to_save, dpi=96.0, format="png")
         plt.clf()
     pass
@@ -89,3 +92,31 @@ def interval_statistics(points, confidence_level=0.95):
     left, right = stats.norm.interval(confidence_level, loc=mean, scale=std)
     mn, mx = min_max
     return mean, mn, mx, std, left, right
+
+
+class InMemoryDataAggregator:
+
+    def __init__(self, pathes):
+        files = [os.path.join(path, p) for path in pathes for p in os.listdir(path) if p.endswith(".json")]
+        self._data_array = []
+        for p in files:
+            with open(p, "r") as f:
+                d = json.load(f)
+                self._data_array.append(d)
+        pass
+
+    def __call__(self, picture_path="gh.png", extract_and_add=None, functions=None):
+        data = {}
+        for d in self._data_array:
+            extract_and_add(data, d)
+        path = os.path.join(TEMP_PATH, picture_path) if not os.path.isabs(picture_path) else picture_path
+        visualize(data, functions, path)
+        pass
+    pass
+
+
+def interval_stat_string(stat_result):
+    mean, mn, mx, std, left, right = stat_result
+    st = "Mean: {0:.0f}, Min: {1:.0f}, Max: {2:.0f}, Std: {3:.0f}, Left: {4:.0f}, Right: {5:.0f}"\
+        .format(mean, mn, mx, std, left, right)
+    return st

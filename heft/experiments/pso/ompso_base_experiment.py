@@ -7,6 +7,7 @@ from heft.algs.pso.ordering_operators import build_schedule, generate, ordering_
 from heft.algs.pso.sdpso import run_pso
 from heft.algs.pso.mapping_operators import update as mapping_update
 from heft.core.environment.Utility import Utility
+from heft.experiments.aggregate_utilities import interval_statistics, interval_stat_string
 from heft.experiments.cga.utilities.common import repeat
 from heft.experiments.common import AbstractExperiment
 
@@ -77,9 +78,10 @@ if __name__ == "__main__":
     exp = OmpsoBaseExperiment(wf_name="Montage_75",
                               W=0.1, C1=0.6, C2=0.2,
                               GEN=300, N=50)
-    # result = repeat(exp, 5)
-    result = exp()
-    print(result)
-    print("Average: {0}".format(numpy.mean(result)))
+    result = repeat(exp, 20)
+    # result = exp()
+    sts = interval_statistics(result)
+    print("Statistics: {0}".format(interval_stat_string(sts)))
+   #print("Average: {0}".format(numpy.mean(result)))
     pass
 

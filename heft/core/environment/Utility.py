@@ -9,6 +9,8 @@ import io
 import time
 from random import Random
 import xml.etree.ElementTree as ET
+import numpy
+from heft.experiments.aggregate_utilities import interval_statistics
 
 from heft.settings import __root_path__
 from heft.experiments.comparison_experiments.common.ComparisonBase import ComparisonUtility
@@ -31,6 +33,27 @@ def timing(f):
         print('{0} function took {1:0.3f} ms'.format(f.__name__, (time2-time1)*1000.0))
         return ret
     return wrap
+
+class RepeatableTiming:
+    def __init__(self, repeat_count):
+        self._repeat_count = repeat_count
+
+    def __call__(self, func):
+        def wrap(*args, **kwargs):
+            def measure():
+                time1 = time.time()
+                x = func(*args, **kwargs)
+                time2 = time.time()
+                return (time2-time1)*1000.0
+
+            measures = [measure() for _ in range(self._repeat_count)]
+            mean, mn, mx, std, left, right = interval_statistics(measures)
+            print("Statistics - mean: {0}, min: {1}, max: {2}, std: {3}, left: {4}, right: {5} by {6} runs".format(mean,
+                                                                                                                   mn, mx, std, left, right, self._repeat_count))
+
+            return func(*args, **kwargs)
+        return wrap
+
 
 def profile_decorator(func):
     def wrap_func(*args, **kwargs):

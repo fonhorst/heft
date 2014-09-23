@@ -12,11 +12,12 @@ from heft.algs.pso.sdpso import run_pso
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import Utility, wf
 from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE
+from heft.experiments.aggregate_utilities import interval_statistics, interval_stat_string
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.experiments.cga.utilities.common import repeat
 
-_wf = wf("Montage_100")
+_wf = wf("Montage_75")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
                                             ideal_flops=20, transfer_time=100)
@@ -32,8 +33,8 @@ heft_mapping.velocity = MappingParticle.Velocity({})
 
 heft_gen = lambda n: [deepcopy(heft_mapping) if random.random() > 1.0 else generate(_wf, rm, estimator, 1)[0] for _ in range(n)]
 
-W, C1, C2 = 0.9, 0.6, 0.2
-GEN, N = 10, 5
+W, C1, C2 = 0.1, 0.6, 0.2
+GEN, N = 300, 50
 
 toolbox = Toolbox()
 toolbox.register("population", heft_gen)
@@ -74,6 +75,9 @@ def do_exp():
     return makespan
 
 if __name__ == "__main__":
-    result = repeat(do_exp, 1)
+    result = repeat(do_exp, 20)
+
+    sts = interval_statistics(result)
+    print("Statistics: {0}".format(interval_stat_string(sts)))
     print(result)
     pass

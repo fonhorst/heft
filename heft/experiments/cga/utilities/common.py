@@ -15,7 +15,7 @@ from heft.algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
 
 class UniqueNameSaver:
     @staticmethod
-    def save(data, directory, subdir_prefix):
+    def save(data, directory, subdir_prefix=None):
         UniqueNameSaver(directory, subdir_prefix)(data)
         pass
 

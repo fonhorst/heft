@@ -9,9 +9,24 @@ from heft.settings import TEMP_PATH
 ALG_COLORS = {
     # "ga": "-gD",
     "heft": "-rD",
-    "pso": "-yD",
-    # "gsa": "-mD"
+    # "pso": "-yD",
+    "gsa": "-mD"
 }
+
+# aggr = confidence_aggr
+aggr = lambda results: numpy.mean(results)
+
+# def aggr(results):
+#     counts_arr = [[] for _ in range(15)]
+#     for makespan, failed_count in results:
+#         if len(counts_arr) < failed_count:
+#             for _ in range(failed_count - len(counts_arr)):
+#                 counts_arr.append([])
+#         counts_arr[failed_count].append(makespan)
+#
+#     interval_statistics([for counts_arr])
+
+
 
 
 
@@ -34,12 +49,13 @@ def extract_and_add(alg_name, data, d):
     wf_name = d["wf_name"]
     reliability = d["params"]["estimator_settings"]["reliability"]
     makespan = d["result"]["makespan"]
+    failed_count = d["result"]["overall_failed_tasks_count"]
 
 
     rel_results = data.get(wf_name, {"reliability":{}})
 
     arr_data = rel_results["reliability"].get(reliability, [])
-    arr_data.append(makespan)
+    arr_data.append((makespan, failed_count))
     rel_results["reliability"][reliability] = arr_data
 
     data[wf_name] = rel_results
@@ -74,7 +90,7 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=Non
 
         points = []
         for value, results in item[wf_name]["reliability"].items():
-            points.append((value, confidence_aggr(results)))
+            points.append((value, aggr(results)))
         points = sorted(points, key=lambda x: x[0])
         return points
 
@@ -87,8 +103,8 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=Non
     ax.set_xscale('linear')
     plt.xticks(range(0, len(format_points)))
     ax.set_xticklabels([p[0] for p in format_points])
-    ax.set_title(wf_name)
-    ax.set_ylabel("makespan")
+    ax.set_title(wf_name, size=45)
+    ax.set_ylabel("makespan", size=45)
 
     for alg_name, item in data.items():
         # wf_name = wf_name.split("_")[0]
@@ -99,7 +115,7 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=Non
         points = []
         for value, results in item[wf_name]["reliability"].items():
             if value in reliability or reliability is None:
-                points.append((value, confidence_aggr(results)))
+                points.append((value, aggr(results)))
 
         points = sorted(points, key=lambda x: x[0])
 
@@ -119,6 +135,8 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=Non
         #     mean, mn, mx, std, left, right = stat
         #     plt.errorbar(i, mean, yerr=[left, right])
 
+        plt.tick_params(axis='both', which='major', labelsize=32)
+        plt.tick_params(axis='both', which='minor', labelsize=32)
 
         ax.legend()
     pass
@@ -143,7 +161,7 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
 
         points = []
         for value, results in item[wf_name]["reliability"].items():
-            points.append((value, confidence_aggr(results)))
+            points.append((value, aggr(results)))
         points = sorted(points, key=lambda x: x[0])
         return points
 
@@ -156,12 +174,12 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
     ax.set_xscale('linear')
     plt.xticks(range(0, len(format_points)))
     ax.set_xticklabels([p[0] for p in format_points])
-    ax.set_title(wf_name, size=22)
-    ax.set_ylabel("profit, %", size=20)
-    ax.set_xlabel("reliability", size=20)
+    ax.set_title(wf_name, size=45)
+    ax.set_ylabel("profit, %", size=45)
+    ax.set_xlabel("reliability", size=45)
 
-    plt.tick_params(axis='both', which='major', labelsize=18)
-    plt.tick_params(axis='both', which='minor', labelsize=18)
+    plt.tick_params(axis='both', which='major', labelsize=32)
+    plt.tick_params(axis='both', which='minor', labelsize=32)
 
 
 
@@ -176,7 +194,7 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
 
         for value, results in item[wf_name]["reliability"].items():
             if value in reliability or reliability is None:
-                d[alg_name][wf_name][value] = confidence_aggr(results)
+                d[alg_name][wf_name][value] = aggr(results)
                 # points.append((value, aggr(results)))
 
     for alg_name, item in d.items():
@@ -198,13 +216,13 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
 
 if __name__ == "__main__":
     # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-    wf_names = ["Montage_75"]
+    wf_names = ["Montage_50"]
     # wf_names = ["Montage_25"]
     # wf_names = ["Montage_25", "Montage_40", "Montage_50"]
     for wf_name in wf_names:
         # alg_names = ["ga", "heft"]
-        alg_names = ["pso", "heft"]
-        # alg_names = ["gsa", "heft"]
+        # alg_names = ["pso", "heft"]
+        alg_names = ["gsa", "heft"]
 
         path = os.path.join(TEMP_PATH, "all_results_sorted_and_merged", "gaheft_0.99-0.9_series")
         # alg_1_path = os.path.join(TEMP_PATH, "all_gsa_series_")
@@ -217,20 +235,33 @@ if __name__ == "__main__":
         # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft", "gaheft_for_pso_new")
         # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft", "gaheft_for_gsa_new")
 
-        # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft_2", "gaheft_for_gsa_m75")
-        alg_1_path = os.path.join(TEMP_PATH, "new_gaheft_2", "gaheft_for_pso_m75")
+        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_ga")
+        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_pso")
+        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_gsa")
+        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "pso_m50_0.925-0.99")
+
+        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_pso")
+
+        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_pso_m50_1000")
+        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "pso_gsa", "gaheft_for_gsa_m75_1000")
+        alg_1_path = os.path.join(TEMP_PATH, "compilation", "pso_gsa", "gaheft_for_gsa_m50_600")
+
+        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_pso_m75")
+        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_gsa_m75")
+        #
+        # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft_2", "gaheft_for_pso_m75")
 
         # alg_1_path = os.path.join(path, "gaheft_for_ga_[0.99-0.9]x[m25-m75]x50")
         # alg_1_path = os.path.join(path, "gaheft_for_pso_[0.99-0.9]x[m25-m75]x50")
         # alg_1_path = os.path.join(path, "gaheft_for_gsa_[0.99-0.9]x[m25-m75]x100")
 
         # alg_2_path = os.path.join(path, "gaheft_for_heft_[0.99-0.9]x[m25-m75]x200")
-        alg_2_path = os.path.join(TEMP_PATH, "gaheft_for_heft_1000")
+        alg_2_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_heft_new_500")
         # wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
         wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], base_alg_name="heft")
         extract = partial(composite_extract_and_add, alg_names=alg_names)
         # picture_path = os.path.join("all_results_sorted_and_merged", "gaheft_0.99-0.9_series", "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
-        picture_path = os.path.join(TEMP_PATH, "new_gaheft_2", "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
+        picture_path = os.path.join(TEMP_PATH, "compilation", "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
         # picture_path = os.path.join(TEMP_PATH, "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
         aggregate(pathes=[alg_1_path, alg_2_path],
                   picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])

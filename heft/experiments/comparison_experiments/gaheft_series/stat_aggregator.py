@@ -2,7 +2,7 @@ from functools import partial
 import os
 import numpy
 import pylab
-from heft.experiments.aggregate_utilities import WFS_COLORS, aggregate, interval_statistics
+from heft.experiments.aggregate_utilities import WFS_COLORS, aggregate, interval_statistics, InMemoryDataAggregator
 import matplotlib.pyplot as plt
 from heft.settings import TEMP_PATH
 
@@ -71,21 +71,24 @@ def plot_aggregate_results(wf_name, data):
 
 
 if __name__ == "__main__":
-    wf_name = "Montage_50"
-    alg_name = "gsa"
-    reliability = 0.99
+    wf_name = "Montage_75"
+    reliabilities = [0.99, 0.975, 0.95, 0.925, 0.9]
+    base_picture_path = os.path.join(TEMP_PATH, "compilation", "pso_gsa", "histograms")
 
-    #path = os.path.join(TEMP_PATH, "all_results_sorted_and_merged", "gaheft_0.99-0.9_series")
-    gsa_path = os.path.join(TEMP_PATH, "all_gsa_series_")
-    heft_path = os.path.join(TEMP_PATH, "gaheft_for_heft_1000")
+    algs = {
+        "heft": os.path.join(TEMP_PATH, "compilation", "gaheft_for_heft_new_500"),
+       # "pso": os.path.join(TEMP_PATH, "compilation", "gaheft_for_gsa_m50_m75", "all"),
+        "gsa": os.path.join(TEMP_PATH, "compilation", "pso_gsa", "gaheft_for_gsa_m75_1000")
+    }
 
-    path = gsa_path
+    for alg_name, alg_path in algs.items():
+        data_aggr = InMemoryDataAggregator([alg_path])
+        for reliability in reliabilities:
 
-    extract = partial(extract_and_add, alg_name, wf_name, reliability)
-    wf_plot = partial(plot_aggregate_results, wf_name)
+            extract = partial(extract_and_add, alg_name, wf_name, reliability)
+            wf_plot = partial(plot_aggregate_results, wf_name)
 
 
-    picture_path = os.path.join(TEMP_PATH, "hist_gaheft_for_{0}_{1}.png".format(alg_name, wf_name))
+            picture_path = os.path.join(base_picture_path, "hist_gaheft_for_{0}_{1}_{2}.png".format(alg_name, wf_name, reliability))
 
-    aggregate(pathes=[path],
-                  picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
+            data_aggr(picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
