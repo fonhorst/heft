@@ -1,18 +1,20 @@
 from functools import partial
 import os
-import numpy
-from heft.experiments.aggregate_utilities import WFS_COLORS, aggregate
+
 import matplotlib.pyplot as plt
-from heft.experiments.comparison_experiments.gaheft_series.visualization_utilities import confidence_aggr
+
+from heft.experiments.aggregate_utilities import aggregate
+from heft.experiments.comparison_experiments.gaheft_series.aggregators.visualization_utilities import confidence_aggr
 from heft.settings import TEMP_PATH
 
+
 POP_SIZE_COLORS = {
-    #20: "-gD",
-    #35: "-rD",
+    20: "-gD",
+    35: "-rD",
     50: "-yD",
 
-    #60: "-gD",
-    #105: "-rD",
+    60: "-gD",
+    105: "-rD",
     150: "-yD",
 }
 
@@ -104,22 +106,17 @@ if __name__ == "__main__":
 
     alg_names = ["pso"]
 
-    # path = os.path.join(TEMP_PATH, "compilation", "migaheft_gaheft_experiemnt", "migaheft_series", "migaheft_for_ga_common")
-    # path = os.path.join(TEMP_PATH, "compilation", "migaheft_gaheft_experiemnt", "migaheft_series", "migaheft_for_pso_[20, 35, 50]x[m25-m75]x50")
-    # path = os.path.join(TEMP_PATH, "compilation", "migaheft_gaheft_experiemnt", "migaheft_series", "migaheft_for_gsa_[20,35,50]x[m25-m75]x50")
 
-    # path = os.path.join(TEMP_PATH, "compilation", "migaheft_gaheft_experiemnt", "gaheft_60_series", "gaheft_for_ga_[60, 105, 150]x[m25-m75]x50")
-    # path = os.path.join(TEMP_PATH, "compilation", "migaheft_gaheft_experiemnt", "gaheft_60_series", "gaheft_for_gsa_[60, 105, 150]x[m25-m75]x50")
-    path = os.path.join(TEMP_PATH, "compilation", "migaheft_gaheft_experiemnt", "gaheft_60_series", "gaheft_for_pso_[60, 105, 150]x[m25-m75]x50")
-    #
-    # path = os.path.join(TEMP_PATH, "compilation", "migaheft_gaheft_experiemnt", "gaheft_20_series", "gaheft_for_ga_[20, 35, 50]x[m25-m75]x50")
-    # path = os.path.join(TEMP_PATH, "compilation", "migaheft_gaheft_experiemnt", "gaheft_20_series", "gaheft_for_gsa_[20, 35, 50]x[m25-m75]x150")
-    # path = os.path.join(TEMP_PATH, "compilation", "migaheft_gaheft_experiemnt", "gaheft_20_series", "gaheft_for_pso_[20, 35, 50]x[m25-m75]x150")
+
+
+    # path = [os.path.join(TEMP_PATH, "compilation/ga_pso_gsa/gaheft_for_pso_m75_1000"),\
+    #           os.path.join(TEMP_PATH, "compilation/ga_pso_gsa/gaheft_for_pso_m50_1000")]
+    path = [os.path.join(TEMP_PATH, "compilation/gaheft_for_pso_20")]
 
     for alg_name in alg_names:
         wf_plot = partial(plot_aggregate_results, alg_name=alg_name)
         extract = partial(extract_and_add, alg_name)
         picture_path = os.path.join("compilation", "pop_wf_{0}.png".format(alg_name))
-        aggregate(pathes=[path],
+        aggregate(pathes=path,
                   picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
 

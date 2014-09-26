@@ -32,6 +32,6 @@ def union_pathes(output_path, *pathes):
     pass
 
 if __name__ == "__main__":
-    output_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_gsa_m50_m75", "all")
-    pathes = [os.path.join(TEMP_PATH, "compilation", "gaheft_for_gsa_m50_m75")]
+    output_path = os.path.join(TEMP_PATH, "compilation", "merged")
+    pathes = [os.path.join(TEMP_PATH, "compilation", "gaheft_for_pso_reduced")]
     union_pathes(output_path, *pathes)

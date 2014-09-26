@@ -22,6 +22,6 @@ def do_exp(wf_name):
     # print("Heft makespan: {0}".format(Utility.makespan(heft_schedule)))
 
 if __name__ == "__main__":
-    repeat_count = 20
-    result = [do_exp("Epigenomics_24") for _ in range(repeat_count)]
+    repeat_count = 1
+    result = [do_exp("CyberShake_30") for _ in range(repeat_count)]
     print(result)

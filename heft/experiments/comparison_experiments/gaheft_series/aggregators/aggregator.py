@@ -1,15 +1,19 @@
 from functools import partial
+import functools
+import operator
 import os
+
 import numpy
-from heft.experiments.aggregate_utilities import WFS_COLORS, aggregate, interval_statistics
 import matplotlib.pyplot as plt
-from heft.experiments.comparison_experiments.gaheft_series.visualization_utilities import confidence_aggr
+
+from heft.experiments.aggregate_utilities import InMemoryDataAggregator
 from heft.settings import TEMP_PATH
 
+
 ALG_COLORS = {
-    # "ga": "-gD",
+    "ga": "-gD",
     "heft": "-rD",
-    # "pso": "-yD",
+    "pso": "-yD",
     "gsa": "-mD"
 }
 
@@ -124,7 +128,7 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=Non
         plt.setp(plt.xticks()[1], rotation=30, ha='right')
 
 
-        plt.plot([i for i in range(0, len(points))], [x[1] for x in points], style, label=alg_name)
+        plt.plot([i for i in range(0, len(points))], [x[1] for x in points], style, label=alg_name, linewidth=4.0, markersize=10)
 
         # plt.errorbar([i for i in range(0, len(points))], [x[1][0] for x in points],
         #              yerr=([x[1][4] for x in points],
@@ -215,53 +219,24 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
 
 
 if __name__ == "__main__":
+
+    algs = {
+        "ga": os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_ga_[0.99-0.9]x[m25-m75]x50"),
+        #"pso": os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_pso_[0.99-0.9]x[m25-m75]x50"),
+        # "gsa": os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_gsa_[0.99-0.9]x[m25-m75]x100"),
+        "heft": os.path.join(TEMP_PATH, "compilation/gaheft_for_heft_new_500"),
+    }
+
     # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-    wf_names = ["Montage_50"]
-    # wf_names = ["Montage_25"]
-    # wf_names = ["Montage_25", "Montage_40", "Montage_50"]
+    wf_names = ["Montage_25", "Montage_40"]
+
+    data_aggr = InMemoryDataAggregator(list(algs.values()))
     for wf_name in wf_names:
-        # alg_names = ["ga", "heft"]
-        # alg_names = ["pso", "heft"]
-        alg_names = ["gsa", "heft"]
 
-        path = os.path.join(TEMP_PATH, "all_results_sorted_and_merged", "gaheft_0.99-0.9_series")
-        # alg_1_path = os.path.join(TEMP_PATH, "all_gsa_series_")
-        # alg_1_path = os.path.join(TEMP_PATH, "all_gaheft_series_m25")
-
-        # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft", "gaheft_for_ga")
-        # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft", "gaheft_for_pso")
-        # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft", "gaheft_for_gsa")
-
-        # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft", "gaheft_for_pso_new")
-        # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft", "gaheft_for_gsa_new")
-
-        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_ga")
-        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_pso")
-        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_gsa")
-        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "pso_m50_0.925-0.99")
-
-        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_pso")
-
-        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_pso_m50_1000")
-        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "pso_gsa", "gaheft_for_gsa_m75_1000")
-        alg_1_path = os.path.join(TEMP_PATH, "compilation", "pso_gsa", "gaheft_for_gsa_m50_600")
-
-        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_pso_m75")
-        # alg_1_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_gsa_m75")
-        #
-        # alg_1_path = os.path.join(TEMP_PATH, "new_gaheft_2", "gaheft_for_pso_m75")
-
-        # alg_1_path = os.path.join(path, "gaheft_for_ga_[0.99-0.9]x[m25-m75]x50")
-        # alg_1_path = os.path.join(path, "gaheft_for_pso_[0.99-0.9]x[m25-m75]x50")
-        # alg_1_path = os.path.join(path, "gaheft_for_gsa_[0.99-0.9]x[m25-m75]x100")
-
-        # alg_2_path = os.path.join(path, "gaheft_for_heft_[0.99-0.9]x[m25-m75]x200")
-        alg_2_path = os.path.join(TEMP_PATH, "compilation", "gaheft_for_heft_new_500")
         # wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
         wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], base_alg_name="heft")
-        extract = partial(composite_extract_and_add, alg_names=alg_names)
-        # picture_path = os.path.join("all_results_sorted_and_merged", "gaheft_0.99-0.9_series", "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
-        picture_path = os.path.join(TEMP_PATH, "compilation", "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
-        # picture_path = os.path.join(TEMP_PATH, "gaheft_series_for_{0}_{1}.png".format(alg_names[0], wf_name))
-        aggregate(pathes=[alg_1_path, alg_2_path],
-                  picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
+        extract = partial(composite_extract_and_add, alg_names=algs.keys())
+
+        names = functools.reduce(operator.add, ("_" + alg_name for alg_name in algs.keys()), "")
+        picture_path = os.path.join(TEMP_PATH, "compilation", "gaheft_series_for{0}_{1}.png".format(names, wf_name))
+        data_aggr(picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
