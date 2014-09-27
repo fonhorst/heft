@@ -11,9 +11,9 @@ from heft.utilities.union_to_one_dir import generate_pathes
 
 
 POP_SIZE_COLORS = {
-    #20: "-gD",
+    20: "-gD",
     # 35: "-rD",
-     50: "-gD",
+     #50: "-gD",
 
     # 60: "-gD",
     #105: "-rD",
@@ -111,6 +111,7 @@ def plot_aggregate_profit_results(data, base_pop_size, pop_size_colors=POP_SIZE_
             own = confidence_aggr(sizes[pop_size])
             base = confidence_aggr(data[wf_name][base_pop_size])
             profit = profit_aggr(base, own)
+           
             points.append(profit)
 
         plt.plot([i for i in range(0, len(points))], [x for x in points], style, label=pop_size, linewidth=4.0, markersize=10)
@@ -212,34 +213,34 @@ if __name__ == "__main__":
 
 
     algs = {
-        # "ga": [os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_ga_common"),
-        #
-        #        os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_ga_[m25,m40]_[0.95]"),
-        #        os.path.join(TEMP_PATH, "compilation/ga_pso_gsa/gaheft_for_ga_m50_1000"),
-        #        os.path.join(TEMP_PATH, "compilation/ga_pso_gsa/gaheft_for_ga_m75_1000"),
-        #
-        #        # os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/gaheft_60_series/gaheft_for_ga_[60, 105, 150]x[m25-m75]x50")
-        #
-        #        ],
-        "pso": [os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_pso_[20, 35, 50]x[m25-m75]x50"),
+        "ga": [os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_ga_common"),
 
-                os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_25]_[n-20]_[rel-0.95]"),
-            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_40]_[n-20]_[rel-0.95]"),
-            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_50]_[n-20]_[rel-0.95]"),
-            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_75]_[n-20]_[rel-0.95]"),
-                ],
-        "gsa": [
-            os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_gsa_[20,35,50]x[m25-m75]x50"),
-            # os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_20/migaheft_for_gsa"),
+               os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_ga_[m25,m40]_[0.95]"),
+               os.path.join(TEMP_PATH, "compilation/ga_pso_gsa/gaheft_for_ga_m50_1000"),
+               os.path.join(TEMP_PATH, "compilation/ga_pso_gsa/gaheft_for_ga_m75_1000"),
 
-            # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_25]_[n-20]_[rel-0.95]"),
-            # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_40]_[n-20]_[rel-0.95]"),
-            # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_50]_[n-20]_[rel-0.95]"),
-            # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_75]_[n-20]_[rel-0.95]"),
-            # os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/gaheft_60_series/gaheft_for_gsa_[60, 105, 150]x[m25-m75]x50")
-             os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/gaheft_20_series/gaheft_for_gsa_[20, 35, 50]x[m25-m75]x150")
+               # os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/gaheft_60_series/gaheft_for_ga_[60, 105, 150]x[m25-m75]x50")
 
-                ]
+               ],
+        # "pso": [os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_pso_[20, 35, 50]x[m25-m75]x50"),
+        #
+        #         os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_25]_[n-20]_[rel-0.95]"),
+        #     os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_40]_[n-20]_[rel-0.95]"),
+        #     os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_50]_[n-20]_[rel-0.95]"),
+        #     os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_75]_[n-20]_[rel-0.95]"),
+        #         ],
+        # "gsa": [
+        #     os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_gsa_[20,35,50]x[m25-m75]x50"),
+        #     # os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_20/migaheft_for_gsa"),
+        #
+        #     # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_25]_[n-20]_[rel-0.95]"),
+        #     # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_40]_[n-20]_[rel-0.95]"),
+        #     # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_50]_[n-20]_[rel-0.95]"),
+        #     # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_75]_[n-20]_[rel-0.95]"),
+        #     # os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/gaheft_60_series/gaheft_for_gsa_[60, 105, 150]x[m25-m75]x50")
+        #      os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/gaheft_20_series/gaheft_for_gsa_[20, 35, 50]x[m25-m75]x150")
+        #
+        #         ]
 
     }
 
@@ -278,7 +279,7 @@ if __name__ == "__main__":
     for alg_name, pathes in algs.items():
         data_aggr = InMemoryDataAggregator(pathes)
         # wf_plot = partial(plot_aggregate_results)
-        wf_plot = partial(plot_aggregate_profit_results, base_pop_size=25)
+        wf_plot = partial(plot_aggregate_profit_results, base_pop_size=50)
         extract = partial(extract_and_add, alg_name)
         picture_path = os.path.join("compilation", "pop_wf_{0}.png".format(alg_name))
         data_aggr(
