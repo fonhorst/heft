@@ -11,9 +11,9 @@ from heft.utilities.union_to_one_dir import generate_pathes
 
 
 POP_SIZE_COLORS = {
-    20: "-gD",
+    #20: "-gD",
     # 35: "-rD",
-    # 50: "-gD",
+     50: "-gD",
 
     # 60: "-gD",
     #105: "-rD",
