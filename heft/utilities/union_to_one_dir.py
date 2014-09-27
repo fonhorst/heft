@@ -35,6 +35,7 @@ class PathesMerger:
 
 if __name__ == "__main__":
     output_path = os.path.join(TEMP_PATH, "compilation", "merged")
-    pathes = [os.path.join(TEMP_PATH, "compilation", "gaheft_for_pso_reduced")]
+    pathes = [os.path.join(TEMP_PATH, "compilation", "gaheft_ga_pso_gsa_[0.99-0.9]_[m25,m40].zip__FILES"),
+    os.path.join(TEMP_PATH, "compilation", "ga_pso_gsa")]
     merger = PathesMerger()
     merger(output_path, *pathes)

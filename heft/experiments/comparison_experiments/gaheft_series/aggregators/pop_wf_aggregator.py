@@ -111,7 +111,7 @@ def plot_aggregate_profit_results(data, base_pop_size, pop_size_colors=POP_SIZE_
             own = confidence_aggr(sizes[pop_size])
             base = confidence_aggr(data[wf_name][base_pop_size])
             profit = profit_aggr(base, own)
-           
+
             points.append(profit)
 
         plt.plot([i for i in range(0, len(points))], [x for x in points], style, label=pop_size, linewidth=4.0, markersize=10)

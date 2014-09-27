@@ -20,6 +20,7 @@ ALG_COLORS = {
 # aggr = confidence_aggr
 aggr = lambda results: numpy.mean(results)
 
+
 # def aggr(results):
 #     counts_arr = [[] for _ in range(15)]
 #     for makespan, failed_count in results:
@@ -68,6 +69,10 @@ def extract_and_add(alg_name, data, d):
 
 def composite_extract_and_add(data, d, alg_names):
     alg_name = d["params"]["alg_name"]
+
+    if alg_name not in alg_names:
+        return data
+
     alg_data = data.get(alg_name, {})
     extract_and_add(alg_name, alg_data, d)
     data[alg_name] = alg_data
@@ -107,6 +112,9 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=Non
     ax.set_xscale('linear')
     plt.xticks(range(0, len(format_points)))
     ax.set_xticklabels([p[0] for p in format_points])
+
+
+
     ax.set_title(wf_name, size=45)
     ax.set_ylabel("makespan", size=45)
 
@@ -119,7 +127,7 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=Non
         points = []
         for value, results in item[wf_name]["reliability"].items():
             if value in reliability or reliability is None:
-                points.append((value, aggr(results)))
+                    points.append((value, aggr(results)))
 
         points = sorted(points, key=lambda x: x[0])
 
@@ -178,7 +186,12 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
     ax.set_xscale('linear')
     plt.xticks(range(0, len(format_points)))
     ax.set_xticklabels([p[0] for p in format_points])
-    ax.set_title(wf_name, size=45)
+
+    if wf_name == "Montage_40":
+        ax.set_title("Montage_35", size=45)
+    else:
+        ax.set_title(wf_name, size=45)
+
     ax.set_ylabel("profit, %", size=45)
     ax.set_xlabel("reliability", size=45)
 
@@ -211,6 +224,7 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
         for value, res in item[wf_name].items():
             points.append((value, (1 - res/d[base_alg_name][wf_name][value])*100))
 
+
         points = sorted(points, key=lambda x: x[0])
         #plt.setp(plt.xticks()[1], rotation=30, ha='right')
         plt.plot([i for i in range(0, len(points))], [x[1] for x in points], style, label=alg_name, linewidth=4.0, markersize=10)
@@ -220,18 +234,26 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
 
 if __name__ == "__main__":
 
+    # algs = {
+    #     "ga": [os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_ga_[0.99-0.9]x[m25-m75]x50")],
+    #     #"pso": os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_pso_[0.99-0.9]x[m25-m75]x50"),
+    #     # "gsa": os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_gsa_[0.99-0.9]x[m25-m75]x100"),
+    #     "heft": [os.path.join(TEMP_PATH, "compilation/gaheft_for_heft_new_500")],
+    # }
+
     algs = {
-        "ga": os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_ga_[0.99-0.9]x[m25-m75]x50"),
-        #"pso": os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_pso_[0.99-0.9]x[m25-m75]x50"),
-        # "gsa": os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_gsa_[0.99-0.9]x[m25-m75]x100"),
-        "heft": os.path.join(TEMP_PATH, "compilation/gaheft_for_heft_new_500"),
+        # "ga": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
+        # "pso": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
+        "gsa": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
+        "heft": [os.path.join(TEMP_PATH, "compilation/gaheft_for_heft_new_500")],
     }
 
     # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-    wf_names = ["Montage_25", "Montage_40"]
+    wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
 
 
-    data_aggr = InMemoryDataAggregator(list(algs.values()))
+    pathes = functools.reduce(operator.add, algs.values(), [])
+    data_aggr = InMemoryDataAggregator(pathes)
     for wf_name in wf_names:
 
         # wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
