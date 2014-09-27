@@ -11,9 +11,9 @@ from heft.utilities.union_to_one_dir import generate_pathes
 
 
 POP_SIZE_COLORS = {
-     20: "-gD",
+    20: "-gD",
     # 35: "-rD",
-    # 50: "-yD",
+    # 50: "-gD",
 
     # 60: "-gD",
     #105: "-rD",
@@ -38,6 +38,11 @@ def extract_and_add(alg_name, data, d):
     wf_name = d["wf_name"]
     pop_size = d["params"]["alg_params"]["n"]
     makespan = d["result"]["makespan"]
+
+
+    ## TODO: pure hack, remove it later
+    if str(d["params"]["experiment_name"]).startswith("gaheft") and pop_size == 20:
+        pop_size = 25
 
 
     wf_results = data.get(wf_name, {})
@@ -204,20 +209,23 @@ if __name__ == "__main__":
 
 
     algs = {
-        "pso": [os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_pso_[20, 35, 50]x[m25-m75]x50"),
-
-                os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_25]_[n-20]_[rel-0.95]"),
-            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_40]_[n-20]_[rel-0.95]"),
-            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_50]_[n-20]_[rel-0.95]"),
-            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_75]_[n-20]_[rel-0.95]"),
-                ],
+        # "pso": [os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_pso_[20, 35, 50]x[m25-m75]x50"),
+        #
+        #         os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_25]_[n-20]_[rel-0.95]"),
+        #     os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_40]_[n-20]_[rel-0.95]"),
+        #     os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_50]_[n-20]_[rel-0.95]"),
+        #     os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_75]_[n-20]_[rel-0.95]"),
+        #         ],
         "gsa": [
             os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_gsa_[20,35,50]x[m25-m75]x50"),
+            # os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_20/migaheft_for_gsa"),
 
-            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_25]_[n-20]_[rel-0.95]"),
-            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_40]_[n-20]_[rel-0.95]"),
-            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_50]_[n-20]_[rel-0.95]"),
-            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_75]_[n-20]_[rel-0.95]"),
+            # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_25]_[n-20]_[rel-0.95]"),
+            # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_40]_[n-20]_[rel-0.95]"),
+            # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_50]_[n-20]_[rel-0.95]"),
+            # os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_gsa]_[gsa]_[Montage_75]_[n-20]_[rel-0.95]"),
+            # os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/gaheft_60_series/gaheft_for_gsa_[60, 105, 150]x[m25-m75]x50")
+             os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/gaheft_20_series/gaheft_for_gsa_[20, 35, 50]x[m25-m75]x150")
 
                 ]
 
@@ -258,7 +266,7 @@ if __name__ == "__main__":
     for alg_name, pathes in algs.items():
         data_aggr = InMemoryDataAggregator(pathes)
         # wf_plot = partial(plot_aggregate_results)
-        wf_plot = partial(plot_aggregate_profit_results, base_pop_size=20)
+        wf_plot = partial(plot_aggregate_profit_results, base_pop_size=25)
         extract = partial(extract_and_add, alg_name)
         picture_path = os.path.join("compilation", "pop_wf_{0}.png".format(alg_name))
         data_aggr(
