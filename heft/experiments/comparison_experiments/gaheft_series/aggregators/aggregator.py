@@ -230,6 +230,7 @@ if __name__ == "__main__":
     # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
     wf_names = ["Montage_25", "Montage_40"]
 
+
     data_aggr = InMemoryDataAggregator(list(algs.values()))
     for wf_name in wf_names:
 
