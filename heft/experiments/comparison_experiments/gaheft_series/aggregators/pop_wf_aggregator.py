@@ -74,6 +74,9 @@ def plot_aggregate_profit_results(data, base_pop_size, pop_size_colors=POP_SIZE_
 
         points = []
         for wf_name in data:
+            ## TODO: rename montage_40.dax to montage_35.dax
+            if wf_name == "Montage_40":
+                wf_name = "Montage_35"
             points.append((wf_name, -1.0))
         points = sorted(points, key=lambda x: x[0])
         return points
@@ -114,7 +117,7 @@ def plot_aggregate_profit_results(data, base_pop_size, pop_size_colors=POP_SIZE_
 
 
     plt.setp(plt.xticks()[1], rotation=30, ha='right')
-    ax.legend()
+    #ax.legend()
     pass
 
 def plot_aggregate_results(data, pop_size_colors=POP_SIZE_COLORS):
@@ -166,7 +169,7 @@ def plot_aggregate_results(data, pop_size_colors=POP_SIZE_COLORS):
 
 
     plt.setp(plt.xticks()[1], rotation=30, ha='right')
-    ax.legend()
+    #ax.legend()
     pass
 
 
@@ -209,13 +212,22 @@ if __name__ == "__main__":
 
 
     algs = {
-        # "pso": [os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_pso_[20, 35, 50]x[m25-m75]x50"),
+        # "ga": [os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_ga_common"),
         #
-        #         os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_25]_[n-20]_[rel-0.95]"),
-        #     os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_40]_[n-20]_[rel-0.95]"),
-        #     os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_50]_[n-20]_[rel-0.95]"),
-        #     os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_75]_[n-20]_[rel-0.95]"),
-        #         ],
+        #        os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_ga_[m25,m40]_[0.95]"),
+        #        os.path.join(TEMP_PATH, "compilation/ga_pso_gsa/gaheft_for_ga_m50_1000"),
+        #        os.path.join(TEMP_PATH, "compilation/ga_pso_gsa/gaheft_for_ga_m75_1000"),
+        #
+        #        # os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/gaheft_60_series/gaheft_for_ga_[60, 105, 150]x[m25-m75]x50")
+        #
+        #        ],
+        "pso": [os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_pso_[20, 35, 50]x[m25-m75]x50"),
+
+                os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_25]_[n-20]_[rel-0.95]"),
+            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_40]_[n-20]_[rel-0.95]"),
+            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_50]_[n-20]_[rel-0.95]"),
+            os.path.join(TEMP_PATH, "compilation/gaheft_results_sorted/[gaheft_for_pso]_[pso]_[Montage_75]_[n-20]_[rel-0.95]"),
+                ],
         "gsa": [
             os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_series/migaheft_for_gsa_[20,35,50]x[m25-m75]x50"),
             # os.path.join(TEMP_PATH, "compilation/migaheft_gaheft_experiemnt/migaheft_20/migaheft_for_gsa"),
