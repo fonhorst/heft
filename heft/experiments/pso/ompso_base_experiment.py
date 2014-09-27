@@ -77,8 +77,8 @@ class OmpsoBaseExperiment(AbstractExperiment):
 if __name__ == "__main__":
     exp = OmpsoBaseExperiment(wf_name="Montage_75",
                               W=0.1, C1=0.6, C2=0.2,
-                              GEN=300, N=50)
-    result = repeat(exp, 20)
+                              GEN=300, N=20)
+    result = repeat(exp, 10)
     # result = exp()
     sts = interval_statistics(result)
     print("Statistics: {0}".format(interval_stat_string(sts)))
