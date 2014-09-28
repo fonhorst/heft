@@ -16,4 +16,5 @@ setup(name='SchedulerStand',
                         'scoop>=0.7',
                         'networkx>=1.8.1',
                         'distance>=0.1.3',
-                        'matplotlib>=1.3.1'])
+                        'matplotlib>=1.3.1',
+                        'scipy>=0.14.0'])
