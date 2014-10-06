@@ -96,14 +96,14 @@ class HeftHelper(Scheduler):
     @staticmethod
     def avr_commcost(ni, nj, nodes, commcost):
         ##TODO: remake it later.
-        return 10
+        # return 10
         """ Average communication cost """
-        # n = len(nodes)
-        # if n == 1:
-        #     return 0
-        # npairs = n * (n - 1)
-        # return 1. * sum(commcost(ni, nj, a1, a2) for a1 in nodes for a2 in nodes
-        #                 if a1 != a2) / npairs
+        n = len(nodes)
+        if n == 1:
+            return 0
+        npairs = n * (n - 1)
+        return 1. * sum(commcost(ni, nj, a1, a2) for a1 in nodes for a2 in nodes
+                        if a1 != a2) / npairs
 
     @staticmethod
     def convert_to_parent_children_map(wf):

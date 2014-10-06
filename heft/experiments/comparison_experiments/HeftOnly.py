@@ -23,5 +23,5 @@ def do_exp(wf_name):
 
 if __name__ == "__main__":
     repeat_count = 1
-    result = [do_exp("CyberShake_30") for _ in range(repeat_count)]
+    result = [do_exp("Inspiral_100") for _ in range(repeat_count)]
     print(result)

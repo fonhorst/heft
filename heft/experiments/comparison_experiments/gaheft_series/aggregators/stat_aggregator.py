@@ -1,4 +1,6 @@
 from functools import partial
+import functools
+import operator
 import os
 import numpy
 import pylab
@@ -71,24 +73,38 @@ def plot_aggregate_results(wf_name, data):
 
 
 if __name__ == "__main__":
-    wf_name = "Montage_75"
-    reliabilities = [0.99, 0.975, 0.95, 0.925, 0.9]
-    base_picture_path = os.path.join(TEMP_PATH, "compilation", "pso_gsa", "histograms")
+    # wf_name = "Montage_75"
+    wf_names = ["Montage_75", "Montage_50", "Montage_40", "Montage_25"]
+    # reliabilities = [0.99, 0.975, 0.95, 0.925, 0.9]
+    reliabilities = [0.99]
+    base_picture_path = os.path.join(TEMP_PATH, "compilation", "all_gaheft_histograms")
+
+    # algs = {
+    #     "heft": os.path.join(TEMP_PATH, "compilation", "gaheft_for_heft_new_500"),
+    #    # "pso": os.path.join(TEMP_PATH, "compilation", "gaheft_for_gsa_m50_m75", "all"),
+    #     "gsa": os.path.join(TEMP_PATH, "compilation", "pso_gsa", "gaheft_for_gsa_m75_1000")
+    # }
+
 
     algs = {
-        "heft": os.path.join(TEMP_PATH, "compilation", "gaheft_for_heft_new_500"),
-       # "pso": os.path.join(TEMP_PATH, "compilation", "gaheft_for_gsa_m50_m75", "all"),
-        "gsa": os.path.join(TEMP_PATH, "compilation", "pso_gsa", "gaheft_for_gsa_m75_1000")
+        "heft": [os.path.join(TEMP_PATH, "compilation", "gaheft_for_heft_new_500")],
+        "ga": [os.path.join(TEMP_PATH, "compilation", "gaheft_[ga,pso,gsa]_[0.9-0.99]")],
+        "pso": [],
+        "gsa": []
     }
 
+    pathes = functools.reduce(operator.add, algs.values(), [])
+    data_aggr = InMemoryDataAggregator(pathes)
+
     for alg_name, alg_path in algs.items():
-        data_aggr = InMemoryDataAggregator([alg_path])
+
         for reliability in reliabilities:
 
-            extract = partial(extract_and_add, alg_name, wf_name, reliability)
-            wf_plot = partial(plot_aggregate_results, wf_name)
+            for wf_name in wf_names:
+                extract = partial(extract_and_add, alg_name, wf_name, reliability)
+                wf_plot = partial(plot_aggregate_results, wf_name)
 
 
-            picture_path = os.path.join(base_picture_path, "hist_gaheft_for_{0}_{1}_{2}.png".format(alg_name, wf_name, reliability))
+                picture_path = os.path.join(base_picture_path, "hist_gaheft_for_{0}_{1}_{2}.png".format(alg_name, wf_name, reliability))
 
-            data_aggr(picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
+                data_aggr(picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
