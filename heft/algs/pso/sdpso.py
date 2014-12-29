@@ -1,6 +1,5 @@
 """
-This is a prototype of set-based PSO algorithm directed to solve workflow scheduling problem with fixed ordering.
-It must be refactored and made in reusable, configurable form later.
+This is a prototype of set-based PSO algorithm directed to solve workflow scheduling problem.
 
 Position =>{task_name: node_name}
 Velocity => {(task_name, node_name): probability}

@@ -68,12 +68,11 @@ def generate(wf, rm, estimator, schedule=None, fixed_schedule_part=None, current
 
     mapping, ordering = ord_and_map(clean_sched)
     ordering_numseq = ordering_to_numseq(ordering)
-
     ordering_map = {task_id: val for task_id, val in zip(ordering, ordering_numseq)}
-
     ord_p, map_p = OrderingParticle(ordering_map), MappingParticle(mapping)
     ord_p.velocity = OrderingParticle.Velocity({})
     map_p.velocity = MappingParticle.Velocity({})
+
     result = CompoundParticle(map_p, ord_p)
     if schedule is None and not validate_mapping_with_alive_nodes(result.mapping.entity, rm):
         raise Exception("found invalid solution in generated array")
