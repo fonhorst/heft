@@ -1,4 +1,4 @@
-from algs.ga.coevolution.operators import fitness_mapping_and_ordering, MAPPING_SPECIE, ORDERING_SPECIE, build_schedule
+from algs.ga.coevolution.operators import fitness_mapping_and_ordering, MAPPING_SPECIE, ORDERING_SPECIE, mapping2order_build_schedule
 from core.CommonComponents.ExperimentalManagers import ExperimentEstimator
 from core.environment.BaseElements import Resource, Node, SoftItem
 
@@ -39,7 +39,7 @@ def cost(schedule, estimator):
 
 def cost_mapping_and_ordering(ctx, solution):
     env = ctx['env']
-    schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
+    schedule = mapping2order_build_schedule(env.wf, env.estimator, env.rm, solution)
     all_cost = cost(schedule, env.estimator)
     return -all_cost
 

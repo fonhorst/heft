@@ -69,7 +69,7 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
     def _actual_ga_run(self):
 
         ##=====================================
-        ##Regular GA
+        ##Regular ga
         ##=====================================
         print("GaHeft WITH NEW POP: ")
         ga = self.ga_builder()
@@ -77,7 +77,7 @@ class GaHeftOldPopExecutor(FailOnce, GaHeftExecutor):
                                                                            self.back_cmp.initial_schedule,
                                                                            self.current_time)
         ##=====================================
-        ##Old pop GA
+        ##Old pop ga
         ##=====================================
         print("GaHeft WITH OLD POP: ")
         cleaned_schedule = self.back_cmp.fixed_schedule

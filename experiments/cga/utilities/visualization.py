@@ -230,8 +230,8 @@ def vis_only_best(data, path_to_save):
 if __name__ == "__main__":
     # path = "../../../temp/vis_test.json"
 
-    # path = "../../../temp/cga_exp/"
-    path = "../../../temp/dcga_exp/"
+    path = "../../../temp/cga_exp/"
+    # path = "../../../temp/dcga_exp/"
     # path = "../../../temp/cga_exp_2/"
     # path = "D:/FTP/cga_exp_archivedmutation"
     # path = "../../../temp/cga_fixed_ordering/"

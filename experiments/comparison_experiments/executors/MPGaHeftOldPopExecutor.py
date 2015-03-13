@@ -28,7 +28,7 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
         heft_initial = self._clean_chromosome(heft_initial, self.back_cmp.event, self.back_cmp.fixed_schedule)
 
          ##=====================================
-        ##Regular GA
+        ##Regular ga
         ##=====================================
         # print("GaHeft WITH NEW POP: ")
         # ga = self._get_ga_alg()
@@ -59,7 +59,7 @@ class MPGaHeftOldPopExecutor(GaHeftOldPopExecutor):
 
 
         ##=====================================
-        ##Old pop GA
+        ##Old pop ga
         ##=====================================
         print("GaHeft WITH OLD POP: ")
         cleaned_schedule = self.back_cmp.fixed_schedule

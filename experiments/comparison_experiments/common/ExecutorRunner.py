@@ -50,7 +50,7 @@ class ExecutorRunner:
         if with_ga_initial is True:
             initial_schedule = bundle.ga_schedule
             #initial_ga_makespan = Utility.get_the_last_time(initial_schedule )
-            #print("Initial GA makespan: " + str(initial_ga_makespan))
+            #print("Initial ga makespan: " + str(initial_ga_makespan))
             ## TODO: end
 
         ##======================

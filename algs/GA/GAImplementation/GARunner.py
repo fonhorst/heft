@@ -24,6 +24,7 @@ class BaseRunner:
         transfer_time = kwargs.get("transfer_time", 100)
 
         dax1 = '../../resources/' + wf_name + '.xml'
+        "../../temp/heft_etalon_full_tr100_m100.json"
         wf = Utility.readWorkflow(dax1, wf_name)
 
         rgen = ResourceGenerator(min_res_count=1,
@@ -132,7 +133,7 @@ class MixRunner(BaseRunner):
         ##===============================================
         _run_sa(heft_schedule)
         ##================================
-        ##GA Run
+        ##ga Run
         ##================================
 
          ## TODO: remove time measure

@@ -175,7 +175,7 @@ def _draw_task(type, task_id, old_pop_results, random_results):
     # p1 = Rectangle((0, 0), 1, 1, fc="g")
     # p2 = Rectangle((0, 0), 1, 1, fc="r")
     # p3 = Rectangle((0, 0), 1, 1, fc="#00A2E8")
-    # plt.legend([p1, p2, p3], ["GA", "IGA", "HEFT"])
+    # plt.legend([p1, p2, p3], ["ga", "IGA", "HEFT"])
     pass
 
 def _draw_pref_profit(type, task_id, old_pop_results, random_results):

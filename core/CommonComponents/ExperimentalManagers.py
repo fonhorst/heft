@@ -49,6 +49,12 @@ class ExperimentEstimator(Estimator):
 
 
 class ExperimentResourceManager(ResourceManager):
+
+    def setVMParameter(self, farm_capacity, max_resource_capacity):
+        self.farm_capacity = farm_capacity
+        self.max_resource_capacity = max_resource_capacity
+        pass
+
     def __init__(self, resources):
         self.resources = resources
         self.resources_map = {res.name: res for res in self.resources}

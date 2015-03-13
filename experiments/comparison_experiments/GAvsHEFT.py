@@ -71,7 +71,8 @@ if __name__ == '__main__':
     print("Population size: " + str(PARAMS["ga_params"]["population"]))
 
     # repeat(do_exp, 1)
-    result = repeat(do_exp_heft_schedule, 1)
+    #result = repeat(do_exp_heft_schedule, 1)
+    result = do_exp_heft_schedule()
     # result = repeat(do_exp_ga_schedule, 1)
 
     print(result)
@@ -92,8 +93,8 @@ if __name__ == '__main__':
         "results": result
     }
 
-    with open(os.path.join(directory, "all_results.json"), "w") as f:
-        json.dump(dt, f)
+    #with open(os.path.join(directory, "all_results.json"), "w") as f:
+    #    json.dump(dt, f)
 
 
 

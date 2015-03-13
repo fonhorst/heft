@@ -1,6 +1,6 @@
 from deap import tools
 from algs.ga.coevolution.cga import Env, Specie, ListBasedIndividual
-from algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, build_schedule, mapping_default_initialize, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead, mapping_all_mutate, default_build_solutions
+from algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, mapping2order_build_schedule, mapping_default_initialize, overhead_fitness_mapping_and_ordering, assign_from_transfer_overhead, mapping_all_mutate, default_build_solutions
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
 from core.environment.Utility import Utility
 from core.environment.Utility import wf
@@ -55,7 +55,7 @@ def do_exp():
 
         "solstat": lambda sols: {"best_components": hamming_for_best_components(sols, ms_ideal_ind, os_ideal_ind),
                                  "best_components_itself": best_components_itself(sols),
-                                 "best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))
+                                 "best": -1*Utility.makespan(mapping2order_build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))
                                  },
 
         "operators": {

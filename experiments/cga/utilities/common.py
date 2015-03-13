@@ -7,6 +7,7 @@ import uuid
 from deap import tools
 import distance
 import math
+from scoop import futures
 from algs.ga.coevolution.cga import ListBasedIndividual, rounddeciter
 from algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
 
@@ -43,6 +44,31 @@ def generate_pathes(folder):
     return pathes
 
 
+class BasicFinalResultSaver:
+    def __init__(self, directory):
+        self.directory = directory
+
+    def __call__(self, data, exp_number, config):
+        if not os.path.exists(self.directory):
+            os.makedirs(self.directory)
+        name = str(config['interact_individuals_count']) + "_{0}.json".format(exp_number)
+        name_vm = str(config['interact_individuals_count']) + "_{0}_vm.json".format(exp_number)
+        path = os.path.join(self.directory, name)
+        path_vm = os.path.join(self.directory, name_vm)
+        res_str = ''
+        for r in data['final_resources'] : res_str += ' ' + str(r.flops)
+        with open(path, "a") as f:
+            f.write(str(data['final_makespan'])+'\t'+res_str+'\r\n')
+
+
+        vm_series = data['vm_series']
+        with open(path_vm, "a") as f:
+            for vm_record in vm_series:
+                f.write(str(vm_record)+'\r\n')
+
+        return name
+
+
 class ComparableMixin(object):
     def _compare(self, other, method):
         try:
@@ -72,11 +98,16 @@ class ComparableMixin(object):
 
 
 def repeat(func, n):
-    # fs = [futures.submit(func) for i in range(n)]
-    # futures.wait(fs)
-    # return [f.result() for f in fs]
-    return [func() for i in range(n)]
+    fs = [futures.submit(func) for i in range(n)]
+    futures.wait(fs)
+    return [f.result() for f in fs]
+    # return [func() for i in range(n)]
 
+def repeat(func, params, n):
+    fs = [futures.submit(func, params) for i in range(n)]
+    futures.wait(fs)
+    return [f.result() for f in fs]
+    # return [func() for i in range(n)]
 
 class OnlyUniqueMutant:
     def __init__(self):

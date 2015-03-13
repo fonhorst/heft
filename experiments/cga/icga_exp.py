@@ -3,7 +3,7 @@ from functools import partial
 from deap import tools
 
 from algs.ga.coevolution.cga import Env, Specie, CoevolutionGA
-from algs.ga.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ORDERING_SPECIE, build_schedule, max_assign_credits, mapping_heft_based_initialize, ordering_heft_based_initialize, fitness_mapping_and_ordering, MutRegulator, one_to_one_build_solutions, mapping_all_mutate
+from algs.ga.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ORDERING_SPECIE, mapping2order_build_schedule, max_assign_credits, mapping_heft_based_initialize, ordering_heft_based_initialize, fitness_mapping_and_ordering, MutRegulator, one_to_one_build_solutions, mapping_all_mutate
 from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
 from core.environment.Utility import Utility
 from core.environment.Utility import wf
@@ -93,7 +93,7 @@ config = {
         ],
         "solstat": lambda sols: {"best_components": hamming_for_best_components(sols, ms_ideal_ind, os_ideal_ind),
                                  "best_components_itself": best_components_itself(sols),
-                                 "best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))},
+                                 "best": -1*Utility.makespan(mapping2order_build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))},
 
         "analyzers": [mapping_mut_reg.analyze],
 

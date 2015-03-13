@@ -94,7 +94,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
         # run HEFT
         self._reschedule(event)
-        #run GA
+        #run ga
         self._run_ga_in_background(event)
         pass
 
@@ -104,7 +104,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         # check node up
         self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
         self._reschedule(event)
-        #run GA
+        #run ga
         self._run_ga_in_background(event)
         pass
 
@@ -131,7 +131,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         return result
 
     def _check_event_for_ga_result(self, event):
-        # check for time to get result from GA running background
+        # check for time to get result from ga running background
         if self.back_cmp is None or self.back_cmp.time_to_stop != self.current_time:
             return False
         else:
@@ -167,7 +167,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         ## TODO: replace by log call
         print("Time: " + str(current_time) + " Creating reschedule point ")
         ## there can be several events in one time
-        ## we choose the first to handle background GA run
+        ## we choose the first to handle background ga run
         def _get_front_line(schedule, current_time, fixed_interval):
             event_time = current_time + fixed_interval
             min_item = ScheduleItem.MIN_ITEM()
@@ -216,7 +216,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
             front_event = _get_front_line(current_schedule, current_time, fixed_interval)
             # we can't meet the end of computation so we do nothing
             if front_event is None:
-                print("GA's computation isn't able to meet the end of computation")
+                print("ga's computation isn't able to meet the end of computation")
                 return
             fixed_schedule = _get_fixed_schedule(current_schedule, front_event)
 
