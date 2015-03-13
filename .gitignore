@@ -10,3 +10,5 @@ utility/debug/
 .idea/
 experiments/cga/debug
 temp/
+build/
+dist/
