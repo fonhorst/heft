@@ -4,16 +4,18 @@ import random
 from deap import tools
 import numpy
 from numpy.lib.function_base import append, insert
+from heft.algs.common.NewSchedulerBuilder import place_task_to_schedule
 from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividual
 from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE, check_precedence
 from heft.algs.ga.coevolution.cga import Specie, Env
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
+from heft.core.environment.ResourceManager import Schedule
 from heft.core.environment.Utility import Utility
 from heft.core.environment.ResourceGenerator import ResourceGenerator
-from core.environment.ResourceGenerator import ResourceGenerator
-from core.environment.BaseElements import Resource, Node, SoftItem, Workflow
+from heft.core.environment.ResourceGenerator import ResourceGenerator
+from heft.core.environment.BaseElements import Resource, Node, SoftItem, Workflow
 
 GA_SPECIE = "GASpecie"
 RESOURCE_CONFIG_SPECIE = "ResourceConfigSpecie"

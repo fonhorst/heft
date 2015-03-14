@@ -1,18 +1,11 @@
 from copy import deepcopy
 import json
 import unittest
-import os
-from algs.ga.coevolution.cga import run_cooperative_ga, Specie, ListBasedIndividual
-from heft.algs.common.individuals import ListBasedIndividual
-from algs.ga.coevolution.operators import mapping2order_build_schedule, default_config, MAPPING_SPECIE, ORDERING_SPECIE
-from core.CommonComponents.ExperimentalManagers import ExperimentEstimator, ExperimentResourceManager
-from core.environment import Utility, ResourceGenerator
-from core.environment.ResourceManager import ScheduleItem
-from experiments.cga.utilities.common import build_ms_ideal_ind
-from experiments.comparison_experiments.common import ExecutorRunner
 
+from heft.algs.common.individuals import ListBasedIndividual
+from heft.algs.ga.coevolution.operators import mapping2order_build_schedule
 from heft.algs.ga.coevolution.cga import run_cooperative_ga, Specie
-from heft.algs.ga.coevolution.operators import build_schedule, default_config, MAPPING_SPECIE, ORDERING_SPECIE
+from heft.algs.ga.coevolution.operators import default_config, MAPPING_SPECIE, ORDERING_SPECIE
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentEstimator, ExperimentResourceManager
 from heft.core.environment.ResourceGenerator import ResourceGenerator
 from heft.core.environment.Utility import wf as WF
@@ -106,7 +99,7 @@ class CoevolutionTest(unittest.TestCase):
         solution, pops, logbook, initial_pops = run_cooperative_ga(**config)
         ## TODO: correct this later
 		#schedule = build_schedule(_wf, estimator, manager, solution)
-        schedule = mapping2order_build_schedule(wf, estimator, manager, solution)
+        schedule = mapping2order_build_schedule(_wf, estimator, manager, solution)
 
         for k, items in schedule.mapping.items():
             for item in items:

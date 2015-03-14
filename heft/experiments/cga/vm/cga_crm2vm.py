@@ -1,21 +1,16 @@
 from datetime import datetime
-
 import uuid
 
-from algs.ga.coevolution.cga import Env, Specie, vm_run_cooperative_ga
-from algs.ga.coevolution.operators import MAPPING_SPECIE, RESOURCE_CONFIG_SPECIE, GA_SPECIE, \
+from heft.algs.ga.coevolution.cga import Env, Specie, vm_run_cooperative_ga
+from heft.algs.ga.coevolution.operators import RESOURCE_CONFIG_SPECIE, GA_SPECIE, \
     vm_resource_default_initialize, resource_conf_crossover, ga_default_initialize, ga_mutate, ga_crossover, \
-    ga2resources_build_schedule, ordering_default_mutate, ORDERING_SPECIE, mapping2order_build_schedule, \
-    max_assign_credits, mapping_heft_based_initialize, ordering_heft_based_initialize, fitness_mapping_and_ordering, \
-    MutRegulator, mapping_all_mutate_configurable, one_to_one_build_solutions, resource_config_mutate, \
+    max_assign_credits, MutRegulator, resource_config_mutate, \
     one_to_one_vm_build_solutions, fitness_ga_and_vm
-from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
-from core.environment.Utility import Utility
-from core.environment.Utility import wf
-from core.environment.ResourceGenerator import ResourceGenerator as rg
-from experiments.cga.utilities.common import BasicFinalResultSaver, repeat, tourn, ArchivedSelector, \
-    extract_mapping_from_ga_file, extract_ordering_from_ga_file, hamming_distances, to_seq, unique_individuals, pcm, \
-    gdm, hamming_for_best_components, best_components_itself
+from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
+from heft.core.environment.Utility import wf
+from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
+from heft.experiments.cga.utilities.common import BasicFinalResultSaver, repeat, tourn, ArchivedSelector, \
+    extract_mapping_from_ga_file, extract_ordering_from_ga_file
 
 
 class Config:
@@ -23,28 +18,12 @@ class Config:
 
         self.wf_name = input_wf_name
         self._wf = wf(self.wf_name)
-        #_wf = wf("Montage_25")
         self.rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
         self.rm.setVMParameter(80, 30)
         self.estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 
         self.mapping_selector = ArchivedSelector(3)(tourn)
         self.ordering_selector = ArchivedSelector(3)(tourn)
-
-
-        # heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100.json")
-        # heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json", rm)
-        #heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
-
-        #heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json", rm)
-        self.heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m75.json", self.rm)
-        #heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m100.json")
-        self.heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m75.json")
-
-        self.ms_ideal_ind = self.heft_mapping
-        #os_ideal_ind = heft_ordering
-
-        #ms_str_repr = [{k: v} for k, v in ms_ideal_ind]
 
         self.mapping_mut_reg = MutRegulator()
 
@@ -155,11 +134,6 @@ def do_exp(params):
 
 if __name__ == "__main__":
 
-#     wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75",
-  #               "Inspiral_30",  "Inspiral_50",  "Inspiral_72",
-    #             "CyberShake_30", "CyberShake_50", "CyberShake_75",
-      #           "Epigenomics_24", "Epigenomics_46", "Epigenomics_72",
-        #         "Sipht_30", "Sipht_60", "Sipht_79"]
     wf_names = [
                 "CyberShake_100"]
     for wf_name in wf_names:
