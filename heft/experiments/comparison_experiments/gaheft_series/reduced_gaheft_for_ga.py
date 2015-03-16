@@ -48,4 +48,5 @@ BASE_PARAMS = {
 ga_exp = partial(do_reduced_gaheft_exp, alg_builder=create_old_ga)
 
 if __name__ == "__main__":
+    
     changing_tasks_run(ga_exp, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS, is_debug=True)
