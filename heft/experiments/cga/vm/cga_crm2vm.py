@@ -125,6 +125,7 @@ def do_exp(params):
     configuration = Config(wf_name)
     config = configuration.config
     for s in config["species"]: s.select = ArchivedSelector(3)(tourn)
+
     res = do_experiment(basic_saver, config, number)
     tend = datetime.now()
     tres = tend - tstart

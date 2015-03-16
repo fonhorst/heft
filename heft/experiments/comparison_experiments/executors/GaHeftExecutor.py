@@ -2,6 +2,7 @@ from collections import namedtuple
 from copy import deepcopy, copy
 import functools
 import operator
+import pprint
 import random
 
 from heft.core.CommonComponents.BaseExecutor import BaseExecutor
@@ -89,24 +90,24 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
         item.state = ScheduleItem.EXECUTING
 
-        if not self._is_a_fail_possible():
-            return
+        # if not self._is_a_fail_possible():
+        #     return
 
         if self._check_fail(event.task, node):
             # generate fail time, post it
-            duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
+
             time_of_fail = (item.end_time - self.current_time)*random.random()
             time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
 
             event_failed = NodeFailed(node, event.task)
             event_failed.time_happened = time_of_fail
-
-            event_nodeup = NodeUp(node)
-            event_nodeup.time_happened = time_of_fail + duration
-
             self.post(event_failed)
-            self.post(event_nodeup)
 
+            if self.base_fail_duration != -1:
+                duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
+                event_nodeup = NodeUp(node)
+                event_nodeup.time_happened = time_of_fail + duration
+                self.post(event_nodeup)
 
         pass
 
@@ -118,8 +119,8 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
     def _node_failed_handler(self, event):
 
-        if not self._is_a_fail_possible():
-            return
+        # if not self._is_a_fail_possible():
+        #     return
 
 
 
@@ -129,6 +130,9 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self._stop_ga()
         # check node down
         self.resource_manager.node(event.node).state = Node.Down
+
+        ## TODO: debug output
+        print("Node failed: ", event.node.id)
         # check failed event in schedule
         ## TODO: ambigious choice
         ##self.current_schedule.change_state(event.task, ScheduleItem.FAILED)
@@ -239,9 +243,21 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
     def _apply_mh_if_better(self, event, heuristic_resulted_schedule, metaheuristic_resulted_schedule):
         t1 = Utility.makespan(metaheuristic_resulted_schedule)
         t2 = Utility.makespan(heuristic_resulted_schedule)
-        print("Replace anyway - {0}".format(self.replace_anyway))
+        # print("Replace anyway - {0}".format(self.replace_anyway))
         if self.replace_anyway is True or t1 < t2:
+            # print("Replacing temp schedule with a mh-generated schedule. Temp - {0}, mh - {1}".format(t2, t1))
             ## generate new events
+
+            ##TODO: debug output
+            # print("=====================================================")
+            # print("============HEURO===========")
+            # print("=====================================================")
+            # pprint.pprint(heuristic_resulted_schedule.mapping)
+            # print("=====================================================")
+            # print("============MHEURO===========")
+            # print("=====================================================")
+            # pprint.pprint(metaheuristic_resulted_schedule.mapping)
+
             self._replace_current_schedule(event, metaheuristic_resulted_schedule)
             ## if event is TaskStarted event the return value means skip further processing
             return True

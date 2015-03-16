@@ -106,6 +106,13 @@ class Workflow:
             self._build_ancestors_map()
         return (id2 in self._parent_child_dict[id1]) or (id1 in self._parent_child_dict[id2])
 
+    def by_num(self, num):
+        numstr = str(num)
+        zeros = "".join("0" for _ in range(5 - len(numstr)))
+        ## TODO: correct indexation
+        id = str.format("ID{zeros}{num}_000", zeros=zeros, num=numstr)
+        return self.byId(id)
+
     def ancestors(self, id):
         if self._parent_child_dict is None:
             self._build_ancestors_map()

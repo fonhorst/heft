@@ -16,7 +16,9 @@ class FailOnce(FailBase):
     # task_id_to_fail = None
 
     def _check_fail(self, task, node):
+        # print("I' m here")
         if self.failed_once is not True:
+            # print("I' m there")
             reliability = self.estimator.estimate_reliability(task, node)
 
             failed = False

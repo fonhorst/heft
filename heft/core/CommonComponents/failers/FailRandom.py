@@ -18,7 +18,6 @@ class FailRandom(FailBase):
 
     @signal_if_true
     def _check_fail(self, task, node):
-
         if self._fail_count_upper_limit is not None and self._failed_counts >= self._fail_count_upper_limit:
             return False
 
