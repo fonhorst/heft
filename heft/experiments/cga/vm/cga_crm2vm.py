@@ -1,4 +1,5 @@
 from datetime import datetime
+from functools import partial
 import uuid
 
 from heft.algs.ga.coevolution.cga import Env, Specie, vm_run_cooperative_ga
@@ -139,7 +140,7 @@ if __name__ == "__main__":
                 "CyberShake_100"]
     for wf_name in wf_names:
         number = uuid.uuid4()
-        res = repeat(do_exp, [number, wf_name], 10)
+        res = repeat(partial(do_exp, [number, wf_name]), 10)
         print("RESULTS: ")
         print(res)
 

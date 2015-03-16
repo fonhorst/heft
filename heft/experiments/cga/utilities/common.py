@@ -119,12 +119,6 @@ def multi_repeat(n, funcs):
 def repeat(func, n):
     return multi_repeat(n, [func])
 
-def repeat(func, params, n):
-    fs = [futures.submit(func, params) for i in range(n)]
-    futures.wait(fs)
-    return [f.result() for f in fs]
-    # return [func() for i in range(n)]
-
 class OnlyUniqueMutant:
     def __init__(self):
         self.found = set()

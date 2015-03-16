@@ -9,7 +9,7 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 EXPERIMENT_NAME = "reduced_gaheft_for_ga"
 REPEAT_COUNT = 1
 WF_NAMES = ["Montage_100"]
-INDIVIDUALS_COUNTS = [50]
+INDIVIDUALS_COUNTS = [10]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
@@ -48,5 +48,5 @@ BASE_PARAMS = {
 ga_exp = partial(do_reduced_gaheft_exp, alg_builder=create_old_ga)
 
 if __name__ == "__main__":
-    
+
     changing_tasks_run(ga_exp, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS, is_debug=True)
