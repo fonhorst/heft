@@ -32,7 +32,7 @@ class OmpsoBaseExperiment(AbstractExperiment):
 
     def __call__(self):
 
-        stats, logbook = self.stats(), self.logbook()
+        toolbox, stats, logbook = self.toolbox(), self.stats(), self.logbook()
         _wf, rm, estimator = self.env()
 
 
@@ -40,7 +40,7 @@ class OmpsoBaseExperiment(AbstractExperiment):
         toolbox = self.toolbox(self.data_intensive)
         heft_schedule = self.heft_schedule()
 
-        pop, log, best, res_list = run_pso(
+        pop, log, best, logbook = run_pso(
             toolbox=toolbox,
             logbook=logbook,
             stats=stats,

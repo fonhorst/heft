@@ -93,7 +93,8 @@ config = {
         ],
         "solstat": lambda sols: {"best_components": hamming_for_best_components(sols, ms_ideal_ind, os_ideal_ind),
                                  "best_components_itself": best_components_itself(sols),
-                                 "best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))},
+                                 #"best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))},
+                                 "best": -1*Utility.makespan(mapping2order_build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))},
 
         "analyzers": [mapping_mut_reg.analyze],
 

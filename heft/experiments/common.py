@@ -66,9 +66,10 @@ class AbstractExperiment:
         return self._stats
 
     def logbook(self):
-        logbook = tools.Logbook()
-        logbook.header = ["gen", "evals"] + self.stats().fields
-        return logbook
+        if self._logbook is None:
+            self._logbook = tools.Logbook()
+            self._logbook.header = ["gen", "evals"] + self.stats().fields
+        return self._logbook
 
     def heft_schedule(self):
         if not self._heft_schedule:

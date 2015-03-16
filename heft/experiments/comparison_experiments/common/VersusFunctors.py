@@ -95,9 +95,9 @@ class GAvsHeftGAvsHeftReXGA(VersusFunctor):
         mainHEFTwithGA = partial(self.mainHeft, with_ga_initial=True, the_bundle=bundle)
         mainGAwithBundle = partial(self.mainGA, the_bundle=bundle)
 
-        resGA = run("GA", mainGAwithBundle, wf_name, self.reliability, self.n)
-        resHeft = run("Heft + GA", mainHEFTwithGA, wf_name, self.reliability, self.n)
-        resCloudHeft = run("HeftREx + GA", mainCloudHEFTwithGA, wf_name, self.reliability, self.n)
+        resGA = run("ga", mainGAwithBundle, wf_name, self.reliability, self.n)
+        resHeft = run("Heft + ga", mainHEFTwithGA, wf_name, self.reliability, self.n)
+        resCloudHeft = run("HeftREx + ga", mainCloudHEFTwithGA, wf_name, self.reliability, self.n)
 
         pc_hg = (1 - resHeft[2]/resGA[2])*100
         pc_chg = (1 - resCloudHeft[2]/resGA[2])*100

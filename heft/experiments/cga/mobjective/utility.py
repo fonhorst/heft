@@ -50,7 +50,8 @@ def cost(schedule, estimator):
 
 def cost_mapping_and_ordering(ctx, solution):
     env = ctx['env']
-    schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
+    #schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
+    schedule = mapping2order_build_schedule(env.wf, env.estimator, env.rm, solution)
     all_cost = cost(schedule, env.estimator)
     return -all_cost
 

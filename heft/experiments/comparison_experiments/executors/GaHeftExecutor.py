@@ -2,6 +2,7 @@ from collections import namedtuple
 from copy import deepcopy, copy
 import functools
 import operator
+import pprint
 import random
 
 from heft.core.CommonComponents.BaseExecutor import BaseExecutor
@@ -100,13 +101,13 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
             event_failed = NodeFailed(node, event.task)
             event_failed.time_happened = time_of_fail
-
-            event_nodeup = NodeUp(node)
-            event_nodeup.time_happened = time_of_fail + duration
-
             self.post(event_failed)
-            self.post(event_nodeup)
 
+            if self.base_fail_duration != -1:
+                duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
+                event_nodeup = NodeUp(node)
+                event_nodeup.time_happened = time_of_fail + duration
+                self.post(event_nodeup)
 
         pass
 
@@ -239,9 +240,21 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
     def _apply_mh_if_better(self, event, heuristic_resulted_schedule, metaheuristic_resulted_schedule):
         t1 = Utility.makespan(metaheuristic_resulted_schedule)
         t2 = Utility.makespan(heuristic_resulted_schedule)
-        print("Replace anyway - {0}".format(self.replace_anyway))
+        # print("Replace anyway - {0}".format(self.replace_anyway))
         if self.replace_anyway is True or t1 < t2:
+            # print("Replacing temp schedule with a mh-generated schedule. Temp - {0}, mh - {1}".format(t2, t1))
             ## generate new events
+
+            ##TODO: debug output
+            # print("=====================================================")
+            # print("============HEURO===========")
+            # print("=====================================================")
+            # pprint.pprint(heuristic_resulted_schedule.mapping)
+            # print("=====================================================")
+            # print("============MHEURO===========")
+            # print("=====================================================")
+            # pprint.pprint(metaheuristic_resulted_schedule.mapping)
+
             self._replace_current_schedule(event, metaheuristic_resulted_schedule)
             ## if event is TaskStarted event the return value means skip further processing
             return True
@@ -276,7 +289,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         ## TODO: replace by log call
         print("Time: " + str(current_time) + " Creating reschedule point ")
         ## there can be several events in one time
-        ## we choose the first to handle background GA run
+        ## we choose the first to handle background ga run
         def _get_front_line(schedule, current_time, fixed_interval):
             event_time = current_time + fixed_interval
             min_item = ScheduleItem.MIN_ITEM()
@@ -325,7 +338,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
             front_event = _get_front_line(current_schedule, current_time, fixed_interval)
             # we can't meet the end of computation so we do nothing
             if front_event is None:
-                print("GA's computation isn't able to meet the end of computation")
+                print("ga's computation isn't able to meet the end of computation")
                 return
             fixed_schedule = _get_fixed_schedule(current_schedule, front_event)
 

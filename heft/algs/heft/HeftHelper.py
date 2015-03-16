@@ -70,7 +70,6 @@ class HeftHelper(Scheduler):
                 ## and
                 ##TODO: include the last component later
                 result = w(ni) + max(c(ni, nj) + estimate(nj) for nj in succ[ni]) ##+ math.pow((nodes.len - cnt(ni)),2)/nodes.len - include it later.
-                #result = w(ni) + max(estimate(nj) for nj in succ[ni])
             else:
                 result = w(ni)
             task_rank_cache[ni] = result
@@ -97,14 +96,14 @@ class HeftHelper(Scheduler):
     @staticmethod
     def avr_commcost(ni, nj, nodes, commcost):
         ##TODO: remake it later.
-        return 10
+        # return 10
         """ Average communication cost """
-        # n = len(nodes)
-        # if n == 1:
-        #     return 0
-        # npairs = n * (n - 1)
-        # return 1. * sum(commcost(ni, nj, a1, a2) for a1 in nodes for a2 in nodes
-        #                 if a1 != a2) / npairs
+        n = len(nodes)
+        if n == 1:
+            return 0
+        npairs = n * (n - 1)
+        return 1. * sum(commcost(ni, nj, a1, a2) for a1 in nodes for a2 in nodes
+                        if a1 != a2) / npairs
 
     @staticmethod
     def convert_to_parent_children_map(wf):

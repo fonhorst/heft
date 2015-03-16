@@ -8,8 +8,8 @@ def mapping_as_vector(mapping):
     return mapp_string
 
 
-def cannot_be_zero(number, replace_for_zero=0.0001):
-    return replace_for_zero if round(abs(number), 6) < replace_for_zero else number
+def cannot_be_zero(number, replace_for_zero=0.000001):
+    return replace_for_zero if round(abs(number), 6) < 0.000001 else number
 
 
 def gather_info(logbook, stats, g, pop, best, need_to_print=True):

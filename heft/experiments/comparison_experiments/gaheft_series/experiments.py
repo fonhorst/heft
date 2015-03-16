@@ -1,10 +1,12 @@
 from functools import partial
 import os
+import pprint
 from deap import tools
 from deap.tools import Logbook
 import numpy
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
+from heft.core.CommonComponents.failers.FailOnce import FailOnce
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.experiments.cga.utilities.common import UniqueNameSaver
@@ -16,6 +18,52 @@ from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.settings import TEMP_PATH
 
 
+def do_reduced_gaheft_exp(saver, alg_builder, wf_name, **params):
+    print("EXPERIMENT RUN START===========================")
+    _wf = wf(wf_name)
+    rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
+    estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
+    dynamic_heft = DynamicHeft(_wf, rm, estimator)
+    ga = alg_builder(_wf, rm, estimator,
+                     params["init_sched_percent"],
+                     log_book=None, stats=None,
+                     alg_params=params["alg_params"])
+
+    class ExpExecutor(FailOnce, GaHeftExecutor):
+        def __init__(self, task_id_to_fail, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.task_id_to_fail = task_id_to_fail
+            self.failed_once = False
+            self.estimator = estimator
+
+    machine = ExpExecutor(heft_planner=dynamic_heft,
+                          wf=_wf,
+                          resource_manager=rm,
+                          ga_builder=lambda: ga,
+                          **params["executor_params"])
+
+    machine.init()
+    machine.run()
+    resulted_schedule = machine.current_schedule
+
+    Utility.validate_dynamic_schedule(_wf, resulted_schedule)
+
+    data = {
+        "wf_name": wf_name,
+        "params": params,
+        "result": {
+            "makespan": Utility.makespan(resulted_schedule),
+        }
+    }
+    #print("EXPERIMENT RUN END=========================")
+
+    ## TODO: debug output
+    # pprint.pprint(data)
+
+    if saver is not None:
+        saver(data)
+    return data
+
 def do_gaheft_exp(saver, alg_builder, wf_name, **params):
     print("EXPERIMENT RUN START===========================")
     _wf = wf(wf_name)
@@ -26,6 +74,7 @@ def do_gaheft_exp(saver, alg_builder, wf_name, **params):
                      params["init_sched_percent"],
                      log_book=None, stats=None,
                      alg_params=params["alg_params"])
+
     machine = GaHeftExecutor(heft_planner=dynamic_heft,
                              wf=_wf,
                              resource_manager=rm,

@@ -3,6 +3,15 @@ from uuid import uuid4
 import math
 from heft.algs.common.individuals import FitAdapter
 
+"""
+This file contains classes of particles for PSO and GSA
+with methods of transformations from combinatorial to continious spaces
+and vice versa
+"""
+
+##TODO: it can be upgraded with numpy classes to speed up execution
+##TODO: write test cases
+
 
 class Particle(FitAdapter):
     def __init__(self, *args, **kwargs):
@@ -24,6 +33,7 @@ class Particle(FitAdapter):
 
 
 class MappingParticle(Particle):
+
     def __init__(self, mapping):
         super().__init__(mapping)
         self.velocity = MappingParticle.Velocity({})

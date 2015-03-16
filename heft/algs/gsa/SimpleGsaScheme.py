@@ -49,12 +49,9 @@ def run_gsa(toolbox, stats, logbook, n, gen_curr, gen_step, initial_pop=None, kb
     ## generates random solutions
     pop = toolbox.generate(n) if initial_pop is None else initial_pop
 
-
     best = None
 
     for i in range(gen_curr, gen_curr + gen_step):
-        if i == 2:
-            pass
         ## fitness estimation
         for p in pop:
             ## toolbox.fitness must return Fitness

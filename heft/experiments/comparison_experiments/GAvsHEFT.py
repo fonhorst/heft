@@ -50,7 +50,7 @@ saver = UniqueNameSaver("../../temp/ga_vs_heft_exp")
 def do_exp_schedule(takeHeftSchedule=True):
     saver = UniqueNameSaver("../../temp/ga_vs_heft_exp_heft_schedule")
 
-    ga_makespan, heft_makespan, ga_schedule, heft_schedule, res_list = run(wf_names[0])
+    ga_makespan, heft_makespan, ga_schedule, heft_schedule, logbook = run(wf_names[0])
 
     ## TODO: pure hack
 
@@ -68,7 +68,7 @@ def do_exp_schedule(takeHeftSchedule=True):
     }
 
     name = saver(data)
-    return ga_makespan, heft_makespan, ga_schedule, heft_schedule, name, res_list
+    return ga_makespan, heft_makespan, ga_schedule, heft_schedule, name, logbook
 
 def do_exp_heft_schedule():
     res = do_exp_schedule(True)

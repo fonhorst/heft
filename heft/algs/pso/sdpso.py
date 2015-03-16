@@ -53,7 +53,6 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
     w, c1, c2 = params["w"], params["c1"], params["c2"]
 
     n = len(pop) if pop is not None else params["n"]
-    res_list = [0 for _ in range(gen_step)]
     ## TODO: remove it later
     #w = w * (500 - gen_curr)/500
 
@@ -85,27 +84,7 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
             #if not best or best.fitness < p.fitness:
              #   best = deepcopy(p)
         # Gather all the fitnesses in one list and print the stats
-        #gather_info(logbook, stats, g, pop)
-
-        #curFile.write(str(g) + "   " + str(best.fitness.values[0]) + "\n")
-
-        bestIndex = changeIndex(bestIndex, changeChance, hallOfFameSize)
-        best = hallOfFame[bestIndex]
-
-        min_value = min([part.fitness.values[0] for part in hallOfFame])
-        res_list[g] = res_list[g] + min_value
-        print("g:" + str(g) + " " + str(min_value))
-
-
-        """
-        hallString = [part.fitness.values[0] for part in hallOfFame]
-        curFile.write(str(g) + "   " + str(bestIndex) + "    " + str(hallString) +  "\n")
-        particlesFitness = sorted([part.fitness.values[0] for part in pop])
-        curFile.write(str(particlesFitness) + "\n")
-        curFile.write("\n")
-        """
-
-
+        gather_info(logbook, stats, g, pop)
         for p in pop:
             toolbox.update(w, c1, c2, p, best, pop)
         if invalidate_fitness and not g == gen_step-1:
@@ -113,23 +92,13 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
                 del p.fitness
         pass
 
-    """
-    hallString = [part.fitness.values[0] for part in hallOfFame]
-    curFile.write(str("FINAL") + "   " + str(bestIndex) + "    " + str(hallString) +  "\n")
-    particlesFitness = sorted([part.fitness.values[0] for part in pop])
-    curFile.write(str(particlesFitness) + "\n")
-    curFile.write("\n")
-    curFile.close()
-    """
-
-    #curFile.close()
-
+    
 
 
     hallOfFame.sort(key=lambda p:p.fitness, reverse=True)
     best = hallOfFame[0]
 
-    return pop, logbook, best, res_list
+    return pop, logbook, best
 
 
 def velocity_update(w, c1, c2, pbest, gbest, velocity, particle, pop):

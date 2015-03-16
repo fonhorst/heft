@@ -4,8 +4,10 @@ import unittest
 import os
 from heft.algs.common.individuals import ListBasedIndividual
 
+from heft.algs.common.individuals import ListBasedIndividual
+from heft.algs.ga.coevolution.operators import mapping2order_build_schedule
 from heft.algs.ga.coevolution.cga import run_cooperative_ga, Specie
-from heft.algs.ga.coevolution.operators import build_schedule, default_config, MAPPING_SPECIE, ORDERING_SPECIE
+from heft.algs.ga.coevolution.operators import default_config, MAPPING_SPECIE, ORDERING_SPECIE
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentEstimator, ExperimentResourceManager
 from heft.core.environment.ResourceGenerator import ResourceGenerator
 from heft.core.environment.Utility import wf as WF
@@ -25,7 +27,8 @@ class CoevolutionTest(unittest.TestCase):
 
         config = default_config(wf, manager, estimator)
         solution, pops, logbook, initial_pops = run_cooperative_ga(**config)
-        schedule = build_schedule(wf, estimator, manager, solution)
+        #schedule = build_schedule(wf, estimator, manager, solution)
+        schedule = mapping2order_build_schedule(wf, estimator, manager, solution)
 
         for k, items in schedule.mapping.items():
             for item in items:
@@ -37,7 +40,8 @@ class CoevolutionTest(unittest.TestCase):
         config_2["interact_individuals_count"] = 4
 
         solution, pops, logbook, initial_pops = run_cooperative_ga(**config)
-        schedule = build_schedule(wf, estimator, manager, solution)
+        #schedule = build_schedule(wf, estimator, manager, solution)
+        schedule = mapping2order_build_schedule(wf, estimator, manager, solution)
 
         for k, items in schedule.mapping.items():
             for item in items:
@@ -59,7 +63,8 @@ class CoevolutionTest(unittest.TestCase):
                                       representative_individual=ListBasedIndividual(ms_ideal_ind))
 
         solution, pops, logbook, initial_pops = run_cooperative_ga(**config)
-        schedule = build_schedule(wf, estimator, manager, solution)
+        #schedule = build_schedule(wf, estimator, manager, solution)
+        schedule = mapping2order_build_schedule(wf, estimator, manager, solution)
 
         for k, items in schedule.mapping.items():
             for item in items:
@@ -97,7 +102,9 @@ class CoevolutionTest(unittest.TestCase):
 
 
         solution, pops, logbook, initial_pops = run_cooperative_ga(**config)
-        schedule = build_schedule(_wf, estimator, manager, solution)
+        ## TODO: correct this later
+		#schedule = build_schedule(_wf, estimator, manager, solution)
+        schedule = mapping2order_build_schedule(_wf, estimator, manager, solution)
 
         for k, items in schedule.mapping.items():
             for item in items:
@@ -115,7 +122,8 @@ class CoevolutionTest(unittest.TestCase):
         config = default_config(wf, manager, estimator)
         config["hall_of_fame_size"] = 3
         solution, pops, logbook, initial_pops = run_cooperative_ga(**config)
-        schedule = build_schedule(wf, estimator, manager, solution)
+        #schedule = build_schedule(wf, estimator, manager, solution)
+        schedule = mapping2order_build_schedule(wf, estimator, manager, solution)
 
         for k, items in schedule.mapping.items():
             for item in items:

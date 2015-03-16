@@ -17,7 +17,7 @@ from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.experiments.cga.utilities.common import repeat
 
 
-_wf = wf("CyberShake_30")
+_wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
                                     ideal_flops=20, transfer_time=100)
@@ -26,7 +26,7 @@ heft_schedule = run_heft(_wf, rm, estimator)
 
 heft_particle = generate(_wf, rm, estimator, heft_schedule)
 
-heft_gen = lambda n: ([deepcopy(heft_particle) if random.random() > 0.95 else generate(_wf, rm, estimator) for _ in range(n-1)] + [deepcopy(heft_particle)])
+heft_gen = lambda n: [deepcopy(heft_particle) if random.random() > 1.00 else generate(_wf, rm, estimator) for _ in range(n)]
 
 # def heft_gen(n):
 #     heft_count = int(n*0.05)
@@ -40,7 +40,7 @@ heft_gen = lambda n: ([deepcopy(heft_particle) if random.random() > 0.95 else ge
 
 pop_size = 50
 iter_number = 300
-kbest = 50
+kbest = pop_size
 ginit = 10
 W, C = 0.2, 0.5
 
@@ -85,17 +85,12 @@ def do_exp():
     Utility.validate_static_schedule(_wf, schedule)
     makespan = Utility.makespan(schedule)
     print("Final makespan: {0}".format(makespan))
-    #print("Heft makespan: {0}".format(Utility.makespan(heft_schedule)))
+    print("Heft makespan: {0}".format(Utility.makespan(heft_schedule)))
     return makespan
 
 
 if __name__ == "__main__":
-    for _ in range(50):
-        W = random.random()
-        C = random.random()
-
-        print(str(W) + "\t" + str(C))
-        result = repeat(do_exp, 8)
-    #result = do_exp()
+    # result = repeat(do_exp, 5)
+    result = do_exp()
     print(result)
     pass

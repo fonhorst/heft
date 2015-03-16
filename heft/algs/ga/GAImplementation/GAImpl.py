@@ -338,7 +338,7 @@ class GAFactory:
 
 
                 print("Ready")
-                return self.get_result(), logbook, res_list
+                return self.get_result(), logbook
 
             def _find_best(self, pop):
                 # resulted_pop = [(ind, ind.fitness.values[0]) for ind in pop]

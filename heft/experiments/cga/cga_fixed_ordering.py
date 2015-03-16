@@ -1,11 +1,17 @@
 from deap import tools
 
+from algs.ga.coevolution.cga import Env, Specie, ListBasedIndividual
 from heft.algs.common.individuals import ListBasedIndividual
 from heft.algs.ga.coevolution.cga import Env, Specie
 from heft.algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, fitness_mapping_and_ordering, build_schedule, mapping_all_mutate, assign_from_transfer_overhead, mapping_heft_based_initialize, default_build_solutions
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
 from heft.core.environment.Utility import wf
 from heft.experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, \
+from algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, fitness_mapping_and_ordering, mapping2order_build_schedule, mapping_all_mutate, assign_from_transfer_overhead, mapping_heft_based_initialize, default_build_solutions
+from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
+from core.environment.Utility import Utility
+from core.environment.Utility import wf
+from experiments.cga.cga_exp import hamming_distances, os_ideal_ind, ms_ideal_ind, do_experiment, unique_individuals, to_seq, hamming_for_best_components, best_components_itself, pcm, gdm, tourn, \
     extract_mapping_from_ga_file, extract_ordering_from_ga_file
 from heft.experiments.cga.utilities.common import UniqueNameSaver, repeat, ArchivedSelector, build_ms_ideal_ind, build_os_ideal_ind
 from heft.settings import __root_path__
@@ -54,7 +60,8 @@ def do_exp():
 
         "solstat": lambda sols: {"best_components": hamming_for_best_components(sols, ms_ideal_ind, os_ideal_ind),
                                  "best_components_itself": best_components_itself(sols),
-                                 "best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))
+                                 #"best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))
+                                 "best": -1*Utility.makespan(mapping2order_build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))
                                  },
 
         "operators": {

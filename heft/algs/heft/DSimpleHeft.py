@@ -6,6 +6,7 @@ from heft.algs.heft.simple_heft import StaticHeftPlanner
 
 class DynamicHeft(StaticHeftPlanner):
     executed_tasks = set()
+
     def get_nodes(self):
         resources = self.resource_manager.get_resources()
         nodes = HeftHelper.to_nodes(resources)

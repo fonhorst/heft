@@ -27,7 +27,7 @@ class BaseRunner:
         ideal_flops = kwargs.get("ideal_flops", 20)
         transfer_time = kwargs.get("transfer_time", 100)
 
-        # dax1 = '../../resources/' + wf_name + '.xml'
+        dax1 = '../../resources/' + wf_name + '.xml'
         # wf = Utility.readWorkflow(dax1, wf_name)
 
         _wf = wf(wf_name)
@@ -119,7 +119,7 @@ class MixRunner(BaseRunner):
                 return fix_schedule_part
 
             fix_schedule_part = default_fixed_schedule_part(resource_manager)
-            ((the_best_individual, pop, schedule, iter_stopped), logbook, res_list) = alg_func(fix_schedule_part, initial_schedule)
+            ((the_best_individual, pop, schedule, iter_stopped), logbook) = alg_func(fix_schedule_part, initial_schedule)
 
             self._validate(wf, estimator, schedule)
 
@@ -133,7 +133,7 @@ class MixRunner(BaseRunner):
                 # Utility.create_jedule_visualization(schedule, wf_name+'_ga')
                 pass
 
-            return (schedule, res_list)
+            return schedule, logbook
 
         def _run_sa(initial_schedule):
 
@@ -150,16 +150,16 @@ class MixRunner(BaseRunner):
         ##===============================================
         _run_sa(heft_schedule)
         ##================================
-        ##GA Run
+        ##ga Run
         ##================================
 
          ## TODO: remove time measure
         tstart = datetime.now()
         # ga_schedule = heft_schedule
         if heft_initial:
-            ga_schedule, res_list = _run_ga(heft_schedule, False)
+            ga_schedule, logbook = _run_ga(heft_schedule, False)
         else:
-            ga_schedule, res_list = _run_ga(None, False)
+            ga_schedule, logbook = _run_ga(None, False)
         # ga_schedule = _run_ga(None)
 
         tend = datetime.now()
@@ -173,6 +173,6 @@ class MixRunner(BaseRunner):
         ga_makespan = Utility.makespan(ga_schedule)
         print("Profit: " + str((1 - ga_makespan/heft_makespan)*100))
         print("===========================================")
-        return (ga_makespan, heft_makespan, ga_schedule, heft_schedule, res_list)
+        return (ga_makespan, heft_makespan, ga_schedule, heft_schedule, logbook)
 
 

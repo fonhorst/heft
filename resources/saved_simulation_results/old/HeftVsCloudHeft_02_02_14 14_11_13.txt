@@ -1,0 +1,8 @@
+_heft 571.9905398071079 new_generated\CyberShake_30
+cheft 287.94017628655564 new_generated\CyberShake_30
+_heft 870.8332303945322 new_generated\CyberShake_50
+cheft 409.16443495600424 new_generated\CyberShake_50
+_heft 1178.5235378077923 new_generated\CyberShake_75
+cheft 554.5661930024232 new_generated\CyberShake_75
+_heft 1605.6332036941117 new_generated\CyberShake_100
+cheft 732.79042905512 new_generated\CyberShake_100

@@ -47,7 +47,7 @@ def ordering_update(w, c, p, min=-1, max=1):
     new_velocity = p.velocity*w + acceleration*c*alpha
     new_position = (p + new_velocity)
     new_position.limit_by(min, max)
-    #p.entity = new_position.entity
+    p.entity = new_position.entity
     pass
 
 

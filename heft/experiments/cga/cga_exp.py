@@ -11,7 +11,16 @@ from heft.experiments.cga.utilities.common import UniqueNameSaver, repeat, tourn
 import os
 from heft.settings import __root_path__
 
-_wf = wf("Montage_100")
+from algs.ga.coevolution.cga import Env, Specie, run_cooperative_ga
+from algs.ga.coevolution.operators import MAPPING_SPECIE, ordering_default_crossover, ordering_default_mutate, ORDERING_SPECIE, mapping2order_build_schedule, max_assign_credits, mapping_heft_based_initialize, ordering_heft_based_initialize, fitness_mapping_and_ordering, MutRegulator, mapping_all_mutate_configurable, one_to_one_build_solutions
+from core.CommonComponents.ExperimentalManagers import ExperimentResourceManager, ExperimentEstimator
+from core.environment.Utility import Utility
+from core.environment.Utility import wf
+from core.environment.ResourceGenerator import ResourceGenerator as rg
+from experiments.cga.utilities.common import UniqueNameSaver, repeat, tourn, ArchivedSelector, extract_mapping_from_ga_file, extract_ordering_from_ga_file, hamming_distances, to_seq, unique_individuals, pcm, gdm, hamming_for_best_components, best_components_itself
+
+
+_wf = wf("Montage_50")
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 
@@ -33,8 +42,8 @@ ordering_selector = ArchivedSelector(3)(tourn)
 # heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 
 
-heft_mapping = extract_mapping_from_ga_file(os.path.join(__root_path__, "temp\heft_etalon_full_tr100_m100.json" ), rm)
-heft_ordering = extract_ordering_from_ga_file(os.path.join(__root_path__, "temp\heft_etalon_full_tr100_m100.json"))
+heft_mapping = extract_mapping_from_ga_file(os.path.join(__root_path__, "temp/heft_etalon_full_tr100_m100.json" ), rm)
+heft_ordering = extract_ordering_from_ga_file(os.path.join(__root_path__, "temp/heft_etalon_full_tr100_m100.json"))
 
 ms_ideal_ind = heft_mapping
 os_ideal_ind = heft_ordering
@@ -83,7 +92,8 @@ config = {
         ],
         "solstat": lambda sols: {"best_components": hamming_for_best_components(sols, ms_ideal_ind, os_ideal_ind),
                                  "best_components_itself": best_components_itself(sols),
-                                 "best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))},
+                                 #"best": -1*Utility.makespan(build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))},
+                                 "best": -1*Utility.makespan(mapping2order_build_schedule(_wf, estimator, rm, max(sols, key=lambda x: x.fitness)))},
 
         "analyzers": [mapping_mut_reg.analyze],
 
@@ -102,7 +112,8 @@ config = {
 
 def do_experiment(saver, config, _wf, rm, estimator):
     solution, pops, logbook, initial_pops = run_cooperative_ga(**config)
-    schedule = build_schedule(_wf, estimator, rm, solution)
+    #schedule = build_schedule(_wf, estimator, rm, solution)
+    schedule = mapping2order_build_schedule(_wf, estimator, rm, solution)
     m = Utility.makespan(schedule)
 
     data = {
