@@ -1,0 +1,91 @@
+===============
+=== HEFT Run
+===============
+Run heft 0
+	 Curtime: 283.3947530796007 Event: NodeFailed res_0_node_3 ID00027_000
+	 Curtime: 404.031013758712 Event: NodeUp res_0_node_3
+	====RESULT====
+	477.252
+Run heft 1
+	 Curtime: 31.208091378540495 Event: NodeFailed res_0_node_3 ID00014_000
+	 Curtime: 152.20421678757978 Event: NodeUp res_0_node_3
+	====RESULT====
+	344.8228834542465
+Run heft 2
+	 Curtime: 25.555573089935617 Event: NodeFailed res_0_node_2 ID00010_000
+	 Curtime: 145.86924810005348 Event: NodeUp res_0_node_2
+	====RESULT====
+	381.98391476672015
+Run heft 3
+	 Curtime: 47.06655257710144 Event: NodeFailed res_0_node_3 ID00013_000
+	 Curtime: 168.05406461928095 Event: NodeUp res_0_node_3
+	====RESULT====
+	495.86739795261434
+Run heft 4
+	 Curtime: 254.31918296574727 Event: NodeFailed res_0_node_3 ID00026_000
+	 Curtime: 374.41697774320403 Event: NodeUp res_0_node_3
+	====RESULT====
+	490.22
+Run heft 5
+	 Curtime: 307.2383259241134 Event: NodeFailed res_0_node_3 ID00032_000
+	 Curtime: 427.6600034098531 Event: NodeUp res_0_node_3
+	====RESULT====
+	413.10533333333336
+Run heft 6
+	====RESULT====
+	311.89333333333343
+Run heft 7
+	====RESULT====
+	311.89333333333343
+Run heft 8
+	 Curtime: 148.99528230003585 Event: NodeFailed res_0_node_3 ID00016_000
+	 Curtime: 269.7375979364535 Event: NodeUp res_0_node_3
+	====RESULT====
+	323.2253333333334
+Run heft 9
+	====RESULT====
+	311.89333333333343
+max: 495.86739795261434
+min: 311.89333333333343
+avr: 386.2156862840248
+===============
+=== GAHEFT Run
+===============
+Run gaHeft 0
+	====RESULT====
+	373.0613333333334
+Run gaHeft 1
+	====RESULT====
+	373.3933333333334
+Run gaHeft 2
+	====RESULT====
+	328.2466666666667
+Run gaHeft 3
+	====RESULT====
+	205.88933333333327
+Run gaHeft 4
+	====RESULT====
+	308.69066666666663
+Run gaHeft 5
+	====RESULT====
+	374.15333333333336
+Run gaHeft 6
+	 Curtime: 179.70444964579275 Event: NodeFailed res_0_node_3 ID00027_000
+	 Curtime: 299.841844483804 Event: NodeUp res_0_node_3
+	====RESULT====
+	364.94666666666666
+Run gaHeft 7
+	 Curtime: 9.819429518131347 Event: NodeFailed res_0_node_2 ID00003_000
+	 Curtime: 130.40238181241375 Event: NodeUp res_0_node_2
+	====RESULT====
+	321.8914295181314
+Run gaHeft 8
+	====RESULT====
+	327.73066666666665
+Run gaHeft 9
+	====RESULT====
+	223.04933333333335
+max: 374.15333333333336
+min: 205.88933333333327
+avr: 320.1052762851465
+GaHeft vs Heft: 17.11748443854256

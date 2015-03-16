@@ -1,0 +1,87 @@
+===============
+=== HEFT Run
+===============
+Run heft 0
+	 Curtime: 123.11112685332492 Event: NodeFailed res_0_node_2 ID00008_000
+	 Curtime: 243.8225374950276 Event: NodeUp res_0_node_2
+	====RESULT====
+	321.66133333333346
+Run heft 1
+	 Curtime: 135.0586777635736 Event: NodeFailed res_0_node_2 ID00013_000
+	 Curtime: 255.12736289797354 Event: NodeUp res_0_node_2
+	====RESULT====
+	269.74133333333333
+Run heft 2
+	====RESULT====
+	280.0973333333333
+Run heft 3
+	====RESULT====
+	280.0973333333333
+Run heft 4
+	====RESULT====
+	280.0973333333333
+Run heft 5
+	====RESULT====
+	280.0973333333333
+Run heft 6
+	====RESULT====
+	280.0973333333333
+Run heft 7
+	 Curtime: 118.22131591616161 Event: NodeFailed res_0_node_2 ID00008_000
+	 Curtime: 238.6731615592809 Event: NodeUp res_0_node_2
+	====RESULT====
+	321.66133333333346
+Run heft 8
+	====RESULT====
+	280.0973333333333
+Run heft 9
+	 Curtime: 6.166006254291902 Event: NodeFailed res_0_node_1 ID00004_000
+	 Curtime: 126.83327701655818 Event: NodeUp res_0_node_1
+	====RESULT====
+	321.7520000000001
+max: 321.7520000000001
+min: 269.74133333333333
+avr: 291.54
+===============
+=== GAHEFT Run
+===============
+Run gaHeft 0
+	====RESULT====
+	301.6066666666666
+Run gaHeft 1
+	====RESULT====
+	333.0666666666667
+Run gaHeft 2
+	 Curtime: 118.44109621432665 Event: NodeFailed res_0_node_2 ID00006_000
+	 Curtime: 238.63249637399588 Event: NodeUp res_0_node_2
+	====RESULT====
+	282.56776288099326
+Run gaHeft 3
+	====RESULT====
+	326.34
+Run gaHeft 4
+	 Curtime: 258.35304723169986 Event: NodeFailed res_0_node_1 ID00021_000
+	 Curtime: 378.77546872928735 Event: NodeUp res_0_node_1
+	====RESULT====
+	363.03333333333336
+Run gaHeft 5
+	====RESULT====
+	280.01200000000006
+Run gaHeft 6
+	 Curtime: 275.09715607806504 Event: NodeFailed res_0_node_3 ID00021_000
+	 Curtime: 396.0596391864046 Event: NodeUp res_0_node_3
+	====RESULT====
+	381.23733333333337
+Run gaHeft 7
+	====RESULT====
+	308.5
+Run gaHeft 8
+	====RESULT====
+	254.704
+Run gaHeft 9
+	====RESULT====
+	175.16666666666669
+max: 381.23733333333337
+min: 175.16666666666669
+avr: 300.623442954766
+GaHeft vs Heft: -3.1156763925245246

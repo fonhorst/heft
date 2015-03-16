@@ -1,0 +1,62 @@
+ <cmap name="default">
+    
+	<conf name="min_font_size_label" value="10" />
+	<conf name="font_size_label" value="18" />
+	<conf name="font_size_axes" value="18" /> 
+
+	<task id="wf1">
+		<color type="fg" rgb="FFFFFF" />
+		<color type="bg" rgb="0000FF" /> 
+	</task>
+	
+	<task id="wf2">
+		<color type="fg" rgb="000000" />
+		<color type="bg" rgb="00FF00" /> 
+	</task>
+	
+	<task id="wf3">
+		<color type="fg" rgb="000000" />
+		<color type="bg" rgb="F0F000" /> 
+	</task>
+	
+	<task id="wf4">
+		<color type="fg" rgb="FFFFFF" />
+		<color type="bg" rgb="808080" /> 
+	</task>
+	
+	<task id="wf5">
+		<color type="fg" rgb="FFFFFF" />
+		<color type="bg" rgb="ff00ff" /> 
+	</task>
+	
+	<task id="wf6">
+		<color type="fg" rgb="000000" />
+		<color type="bg" rgb="00ffff" /> 
+	</task>
+	
+	<task id="wf7">
+		<color type="fg" rgb="FFFFFF" />
+		<color type="bg" rgb="ff5000" /> 
+	</task>
+	
+	<task id="wf8">
+		<color type="fg" rgb="FFFFFF" />
+		<color type="bg" rgb="400080" /> 
+	</task>
+	
+	<task id="wf9">
+		<color type="fg" rgb="000000" />
+		<color type="bg" rgb="AAFFFF" /> 
+	</task>
+	
+	<task id="wf10">
+		<color type="fg" rgb="FFFFFF" />
+		<color type="bg" rgb="8080FF" /> 
+	</task>
+
+	<task id="busy">
+		<color type="fg" rgb="000000" />
+		<color type="bg" rgb="f10000" /> 
+	</task>
+
+</cmap>
