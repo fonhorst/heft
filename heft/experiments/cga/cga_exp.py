@@ -11,9 +11,10 @@ from heft.core.environment.Utility import Utility
 from heft.core.environment.Utility import wf
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.experiments.cga.utilities.common import UniqueNameSaver, repeat, tourn, ArchivedSelector, extract_mapping_from_ga_file, extract_ordering_from_ga_file, hamming_distances, to_seq, unique_individuals, pcm, gdm, hamming_for_best_components, best_components_itself
+from heft.algs.heft.DSimpleHeft import run_heft
 
-
-_wf = wf("Montage_50")
+wf_name = "Montage_25"
+_wf = wf(wf_name)
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = ExperimentEstimator(None, ideal_flops=20, transfer_time=100)
 
@@ -29,14 +30,12 @@ ordering_selector = ArchivedSelector(3)(tourn)
 # mapping_selector = asel(roulette)
 # ordering_selector = ArchivedSelector(5)(roulette)
 
-
 # heft_mapping = extract_mapping_from_file("../../temp/heft_etalon_tr100.json")
 # heft_mapping = extract_mapping_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 # heft_ordering = extract_ordering_from_ga_file("../../temp/heft_etalon_full_tr100_m50.json")
 
-
-heft_mapping = extract_mapping_from_ga_file(os.path.join(__root_path__, "temp/heft_etalon_full_tr100_m100.json" ), rm)
-heft_ordering = extract_ordering_from_ga_file(os.path.join(__root_path__, "temp/heft_etalon_full_tr100_m100.json"))
+heft_mapping = extract_mapping_from_ga_file("../../resources/heft_json/heft_" + wf_name.lower() + ".json", rm)
+heft_ordering = extract_ordering_from_ga_file("../../resources/heft_json/heft_" + wf_name.lower() + ".json")
 
 ms_ideal_ind = heft_mapping
 os_ideal_ind = heft_ordering
@@ -142,8 +141,8 @@ def do_exp():
     tres = tend - tstart
     print("Time Result: " + str(tres.total_seconds()))
     return res
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     res = repeat(do_exp, 1)
     print("RESULTS: ")
     print(res)

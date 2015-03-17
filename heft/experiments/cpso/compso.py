@@ -107,7 +107,7 @@ class CompsoBaseExperiment(AbstractExperiment):
 if __name__ == "__main__":
     exp = CompsoBaseExperiment(wf_name="Montage_50",
                               W=0.5, C1=1.6, C2=1.2,
-                              GEN=100, N=10, MAX_FLOPS=30, SUM_FLOPS=80)
+                              GEN=10, N=10, MAX_FLOPS=30, SUM_FLOPS=80)
     exec_count = 1
     result, logbooks = unzip_result(repeat(exp, exec_count))
     sts1 = interval_statistics(result)

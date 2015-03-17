@@ -130,7 +130,7 @@ if __name__ == "__main__":
     wf = "CyberShake_100"
     path = "D:\eScience\Work\experiments\CGSA"
     pop_size = 20
-    iter_number = 100
+    iter_number = 10
     kbest = 10
     ginit = 10
     W, C = 0.65, 0.35

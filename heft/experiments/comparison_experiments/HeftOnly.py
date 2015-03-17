@@ -4,14 +4,9 @@ from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 
-#Mishanya
-from heft.algs.heft.simple_heft import StaticHeftPlanner
-
-
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
                                     ideal_flops=20, transfer_time=100)
-
 
 def do_exp(wf_name):
     _wf = wf(wf_name)

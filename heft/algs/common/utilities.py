@@ -7,60 +7,74 @@ def mapping_as_vector(mapping):
     mapp_string = [node_name for task_id, node_name in sorted(mapping.items(), key=lambda x: x[0])]
     return mapp_string
 
-
 def cannot_be_zero(number, replace_for_zero=0.000001):
     return replace_for_zero if round(abs(number), 6) < 0.000001 else number
 
-
 def gather_info(logbook, stats, g, pop, best, need_to_print=True):
+    """
+    for co-evolution scheme, it is required to record best, instead of min of population
+    """
     data = stats.compile(pop) if stats is not None else None
-    #data['best'] = best[1].values[0]
+    if best is not None:
+        data['best'] = best[1].values[0]
     if logbook is not None:
         logbook.record(gen=g, evals=len(pop), **data)
         if need_to_print:
             print(logbook.stream)
     return data
 
-def logbooks_in_data(logbooks, need_print=False):
+def logbooks_in_data(logbooks, with_best=False, need_print=False):
+    """
+    Reduce several logbooks from experiment to the one logbook with average data
+    """
     res = dict()
     for logbook in logbooks:
         for it in logbook:
             if (it['gen'], 'avg') in res:
                 res[(it['gen'], 'avg')] += it['avg']
                 res[(it['gen'], 'min')] += it['min']
-                #res[(it['gen'], 'best')] += it['best']
+                if with_best:
+                    res[(it['gen'], 'best')] += it['best']
             else:
                 res[(it['gen'], 'avg')] = it['avg']
                 res[(it['gen'], 'min')] = it['min']
-                #res[(it['gen'], 'best')] = it['best']
+                if with_best:
+                    res[(it['gen'], 'best')] = it['best']
     log_len = len(logbooks)
     for it in range(len(logbooks[0])):
         res[(it, 'avg')] /= log_len
         res[(it, 'min')] /= log_len
-        #res[(it, 'best')] /= log_len
+        if with_best:
+            res[(it, 'best')] /= log_len
         if need_print:
-            #print(str(res[(it, 'avg')]) + "\t" + str(res[(it, 'min')]) + "\t" + str(res[(it, 'best')]))
-            print(str(res[(it, 'avg')]) + "\t" + str(res[(it, 'min')]))
+            if with_best:
+                print(str(res[(it, 'avg')]) + "\t" + str(res[(it, 'min')]) + "\t" + str(res[(it, 'best')]))
+            else:
+                print(str(res[(it, 'avg')]) + "\t" + str(res[(it, 'min')]))
     return res
 
-def data_to_file(file_path, gen, data, comment=None):
+def data_to_file(file_path, gen, data, with_best=False, comment=None):
+    """
+    Write logbook data to the file
+    """
     file = open(file_path, 'w')
     if comment is not None:
         file.write("#" + comment + "\n")
-    #file.write("#gen\tavg\tmin\tbest\n")
-    file.write("#gen\tavg\tmin\n")
+    if with_best:
+        file.write("#gen\tavg\tmin\tbest\n")
+    else:
+        file.write("#gen\tavg\tmin\n")
     for i in range(gen):
-        #file.write(str(i) + "\t" + str(data[(i, 'avg')]) + "\t" + str(data[(i, 'min')]) + "\t" + str(data[(i, 'best')]) + "\n")
-        file.write(str(i) + "\t" + str(data[(i, 'avg')]) + "\t" + str(data[(i, 'min')]) + "\n")
+        if with_best:
+            file.write(str(i) + "\t" + str(data[(i, 'avg')]) + "\t" + str(data[(i, 'min')]) + "\t" + str(data[(i, 'best')]) + "\n")
+        else:
+            file.write(str(i) + "\t" + str(data[(i, 'avg')]) + "\t" + str(data[(i, 'min')]) + "\n")
     file.close()
 
 def unzip_result(tuple_list):
+    """
+    Just an unzip list of tuple to 2 lists
+    """
     fst_list = [fst for fst, snd in tuple_list]
     snd_list = [snd for fst, snd in tuple_list]
     return fst_list, snd_list
-
-
-
-
-
-
