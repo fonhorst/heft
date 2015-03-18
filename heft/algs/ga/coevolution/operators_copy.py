@@ -58,24 +58,12 @@ def one_to_one_build_solutions(pops, interact_count):
 
 
 def get_max_resource_number(ga_individual):
-    max_set = dict()
-    max_set[ga_individual[0][1]] = ga_individual[0][2]
+    current_max = ga_individual[0][1]
     for task in ga_individual:
-        if task[1] not in max_set.keys() or task[2] > max_set[task[1]]:
-            max_set[task[1]] = task[2]
-    return max_set
+        if task[1] > current_max:
+            current_max = task[1]
+    return current_max
 
-def individual_lengths_compare(res_individual, ga_max_res_number):
-    #TODO check this, may be need check true for each item
-    """
-    res_individual = [[b1n1,..], [b2n1,..]]
-    ga_max_res_number = dict(blade_idx: max_node_idx)
-    This function compares lengths for each blade
-    """
-    for k, v in ga_max_res_number.items():
-        if len(res_individual[k]) > v:
-            return True
-    return False
 
 def one_to_one_vm_build_solutions(pops, interact_count):
 
@@ -93,7 +81,7 @@ def one_to_one_vm_build_solutions(pops, interact_count):
     res_pop = []
     res_name = ''
     for s, p in pops.items():
-        if type(p[0][0][0]) is Node:
+        if type(p[0][0]) is Node:
             res_pop = p
             res_name = s.name
         else:
@@ -102,12 +90,12 @@ def one_to_one_vm_build_solutions(pops, interact_count):
 
     no_similar = False;
 
-    for i in range(0, len(ga_pop) - 1):
-        for j in range(0, len(ga_pop[i])):
-            if ga_pop[i][j][0] != ga_pop[i+1][j][0]:
-                no_similar = True
+    for i in range(0,len(ga_pop) - 1) :
+        for j in range (0, len(ga_pop[i])):
+            if ga_pop[i][j][0] != ga_pop[i+1][j][0] :
+                no_similar = True;
 
-    if not no_similar:
+    if not no_similar :
         print("====================================================================Similar found");
     not_valid = set()
     while already_found_pairs < interact_count:
@@ -125,14 +113,12 @@ def one_to_one_vm_build_solutions(pops, interact_count):
             res_elem_number = random.randint(0, len(res_pop))
             current_tmp_ga_number = (ga_elem_number + current_ga_index) % len(ga_pop)
             ga_individual = ga_pop[current_tmp_ga_number]
-            # changed ga_max_res_number to set of max indexes for each blade
             ga_max_res_number = get_max_resource_number(ga_individual)
 
             for i in range(len(res_pop)):
                 res_pop_current_index = (res_elem_number + i) % len(res_pop)
                 res_individual = res_pop[res_pop_current_index]
-                # compared individual lengths with max_set
-                if individual_lengths_compare(res_individual, ga_max_res_number) and \
+                if len(res_individual) > ga_max_res_number and \
                         not is_found_pair(current_tmp_ga_number, res_pop_current_index, found_pairs):
                     if current_tmp_ga_number not in found_pairs:
                         found_pairs[current_tmp_ga_number] = set()
@@ -249,14 +235,11 @@ def _check_precedence(workflow, seq):
 def ga2resources_build_schedule(workflow, estimator, resource_manager, solution):
     gs = solution[GA_SPECIE]
     rs = solution[RESOURCE_CONFIG_SPECIE]
-
-    # i don't know why it needed, but it is here
-    if not individual_lengths_compare(rs, get_max_resource_number(gs)):
+    if (get_max_resource_number(gs) > len(rs) - 1):
         print('found')
-
     check_consistency(workflow, gs)
-    # index of blade was added
-    ms = {map_item[0]: rs[map_item[1]][map_item[2]] for map_item in gs}
+
+    ms = {t: rs[n] for t, n in gs}
     schedule_mapping = {n: [] for n in set(ms.values())}
     task_to_node = {}
     for t in gs:
@@ -566,55 +549,51 @@ class MappingArchiveMutate:
 
 
 def vm_resource_default_initialize(ctx, size):
-    """
-    result representation changed
-        from [ListBasedIndividuals([n1, n2, ...])]
-        to [ListBasedIndividuals([[b1n1, b1n2, ...], [b2n1, b2n2, ...]])]
-    """
     env = ctx['env']
+    fc = env.rm.farm_capacity
+    mrc = env.rm.max_resource_capacity
+    max_sweep_size = env.wf.get_max_sweep() / 2
+    default_inited_pop = []
+    random_values = ""
     result = []
-
     for i in range(size):
+        res = Resource('r1')
+        current_cap = 0
+        generated_vms = []
+        n = -1
 
-        max_sweep_size = env.wf.get_max_sweep() / 2
-        default_inited_pop = []
+        while current_cap < fc - mrc and n < max_sweep_size:
+            n += 1
+            tmp_capacity = random.randint(1, mrc)
+            random_values += str(tmp_capacity) + " "
+            #tmp_node = Node('n' + str(n), res, SoftItem.ANY_SOFT)
+            tmp_node = Node(n, res, SoftItem.ANY_SOFT)
+            tmp_node.flops = tmp_capacity
+            generated_vms.append(tmp_node)
+            #res.nodes.add(tmp_node)
+            current_cap += tmp_capacity
 
-        for blade in env.rm.resources:
-            res = Resource(blade.name)
-            current_cap = 0
-            generated_vms = []
-            n = -1
-            fc = blade.farm_capacity
-            mrc = blade.max_resource_capacity
-            random_values = ""
+        if current_cap < fc and n < max_sweep_size:
+            n += 1
+            #tmp_node = Node('n' + str(n), res, SoftItem.ANY_SOFT)
+            tmp_node = Node(n, res, SoftItem.ANY_SOFT)
+            tmp_node.flops = fc - current_cap
+            generated_vms.append(tmp_node)
+            #res.nodes.add(tmp_node)
 
-            while current_cap < fc - mrc and n < max_sweep_size:
-                n += 1
-                tmp_capacity = random.randint(1, mrc)
-                random_values += str(tmp_capacity) + " "
-                tmp_node = Node(res.name + "_node_" + str(n), res, SoftItem.ANY_SOFT)
-                tmp_node.flops = tmp_capacity
-                generated_vms.append(tmp_node)
-                current_cap += tmp_capacity
-            if current_cap < fc and n < max_sweep_size:
-                n += 1
-                tmp_node = Node(res.name + "_node_" + str(n), res, SoftItem.ANY_SOFT)
-                tmp_node.flops = fc - current_cap
-                generated_vms.append(tmp_node)
+        default_inited_pop.append(generated_vms)
 
-            default_inited_pop.append(generated_vms)
+        for s in default_inited_pop:
+            all_flops = sum(tmp.flops for tmp in s)
+            if (all_flops > fc):
+                print ("=============wrong initialization " + all_flops)
+            for tmp in s:
+                if tmp.flops < 1: print('=============wrong initialization ' + tmp.flops)
+        result = [ListBasedIndividual(s) for s in default_inited_pop]
 
-            for s in default_inited_pop:
-                all_flops = sum(tmp.flops for tmp in s)
-                if all_flops > fc:
-                    print("=============wrong initialization " + all_flops)
-                for tmp in s:
-                    if tmp.flops < 1: print('=============wrong initialization ' + tmp.flops)
+    print('vm initialization complited : ' + random_values)
+    return result
 
-        print('vm initialization complited : ' + random_values)
-        result.append(default_inited_pop)
-    result_list = [ListBasedIndividual(s) for s in result]
-    return result_list
 
 def resource_conf_crossover(ctx, child1, child2):
     env = ctx['env']
@@ -792,12 +771,11 @@ def resource_config_mutate(ctx, mutant):
 ##==================================
 
 def ga_default_initialize(ctx, size):
-    """
-    chromosome representation changed from (task, node_idx) to (task, blade_idx, node_idx)
-    """
     env = ctx['env']
     tasks = ({task.id: task} for task in env.wf.get_all_unique_tasks())
 
+    #result = [ListBasedIndividual((t.id, 'n' + str(random.randint(0, res_amount))) for t in tasks)
+    #          for i in range(size)]
     result = []
     chromo = [task for task in env.wf.get_all_unique_tasks()]
     found = True
@@ -816,37 +794,25 @@ def ga_default_initialize(ctx, size):
                 break
     for i in range(size):
         res_amount = vm_random_count_generate(ctx)
-        temp = []
-        for t in chromo:
-            idx1 = random.randint(0, len(env.rm.resources) - 1)
-            # TODO check this moment later. Probably for idx2 is required to decrease res_amount in the method vm_random_count_generate(ctx)
-            idx2 = random.randint(0, res_amount[idx1])
-            temp.append((t.id, idx1, idx2))
-        ls = ListBasedIndividual(temp)
+        ls = ListBasedIndividual((t.id, random.randint(0, res_amount)) for t in chromo)
         result.append(ls)
     return result
 
 
 def vm_random_count_generate(ctx):
-    """
-    now this function returns indexes for each blade
-    """
     env = ctx['env']
-    result = []
-    for res in env.rm.resources:
-        fc = res.farm_capacity
-        mrc = res.max_resource_capacity
-        max_sweep_size = env.wf.get_max_sweep() / 2
-        currentCap = 0
-        n = -1
-        while currentCap < fc - mrc and n < max_sweep_size:
-            n += 1
-            tmp_capacity = random.randint(0, mrc)
-            currentCap += tmp_capacity
-        if currentCap < fc and n < max_sweep_size:
-            n += 1
-        result.append(random.randint(0, n))
-    return result
+    fc = env.rm.farm_capacity
+    mrc = env.rm.max_resource_capacity
+    max_sweep_size = env.wf.get_max_sweep() / 2
+    currentCap = 0
+    n = -1
+    while currentCap < fc - mrc and n < max_sweep_size:
+        n += 1
+        tmp_capacity = random.randint(0, mrc)
+        currentCap += tmp_capacity
+    if currentCap < fc and n < max_sweep_size:
+        n += 1
+    return random.randint(0, n)
 
 
 def ga_mutate(ctx, mutant):
@@ -1138,7 +1104,6 @@ def default_config(wf, rm, estimator):
             "assign_credits": default_assign_credits
         }
     }
-
 
 
 
