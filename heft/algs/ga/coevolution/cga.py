@@ -1,7 +1,6 @@
 from collections import namedtuple
 from copy import deepcopy
 import random
-
 from deap import creator, tools
 from deap.tools import HallOfFame
 import numpy
@@ -138,7 +137,6 @@ class Specie:
         self.stat = kwargs.get("stat", lambda pop: {})
         pass
 
-
 class CoevolutionGA:
 
     def __init__(self, **kwargs):
@@ -215,7 +213,6 @@ class CoevolutionGA:
             bf = str(best_solution.fitness)
 
             print("Fitness have been evaluated. Best is " + str(bf) + ' amoung ' + str(len(solutions)) + ' solutions')
-
 
     def gen(self):
         kwargs = self.kwargs
@@ -304,7 +301,6 @@ class CoevolutionGA:
                 offspring = elite + offspring
                 offspring = offspring[0:len(pop)]
 
-
             # Apply crossover and mutation on the offspring
             for child1, child2 in zip(offspring[::2], offspring[1::2]):
                 if random.random() < s.cxb:
@@ -339,7 +335,6 @@ class CoevolutionGA:
                     del ind.fitness
                 del ind.id
         pass
-
 
 
     def result(self):
