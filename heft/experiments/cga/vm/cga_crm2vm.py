@@ -12,6 +12,9 @@ from heft.core.environment.Utility import wf
 from heft.core.environment.BladeResourceGenrator import ResourceGenerator as rg
 from heft.experiments.cga.utilities.common import BasicFinalResultSaver, repeat, tourn, ArchivedSelector, \
     extract_mapping_from_ga_file, extract_ordering_from_ga_file
+from heft.algs.common.utilities import unzip_result
+import numpy
+import os
 
 
 class Config:
@@ -76,7 +79,7 @@ def print_sched(schedule):
 
 def do_experiment(saver, config, number):
     solution, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**config)
-    print("====================Experiment finished========================")
+    #print("====================Experiment finished========================")
 
     max_value = max(hall.keys)
 
@@ -86,8 +89,10 @@ def do_experiment(saver, config, number):
         "final_resources": hall.items[len(hall.items) - 1][RESOURCE_CONFIG_SPECIE]
     }
 
-    saver(data, number, config)
-    return max_value
+    # TODO now doen't need
+    #saver(data, number, config)
+
+    return max_value, logbook
 
 def do_exp(params):
 
@@ -110,17 +115,57 @@ def do_exp(params):
     print("Time Result: " + str(tres.total_seconds()))
     return res
 
+def logbook_to_bests(logbook):
+    result = []
+    for gen in logbook:
+        result.append(-gen['popsstat'][0]['GASpecie']['best'])
+    return result
+
+def logbooks_reduce(logbooks):
+    result = {}
+    for book in logbooks:
+        for i in range(len(book)):
+            if i not in result.keys():
+                result[i] = book[i]
+            else:
+                result[i] += book[i]
+    for i in range(len(result)):
+        result[i] = result[i] / len(logbooks)
+    return result
+
+def logs_to_file(logs, dir, wf_name, comment=""):
+    path = dir + "cga_" + wf_name.lower() + ".txt"
+    file = open(path, 'w')
+    file.write("#" + comment + "\n")
+    for i in range(len(logs)):
+        file.write(str(i) + "\t" + str(logs[i]) + "\n")
+    file.close()
+
 if __name__ == "__main__":
 
     wf_names = [
-                "Montage_25"
+                "Montage_25", "Montage_50"
                 ]
+    dir = "./cga_results/"
+    repeat_count = 1
+
     for wf_name in wf_names:
+        print("++++++========++++++++")
+        print(wf_name.upper())
+        print("")
         number = uuid.uuid4()
-        repeat_count = 1
-        res = repeat(partial(do_exp, [number, wf_name]), repeat_count)
+        res, logbooks = unzip_result(repeat(partial(do_exp, [number, wf_name]), repeat_count))
+
+        # Output to file
+        logs = []
+        for logbook in logbooks:
+            logs.append(logbook_to_bests(logbook))
+        res_log = logbooks_reduce(logs)
+        logs_to_file(res_log, dir, wf_name)
+
         print("RESULTS: ")
-        print(res)
+        print(-numpy.mean(res))
+        print("")
 
 
 

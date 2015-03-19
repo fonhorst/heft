@@ -25,7 +25,8 @@ def gather_info(logbook, stats, g, pop, best, need_to_print=True):
 
 def logbooks_in_data(logbooks, with_best=False, need_print=False):
     """
-    Reduce several logbooks from experiment to the one logbook with average data
+    Reduce several logbooks from experiment to the one logbook with average data.
+    Used in cpso cgsa
     """
     res = dict()
     for logbook in logbooks:
@@ -55,7 +56,8 @@ def logbooks_in_data(logbooks, with_best=False, need_print=False):
 
 def data_to_file(file_path, gen, data, with_best=False, comment=None):
     """
-    Write logbook data to the file
+    Write logbook data to the file.
+    Used in cpso cgsa.
     """
     file = open(file_path, 'w')
     if comment is not None:

@@ -58,6 +58,7 @@ def one_to_one_build_solutions(pops, interact_count):
 
 
 def get_max_resource_number(ga_individual):
+    # this function returns dict of max used node for each blade
     max_set = dict()
     max_set[ga_individual[0][1]] = ga_individual[0][2]
     for task in ga_individual:
@@ -66,16 +67,15 @@ def get_max_resource_number(ga_individual):
     return max_set
 
 def individual_lengths_compare(res_individual, ga_max_res_number):
-    #TODO check this, may be need check true for each item
     """
     res_individual = [[b1n1,..], [b2n1,..]]
     ga_max_res_number = dict(blade_idx: max_node_idx)
     This function compares lengths for each blade
     """
     for k, v in ga_max_res_number.items():
-        if len(res_individual[k]) > v:
-            return True
-    return False
+        if not len(res_individual[k]) > v:
+            return False
+    return True
 
 def one_to_one_vm_build_solutions(pops, interact_count):
 
@@ -100,15 +100,16 @@ def one_to_one_vm_build_solutions(pops, interact_count):
             ga_pop = p
             ga_name = s.name
 
-    no_similar = False;
+    no_similar = False
 
     for i in range(0, len(ga_pop) - 1):
         for j in range(0, len(ga_pop[i])):
             if ga_pop[i][j][0] != ga_pop[i+1][j][0]:
                 no_similar = True
 
-    if not no_similar:
-        print("====================================================================Similar found");
+    #if not no_similar:
+    #    print("====================================================================Similar found");
+
     not_valid = set()
     while already_found_pairs < interact_count:
         # ga_pop = pops[GA_SPECIE]
@@ -145,7 +146,7 @@ def one_to_one_vm_build_solutions(pops, interact_count):
             already_found_pairs += 1
         else:
             not_valid.add(ga_elem_number)
-            print('set size is: ' + str(len(not_valid)) + ' added ' + str(ga_elem_number))
+            #print('set size is: ' + str(len(not_valid)) + ' added ' + str(ga_elem_number))
             # assert not pair_not_found, "Pair of scheduling and resource organization"
     # elts = [[(s, p) for p in pop] for s, pop in pops.items()]
 
@@ -251,8 +252,8 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution)
     rs = solution[RESOURCE_CONFIG_SPECIE]
 
     # i don't know why it needed, but it is here
-    if not individual_lengths_compare(rs, get_max_resource_number(gs)):
-        print('found')
+    #if not individual_lengths_compare(rs, get_max_resource_number(gs)):
+    #    print('found')
 
     check_consistency(workflow, gs)
     # index of blade was added
@@ -604,32 +605,20 @@ def vm_resource_default_initialize(ctx, size):
 
             default_inited_pop.append(generated_vms)
 
-            for s in default_inited_pop:
-                all_flops = sum(tmp.flops for tmp in s)
-                if all_flops > fc:
-                    print("=============wrong initialization " + all_flops)
-                for tmp in s:
-                    if tmp.flops < 1: print('=============wrong initialization ' + tmp.flops)
+            #for s in default_inited_pop:
+                #all_flops = sum(tmp.flops for tmp in s)
+                #if all_flops > fc:
+                #    print("=============wrong initialization " + all_flops)
+                #for tmp in s:
+                #    if tmp.flops < 1:
+                #        print('=============wrong initialization ' + tmp.flops)
 
-        print('vm initialization complited : ' + random_values)
+        #print('vm initialization complited : ' + random_values)
         result.append(default_inited_pop)
     result_list = [ListBasedIndividual(s) for s in result]
     return result_list
 
 def resource_conf_crossover(ctx, child1, child2):
-    env = ctx['env']
-    fc = env.rm.farm_capacity
-
-    filled_power = sum(s.flops for s in child2)
-    if filled_power > fc:
-        print('================= wrong value of flops before crossover child2 ' + str(filled_power))
-        return
-
-    filled_power = sum(s.flops for s in child1)
-    if filled_power > fc:
-        print('================= wrong value of flops before crossover child1 ' + str(filled_power))
-        return
-
 
     def get_child_from_pair(p1, p2, k):
         filled_power = sum(s.flops for s in p1[0:k])
@@ -657,41 +646,54 @@ def resource_conf_crossover(ctx, child1, child2):
             print('================sum after crossover ' + str(ch_sum) + ' ' + str(fc))
         return nch
 
-    if len(child1) > 2:
-        k = random.randint(0, len(child1) - 2)
-        first = get_child_from_pair(child1, child2, k)
-        if len(child2) > 2:
-            k = random.randint(0, len(child2) - 2)
-            second = get_child_from_pair(child2, child1, k)
-        else:
-            k = random.randint(0, len(child1) - 2)
-            second = get_child_from_pair(child1, child2, k)
-        child1.clear()
-        child1.extend(first)
-        child2.clear()
-        filled_power = sum(s.flops for s in child2)
-        child2.extend(second)
+    env = ctx['env']
+    for bl_idx in range(len(child1)):
+        blade1 = child1[bl_idx]
+        blade2 = child2[bl_idx]
+        fc = env.rm.resources[bl_idx].farm_capacity
 
-    filled_power = sum(s.flops for s in child2)
-    if filled_power > fc:
-        print('================= wrong value of flops after crossover child2 ' + str(filled_power))
+        filled_power = sum(s.flops for s in blade2)
+        if filled_power > fc:
+            print('================= wrong value of flops before crossover child2 ' + str(filled_power))
+            return
 
-    filled_power = sum(s.flops for s in child1)
-    if filled_power > fc:
-        print('================= wrong value of flops after crossover child1 ' + str(filled_power))
+        filled_power = sum(s.flops for s in blade1)
+        if filled_power > fc:
+            print('================= wrong value of flops before crossover child1 ' + str(filled_power))
+            return
+
+        if len(blade1) > 2:
+            k = random.randint(0, len(blade1) - 2)
+            first = get_child_from_pair(blade1, blade2, k)
+            for node, idx in zip(first, range(len(first))):
+                node.name = str(node.resource.name) + '_node_' + str(idx)
+            if len(blade2) > 2:
+                k = random.randint(0, len(blade2) - 2)
+                second = get_child_from_pair(blade2, blade1, k)
+            else:
+                k = random.randint(0, len(blade1) - 2)
+                second = get_child_from_pair(blade1, blade2, k)
+            for node, idx in zip(second, range(len(second))):
+                node.name = str(node.resource.name) + '_node_' + str(idx)
+            blade1.clear()
+            blade1.extend(first)
+            blade2.clear()
+            filled_power = sum(s.flops for s in blade2)
+            blade2.extend(second)
+
+        filled_power = sum(s.flops for s in blade2)
+        if filled_power > fc:
+            print('================= wrong value of flops after crossover child2 ' + str(filled_power))
+
+        filled_power = sum(s.flops for s in blade1)
+        if filled_power > fc:
+            print('================= wrong value of flops after crossover child1 ' + str(filled_power))
 
     pass
 
 
 def resource_config_mutate(ctx, mutant):
-    env = ctx['env']
-    fc = env.rm.farm_capacity
-    rc = env.rm.max_resource_capacity
 
-    filled_power = sum(s.flops for s in mutant)
-    if filled_power > fc :
-        print("================= wrong chromosome at the start of mutate phase " + str(filled_power))
-        #return
     def try_to_decrease_resources(mutant, k1):
 
         str_po_print = 'd ' + str(len(mutant)) + ' '
@@ -755,37 +757,49 @@ def resource_config_mutate(ctx, mutant):
             if mutant[k2].flops - 1 < 0:
                 print('================negative flops amount after : ' + str(mutant[k2].flops - 1))
 
-    k1, k2 = 0, 0
+    env = ctx['env']
 
-    if filled_power > fc:
-            print('================= wrong value of flops before all' + str(filled_power))
+    for blade, idx in zip(mutant, range(len(mutant))):
+        fc = env.rm.resources[idx].farm_capacity
+        rc = env.rm.resources[idx].max_resource_capacity
 
-    while k1 == k2 and len(mutant) > 1:
-        k1 = random.randint(0, len(mutant) - 1)
-        k2 = random.randint(0, len(mutant) - 1)
-
-    option = random.random()
-
-    if option < 1 / 3 and k1 != k2:
-        try_to_change_resource_options(mutant, k1, k2)
-        filled_power = sum(s.flops for s in mutant)
+        filled_power = sum(s.flops for s in blade)
         if filled_power > fc:
-            print('================= wrong value of flops after resource changes' + str(filled_power))
-    elif option < 2 / 3 and k1 != k2:
-        try_to_decrease_resources(mutant, k1)
-        filled_power = sum(s.flops for s in mutant)
-        if filled_power > fc:
-            print('================= wrong value of flops after resource decrease' + str(filled_power))
-    elif (k1 != k2) and option > 2 / 3 and filled_power < fc:
-        try_to_increase_resources(mutant, k1, k2)
-        filled_power = sum(s.flops for s in mutant)
-        if filled_power > fc:
-            print('================= wrong value of flops after resource increase' + str(filled_power))
+            print("================= wrong chromosome at the start of mutate phase " + str(filled_power))
+            #return
 
-    filled_power = sum(s.flops for s in mutant)
-    if filled_power > fc:
-            print('================= wrong value of flops after all' + str(filled_power))
+        k1, k2 = 0, 0
 
+        if filled_power > fc:
+                print('================= wrong value of flops before all' + str(filled_power))
+
+        while k1 == k2 and len(blade) > 1:
+            k1 = random.randint(0, len(blade) - 1)
+            k2 = random.randint(0, len(blade) - 1)
+
+        option = random.random()
+
+        if option < 1 / 3 and k1 != k2:
+            try_to_change_resource_options(blade, k1, k2)
+            filled_power = sum(s.flops for s in blade)
+            if filled_power > fc:
+                print('================= wrong value of flops after resource changes' + str(filled_power))
+        elif option < 2 / 3 and k1 != k2:
+            try_to_decrease_resources(blade, k1)
+            filled_power = sum(s.flops for s in blade)
+            if filled_power > fc:
+                print('================= wrong value of flops after resource decrease' + str(filled_power))
+        elif (k1 != k2) and option > 2 / 3 and filled_power < fc:
+            try_to_increase_resources(blade, k1, k2)
+            filled_power = sum(s.flops for s in blade)
+            if filled_power > fc:
+                print('================= wrong value of flops after resource increase' + str(filled_power))
+
+        filled_power = sum(s.flops for s in blade)
+        if filled_power > fc:
+                print('================= wrong value of flops after all' + str(filled_power))
+        for node, j in zip(blade, range(len(blade))):
+            node.name = node.resource.name + "_node_" + str(j)
 
 ##===================================
 ## GA specie
@@ -883,15 +897,20 @@ def ga_mutate(ctx, mutant):
 
             cell = random.randint(0, len(mutant) - 1)
             res = random.randint(0, max(c[1] for c in mutant))
+            node = random.randint(0, max(c[2] for c in mutant if c[1] == res))
 
-            mutant[cell] = (mutant[cell][0], res)
+            mutant[cell] = (mutant[cell][0], res, node)
     if random.random() < k / (2 * len(mutant)):
+        # TODO change this function to new architecture
         num = get_max_resource_number(mutant)
         for i in range(len(mutant)):
             if random.random() < k / len(mutant):
                 k1 = random.randint(0, len(mutant) - 1)
-                res_number = random.randint(0, num + 1)
-                mutant[k1] = (mutant[k1][0], res_number)
+                res_number = random.randint(0, len(num) - 1)
+                node_number = random.randint(0, num[res_number])
+                mutant[k1] = (mutant[k1][0], res_number, node_number)
+    # TODO it is required???
+    """
     elif random.random() < k / (2 * len(mutant)):
         num = get_max_resource_number(mutant)
         if (num > 0):
@@ -899,7 +918,7 @@ def ga_mutate(ctx, mutant):
                 if mutant[i][1] == num:
                     res_number = random.randint(0, num - 1)
                     mutant[i] = (mutant[i][0], res_number)
-
+    """
     check_consistency(ctx, mutant)
     return mutant
 
@@ -923,9 +942,11 @@ def ga_crossover(ctx, child1, child2):
         s2 = ch2[index1:index2]
         s3 = ch2[index2:]
 
-        diff_s1_f2 = [(se1, se2) for (se1, se2) in s1 if se1 not in [fe1 for (fe1, fe2) in f2]]
-        diff_s3_f2 = [(se1, se2) for (se1, se2) in s3 if se1 not in [fe1 for (fe1, fe2) in f2]]
-        diff_s2_f2 = [(s2[i], i) for i in range(len(s2)) if s2[i][0] not in [fe1 for (fe1, fe2) in f2]]
+        diff_s1_f2 = [(se1, se2, se3) for (se1, se2, se3) in s1 if se1 not in [fe1 for (fe1, fe2, fe3) in f2]]
+        diff_s3_f2 = [(se1, se2, se3) for (se1, se2, se3) in s3 if se1 not in [fe1 for (fe1, fe2, fe3) in f2]]
+        diff_s2_f2 = [(s2[i], i) for i in range(len(s2)) if s2[i][0] not in [fe1 for (fe1, fe2, fe3) in f2]]
+        if len(diff_s2_f2) > 0:
+            pass
 
         merged_f2_s2 = ListBasedIndividual(s for s in f2)
 

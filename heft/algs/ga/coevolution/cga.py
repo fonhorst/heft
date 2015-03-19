@@ -188,7 +188,7 @@ class CoevolutionGA:
            assert sm == self.INTERACT_INDIVIDUALS_COUNT, \
                "For specie {0} count doesn't equal to {1}. Actual value {2}".format(s, self.INTERACT_INDIVIDUALS_COUNT, sm)
 
-        print("Initialization finished")
+        #print("Initialization finished")
 
         self.hall = HallOfFame(self.HALL_OF_FAME_SIZE)
 
@@ -199,7 +199,7 @@ class CoevolutionGA:
     def __call__(self):
         for gen in range(self.GENERATIONS):
             self.gen()
-            print("Offsprings have been generated")
+            #print("Offsprings have been generated")
             pass
         return self.result()
 
@@ -212,15 +212,15 @@ class CoevolutionGA:
                     best_solution = sol
             bf = str(best_solution.fitness)
 
-            print("Fitness have been evaluated. Best is " + str(bf) + ' amoung ' + str(len(solutions)) + ' solutions')
+            #print("Fitness have been evaluated. Best is " + str(bf) + ' amoung ' + str(len(solutions)) + ' solutions')
 
     def gen(self):
         kwargs = self.kwargs
         kwargs['gen'] = kwargs['gen'] + 1
-        print("Gen: " + str(kwargs['gen']))
+        #print("Gen: " + str(kwargs['gen']))
         solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
 
-        print("Solutions have been built")
+        #print("Solutions have been built")
 
         ## estimate fitness
         for sol in solutions:
@@ -248,7 +248,7 @@ class CoevolutionGA:
         assert all([sum(p.fitness for p in pop) != 0 for s, pop in self.pops.items()]), \
                 "Error. Some population has individuals only with zero fitness"
 
-        print("Credit have been estimated")
+        #print("Credit have been estimated")
 
         #print("Dict 1: " + str(len(list(self.stat.compile(solutions).items()))) + ' Dict2: ' + str(len(list(self.solstat(solutions).items()))))
         solsstat_dict = {}
@@ -273,7 +273,7 @@ class CoevolutionGA:
         for an in self.analyzers:
             an(kwargs, solutions, self.pops)
 
-        print("hall: " + str(list(map(lambda x: x.fitness, self.hall))))
+        #print("hall: " + str(list(map(lambda x: x.fitness, self.hall))))
 
         ## select best solution as a result
         ## TODO: remake it in a more generic way
@@ -427,27 +427,50 @@ class VMCoevolutionGA():
     def __call__(self):
         for gen in range(self.GENERATIONS):
             self.gen()
-            print("Offsprings have been generated")
+            #print("Offsprings have been generated")
             pass
         return self.result()
 
     def get_max_resource_number(self, ga_individual):
+        # returns maximal used resources index
         current_max = ga_individual[0][1]
         for task in ga_individual:
             if task[1] > current_max:
                 current_max = task[1]
         return current_max
 
+    def get_max_blade_number(self, ga_individual, res_idx):
+        # return maximal used blade index in specified resource
+        ga_ind_sub = [task for task in ga_individual if task[1] == res_idx]
+        if len(ga_ind_sub) == 0:
+            return -1
+        current_max = ga_ind_sub[0][2]
+        for task in ga_ind_sub:
+            if task[2] > current_max:
+                current_max = task[2]
+        return current_max
+
     def statistic_processing(self, solutions):
 
-        stat_amount = [0] * 40
-        for p in solutions: stat_amount[self.get_max_resource_number(p['GASpecie'])] += 1
-        str_res = ''
-        for s in stat_amount:
-            str_res = str_res + ' ' + str(s)
-        self.vm_series.append(str_res)
 
-        print('distribution by resource amount: ' + str_res)
+        # TODO convert to list with distributions for each blade
+        max_res_idx = self.get_max_resource_number(solutions[0]['GASpecie'])
+        vm_stat_res = []
+        for i in range(max_res_idx + 1):
+            stat_amount = [0] * 40
+            for p in solutions:
+                cur_idx = self.get_max_blade_number(p['GASpecie'], i)
+                if cur_idx == -1:
+                    # TODO check this branch
+                    continue
+                stat_amount[cur_idx] += 1
+            str_res = ''
+            for s in stat_amount:
+                str_res = str_res + ' ' + str(s)
+            self.vm_series.append(str_res)
+            vm_stat_res.append(str_res)
+
+        #print('distribution by resource amount: ' + str(vm_stat_res))
 
         if len(solutions) > 0:
             best_solution = solutions[0]
@@ -461,13 +484,22 @@ class VMCoevolutionGA():
             res_num = ''
             res_fl = ''
             res_ids = ''
-            for ch in ga : res_num += str(ch[1])
-            for nodes in vm : res_fl += ' ' + str(nodes.flops)
-            for nodes in vm: res_ids += ' ' + str(nodes.id)
-            print(' fl '+res_fl)
-            print(' fl '+res_ids)
-            print(' num '+res_num)
-            print("Fitness have been evaluated. Best is " + str(bf) + ' amoung ' + str(len(solutions)) + ' solutions')
+            for ch in ga:
+                res_num += '(' + str(ch[1]) + ':' + str(ch[2]) + ')'
+            for nodes in vm:
+                res_fl += '('
+                for node in nodes:
+                    res_fl += ' ' + str(node.flops)
+                res_fl += ')'
+            for nodes in vm:
+                res_ids += '('
+                for node in nodes:
+                    res_ids += ' ' + str(node.name)
+                res_ids += ')'
+            #print(' fl '+res_fl)
+            #print(' fl '+res_ids)
+            #print(' num '+res_num)
+            #print("Fitness have been evaluated. Best is " + str(bf) + ' amoung ' + str(len(solutions)) + ' solutions')
 
     def result(self):
         return self.best, self.pops, self.logbook, self.initial_pops, self.hall, self.vm_series
@@ -496,10 +528,10 @@ class VMCoevolutionGA():
     def gen(self):
         kwargs = self.kwargs
         kwargs['gen'] = kwargs['gen'] + 1
-        print("Gen: " + str(kwargs['gen']))
+        #print("Gen: " + str(kwargs['gen']))
         solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
 
-        print("Solutions have been built")
+        #print("Solutions have been built")
 
         ## estimate fitness
         for sol in solutions:
@@ -527,7 +559,7 @@ class VMCoevolutionGA():
         assert all([sum(p.fitness for p in pop) != 0 for s, pop in self.pops.items()]), \
                 "Error. Some population has individuals only with zero fitness"
 
-        print("Credit have been estimated")
+        #print("Credit have been estimated")
 
         #print("Dict 1: " + str(len(list(self.stat.compile(solutions).items()))) + ' Dict2: ' + str(len(list(self.solstat(solutions).items()))))
         solsstat_dict = {}
@@ -552,7 +584,7 @@ class VMCoevolutionGA():
         for an in self.analyzers:
             an(kwargs, solutions, self.pops)
 
-        print("hall: " + str(list(map(lambda x: x.fitness, self.hall))))
+        #print("hall: " + str(list(map(lambda x: x.fitness, self.hall))))
 
         ## select best solution as a result
         ## TODO: remake it in a more generic way
@@ -586,7 +618,14 @@ class VMCoevolutionGA():
                 if random.random() < s.cxb:
                     c1 = child1.fitness
                     c2 = child2.fitness
+                    #print("cross prev")
+                    #print("    child1 = " + str(child1))
+                    #print("    child2 = " + str(child2))
                     s.mate(kwargs, child1, child2)
+                    #print("cross after")
+                    #print("    child1 = " + str(child1))
+                    #print("    child2 = " + str(child2))
+                    #print("-----")
                     #print("     mutation done, child fintess : " + str((c1 + c2) / 2.0))
                     ## TODO: make credit inheritance here
                     ## TODO: toolbox.inherit_credit(pop, child1, child2)
@@ -599,8 +638,12 @@ class VMCoevolutionGA():
 
             for mutant in offspring:
                 if random.random() < s.mb:
-                    #print("     mutation in offspring started")
+                    #print("mut prev")
+                    #print("    mutant = " + str(mutant))
                     s.mutate(kwargs, mutant)
+                    #print("mut after")
+                    #print("    mutant = " + str(mutant))
+                    #print("----")
                 pass
             self.pops[s] = offspring
             pass
