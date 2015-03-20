@@ -36,7 +36,7 @@ class Config:
         self.config = {
             "hall_of_fame_size": 5,
             "interact_individuals_count": 200,
-            "generations": 10,
+            "generations": 300,
             "env": Env(self._wf, self.rm, self.estimator),
             "species": [Specie(name=GA_SPECIE, pop_size=100,
                                cxb=0.9, mb=0.9,
@@ -81,18 +81,24 @@ def do_experiment(saver, config, number):
     solution, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**config)
     #print("====================Experiment finished========================")
 
+    if len(hall.keys) == 0:
+       print("We have a problem, officer")
+    print(hall.keys)
     max_value = max(hall.keys)
 
+    # TODO now doesn't need
+    """
     data = {
         "final_makespan": max_value,
         "vm_series": vm_series,
         "final_resources": hall.items[len(hall.items) - 1][RESOURCE_CONFIG_SPECIE]
     }
+    saver(data, number, config)
+    """
 
-    # TODO now doen't need
-    #saver(data, number, config)
-
-    return max_value, logbook
+    # Convert logbook to list of best for each generation
+    res_logbook = logbook_to_bests(logbook)
+    return max_value, res_logbook
 
 def do_exp(params):
 
@@ -144,26 +150,29 @@ def logs_to_file(logs, dir, wf_name, comment=""):
 if __name__ == "__main__":
 
     wf_names = [
-                "Montage_25", "Montage_50"
+                "Montage_25", "Montage_50", "Montage_75", "Montage_100",
+                "CyberShake_30", "CyberShake_50", "CyberShake_75", "CyberShake_100"
                 ]
+    wf_names = ["Montage_25"]
     dir = "./cga_results/"
-    repeat_count = 1
+    repeat_count = 100
 
     for wf_name in wf_names:
         print("++++++========++++++++")
         print(wf_name.upper())
         print("")
         number = uuid.uuid4()
-        res, logbooks = unzip_result(repeat(partial(do_exp, [number, wf_name]), repeat_count))
+
+        result = repeat(partial(do_exp, [number, wf_name]), repeat_count)
+        res, logbooks = unzip_result(result)
 
         # Output to file
-        logs = []
-        for logbook in logbooks:
-            logs.append(logbook_to_bests(logbook))
-        res_log = logbooks_reduce(logs)
+        res_log = logbooks_reduce(logbooks)
         logs_to_file(res_log, dir, wf_name)
 
         print("RESULTS: ")
+        print(res)
+        print('mean = )')
         print(-numpy.mean(res))
         print("")
 
