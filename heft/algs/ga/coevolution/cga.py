@@ -220,7 +220,7 @@ class CoevolutionGA:
         #print("Gen: " + str(kwargs['gen']))
         solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
 
-        #print("Solutions have been built")
+        print("Solutions have been built")
 
         ## estimate fitness
         for sol in solutions:
@@ -248,7 +248,7 @@ class CoevolutionGA:
         assert all([sum(p.fitness for p in pop) != 0 for s, pop in self.pops.items()]), \
                 "Error. Some population has individuals only with zero fitness"
 
-        #print("Credit have been estimated")
+        print("Credit have been estimated")
 
         #print("Dict 1: " + str(len(list(self.stat.compile(solutions).items()))) + ' Dict2: ' + str(len(list(self.solstat(solutions).items()))))
         solsstat_dict = {}
@@ -284,7 +284,7 @@ class CoevolutionGA:
         # best = hall[0] if hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
         self.best = self.hall[0] if self.hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
 
-        #print("best selected.")
+        print("best selected.")
         ## produce offsprings
         items = [(s, pop) for s, pop in self.pops.items() if not s.fixed]
         for s, pop in items:
@@ -292,7 +292,7 @@ class CoevolutionGA:
             if s.fixed:
                 continue
             offspring = s.select(kwargs, pop)
-            #print("     offspring selected.")
+            print("     offspring selected.")
             offspring = list(map(deepcopy, offspring))
 
             ## apply mixin elite ones from the hall
@@ -307,7 +307,7 @@ class CoevolutionGA:
                     c1 = child1.fitness
                     c2 = child2.fitness
                     s.mate(kwargs, child1, child2)
-                    #print("     mutation done, child fintess : " + str((c1 + c2) / 2.0))
+                    print("     mutation done, child fintess : " + str((c1 + c2) / 2.0))
                     ## TODO: make credit inheritance here
                     ## TODO: toolbox.inherit_credit(pop, child1, child2)
                     ## TODO: perhaps, this operation should be done after all crossovers in the pop
@@ -319,7 +319,7 @@ class CoevolutionGA:
 
             for mutant in offspring:
                 if random.random() < s.mb:
-                    #print("     mutation in offspring started")
+                    print("     mutation in offspring started")
                     s.mutate(kwargs, mutant)
                 pass
             self.pops[s] = offspring
@@ -426,7 +426,9 @@ class VMCoevolutionGA():
 
     def __call__(self):
         for gen in range(self.GENERATIONS):
+            print("gen strted = " + str(gen))
             self.gen()
+            print("gen finished = " + str(gen))
             #print("Offsprings have been generated")
             pass
         return self.result()
@@ -531,7 +533,7 @@ class VMCoevolutionGA():
         #print("Gen: " + str(kwargs['gen']))
         solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
 
-        #print("Solutions have been built")
+        print("Solutions have been built")
 
         ## estimate fitness
         for sol in solutions:
@@ -621,12 +623,13 @@ class VMCoevolutionGA():
                     #print("cross prev")
                     #print("    child1 = " + str(child1))
                     #print("    child2 = " + str(child2))
+                    #print("     cross started")
                     s.mate(kwargs, child1, child2)
                     #print("cross after")
                     #print("    child1 = " + str(child1))
                     #print("    child2 = " + str(child2))
                     #print("-----")
-                    #print("     mutation done, child fintess : " + str((c1 + c2) / 2.0))
+                    #print("     cross done, child fintess : " + str((c1 + c2) / 2.0))
                     ## TODO: make credit inheritance here
                     ## TODO: toolbox.inherit_credit(pop, child1, child2)
                     ## TODO: perhaps, this operation should be done after all crossovers in the pop
@@ -638,13 +641,16 @@ class VMCoevolutionGA():
 
             for mutant in offspring:
                 if random.random() < s.mb:
+                    #print("mutation started")
                     #print("mut prev")
                     #print("    mutant = " + str(mutant))
                     s.mutate(kwargs, mutant)
                     #print("mut after")
                     #print("    mutant = " + str(mutant))
                     #print("----")
+                    #print("mutation done")
                 pass
+
             self.pops[s] = offspring
             pass
 

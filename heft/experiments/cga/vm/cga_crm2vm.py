@@ -164,6 +164,7 @@ if __name__ == "__main__":
         number = uuid.uuid4()
 
         result = repeat(partial(do_exp, [number, wf_name]), repeat_count)
+        print("FINISH")
         res, logbooks = unzip_result(result)
 
         # Output to file
