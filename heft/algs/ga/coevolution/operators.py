@@ -23,11 +23,7 @@ RESOURCE_CONFIG_SPECIE = "ResourceConfigSpecie"
 # # TODO: move it to experiments/five_runs/
 # # TODO: obsolete, remove it later.
 def default_choose(ctx, pop):
-    counter = 0
     while True:
-        if counter > 100:
-            print("default_choose")
-        counter += 1
         i = random.randint(0, len(pop) - 1)
         if pop[i].k > 0:
             return pop[i]
@@ -39,11 +35,7 @@ def default_build_solutions(pops, interact_count):
         return ind
 
     def choose(pop):
-        counter = 0
         while True:
-            if counter > 100:
-                print("choose")
-            counter += 1
             i = random.randint(0, len(pop) - 1)
             if pop[i].k > 0:
                 return pop[i]
@@ -118,13 +110,8 @@ def one_to_one_vm_build_solutions(pops, interact_count):
     #if not no_similar:
     #    print("====================================================================Similar found");
 
-    print("fucking cycle started")
-
     not_valid = set()
-    count = 0
     while already_found_pairs < interact_count:
-        count += 1
-        print("enter to the cycle #" + str(count))
         # ga_pop = pops[GA_SPECIE]
         # res_pop = pops[RESOURCE_CONFIG_SPECIE]
         pair_not_found = True
@@ -132,8 +119,9 @@ def one_to_one_vm_build_solutions(pops, interact_count):
         ga_elem_number = random.randint(0, len(ga_pop))
         choose_counter = 0
         while ga_elem_number in not_valid:
-            if choose_counter > 30:
-                print("ga_elem_number in not_valid")
+            if choose_counter > 100 and choose_counter < 150:
+                print("ga_elem_number in not_valid = ")
+                print(ga_pop(ga_elem_number))
             choose_counter += 1
             ga_elem_number = random.randint(0, len(ga_pop))
 
@@ -147,30 +135,37 @@ def one_to_one_vm_build_solutions(pops, interact_count):
             for i in range(len(res_pop)):
                 res_pop_current_index = (res_elem_number + i) % len(res_pop)
                 res_individual = res_pop[res_pop_current_index]
-                print("GA_ind = " + str(ga_individual))
-                print("RES_ind = " + str(res_individual))
+                #print("GA_ind = " + str(ga_individual))
+                #print("RES_ind = " + str(res_individual))
                 if individual_lengths_compare(res_individual, ga_max_res_number) and \
                         not is_found_pair(current_tmp_ga_number, res_pop_current_index, found_pairs):
                     if current_tmp_ga_number not in found_pairs:
                         found_pairs[current_tmp_ga_number] = set()
                     found_pairs[current_tmp_ga_number].add(res_pop_current_index)
                     pair_not_found = False
-                    print("Correct")
+                    #print("Correct")
                     break
-                print("Incorrect")
+                #print("Incorrect")
+
+            # TODO this is crutch, refactoring later(
+            if pair_not_found:
+                print("Crutch")
+                print("ga_individual before = " + str(ga_individual))
+                print("res_individ = " + str(res_individual))
+                for (elem, idx) in zip(ga_individual, range(len(ga_individual))):
+                   if elem[2] > len(res_individual[elem[1]]) - 1:
+                       ga_individual[idx] = (elem[0], elem[1], random.randint(0, len(res_individual[elem[1]]) - 1))
+                print("ga_individual after = " + str(ga_individual))
             current_ga_index += 1
 
         if not pair_not_found:
             already_found_pairs += 1
         else:
             not_valid.add(ga_elem_number)
-            #not_valid.add(current_tmp_ga_number)
-            #print(ga_pop[ga_elem_number])
-            print('set size is: ' + str(len(not_valid)) + ' added ' + str(ga_elem_number))
+            #print('set size is: ' + str(len(not_valid)) + ' added ' + str(ga_elem_number))
             # assert not pair_not_found, "Pair of scheduling and resource organization"
     # elts = [[(s, p) for p in pop] for s, pop in pops.items()]
 
-    print("fuckin cycle finished")
     # solutions = [DictBasedIndividual({s.name: pop for s, pop in el}) for el in zip(*elts)]
     solutions = [DictBasedIndividual({res_name: res_pop[ls], ga_name: ga_pop[ga_num]}) for
                  ga_num, ls_numbers in found_pairs.items() for ls in ls_numbers]
@@ -568,11 +563,7 @@ class MappingArchiveMutate:
 
     def __call__(self, ctx, mutant):
         #for i in range(50):
-        counter = 0
         while True:
-            if counter > 100:
-                print("mappingArchivemutate")
-            counter += 1
             # mt = deepcopy(mutant)
             mapping_default_mutate(ctx, mutant)
             h = hash(tuple(mutant))
@@ -613,11 +604,7 @@ def vm_resource_default_initialize(ctx, size):
             fc = blade.farm_capacity
             mrc = blade.max_resource_capacity
             random_values = ""
-            counter = 0
             while current_cap < fc - mrc and n < max_sweep_size:
-                if counter > 100:
-                    print("vm_default_init")
-                counter += 1
                 n += 1
                 tmp_capacity = random.randint(1, mrc)
                 random_values += str(tmp_capacity) + " "
@@ -652,11 +639,7 @@ def resource_conf_crossover(ctx, child1, child2):
         filled_power = sum(s.flops for s in p1[0:k])
 
         i = k
-        counter = 0
         while filled_power < fc and i < len(p2):
-            if counter > 100:
-                print("resource_conf_crossover")
-            counter += 1
             filled_power += p2[i].flops
             i += 1
 
@@ -761,11 +744,7 @@ def resource_config_mutate(ctx, mutant):
         k_tmp = random.randint(0, len(mutant) - 1)
 
         if tmp_node.flops < rc:
-            counter = 0
             while k_tmp == k1 or mutant[k_tmp].flops <= 1:
-                if counter > 100:
-                    print("tmp_node.flops < rc")
-                counter += 1
                 k_tmp = random.randint(0, len(mutant) - 1)
             value_to_add = random.randint(1, min(rc - tmp_node.flops, mutant[k_tmp].flops - 1))
             tmp_node.flops += value_to_add
@@ -808,11 +787,7 @@ def resource_config_mutate(ctx, mutant):
         if filled_power > fc:
                 print('================= wrong value of flops before all' + str(filled_power))
 
-        counter = 0
         while k1 == k2 and len(blade) > 1:
-            if counter > 100:
-                print("k1 == k2 and len(blade) > 1")
-            counter += 1
             k1 = random.randint(0, len(blade) - 1)
             k2 = random.randint(0, len(blade) - 1)
 
@@ -854,11 +829,7 @@ def ga_default_initialize(ctx, size):
     result = []
     chromo = [task for task in env.wf.get_all_unique_tasks()]
     found = True
-    counter = 0
     while found:
-        if counter > 100:
-            print("ga_default_initialize")
-        counter += 1
         found = False
         for i in range(len(chromo)):
             prnts = chromo[i].parents
@@ -896,11 +867,7 @@ def vm_random_count_generate(ctx):
         max_sweep_size = env.wf.get_max_sweep() / 2
         currentCap = 0
         n = -1
-        counter = 0
         while currentCap < fc - mrc and n < max_sweep_size:
-            if counter > 100:
-                print("vm_random_count_generate")
-            counter += 1
             n += 1
             tmp_capacity = random.randint(0, mrc)
             currentCap += tmp_capacity
@@ -916,11 +883,7 @@ def ga_mutate(ctx, mutant):
     for i in range(len(mutant)):
         if random.random() < k / len(mutant):
             found_inconsistency = True
-            cycles = 0
             while found_inconsistency:
-                if cycles > 100:
-                    print("ga_mutate")
-                cycles += 1
                 k1 = random.randint(0, len(mutant) - 1)
                 k2 = random.randint(0, len(mutant) - 1)
                 mx, mn = max(k1, k2), min(k1, k2)

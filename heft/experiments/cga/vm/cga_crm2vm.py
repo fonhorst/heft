@@ -155,7 +155,7 @@ if __name__ == "__main__":
                 ]
     wf_names = ["Montage_25"]
     dir = "./cga_results/"
-    repeat_count = 100
+    repeat_count = 300
 
     for wf_name in wf_names:
         print("++++++========++++++++")
