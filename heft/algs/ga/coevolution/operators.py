@@ -149,13 +149,9 @@ def one_to_one_vm_build_solutions(pops, interact_count):
 
             # TODO this is crutch, refactoring later(
             if pair_not_found:
-                print("Crutch")
-                print("ga_individual before = " + str(ga_individual))
-                print("res_individ = " + str(res_individual))
                 for (elem, idx) in zip(ga_individual, range(len(ga_individual))):
                    if elem[2] > len(res_individual[elem[1]]) - 1:
                        ga_individual[idx] = (elem[0], elem[1], random.randint(0, len(res_individual[elem[1]]) - 1))
-                print("ga_individual after = " + str(ga_individual))
             current_ga_index += 1
 
         if not pair_not_found:
@@ -337,9 +333,35 @@ def fitness_ga_and_vm(ctx, solution):
     env = ctx['env']
     schedule = ga2resources_build_schedule(env.wf, env.estimator, env.rm, solution)
     result = Utility.makespan(schedule)
+    result += nodes_overhead_estimate(env.rm.resources, solution["ResourceConfigSpecie"])
     # result = ExecutorRunner.extract_result(schedule, True, workflow)
     return -result
 
+# Estimate overheads of startup or shutdown nodes
+# TODO move shutdown and start costs in estimator
+def nodes_overhead_estimate(rm, sol):
+    # Functions for estimate shutdowns and starts
+    def shutdown_node(node):
+        return 1
+    def start_node(node):
+        return 2
+
+    overhead = 0
+    for res_idx in range(len(rm)):
+        rm_res = rm[res_idx].nodes
+        sol_res = sol[res_idx]
+        for node_idx in range(max(len(rm_res), len(sol_res))):
+            if node_idx > min(len(rm_res), len(sol_res)) - 1:
+                # shutdown nodes
+                if node_idx > len(sol_res) - 1:
+                    overhead += shutdown_node(rm_res[node_idx])
+                # start nodes
+                if node_idx > len(rm_res) - 1:
+                    overhead += start_node(sol_res[node_idx])
+            else:
+                if rm_res[node_idx].flops != sol_res[node_idx].flops:
+                    overhead += shutdown_node(rm_res[node_idx]) + start_node(sol_res[node_idx])
+    return overhead
 
 def overhead_fitness_mapping_and_ordering(ctx,
                                           solution):

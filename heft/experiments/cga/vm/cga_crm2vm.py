@@ -35,18 +35,18 @@ class Config:
 
         self.config = {
             "hall_of_fame_size": 5,
-            "interact_individuals_count": 200,
-            "generations": 300,
+            "interact_individuals_count": 100,
+            "generations": 100,
             "env": Env(self._wf, self.rm, self.estimator),
-            "species": [Specie(name=GA_SPECIE, pop_size=100,
-                               cxb=0.9, mb=0.9,
+            "species": [Specie(name=GA_SPECIE, pop_size=50,
+                               cxb=0.5, mb=0.5,
                                mate=ga_crossover,
                                mutate=ga_mutate,
                                select=self.mapping_selector,
                                initialize=ga_default_initialize,
                                ),
-                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=100,
-                               cxb=0.9, mb=0.9,
+                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=50,
+                               cxb=0.5, mb=0.5,
                                mate=resource_conf_crossover,
                                mutate=resource_config_mutate,
                                select=self.ordering_selector,
@@ -77,15 +77,20 @@ def print_sched(schedule):
             result += "Start: {0}, end: {1}, job: {2}.\n".format("%0.3f" % item.start_time, "%0.3f" % item.end_time, item.job)
     return result
 
+def resources_printer(resources):
+    for res in resources:
+        print([node.name + ":" + str(node.flops) for node in res])
+
 def do_experiment(saver, config, number):
     solution, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**config)
     #print("====================Experiment finished========================")
 
     if len(hall.keys) == 0:
        print("We have a problem, officer")
-    print(hall.keys)
+    #print(hall.keys)
     max_value = max(hall.keys)
-
+    print("Solution's resources: ")
+    resources_printer(solution["ResourceConfigSpecie"])
     # TODO now doesn't need
     """
     data = {
@@ -155,7 +160,7 @@ if __name__ == "__main__":
                 ]
     wf_names = ["Montage_25"]
     dir = "./cga_results/"
-    repeat_count = 300
+    repeat_count = 10
 
     for wf_name in wf_names:
         print("++++++========++++++++")

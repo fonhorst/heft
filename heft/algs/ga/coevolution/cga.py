@@ -426,9 +426,9 @@ class VMCoevolutionGA():
 
     def __call__(self):
         for gen in range(self.GENERATIONS):
-            print("gen strted = " + str(gen))
+            #print("gen strted = " + str(gen))
             self.gen()
-            print("gen finished = " + str(gen))
+            #print("gen finished = " + str(gen))
             #print("Offsprings have been generated")
             pass
         return self.result()
@@ -533,7 +533,7 @@ class VMCoevolutionGA():
         #print("Gen: " + str(kwargs['gen']))
         solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
 
-        print("Solutions have been built")
+        #print("Solutions have been built")
 
         ## estimate fitness
         for sol in solutions:
