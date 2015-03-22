@@ -8,11 +8,13 @@ from heft.algs.ga.coevolution.operators import RESOURCE_CONFIG_SPECIE, GA_SPECIE
     max_assign_credits, MutRegulator, resource_config_mutate, \
     one_to_one_vm_build_solutions, fitness_ga_and_vm
 from heft.core.CommonComponents.BladeExperimentalManager import ExperimentResourceManager, ExperimentEstimator
+from heft.core.environment.ResourceManager import ScheduleItem, Schedule
 from heft.core.environment.Utility import wf
 from heft.core.environment.BladeResourceGenrator import ResourceGenerator as rg
 from heft.experiments.cga.utilities.common import BasicFinalResultSaver, repeat, tourn, ArchivedSelector, \
     extract_mapping_from_ga_file, extract_ordering_from_ga_file
 from heft.algs.common.utilities import unzip_result
+from heft.algs.heft.DSimpleHeft import run_heft
 import numpy
 import os
 
@@ -36,7 +38,7 @@ class Config:
         self.config = {
             "hall_of_fame_size": 5,
             "interact_individuals_count": 100,
-            "generations": 100,
+            "generations": 10,
             "env": Env(self._wf, self.rm, self.estimator),
             "species": [Specie(name=GA_SPECIE, pop_size=50,
                                cxb=0.5, mb=0.5,
@@ -81,7 +83,35 @@ def resources_printer(resources):
     for res in resources:
         print([node.name + ":" + str(node.flops) for node in res])
 
+def _get_fixed_schedule(schedule, front_event):
+            def is_before_event(item):
+                # hard to resolve corner case. The simulator doesn't guranteed the order of appearing events.
+                if item.start_time < front_event.end_time:
+                    return True
+                if item.state == ScheduleItem.FINISHED or item.state == ScheduleItem.FAILED:
+                    return True
+                return False
+            def set_proper_state(item):
+                new_item = ScheduleItem.copy(item)
+                non_finished = new_item.state == ScheduleItem.EXECUTING or new_item.state == ScheduleItem.UNSTARTED
+                if non_finished and new_item.end_time <= front_event.end_time:
+                    new_item.state = ScheduleItem.FINISHED
+                if non_finished and new_item.end_time > front_event.end_time:
+                    new_item.state = ScheduleItem.EXECUTING
+                return new_item
+            fixed_mapping = {key: [set_proper_state(item) for item in items if is_before_event(item)] for (key, items) in schedule.mapping.items()}
+            return Schedule(fixed_mapping)
+
 def do_experiment(saver, config, number):
+
+    # create HEFT schedule
+    heft_schedule = run_heft(config["env"][0], config["env"][1], config["env"][2])
+    for node, sched in heft_schedule.mapping.items():
+        if len(sched) > 0:
+            first_event = sched[0]
+            break
+    fixed_schedule = _get_fixed_schedule(heft_schedule, first_event)
+    config["fixed_schedule"] = fixed_schedule
     solution, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**config)
     #print("====================Experiment finished========================")
 
@@ -160,7 +190,7 @@ if __name__ == "__main__":
                 ]
     wf_names = ["Montage_25"]
     dir = "./cga_results/"
-    repeat_count = 10
+    repeat_count = 1
 
     for wf_name in wf_names:
         print("++++++========++++++++")
