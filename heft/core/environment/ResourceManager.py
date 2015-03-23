@@ -37,7 +37,11 @@ class ResourceManager:
 
     def get_nodes_by_resource(self, resource):
         name = resource.name if isinstance(resource, Resource)else resource
-        nodes = [node for node in self.get_nodes() if node.resource == name]
+        nodes = [node for node in self.get_nodes() if node.resource.name == name]
+        ## TODO: debug
+        print("Name", name)
+        print("Nodes", nodes)
+
         return nodes
 
     def byName(self):
@@ -58,6 +62,9 @@ class Estimator:
 
     ## estimate probability of successful ending of the task on the node
     def estimate_reliability(self, task, node):
+        pass
+
+    def estimate_resource_reliability(self, task, node):
         pass
 
 ## element of Schedule

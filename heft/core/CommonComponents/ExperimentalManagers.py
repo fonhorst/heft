@@ -86,7 +86,8 @@ class ExperimentResourceManager(ResourceManager):
         return self._name_to_node.get(name, None)
 
     def res_by_id(self, id):
-        return self.resources_map[id]
+        name = id.name if isinstance(id, Resource)else id
+        return self.resources_map[name]
 
 
 

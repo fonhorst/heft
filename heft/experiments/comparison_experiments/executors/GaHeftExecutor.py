@@ -82,6 +82,9 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
             ## TODO: refactor
             if self._check_resource_fail(event.task, node):
+                duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
+                time_of_fail = (item.end_time - self.current_time)*random.random()
+                time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
 
                 resource = self.resource_manager.res_by_id(node.resource)
                 event_failed = ResourceFailed(resource, event.task)
@@ -90,7 +93,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
                 if self.base_fail_duration != -1:
                     duration = self.base_fail_duration + self.base_fail_dispersion * random.random()
-                    event_up = ResourceUp(resource)
+                    event_up = ResourceUp(resource, event_failed)
                     event_up.time_happened = time_of_fail + duration
                     self.post(event_up)
 
@@ -169,16 +172,32 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         if not self._is_a_fail_possible():
             return
 
-        self._remove_events(lambda ev: not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id))
+
+
+
+        # print("Debug info: ")
+        # print("Failed task: ", event.task)
+        # print("Nodes: ", self.resource_manager.get_nodes_by_resource(event.resource))
+
+        nodes = self.resource_manager.get_nodes_by_resource(event.resource)
+
+        ## check if there is any live nodes after killing of the resource,
+        ## if not, don't kill the resource - cancel the killing
+        live_nodes = [node for node in self.resource_manager.get_nodes() if node.resource.name == event.resource.name]
+        if set(nodes) == set(live_nodes):
+            self._remove_events(lambda ev: not (isinstance(ev, ResourceUp) and ev.failed_event != event))
+            return
+
+
         ## TODO: refactor
         def remove_all(ev):
             # False means Remove
             # True means Save
             if isinstance(ev, TaskFinished) and ev.task.id == event.task.id: return False
-            if isinstance(ev, NodeFailed) and ev.node.resource == event.resource.name: return False
-            if isinstance(ev, NodeUp) and ev.node.resource == event.resource.name: return False
+            if isinstance(ev, NodeFailed) and ev.node.resource.name == event.resource.name: return False
+            if isinstance(ev, NodeUp) and ev.node.resource.name == event.resource.name: return False
             if isinstance(ev, ResourceFailed) and ev.resource.name == event.resource.name: return False
-            if isinstance(ev, ResourceUp) and ev.failed_event != event.id: return False
+            if isinstance(ev, ResourceUp) and ev.failed_event != event: return False
             return True
 
         self._remove_events(remove_all)
@@ -186,14 +205,15 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         ## interrupt ga
         self._stop_ga()
         # check node down
-        self.resource_manager.resource(event.resource).state = Resource.Down
-        for node in self.resource_manager.get_nodes_by_resource(event.resource):
+
+        for node in nodes:
             node.state = Node.Down
             it = [item for item in self.current_schedule.mapping[node]
                   if item.start_time <= event.time_happened < item.end_time and item.state == ScheduleItem.EXECUTING]
             if len(it) > 0:
                 it[0].state = ScheduleItem.FAILED
                 it[0].end_time = self.current_time
+        self.resource_manager.resource(event.resource).state = Resource.Down
 
         # run HEFT
         self._reschedule(event)
@@ -298,11 +318,16 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         pass
 
     # def _is_a_fail_possible(self):
-    #     if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 1:
+    #     live_resources_overall = [res for res in self.resource_manager.get_resources() if res.state != Resource.Down]
+    #     live_nodes_overall = [nd for nd in self.resource_manager.get_nodes()if nd.state != Node.Down]
+    #
+    #     if len(live_nodes_overall) == 1:
     #         print("DECLINE NODE DOWN")
     #         st = functools.reduce(operator.add, (" {0} - {1}".format(nd.name, nd.state) for nd in self.resource_manager.get_nodes()), "")
     #         print("STATE INFORMATION: " + st)
     #         return False
+    #     print("Live resources: ", live_resources_overall)
+    #     print("Live nodes: ", live_nodes_overall)
     #     return True
 
     def _is_a_fail_possible(self):
