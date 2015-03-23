@@ -104,8 +104,11 @@ def one_to_one_vm_build_solutions(pops, interact_count):
 
     for i in range(0, len(ga_pop) - 1):
         for j in range(0, len(ga_pop[i])):
-            if ga_pop[i][j][0] != ga_pop[i+1][j][0]:
-                no_similar = True
+           try:
+               if ga_pop[i][j][0] != ga_pop[i+1][j][0]:
+                   no_similar = True
+           except:
+               k = 0
 
     #if not no_similar:
     #    print("====================================================================Similar found");
@@ -630,13 +633,13 @@ def vm_resource_default_initialize(ctx, size):
                 n += 1
                 tmp_capacity = random.randint(1, mrc)
                 random_values += str(tmp_capacity) + " "
-                tmp_node = Node(res.name + "_node_" + str(n), res, SoftItem.ANY_SOFT)
+                tmp_node = Node(res.name + "_node_" + str(n), res, [SoftItem.ANY_SOFT])
                 tmp_node.flops = tmp_capacity
                 generated_vms.append(tmp_node)
                 current_cap += tmp_capacity
             if current_cap < fc and n < max_sweep_size:
                 n += 1
-                tmp_node = Node(res.name + "_node_" + str(n), res, SoftItem.ANY_SOFT)
+                tmp_node = Node(res.name + "_node_" + str(n), res, [SoftItem.ANY_SOFT])
                 tmp_node.flops = fc - current_cap
                 generated_vms.append(tmp_node)
 
@@ -754,7 +757,7 @@ def resource_config_mutate(ctx, mutant):
 
     def try_to_increase_resources(mutant, k1, k2):
         str_po_print = 'i ' + str(len(mutant)) + ' '
-        tmp_node = Node(k1, mutant[0].resource, SoftItem.ANY_SOFT)
+        tmp_node = Node(k1, mutant[0].resource, [SoftItem.ANY_SOFT])
         if fc - filled_power < 1:
             print('wrong operation type')
         tmp_node.flops = min(fc - filled_power, rc)

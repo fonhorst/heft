@@ -47,7 +47,7 @@ class ExperimentEstimator(Estimator):
 
     ## estimate probability of successful ending of the task on the node
     def estimate_reliability(self, task, node):
-        return self.reliability[node.name]
+        return self.reliability
 
 
 class ExperimentResourceManager(ResourceManager):

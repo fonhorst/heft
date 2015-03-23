@@ -567,7 +567,7 @@ def vm_resource_default_initialize(ctx, size):
             tmp_capacity = random.randint(1, mrc)
             random_values += str(tmp_capacity) + " "
             #tmp_node = Node('n' + str(n), res, SoftItem.ANY_SOFT)
-            tmp_node = Node(n, res, SoftItem.ANY_SOFT)
+            tmp_node = Node(n, res, [SoftItem.ANY_SOFT])
             tmp_node.flops = tmp_capacity
             generated_vms.append(tmp_node)
             #res.nodes.add(tmp_node)
@@ -576,7 +576,7 @@ def vm_resource_default_initialize(ctx, size):
         if current_cap < fc and n < max_sweep_size:
             n += 1
             #tmp_node = Node('n' + str(n), res, SoftItem.ANY_SOFT)
-            tmp_node = Node(n, res, SoftItem.ANY_SOFT)
+            tmp_node = Node(n, res, [SoftItem.ANY_SOFT])
             tmp_node.flops = fc - current_cap
             generated_vms.append(tmp_node)
             #res.nodes.add(tmp_node)
@@ -694,7 +694,7 @@ def resource_config_mutate(ctx, mutant):
 
     def try_to_increase_resources(mutant, k1, k2):
         str_po_print = 'i ' + str(len(mutant)) + ' '
-        tmp_node = Node(k1, mutant[0].resource, SoftItem.ANY_SOFT)
+        tmp_node = Node(k1, mutant[0].resource, [SoftItem.ANY_SOFT])
         if fc - filled_power < 1:
             print('wrong operation type')
         tmp_node.flops = min(fc - filled_power, rc)

@@ -330,9 +330,12 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
     #     print("Live nodes: ", live_nodes_overall)
     #     return True
 
+    ## kill of the last alive node is not allowed
     def _is_a_fail_possible(self):
+        live_nodes = [node for node in self.resource_manager.get_nodes() if node.state != Node.Down]
+        if len(live_nodes) == 1:
+            return False
         return True
-
 
 
     def _run_ga_in_background(self, event):
