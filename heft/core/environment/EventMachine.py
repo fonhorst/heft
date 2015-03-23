@@ -32,11 +32,30 @@ class NodeFailed(BaseEvent):
         return "NodeFailed"
 
 class NodeUp(BaseEvent):
-    def __init__(self, node):
+    def __init__(self, node, failed_event):
         self.node = node
+        self.failed_event = failed_event
 
     def __str__(self):
         return "NodeUp"
+
+class ResourceFailed(BaseEvent):
+    def __init__(self, resource, task):
+        self.resource = resource
+        self.node = node
+        self.task = task
+
+    def __str__(self):
+        return "ResourceFailed"
+
+class ResourceUp(BaseEvent):
+    def __init__(self, resource, failed_event):
+        self.resource = resource
+        self.failed_event = failed_event
+
+    def __str__(self):
+        return "ResourceUp"
+
 
 class EventMachine:
     #@trace

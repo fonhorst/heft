@@ -1,3 +1,4 @@
+from heft.core.environment.BaseElements import Resource
 from heft.core.environment.ResourceManager import Estimator
 from heft.core.environment.ResourceManager import ResourceManager
 
@@ -68,6 +69,9 @@ class ExperimentResourceManager(ResourceManager):
             return None
         return result[0]
 
+    def resource(self, resource):
+        return self.res_by_id(resource)
+
     ##get all resources in the system
     def get_resources(self):
         return self.resources
@@ -80,6 +84,9 @@ class ExperimentResourceManager(ResourceManager):
         if self._name_to_node is None:
             self._name_to_node = {n.name: n for n in self.get_nodes()}
         return self._name_to_node.get(name, None)
+
+    def res_by_id(self, id):
+        return self.resources_map[id]
 
 
 

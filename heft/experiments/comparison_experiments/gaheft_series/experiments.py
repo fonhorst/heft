@@ -14,7 +14,8 @@ from heft.experiments.comparison_experiments.executors.MIGaHeftExecutor import M
 from heft.experiments.comparison_experiments.executors.MPGaHeftOldPopExecutor import MPGaHeftOldPopExecutor
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
 from heft.experiments.comparison_experiments.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
-from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
+#from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
+from heft.core.environment.BladeResourceGenrator import ResourceGenerator as rg
 from heft.settings import TEMP_PATH
 
 
@@ -67,7 +68,11 @@ def do_reduced_gaheft_exp(saver, alg_builder, wf_name, **params):
 def do_gaheft_exp(saver, alg_builder, wf_name, **params):
     print("EXPERIMENT RUN START===========================")
     _wf = wf(wf_name)
-    rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
+
+    resources = params["resource_set"]["nodes_conf"]
+
+    rm = ExperimentResourceManager(rg.generate_resources([r if isinstance(r, (list, tuple, dict)) else [r]
+                                                          for r in resources]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
     ga = alg_builder(_wf, rm, estimator,
