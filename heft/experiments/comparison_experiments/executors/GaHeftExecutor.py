@@ -4,6 +4,7 @@ import functools
 import operator
 import pprint
 import random
+from heft.core.CommonComponents import BladeExperimentalManager
 
 from heft.core.CommonComponents.BaseExecutor import BaseExecutor
 from heft.core.CommonComponents.failers.FailRandom import FailRandom
@@ -148,6 +149,10 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         it[0].state = ScheduleItem.FAILED
         it[0].end_time = self.current_time
 
+        ## change for Blade Resource (Vm resources)
+        if isinstance(self.resource_manager, BladeExperimentalManager.ExperimentResourceManager):
+            self.resource_manager.resource(event.node.resource).farm_capacity -= event.node.flops
+
         # run HEFT
         self._reschedule(event)
 
@@ -160,6 +165,10 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self._stop_ga()
         # check node up
         self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
+
+        ## change for Blade Resource (Vm resources)
+        if isinstance(self.resource_manager, BladeExperimentalManager.ExperimentResourceManager):
+            self.resource_manager.resource(event.node.resource).farm_capacity += event.node.flops
 
         self._reschedule(event)
 
@@ -183,7 +192,8 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
         ## check if there is any live nodes after killing of the resource,
         ## if not, don't kill the resource - cancel the killing
-        live_nodes = [node for node in self.resource_manager.get_nodes() if node.resource.name == event.resource.name]
+        live_nodes = [node for node in self.resource_manager.get_nodes()
+                      if node.resource.name == event.resource.name]
         if set(nodes) == set(live_nodes):
             self._remove_events(lambda ev: not (isinstance(ev, ResourceUp) and ev.failed_event != event))
             return
@@ -214,6 +224,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
                 it[0].state = ScheduleItem.FAILED
                 it[0].end_time = self.current_time
         self.resource_manager.resource(event.resource).state = Resource.Down
+
 
         # run HEFT
         self._reschedule(event)

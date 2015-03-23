@@ -94,14 +94,14 @@ def create_cga_crm2vm(_wf, rm, estimator,
             pass
 
         def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None):
-            #self.cga.__call__()
-            #best, pops, logbook, initial_pops, hall, vm_series = self.cga.result()
-            #schedule = ga2resources_build_schedule(_wf, estimator, rm, best)
-            logbook = None
+            self.cga.__call__()
+            best, pops, logbook, initial_pops, hall, vm_series = self.cga.result()
+            schedule = ga2resources_build_schedule(_wf, estimator, rm, best)
+            # logbook = None
 
-            #return (best, pops, schedule, None), logbook
-            ## TODO: debug. Just for test
-            return (None, None, initial_schedule, None), logbook
+            return (best, pops, schedule, None), logbook
+            # TODO: debug. Just for test
+            # return (None, None, initial_schedule, None), logbook
 
     return CgaVmWrapper(**kwargs)
 
