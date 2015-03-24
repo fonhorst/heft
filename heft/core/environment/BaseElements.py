@@ -1,9 +1,8 @@
-from copy import copy, deepcopy
+from copy import copy
 import functools
 import sys
 import uuid
 # #just an enum
-from heft.algs.heft import HeftHelper
 
 
 class SoftItem:
@@ -141,10 +140,10 @@ class Workflow:
         return self._parent_child_dict[id]
 
     ## TODO: for one-time use. Remove it later.
-    def avr_runtime(self, package_name):
-        tsks = [tsk for tsk in HeftHelper.get_all_tasks(self) if package_name in tsk.soft_reqs]
-        common_sum = sum([tsk.runtime for tsk in tsks])
-        return common_sum / len(tsks)
+    # def avr_runtime(self, package_name):
+    #     tsks = [tsk for tsk in HeftHelper.get_all_tasks(self) if package_name in tsk.soft_reqs]
+    #     common_sum = sum([tsk.runtime for tsk in tsks])
+    #     return common_sum / len(tsks)
 
 
     def _build_ancestors_map(self):
