@@ -5,6 +5,7 @@ from deap import creator, tools
 from deap.tools import HallOfFame
 from heft.core.environment.BaseElements import Node
 import numpy
+from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividual
 
 SPECIES = "species"
 OPERATORS = "operators"
@@ -319,15 +320,15 @@ class VMCoevolutionGA():
                 if random.random() < s.cxb:
                     c1 = child1.fitness
                     c2 = child2.fitness
-                    #print("cross prev")
-                    #print("    child1 = " + str(child1))
-                    #print("    child2 = " + str(child2))
+                    print("cross prev")
+                    print("    child1 = " + str(child1))
+                    print("    child2 = " + str(child2))
                     #print("     cross started")
                     s.mate(kwargs, child1, child2)
                     #print("cross after")
-                    #print("    child1 = " + str(child1))
-                    #print("    child2 = " + str(child2))
-                    #print("-----")
+                    print("    child1 = " + str(child1))
+                    print("    child2 = " + str(child2))
+                    print("-----")
                     #print("     cross done, child fintess : " + str((c1 + c2) / 2.0))
                     ## TODO: make credit inheritance here
                     ## TODO: toolbox.inherit_credit(pop, child1, child2)
@@ -341,12 +342,12 @@ class VMCoevolutionGA():
             for mutant in offspring:
                 if random.random() < s.mb:
                     #print("mutation started")
-                    #print("mut prev")
-                    #print("    mutant = " + str(mutant))
+                    print("mut prev")
+                    print("    mutant = " + str(mutant))
                     s.mutate(kwargs, mutant)
-                    #print("mut after")
-                    #print("    mutant = " + str(mutant))
-                    #print("----")
+                    print("mut after")
+                    print("    mutant = " + str(mutant))
+                    print("----")
                     #print("mutation done")
                 pass
 
@@ -366,13 +367,22 @@ class VMCoevolutionGA():
 
 
 def vm_run_cooperative_ga(**kwargs):
-    kwargs = deepcopy(kwargs)
+    kwargs_copy = deepcopy(kwargs)
     cga = VMCoevolutionGA(**kwargs)
     VMCoevolutionGA.vm_series = []
     res = cga()
 
+    fixed = kwargs_copy['fixed_schedule']
+    temp_ga_ind = []
+    for node, items in fixed.mapping.items():
+        for item in items:
+            temp_ga_ind.append((item.job.id, node.resource.name, node.name))
+    for t in res[0]['GASpecie']:
+        temp_ga_ind.append(t)
+    res[0]['GASpecie'] = ListBasedIndividual(temp_ga_ind)
+
     res_rm = res[0]['ResourceConfigSpecie']
-    kw_rm = kwargs['env'][1].resources
+    kw_rm = kwargs_copy['env'][1].resources
 
 
     for (resource, idx) in zip(res_rm, range(len(res_rm))):
