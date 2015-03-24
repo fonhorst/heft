@@ -1,3 +1,4 @@
+from copy import deepcopy
 from functools import partial
 import os
 import pprint
@@ -115,6 +116,8 @@ def do_gaheft_exp(saver, alg_builder, wf_name, **params):
 def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
     print("EXPERIMENT RUN START===========================")
     _wf = wf(wf_name)
+
+    params = deepcopy(params)
 
     resources = params["resource_set"]["nodes_conf"]
 

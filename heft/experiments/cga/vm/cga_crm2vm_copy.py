@@ -31,7 +31,7 @@ class Config:
         self.config = {
             "hall_of_fame_size": 5,
             "interact_individuals_count": 200,
-            "generations": 10,
+            "generations": 100,
             "env": Env(self._wf, self.rm, self.estimator),
             "species": [Specie(name=GA_SPECIE, pop_size=100,
                                cxb=0.9, mb=0.9,
@@ -137,7 +137,7 @@ def do_exp(params):
 if __name__ == "__main__":
 
     wf_names = [
-                "Montage_25"]
+                "Montage_100"]
     for wf_name in wf_names:
         number = uuid.uuid4()
         res = repeat(partial(do_exp, [number, wf_name]), 1)

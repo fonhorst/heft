@@ -81,6 +81,8 @@ def get_res_by_name(res_list, name):
     for res in res_list:
         if res.name == name:
             return res
+    print("Res: ", res)
+    print("Res_list: ", res_list)
     return None
 
 def get_node_by_name(node_list, name):
@@ -313,6 +315,7 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
 
         ms[map_item[0]] = node
 
+    ## TODO: не добавлены ноды из fixed_schedule
     schedule_mapping = {n: [] for n in set(ms.values())}
     fix_sched = ctx["fixed_schedule"]
     temp_ga_ind = []
