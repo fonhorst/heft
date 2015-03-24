@@ -38,17 +38,17 @@ class Config:
 
         self.config = {
             "hall_of_fame_size": 5,
-            "interact_individuals_count": 200,
-            "generations": 100,
+            "interact_individuals_count": 100,
+            "generations": 10,
             "env": Env(self._wf, self.rm, self.estimator),
-            "species": [Specie(name=GA_SPECIE, pop_size=100,
+            "species": [Specie(name=GA_SPECIE, pop_size=50,
                                cxb=0.5, mb=0.5,
                                mate=ga_crossover,
                                mutate=ga_mutate,
                                select=self.mapping_selector,
                                initialize=ga_default_initialize,
                                ),
-                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=100,
+                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=50,
                                cxb=0.5, mb=0.5,
                                mate=resource_conf_crossover,
                                mutate=resource_config_mutate,
@@ -189,7 +189,7 @@ if __name__ == "__main__":
                 ]
     wf_names = ["Montage_25"]
     dir = "./cga_results/"
-    repeat_count = 20
+    repeat_count = 1
 
     for wf_name in wf_names:
         print("++++++========++++++++")
