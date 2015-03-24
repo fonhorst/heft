@@ -26,10 +26,10 @@ class Config:
         self._wf = wf(self.wf_name)
         # input changed from 1 dimension list to 2 dimensions
         self.rm = ExperimentResourceManager(rg.generate_resources([[15, 15, 20, 30]]))
-        self.rm.resources[0].nodes[0].state = "down"
+        #self.rm.resources[0].nodes[0].state = "down"
         self.rm.setVMParameter([(80, 30)])
         # now transfer time less, if nodes from one blade
-        self.estimator = ExperimentEstimator(ideal_flops=20, transfer_nodes=100, transfer_blades=100)
+        self.estimator = ExperimentEstimator(ideal_flops=20, transfer_nodes=10, transfer_blades=10)
 
         self.mapping_selector = ArchivedSelector(3)(tourn)
         self.ordering_selector = ArchivedSelector(3)(tourn)
@@ -38,18 +38,18 @@ class Config:
 
         self.config = {
             "hall_of_fame_size": 5,
-            "interact_individuals_count": 100,
-            "generations": 10,
+            "interact_individuals_count": 200,
+            "generations": 100,
             "env": Env(self._wf, self.rm, self.estimator),
-            "species": [Specie(name=GA_SPECIE, pop_size=50,
-                               cxb=0.5, mb=0.5,
+            "species": [Specie(name=GA_SPECIE, pop_size=100,
+                               cxb=0.2, mb=0.5,
                                mate=ga_crossover,
                                mutate=ga_mutate,
                                select=self.mapping_selector,
                                initialize=ga_default_initialize,
                                ),
-                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=50,
-                               cxb=0.5, mb=0.5,
+                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=100,
+                               cxb=0.2, mb=0.5,
                                mate=resource_conf_crossover,
                                mutate=resource_config_mutate,
                                select=self.ordering_selector,
@@ -112,6 +112,9 @@ def do_experiment(saver, config, number):
     config["initial_population"] = None
 
     solution, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**config)
+    print("RESULT = ")
+    print([(node, node.flops) for node in solution['ResourceConfigSpecie'][0].nodes])
+    print(solution['GASpecie'])
     #print("====================Experiment finished========================")
 
     if len(hall.keys) == 0:
@@ -187,9 +190,9 @@ if __name__ == "__main__":
                 "Montage_25", "Montage_50", "Montage_75", "Montage_100",
                 "CyberShake_30", "CyberShake_50", "CyberShake_75", "CyberShake_100"
                 ]
-    wf_names = ["Montage_25"]
+    wf_names = ["Montage_100"]
     dir = "./cga_results/"
-    repeat_count = 1
+    repeat_count = 10
 
     for wf_name in wf_names:
         print("++++++========++++++++")
@@ -202,8 +205,8 @@ if __name__ == "__main__":
         res, logbooks = unzip_result(result)
 
         # Output to file
-        res_log = logbooks_reduce(logbooks)
-        logs_to_file(res_log, dir, wf_name)
+        #res_log = logbooks_reduce(logbooks)
+        #logs_to_file(res_log, dir, wf_name)
 
         print("RESULTS: ")
         print(res)

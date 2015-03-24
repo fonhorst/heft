@@ -834,16 +834,25 @@ def resource_config_mutate(ctx, mutant):
         return str_po_print + str(len(mutant))
 
     def try_to_increase_resources(mutant, k1, k2):
+        cur_res = mutant[0].resource.name
         str_po_print = 'i ' + str(len(mutant)) + ' '
         tmp_node = Node(k1, mutant[0].resource, [SoftItem.ANY_SOFT])
         if fc - filled_power < 1:
             print('wrong operation type')
         tmp_node.flops = min(fc - filled_power, rc)
-
+        used_names = [node.name for node in mutant]
+        cemetery = ctx['cemetery']
+        used_names += [node.name for node in cemetery if node.resource.name == cur_res]
+        env_res = [res for res in ctx['env'][1].resources if res.name == cur_res][0]
+        used_names += [node.name for node in env_res.get_live_nodes()]
+        tmp_idx = 0
+        tmp_name = cur_res + "_node_" + str(tmp_idx)
+        while tmp_name in used_names:
+            tmp_idx += 1
+            tmp_name = cur_res + "_node_" + str(tmp_idx)
+        tmp_node.name = tmp_name
         mutant.insert(k1, tmp_node)
 
-        for i in range(k1 + 1, len(mutant)):
-            mutant[i].name = i
         k_tmp = random.randint(0, len(mutant) - 1)
 
         if tmp_node.flops < rc:

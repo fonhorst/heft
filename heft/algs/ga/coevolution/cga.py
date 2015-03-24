@@ -112,9 +112,9 @@ class VMCoevolutionGA():
 
     def __call__(self):
         for gen in range(self.GENERATIONS):
-            print("gen strted = " + str(gen))
+            #print("gen strted = " + str(gen))
             self.gen()
-            print("gen finished = " + str(gen))
+            #print("gen finished = " + str(gen))
             pass
         return self.result()
 
@@ -324,13 +324,21 @@ class VMCoevolutionGA():
                     c1 = child1.fitness
                     c2 = child2.fitness
                     #print("cross prev")
-                    #print("    child1 = " + str(child1))
-                    #print("    child2 = " + str(child2))
+                    #if s.name == 'ResourceConfigSpecie':
+                    #    print("    child1 = " + str(child1[0].nodes))
+                    #    print("    child2 = " + str(child2[0].nodes))
+                    #else:
+                    #    print("    child1 = " + str(child1))
+                    #    print("    child2 = " + str(child2))
                     #print("     cross started")
                     s.mate(kwargs, child1, child2)
                     #print("cross after")
-                    #print("    child1 = " + str(child1))
-                    #print("    child2 = " + str(child2))
+                    #if s.name == 'ResourceConfigSpecie':
+                    #    print("    child1 = " + str(child1[0].nodes))
+                    #    print("    child2 = " + str(child2[0].nodes))
+                    #else:
+                    #    print("    child1 = " + str(child1))
+                    #    print("    child2 = " + str(child2))
                     #print("-----")
                     #print("     cross done, child fintess : " + str((c1 + c2) / 2.0))
                     ## TODO: make credit inheritance here
@@ -346,10 +354,16 @@ class VMCoevolutionGA():
                 if random.random() < s.mb:
                     #print("mutation started")
                     #print("mut prev")
-                    #print("    mutant = " + str(mutant))
+                    #if s.name == 'ResourceConfigSpecie':
+                    #    print("    mutant = " + str([(node, node.flops)for node in mutant[0].nodes]))
+                    #else:
+                    #    print("    mutant = " + str(mutant))
                     s.mutate(kwargs, mutant)
                     #print("mut after")
-                    #print("    mutant = " + str(mutant))
+                    #if s.name == 'ResourceConfigSpecie':
+                    #    print("    mutant = " + str([(node, node.flops)for node in mutant[0].nodes]))
+                    #else:
+                    #    print("    mutant = " + str(mutant))
                     #print("----")
                     #print("mutation done")
                 pass
