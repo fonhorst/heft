@@ -700,7 +700,7 @@ def vm_resource_default_initialize(ctx, size):
                     while node_name in ([node.name for node in res.nodes] + [node.name for node in cemetery]):
                         n += 1
                         node_name = res.name + "_node_" + str(n)
-                    tmp_node = Node(node_name, res, SoftItem.ANY_SOFT, tmp_capacity)
+                    tmp_node = Node(node_name, res, [SoftItem.ANY_SOFT], tmp_capacity)
                 generated_vms.add(tmp_node)
                 current_cap += tmp_capacity
             if current_cap < fc and n < max_sweep_size:
@@ -709,7 +709,7 @@ def vm_resource_default_initialize(ctx, size):
                 if node_name in [name for name in [node.name for node in cemetery]]:
                     continue
                 cap = fc - current_cap
-                tmp_node = Node(node_name, res, SoftItem.ANY_SOFT, cap)
+                tmp_node = Node(node_name, res, [SoftItem.ANY_SOFT], cap)
                 generated_vms.add(tmp_node)
 
             new_res = deepcopy(res)
@@ -837,7 +837,7 @@ def resource_config_mutate(ctx, mutant):
     def try_to_increase_resources(mutant, k1, k2):
         cur_res = mutant[0].resource.name
         str_po_print = 'i ' + str(len(mutant)) + ' '
-        tmp_node = Node(k1, mutant[0].resource, SoftItem.ANY_SOFT)
+        tmp_node = Node(k1, mutant[0].resource, [SoftItem.ANY_SOFT])
         if fc - filled_power < 1:
             print('wrong operation type')
         tmp_node.flops = min(fc - filled_power, rc)
