@@ -87,6 +87,23 @@ class ExperimentResourceManager(ResourceManager):
     def get_resources(self):
         return self.resources
 
+    def get_live_resources(self):
+        resources = self.get_resources()
+        result = set()
+        for res in resources:
+            if res.state != 'down':
+                result.add(res)
+        return result
+
+    def get_live_nodes(self):
+        resources = [res for res in self.get_resources() if res.state != 'down']
+        result = set()
+        for resource in resources:
+            for node in resource.nodes:
+                if node.state != "down":
+                    result.add(node)
+        return result
+
     def change_performance(self, node, performance):
         ##TODO: rethink it
         self.resources[node.resource][node].flops = performance

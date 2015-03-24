@@ -60,114 +60,143 @@ def one_to_one_build_solutions(pops, interact_count):
 def get_max_resource_number(ga_individual):
     # this function returns dict of max used node for each blade
     max_set = dict()
-    max_set[ga_individual[0][1]] = ga_individual[0][2]
+    max_set[ga_individual[0][1]] = [ga_individual[0][2]]
     for task in ga_individual:
-        if task[1] not in max_set.keys() or task[2] > max_set[task[1]]:
-            max_set[task[1]] = task[2]
+        if task[1] not in max_set.keys() or task[2] not in max_set[task[1]]:
+            if task[1] not in max_set.keys():
+                max_set[task[1]] = [task[2]]
+            else:
+                max_set[task[1]].append(task[2])
     return max_set
 
-def individual_lengths_compare(res_individual, ga_max_res_number):
-    """
-    res_individual = [[b1n1,..], [b2n1,..]]
-    ga_max_res_number = dict(blade_idx: max_node_idx)
-    This function compares lengths for each blade
-    """
-    for k, v in ga_max_res_number.items():
-        if v > len(res_individual[k]) - 1:
-            return False
+def individual_lengths_compare(res_individual, used_resources):
+    # TODO change name of this function
+    for res in res_individual:
+        for node in used_resources[res.name]:
+            if node not in [res_node.name for res_node in res.nodes]:
+                return False
     return True
 
-def one_to_one_vm_build_solutions(pops, interact_count):
+def get_res_by_name(res_list, name):
+    for res in res_list:
+        if res.name == name:
+            return res
+    return None
 
-    def is_found_pair(current_tmp_ga_number, res_pop_current_index, pairs):
-        if current_tmp_ga_number in pairs:
-            ga_res_list = pairs[current_tmp_ga_number]
-            if res_pop_current_index in ga_res_list:
-                return True
+def get_node_by_name(node_list, name):
+    for node in node_list:
+        if node.name == name:
+            return node
+    return None
 
-    already_found_pairs = 0
-    found_pairs = {}
+class one_to_one_vm_build_solutions:
+    def __call__(self, pops, interact_count):
+        def is_found_pair(current_tmp_ga_number, res_pop_current_index, pairs):
+            if current_tmp_ga_number in pairs:
+                ga_res_list = pairs[current_tmp_ga_number]
+                if res_pop_current_index in ga_res_list:
+                    return True
 
-    ga_pop = []
-    ga_name = ''
-    res_pop = []
-    res_name = ''
-    for s, p in pops.items():
-        if type(p[0][0][0]) is Node:
-            res_pop = p
-            res_name = s.name
-        else:
-            ga_pop = p
-            ga_name = s.name
+        already_found_pairs = 0
+        found_pairs = {}
 
-    no_similar = False
+        ga_pop = []
+        ga_name = ''
+        res_pop = []
+        res_name = ''
+        for s, p in pops.items():
+            if type(p[0][0]) is Resource:
+                res_pop = p
+                res_name = s.name
+            else:
+                ga_pop = p
+                ga_name = s.name
 
-    for i in range(0, len(ga_pop) - 1):
-        for j in range(0, len(ga_pop[i])):
-            if ga_pop[i][j][0] != ga_pop[i+1][j][0]:
-                no_similar = True
+        """ is it required?
+        no_similar = False
 
-    #if not no_similar:
-    #    print("====================================================================Similar found");
+        for i in range(0, len(ga_pop) - 1):
+            for j in range(0, len(ga_pop[i])):
+                if ga_pop[i][j][0] != ga_pop[i+1][j][0]:
+                    no_similar = True
 
-    not_valid = set()
-    while already_found_pairs < interact_count:
-        # ga_pop = pops[GA_SPECIE]
-        # res_pop = pops[RESOURCE_CONFIG_SPECIE]
-        pair_not_found = True
+        #if not no_similar:
+        #    print("====================================================================Similar found");
+        """
 
-        ga_elem_number = random.randint(0, len(ga_pop))
-        choose_counter = 0
-        while ga_elem_number in not_valid:
-            if choose_counter > 100 and choose_counter < 150:
-                print("ga_elem_number in not_valid = ")
-                print(ga_pop(ga_elem_number))
-            choose_counter += 1
+        not_valid = set()
+        while already_found_pairs < interact_count:
+            # ga_pop = pops[GA_SPECIE]
+            # res_pop = pops[RESOURCE_CONFIG_SPECIE]
+            pair_not_found = True
+
             ga_elem_number = random.randint(0, len(ga_pop))
+            choose_counter = 0
+            while ga_elem_number in not_valid:
+                if choose_counter > 100 and choose_counter < 150:
+                    print("ga_elem_number in not_valid = ")
+                    print(ga_pop(ga_elem_number))
+                choose_counter += 1
+                ga_elem_number = random.randint(0, len(ga_pop))
 
-        current_ga_index = 0
-        while pair_not_found and current_ga_index < len(ga_pop):
-            res_elem_number = random.randint(0, len(res_pop))
-            current_tmp_ga_number = (ga_elem_number + current_ga_index) % len(ga_pop)
-            ga_individual = ga_pop[current_tmp_ga_number]
-            ga_max_res_number = get_max_resource_number(ga_individual)
+            current_ga_index = 0
+            while pair_not_found and current_ga_index < len(ga_pop):
+                res_elem_number = random.randint(0, len(res_pop))
+                current_tmp_ga_number = (ga_elem_number + current_ga_index) % len(ga_pop)
+                ga_individual = ga_pop[current_tmp_ga_number]
+                #TODO rename this
+                ga_max_res_number = get_max_resource_number(ga_individual)
 
-            for i in range(len(res_pop)):
-                res_pop_current_index = (res_elem_number + i) % len(res_pop)
-                res_individual = res_pop[res_pop_current_index]
-                #print("GA_ind = " + str(ga_individual))
-                #print("RES_ind = " + str(res_individual))
-                if individual_lengths_compare(res_individual, ga_max_res_number) and \
-                        not is_found_pair(current_tmp_ga_number, res_pop_current_index, found_pairs):
-                    if current_tmp_ga_number not in found_pairs:
-                        found_pairs[current_tmp_ga_number] = set()
-                    found_pairs[current_tmp_ga_number].add(res_pop_current_index)
-                    pair_not_found = False
-                    #print("Correct")
-                    break
-                #print("Incorrect")
+                res_individual = None
 
-            # TODO this is crutch, refactoring later(
-            if pair_not_found:
-                for (elem, idx) in zip(ga_individual, range(len(ga_individual))):
-                   if elem[2] > len(res_individual[elem[1]]) - 1:
-                       ga_individual[idx] = (elem[0], elem[1], random.randint(0, len(res_individual[elem[1]]) - 1))
-            current_ga_index += 1
+                for i in range(len(res_pop)):
+                    res_pop_current_index = (res_elem_number + i) % len(res_pop)
+                    res_individual = res_pop[res_pop_current_index]
+                    #print("GA_ind = " + str(ga_individual))
+                    #print("RES_ind = " + str(res_individual))
+                    # TODO this is weak place now and need to rename functions in condition
+                    if individual_lengths_compare(res_individual, ga_max_res_number) and \
+                            not is_found_pair(current_tmp_ga_number, res_pop_current_index, found_pairs):
+                        if current_tmp_ga_number not in found_pairs:
+                            found_pairs[current_tmp_ga_number] = set()
+                        found_pairs[current_tmp_ga_number].add(res_pop_current_index)
+                        pair_not_found = False
+                        #print("Correct")
+                        break
+                    #print("Incorrect")
 
-        if not pair_not_found:
-            already_found_pairs += 1
-        else:
-            not_valid.add(ga_elem_number)
-            #print('set size is: ' + str(len(not_valid)) + ' added ' + str(ga_elem_number))
-            # assert not pair_not_found, "Pair of scheduling and resource organization"
-    # elts = [[(s, p) for p in pop] for s, pop in pops.items()]
+                # TODO this is crutch, refactoring later(
+                if pair_not_found:
+                    for (elem, idx) in zip(ga_individual, range(len(ga_individual))):
+                        res = get_res_by_name(res_individual, elem[1])
+                        while len(res.nodes) == 0:
+                            print("problem in res init")
+                            res_individual = res_pop[random.randint(0, len(res_pop) - 1)]
+                            res = get_res_by_name(res_individual, elem[1])
+                        if elem[2] not in [node.name for node in res.nodes]:
+                            ga_individual[idx] = (elem[0], elem[1], [node.name for node in res.nodes][random.randint(0, len(res.nodes) - 1)])
 
-    # solutions = [DictBasedIndividual({s.name: pop for s, pop in el}) for el in zip(*elts)]
-    solutions = [DictBasedIndividual({res_name: res_pop[ls], ga_name: ga_pop[ga_num]}) for
-                 ga_num, ls_numbers in found_pairs.items() for ls in ls_numbers]
+                current_ga_index += 1
 
-    return solutions
+            if not pair_not_found:
+                already_found_pairs += 1
+            else:
+                not_valid.add(ga_elem_number)
+                #print('set size is: ' + str(len(not_valid)) + ' added ' + str(ga_elem_number))
+                # assert not pair_not_found, "Pair of scheduling and resource organization"
+        # elts = [[(s, p) for p in pop] for s, pop in pops.items()]
 
+        # solutions = [DictBasedIndividual({s.name: pop for s, pop in el}) for el in zip(*elts)]
+        solutions = [DictBasedIndividual({res_name: res_pop[ls], ga_name: ga_pop[ga_num]}) for
+                     ga_num, ls_numbers in found_pairs.items() for ls in ls_numbers]
+
+        return solutions
+
+class EnhancedMapping(one_to_one_vm_build_solutions):
+    def __call__(self, pops, interact_count):
+        solutions = super().__call__(self, pops, interact_count)
+        solutions = [self._process(s) for s in solutions]
+        return solutions
 
 def default_assign_credits(ctx, solutions):
     # assign id for every elements in every population
@@ -259,7 +288,7 @@ def _check_precedence(workflow, seq):
     return True
 
 
-def ga2resources_build_schedule(workflow, estimator, resource_manager, solution):
+def ga2resources_build_schedule(workflow, estimator, resource_manager, solution, ctx):
     gs = solution[GA_SPECIE]
     rs = solution[RESOURCE_CONFIG_SPECIE]
 
@@ -269,19 +298,52 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution)
 
     check_consistency(workflow, gs)
     # index of blade was added
-    ms = {map_item[0]: rs[map_item[1]][map_item[2]] for map_item in gs}
+    ms = {}
+
+    for map_item in gs:
+        res = get_res_by_name(rs, map_item[1])
+        node = get_node_by_name(res.nodes, map_item[2])
+
+        # TODO this is hack
+        if node is None:
+            node = [res_node for res_node in res.nodes][random.randint(0, len(res.nodes) - 1)]
+            bad_idx = gs.index(map_item)
+            map_item = (map_item[0], map_item[1], node.name)
+            gs[bad_idx] = map_item
+
+        ms[map_item[0]] = node
+
     schedule_mapping = {n: [] for n in set(ms.values())}
-    task_to_node = {}
+    fix_sched = ctx["fixed_schedule"]
+    temp_ga_ind = []
+    for node, items in fix_sched.mapping.items():
+        for item in items:
+            temp_ga_ind.append((item.job.id, node.resource.name, node.name))
+            ms[item.job.id] = node
     for t in gs:
+        temp_ga_ind.append(t)
+    temp_ga_ind = ListBasedIndividual(temp_ga_ind)
+
+
+    task_to_node = {}
+    for t in temp_ga_ind:
         node = ms[t[0]]
+        if node is None:
+            # This is for debug
+            error = 5 / (1-1)
         task = workflow.byId(t[0])
         (start_time, end_time) = place_task_to_schedule(workflow,
                                                         estimator,
                                                         schedule_mapping,
                                                         task_to_node,
-                                                        ms, task, node, 0)
+                                                        ms, task, node, ctx["current_time"])
 
         task_to_node[task.id] = (node, start_time, end_time)
+    for node, items in fix_sched.mapping.items():
+        for item in items:
+            for sched_item in schedule_mapping[node]:
+                if item.job == sched_item.job:
+                    sched_item.state = item.state
     schedule = Schedule(schedule_mapping)
     return schedule
 
@@ -318,7 +380,6 @@ def mapping2order_build_schedule(workflow, estimator, resource_manager, solution
     schedule = Schedule(schedule_mapping)
     return schedule
 
-
 def fitness_mapping_and_ordering(ctx,
                                  solution):
     env = ctx['env']
@@ -331,7 +392,7 @@ def fitness_mapping_and_ordering(ctx,
 
 def fitness_ga_and_vm(ctx, solution):
     env = ctx['env']
-    schedule = ga2resources_build_schedule(env.wf, env.estimator, env.rm, solution)
+    schedule = ga2resources_build_schedule(env.wf, env.estimator, env.rm, solution, ctx)
     result = Utility.makespan(schedule)
     result += nodes_overhead_estimate(env.rm.resources, solution["ResourceConfigSpecie"])
     # result = ExecutorRunner.extract_result(schedule, True, workflow)
@@ -342,25 +403,21 @@ def fitness_ga_and_vm(ctx, solution):
 def nodes_overhead_estimate(rm, sol):
     # Functions for estimate shutdowns and starts
     def shutdown_node(node):
-        return 1
+        return 0
     def start_node(node):
-        return 2
+        return 0
 
     overhead = 0
     for res_idx in range(len(rm)):
         rm_res = rm[res_idx].nodes
-        sol_res = sol[res_idx]
-        for node_idx in range(max(len(rm_res), len(sol_res))):
-            if node_idx > min(len(rm_res), len(sol_res)) - 1:
-                # shutdown nodes
-                if node_idx > len(sol_res) - 1:
-                    overhead += shutdown_node(rm_res[node_idx])
-                # start nodes
-                if node_idx > len(rm_res) - 1:
-                    overhead += start_node(sol_res[node_idx])
-            else:
-                if rm_res[node_idx].flops != sol_res[node_idx].flops:
-                    overhead += shutdown_node(rm_res[node_idx]) + start_node(sol_res[node_idx])
+        sol_res = sol[res_idx].nodes
+        for node in sol_res:
+            if node not in rm_res:
+                overhead += start_node(node)
+        for node in rm_res:
+            if node not in sol_res:
+                overhead += shutdown_node(node)
+
     return overhead
 
 def overhead_fitness_mapping_and_ordering(ctx,
@@ -611,36 +668,50 @@ def vm_resource_default_initialize(ctx, size):
         to [ListBasedIndividuals([[b1n1, b1n2, ...], [b2n1, b2n2, ...]])]
     """
     env = ctx['env']
+    cemetery = ctx['cemetery']
     result = []
 
     for i in range(size):
 
         max_sweep_size = env.wf.get_max_sweep() / 2
         default_inited_pop = []
-
-        for blade in env.rm.resources:
-            res = Resource(blade.name)
+        resources = env.rm.get_live_resources()
+        for res in resources:
             current_cap = 0
-            generated_vms = []
+            generated_vms = set()
             n = -1
-            fc = blade.farm_capacity
-            mrc = blade.max_resource_capacity
-            random_values = ""
+            fc = res.farm_capacity
+            mrc = res.max_resource_capacity
+            used_nodes = []
             while current_cap < fc - mrc and n < max_sweep_size:
                 n += 1
+                node_name = res.name + "_node_" + str(n)
+                if node_name in [name for name in [node.name for node in cemetery]]:
+                    continue
                 tmp_capacity = random.randint(1, mrc)
-                random_values += str(tmp_capacity) + " "
-                tmp_node = Node(res.name + "_node_" + str(n), res, SoftItem.ANY_SOFT)
-                tmp_node.flops = tmp_capacity
-                generated_vms.append(tmp_node)
+                nodes_filter = [node for node in res.nodes if (node.flops == tmp_capacity and node.name not in used_nodes)]
+                if len(nodes_filter) > 0:
+                    used_nodes.append(nodes_filter[0].name)
+                    tmp_node = nodes_filter[0]
+                else:
+                    while node_name in ([node.name for node in res.nodes] + [node.name for node in cemetery]):
+                        n += 1
+                        node_name = res.name + "_node_" + str(n)
+                    tmp_node = Node(node_name, res, SoftItem.ANY_SOFT, tmp_capacity)
+                generated_vms.add(tmp_node)
                 current_cap += tmp_capacity
             if current_cap < fc and n < max_sweep_size:
                 n += 1
-                tmp_node = Node(res.name + "_node_" + str(n), res, SoftItem.ANY_SOFT)
-                tmp_node.flops = fc - current_cap
-                generated_vms.append(tmp_node)
+                node_name = res.name + "_node_" + str(n)
+                if node_name in [name for name in [node.name for node in cemetery]]:
+                    continue
+                cap = fc - current_cap
+                tmp_node = Node(node_name, res, SoftItem.ANY_SOFT, cap)
+                generated_vms.add(tmp_node)
 
-            default_inited_pop.append(generated_vms)
+            new_res = deepcopy(res)
+            new_res.nodes = generated_vms
+            default_inited_pop.append(new_res)
 
             #for s in default_inited_pop:
                 #all_flops = sum(tmp.flops for tmp in s)
@@ -674,19 +745,23 @@ def resource_conf_crossover(ctx, child1, child2):
         new_part = [deepcopy(p2[p_tmp]) for p_tmp in range(k, i + 1)]
         old_part = [deepcopy(p1[p_tmp]) for p_tmp in range(0, k)]
 
-        for j in range(0, len(new_part)):
-            new_part[j].name = k + j
-
-        nch = old_part + new_part
+        temp_nch = old_part + new_part
+        nch = []
+        for node in temp_nch:
+            if node.name not in [n_node.name for n_node in nch]:
+                nch.append(node)
         ch_sum = sum(s.flops for s in nch)
         if (ch_sum - fc) > 0:
             print('================sum after crossover ' + str(ch_sum) + ' ' + str(fc))
         return nch
 
     env = ctx['env']
+
+    cemetery = ctx['cemetery']
     for bl_idx in range(len(child1)):
-        blade1 = child1[bl_idx]
-        blade2 = child2[bl_idx]
+        res = env[1].resources[bl_idx]
+        blade1 = [node for node in child1[bl_idx].nodes]
+        blade2 = [node for node in child2[bl_idx].nodes]
         fc = env.rm.resources[bl_idx].farm_capacity
 
         filled_power = sum(s.flops for s in blade2)
@@ -699,23 +774,24 @@ def resource_conf_crossover(ctx, child1, child2):
             print('================= wrong value of flops before crossover child1 ' + str(filled_power))
             return
 
+        first = None
+        second = None
         if len(blade1) > 2:
             k = random.randint(0, len(blade1) - 2)
             first = get_child_from_pair(blade1, blade2, k)
-            for node, idx in zip(first, range(len(first))):
-                node.name = str(node.resource.name) + '_node_' + str(idx)
+
             if len(blade2) > 2:
                 k = random.randint(0, len(blade2) - 2)
                 second = get_child_from_pair(blade2, blade1, k)
             else:
                 k = random.randint(0, len(blade1) - 2)
                 second = get_child_from_pair(blade1, blade2, k)
-            for node, idx in zip(second, range(len(second))):
-                node.name = str(node.resource.name) + '_node_' + str(idx)
+
+        if first is not None:
             blade1.clear()
             blade1.extend(first)
+        if second is not None:
             blade2.clear()
-            filled_power = sum(s.flops for s in blade2)
             blade2.extend(second)
 
         filled_power = sum(s.flops for s in blade2)
@@ -725,7 +801,10 @@ def resource_conf_crossover(ctx, child1, child2):
         filled_power = sum(s.flops for s in blade1)
         if filled_power > fc:
             print('================= wrong value of flops after crossover child1 ' + str(filled_power))
-
+        if first is not None:
+            child1[bl_idx].nodes = set(blade1)
+        if second is not None:
+            child2[bl_idx].nodes = set(blade2)
     pass
 
 
@@ -795,7 +874,8 @@ def resource_config_mutate(ctx, mutant):
 
     env = ctx['env']
 
-    for blade, idx in zip(mutant, range(len(mutant))):
+    for res, idx in zip(mutant, range(len(mutant))):
+        blade = [node for node in res.nodes]
         fc = env.rm.resources[idx].farm_capacity
         rc = env.rm.resources[idx].max_resource_capacity
 
@@ -834,8 +914,17 @@ def resource_config_mutate(ctx, mutant):
         filled_power = sum(s.flops for s in blade)
         if filled_power > fc:
                 print('================= wrong value of flops after all' + str(filled_power))
-        for node, j in zip(blade, range(len(blade))):
-            node.name = node.resource.name + "_node_" + str(j)
+        fixed_nodes = [resour for resour in env.rm.resources][idx].nodes
+        fixed_names = [node.name for node in fixed_nodes]
+        new_res = set()
+        for node in res.nodes:
+            if node.name in fixed_names and node.name in blade:
+                new_res.add(node)
+        for node in blade:
+            if node.name not in fixed_names:
+                new_res.add(node)
+        res.nodes = new_res
+
 
 ##===================================
 ## GA specie
@@ -846,10 +935,12 @@ def ga_default_initialize(ctx, size):
     chromosome representation changed from (task, node_idx) to (task, blade_idx, node_idx)
     """
     env = ctx['env']
-    tasks = ({task.id: task} for task in env.wf.get_all_unique_tasks())
+    cemetery = ctx['cemetery']
+    fix_sched = ctx['fixed_schedule']
+    fix_tasks = fix_sched.get_all_unique_tasks()
 
     result = []
-    chromo = [task for task in env.wf.get_all_unique_tasks()]
+    chromo = [task for task in env.wf.get_all_unique_tasks() if task not in fix_tasks]
     found = True
     while found:
         found = False
@@ -868,10 +959,11 @@ def ga_default_initialize(ctx, size):
         res_amount = vm_random_count_generate(ctx)
         temp = []
         for t in chromo:
-            idx1 = random.randint(0, len(env.rm.resources) - 1)
-            # TODO check this moment later. Probably for idx2 is required to decrease res_amount in the method vm_random_count_generate(ctx)
-            idx2 = random.randint(0, res_amount[idx1])
-            temp.append((t.id, idx1, idx2))
+            resources = env.rm.get_live_resources()
+            res = [resource for resource in resources][random.randint(0, len(resources) - 1)]
+            # TODO may be need use res_amount, later
+            node = [elem for elem in res.nodes][random.randint(0, len(res.nodes) - 1)]
+            temp.append((t.id, res.name, node.name))
         ls = ListBasedIndividual(temp)
         result.append(ls)
     return result
@@ -939,7 +1031,8 @@ def ga_mutate(ctx, mutant):
                     used_resources.append(c[1])
             cell = random.randint(0, len(mutant) - 1)
             res = used_resources[random.randint(0, len(used_resources) - 1)]
-            node = random.randint(0, max(c[2] for c in mutant if c[1] == res))
+            used_nodes = [c[2] for c in mutant if c[1] == res]
+            node = used_nodes[random.randint(0, len(used_nodes) - 1)]
             mutant[cell] = (mutant[cell][0], res, node)
     if random.random() < k / (2 * len(mutant)):
         # I don't know, why it is required, however same strategy as in 2 lines above
@@ -951,7 +1044,8 @@ def ga_mutate(ctx, mutant):
             if random.random() < k / len(mutant):
                 k1 = random.randint(0, len(mutant) - 1)
                 res_number = used_resources[random.randint(0, len(used_resources) - 1)]
-                node_number = random.randint(0, (max(c[2] for c in mutant if c[1] == res_number)) + 1)
+                used_nodes = [c[2] for c in mutant if c[1] == res_number]
+                node_number = used_nodes[random.randint(0, len(used_nodes) - 1)]
                 mutant[k1] = (mutant[k1][0], res_number, node_number)
 
     # TODO is it required???

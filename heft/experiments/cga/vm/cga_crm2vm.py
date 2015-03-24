@@ -25,10 +25,11 @@ class Config:
         self.wf_name = input_wf_name
         self._wf = wf(self.wf_name)
         # input changed from 1 dimension list to 2 dimensions
-        self.rm = ExperimentResourceManager(rg.generate_resources([[10, 15, 25, 30], [15, 15, 20, 30]]))
-        self.rm.setVMParameter([(80, 30), (80, 30)])
+        self.rm = ExperimentResourceManager(rg.generate_resources([[15, 15, 20, 30]]))
+        self.rm.resources[0].nodes[0].state = "down"
+        self.rm.setVMParameter([(80, 30)])
         # now transfer time less, if nodes from one blade
-        self.estimator = ExperimentEstimator(ideal_flops=20, transfer_nodes=1, transfer_blades=100)
+        self.estimator = ExperimentEstimator(ideal_flops=20, transfer_nodes=100, transfer_blades=100)
 
         self.mapping_selector = ArchivedSelector(3)(tourn)
         self.ordering_selector = ArchivedSelector(3)(tourn)
@@ -59,17 +60,11 @@ class Config:
             "analyzers": [self.mapping_mut_reg.analyze],
 
             "operators": {
-                # "choose": default_choose,
-                # "build_solutions": default_build_solutions,
-                "build_solutions": one_to_one_vm_build_solutions,
+                "build_solutions": one_to_one_vm_build_solutions(),
                 "fitness": fitness_ga_and_vm,
-                # "fitness": overhead_fitness_mapping_and_ordering,
-                # "assign_credits": default_assign_credits
-                # "assign_credits": bonus2_assign_credits
                 "assign_credits": max_assign_credits
             }
         }
-
 
 def print_sched(schedule):
     result = ""
@@ -112,6 +107,10 @@ def do_experiment(saver, config, number):
             break
     fixed_schedule = _get_fixed_schedule(heft_schedule, first_event)
     config["fixed_schedule"] = fixed_schedule
+    config["initial_schedule"] = heft_schedule
+    config["current_time"] = 0
+    config["initial_population"] = None
+
     solution, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**config)
     #print("====================Experiment finished========================")
 
@@ -119,8 +118,8 @@ def do_experiment(saver, config, number):
        print("We have a problem, officer")
     #print(hall.keys)
     max_value = max(hall.keys)
-    print("Solution's resources: ")
-    resources_printer(solution["ResourceConfigSpecie"])
+    #print("Solution's resources: ")
+    #resources_printer(solution["ResourceConfigSpecie"])
     # TODO now doesn't need
     """
     data = {
@@ -190,7 +189,7 @@ if __name__ == "__main__":
                 ]
     wf_names = ["Montage_25"]
     dir = "./cga_results/"
-    repeat_count = 1
+    repeat_count = 20
 
     for wf_name in wf_names:
         print("++++++========++++++++")

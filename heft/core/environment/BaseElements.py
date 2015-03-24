@@ -14,9 +14,31 @@ class SoftItem:
 
 
 class Resource:
-    def __init__(self, name):
+    Down = "down"
+    Unknown = "unknown"
+    Static = "static"
+    Busy = "busy"
+    def __init__(self, name, nodes=None):
         self.name = name
-        self.nodes = set()
+        if nodes is None:
+            self.nodes = set()
+        else:
+            self.nodes = nodes
+        self.state = Resource.Unknown
+
+    def get_live_nodes(self):
+        result = set()
+        for node in self.nodes:
+            if node.state != "down":
+                result.add(node)
+        return result
+
+    def get_cemetery(self):
+        result = set()
+        for node in self.nodes:
+            if node.state == 'down':
+                result.add(node)
+        return result
 
 
 class Node:
@@ -25,11 +47,11 @@ class Node:
     Static = "static"
     Busy = "busy"
 
-    def __init__(self, name, resource, soft):
+    def __init__(self, name, resource, soft, flops=0):
         self.name = name
         self.soft = soft
         self.resource = resource
-        self.flops = 0
+        self.flops = flops
         self.state = Node.Unknown
         self.id = uuid.uuid4()
 
