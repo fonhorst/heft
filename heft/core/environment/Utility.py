@@ -400,6 +400,10 @@ class Utility:
         if seq_time_validaty is False:
             raise Exception("Sequence validaty check failed")
         if dependency_validaty is False:
+
+            ## TODO: debug
+            pprint(schedule)
+
             raise Exception("Dependency validaty check failed")
         pass
 

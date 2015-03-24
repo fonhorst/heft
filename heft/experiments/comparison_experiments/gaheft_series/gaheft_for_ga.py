@@ -8,7 +8,7 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 EXPERIMENT_NAME = "gaheft_for_ga"
 REPEAT_COUNT = 10
 # WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-WF_NAMES = ["Montage_25"]
+WF_NAMES = ["Montage_50"]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 RELIABILITY = [0.9]
 INDIVIDUALS_COUNTS = [5]

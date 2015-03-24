@@ -1,11 +1,14 @@
 from copy import deepcopy
 from functools import partial
+from pprint import pprint
 from deap.base import Toolbox
 import functools
 from heft.algs.ga.coevolution.cga import Env, Specie, VMCoevolutionGA, vm_run_cooperative_ga
 from heft.algs.ga.coevolution.operators import GA_SPECIE, ga_crossover, ga_mutate, ga_default_initialize, \
     RESOURCE_CONFIG_SPECIE, resource_conf_crossover, resource_config_mutate, vm_resource_default_initialize, \
     MutRegulator, one_to_one_vm_build_solutions, fitness_ga_and_vm, max_assign_credits, ga2resources_build_schedule
+from heft.core.environment import Utility
+from heft.core.environment.ResourceManager import Schedule
 from heft.experiments.cga.utilities.common import tourn, ArchivedSelector
 
 from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_old_ga
@@ -86,7 +89,15 @@ def create_cga_crm2vm(_wf, rm, estimator,
                      alg_params):
 
     class CgaVmWrapper:
+
         def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None):
+
+            # if self.count == 1:
+            #     return (None, None, initial_schedule, None), None
+            # self.count += 1
+
+
+
             kwargs = deepcopy(alg_params)
             kwargs["env"] = Env(_wf, rm, estimator)
             kwargs["fixed_schedule"] = fixed_schedule_part
@@ -94,11 +105,30 @@ def create_cga_crm2vm(_wf, rm, estimator,
             kwargs["current_time"] = current_time
             kwargs["initial_population"] = initial_population
 
+
+            pprint(fixed_schedule_part.mapping)
+            print("====================================")
+            print("====================================")
+            print("====================================")
+
             best, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**kwargs)
             schedule = ga2resources_build_schedule(_wf, estimator, rm, best, ctx=kwargs)
+
+
+
+
+            correct_schedule = Schedule({rm.node(node_name): items for node_name, items in schedule.mapping.items()})
+
+            pprint(correct_schedule.mapping)
+            Utility.Utility.validate_static_schedule(_wf, correct_schedule)
+
+            if None in correct_schedule.mapping:
+                raise Exception("Invalid name of node. Perhaprs resource manager in inconsistent state")
             # logbook = None
 
-            return (best, pops, schedule, None), logbook
+            #pprint(correct_schedule.mapping)
+
+            return (best, pops, correct_schedule, None), logbook
             # TODO: debug. Just for test
             # return (None, None, initial_schedule, None), logbook
 

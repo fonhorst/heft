@@ -81,9 +81,9 @@ def get_res_by_name(res_list, name):
     for res in res_list:
         if res.name == name:
             return res
-    print("Res: ", res)
-    print("Res_list: ", res_list)
-    return None
+    print("res_list", res_list)
+    print("Name", name)
+    raise Exception()
 
 def get_node_by_name(node_list, name):
     for node in node_list:
@@ -93,38 +93,26 @@ def get_node_by_name(node_list, name):
 
 class one_to_one_vm_build_solutions:
     def __call__(self, pops, interact_count):
+
         def is_found_pair(current_tmp_ga_number, res_pop_current_index, pairs):
             if current_tmp_ga_number in pairs:
                 ga_res_list = pairs[current_tmp_ga_number]
                 if res_pop_current_index in ga_res_list:
                     return True
 
+
         already_found_pairs = 0
         found_pairs = {}
 
-        ga_pop = []
-        ga_name = ''
-        res_pop = []
-        res_name = ''
+        ga_pop, ga_name = [], ''
+        res_pop, res_name = [], ''
+
         for s, p in pops.items():
-            if type(p[0][0]) is Resource:
-                res_pop = p
-                res_name = s.name
+            element_of_individual = p[0][0]
+            if isinstance(element_of_individual, Resource):
+                res_pop, res_name = p, s.name
             else:
-                ga_pop = p
-                ga_name = s.name
-
-        """ is it required?
-        no_similar = False
-
-        for i in range(0, len(ga_pop) - 1):
-            for j in range(0, len(ga_pop[i])):
-                if ga_pop[i][j][0] != ga_pop[i+1][j][0]:
-                    no_similar = True
-
-        #if not no_similar:
-        #    print("====================================================================Similar found");
-        """
+                ga_pop, ga_name = p, s.name
 
         not_valid = set()
         while already_found_pairs < interact_count:
@@ -134,8 +122,10 @@ class one_to_one_vm_build_solutions:
 
             ga_elem_number = random.randint(0, len(ga_pop))
             choose_counter = 0
+
+            ## looking for untested composition
             while ga_elem_number in not_valid:
-                if choose_counter > 100 and choose_counter < 150:
+                if 100 < choose_counter < 150:
                     print("ga_elem_number in not_valid = ")
                     print(ga_pop(ga_elem_number))
                 choose_counter += 1
@@ -143,6 +133,7 @@ class one_to_one_vm_build_solutions:
 
             current_ga_index = 0
             while pair_not_found and current_ga_index < len(ga_pop):
+                ## choosean individual
                 res_elem_number = random.randint(0, len(res_pop))
                 current_tmp_ga_number = (ga_elem_number + current_ga_index) % len(ga_pop)
                 ga_individual = ga_pop[current_tmp_ga_number]
@@ -321,8 +312,10 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
     temp_ga_ind = []
     for node, items in fix_sched.mapping.items():
         for item in items:
-            temp_ga_ind.append((item.job.id, node.resource.name, node.name))
+            temp_ga_ind.append((item.start_time,(item.job.id, node.resource.name, node.name)))
             ms[item.job.id] = node
+    ## items should be placed by their start_time
+    temp_ga_ind = [val for time, val in sorted(temp_ga_ind,key=lambda x: x[0])]
     for t in gs:
         temp_ga_ind.append(t)
     temp_ga_ind = ListBasedIndividual(temp_ga_ind)
@@ -331,6 +324,7 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
     task_to_node = {}
     for t in temp_ga_ind:
         node = ms[t[0]]
+        ## get true node entity
         if node is None:
             # This is for debug
             error = 5 / (1-1)
@@ -347,6 +341,11 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
             for sched_item in schedule_mapping[node]:
                 if item.job == sched_item.job:
                     sched_item.state = item.state
+
+    # corner case when initial schedule is empty
+    for node in fix_sched.mapping:
+        if node not in schedule_mapping:
+            schedule_mapping[node.name] = []
     schedule = Schedule(schedule_mapping)
     return schedule
 
@@ -943,7 +942,9 @@ def ga_default_initialize(ctx, size):
     fix_tasks = fix_sched.get_all_unique_tasks()
 
     result = []
-    chromo = [task for task in env.wf.get_all_unique_tasks() if task not in fix_tasks]
+    chromo = [task for task in env.wf.get_all_unique_tasks()
+              if task not in fix_tasks]
+
     found = True
     while found:
         found = False
@@ -958,6 +959,7 @@ def ga_default_initialize(ctx, size):
                 chromo.insert(ind_to_change, val)
                 found = True
                 break
+
     for i in range(size):
         res_amount = vm_random_count_generate(ctx)
         temp = []

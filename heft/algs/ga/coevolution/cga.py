@@ -122,14 +122,20 @@ class VMCoevolutionGA():
         resources = self.ENV[1].resources
         cemetery = set()
         for res in resources:
+            nodes_to_remove = []
             for node in res.nodes:
                 if node.state == 'down':
                     cemetery.add(node)
-                    res.nodes.remove(node)
+                    nodes_to_remove.append(node)
+            for node in nodes_to_remove:
+                res.nodes.remove(node)
         for res in ctx["env"][1].resources:
+            nodes_to_remove = []
             for node in res.nodes:
                 if node.state == 'down':
-                    res.nodes.remove(node)
+                    nodes_to_remove.append(node)
+            for node in nodes_to_remove:
+                res.nodes.remove(node)
         return cemetery
 
     def get_max_resource_number(self, ga_individual):
@@ -228,11 +234,8 @@ class VMCoevolutionGA():
     def gen(self):
         kwargs = self.kwargs
         kwargs['gen'] = kwargs['gen'] + 1
-        #print("Gen: " + str(kwargs['gen']))
 
         solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
-
-        #print("Solutions have been built")
 
         ## estimate fitness
         for sol in solutions:
@@ -320,15 +323,15 @@ class VMCoevolutionGA():
                 if random.random() < s.cxb:
                     c1 = child1.fitness
                     c2 = child2.fitness
-                    print("cross prev")
-                    print("    child1 = " + str(child1))
-                    print("    child2 = " + str(child2))
+                    #print("cross prev")
+                    #print("    child1 = " + str(child1))
+                    #print("    child2 = " + str(child2))
                     #print("     cross started")
                     s.mate(kwargs, child1, child2)
                     #print("cross after")
-                    print("    child1 = " + str(child1))
-                    print("    child2 = " + str(child2))
-                    print("-----")
+                    #print("    child1 = " + str(child1))
+                    #print("    child2 = " + str(child2))
+                    #print("-----")
                     #print("     cross done, child fintess : " + str((c1 + c2) / 2.0))
                     ## TODO: make credit inheritance here
                     ## TODO: toolbox.inherit_credit(pop, child1, child2)
@@ -342,12 +345,12 @@ class VMCoevolutionGA():
             for mutant in offspring:
                 if random.random() < s.mb:
                     #print("mutation started")
-                    print("mut prev")
-                    print("    mutant = " + str(mutant))
+                    #print("mut prev")
+                    #print("    mutant = " + str(mutant))
                     s.mutate(kwargs, mutant)
-                    print("mut after")
-                    print("    mutant = " + str(mutant))
-                    print("----")
+                    #print("mut after")
+                    #print("    mutant = " + str(mutant))
+                    #print("----")
                     #print("mutation done")
                 pass
 
@@ -385,9 +388,9 @@ def vm_run_cooperative_ga(**kwargs):
     kw_rm = kwargs_copy['env'][1].resources
 
 
-    for (resource, idx) in zip(res_rm, range(len(res_rm))):
+    for (i, resource) in enumerate(res_rm):
         new_set = set()
-        kw_nodes = kw_rm[idx].nodes
+        kw_nodes = kw_rm[i].nodes
         for node in kw_nodes:
             if node.name not in [res_node.name for res_node in resource.nodes]:
                 node.state = Node.Down
@@ -397,7 +400,7 @@ def vm_run_cooperative_ga(**kwargs):
         for node in [c_node for c_node in cga.CEMETERY if c_node.resource.name == resource.name]:
             new_set.add(node)
         # TODO doesn't change(
-        kwargs['env'][1].resources[idx].nodes = new_set
+        kwargs['env'][1].resources[i].nodes = new_set
 
     return res
 
