@@ -1,4 +1,5 @@
 from collections import deque
+from pprint import pprint
 from heft.utilities.common import trace
 
 
@@ -32,11 +33,29 @@ class NodeFailed(BaseEvent):
         return "NodeFailed"
 
 class NodeUp(BaseEvent):
-    def __init__(self, node):
+    def __init__(self, node, failed_event):
         self.node = node
+        self.failed_event = failed_event
 
     def __str__(self):
         return "NodeUp"
+
+class ResourceFailed(BaseEvent):
+    def __init__(self, resource, task):
+        self.resource = resource
+        self.task = task
+
+    def __str__(self):
+        return "ResourceFailed"
+
+class ResourceUp(BaseEvent):
+    def __init__(self, resource, failed_event):
+        self.resource = resource
+        self.failed_event = failed_event
+
+    def __str__(self):
+        return "ResourceUp"
+
 
 class EventMachine:
     #@trace
@@ -68,6 +87,12 @@ class EventMachine:
         event.time_posted = self.current_time
         if event.time_happened < self.current_time:
             raise Exception("happened time: " + str(event.time_happened) + " is earlier than current time: " + str(self.current_time))
+
+        # TODO: debug
+        if event.time_happened >= 1000000:
+            pprint(self.current_schedule.mapping)
+            raise Exception("I'm here")
+
         self.queue.append(event)
         self.queue = deque(sorted(self.queue, key=lambda x: x.time_happened))
 

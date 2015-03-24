@@ -4,12 +4,13 @@ import functools
 import operator
 import pprint
 import random
+from heft.core.CommonComponents import BladeExperimentalManager
 
 from heft.core.CommonComponents.BaseExecutor import BaseExecutor
 from heft.core.CommonComponents.failers.FailRandom import FailRandom
 from heft.core.environment.Utility import Utility
-from heft.core.environment.EventMachine import TaskFinished, NodeFailed, NodeUp, TaskStart
-from heft.core.environment.BaseElements import Node
+from heft.core.environment.EventMachine import TaskFinished, NodeFailed, NodeUp, TaskStart, ResourceFailed, ResourceUp
+from heft.core.environment.BaseElements import Node, Resource
 from heft.core.environment.ResourceManager import ScheduleItem, Schedule
 from heft.utilities.common import trace
 
@@ -43,40 +44,20 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
         initial_schedule = self.heft_planner.run(Schedule({node: [] for node in self.heft_planner.get_nodes()}))
 
-        # print("heft solution!")
-        # fsh = [hash(key) for key in initial_schedule.mapping.keys()]
-        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
-        # if any(((h not in fsh) for h in rm_hashes)):
-        #     raise Exception("Fixed schedule is broken")
-
-
         # TODO: change these two ugly records
         result = self.ga_builder()(self.current_schedule, initial_schedule)
-
-
-        # print("Ga solution is broken!")
-        # fsh = [hash(key) for key in result[0][2].mapping.keys()]
-        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
-        # if any(((h not in fsh) for h in rm_hashes)):
-        #     raise Exception("Fixed schedule is broken")
-
-
 
         if not self._apply_mh_if_better(None, heuristic_resulted_schedule=initial_schedule,
                            metaheuristic_resulted_schedule=result[0][2]):
             self.current_schedule = initial_schedule
             self._post_new_events()
 
-        # print("Before Before!")
-        # fsh = [hash(key) for key in self.current_schedule.mapping.keys()]
-        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
-        # if any(((h not in fsh) for h in rm_hashes)):
-        #     raise Exception("Fixed schedule is broken")
-
-
-        #self.current_schedule = result[0][2]
-        #self._post_new_events()
         return result
+
+
+    def _check_resource_fail(self, task, node):
+        return False
+
 
     def _task_start_handler(self, event):
 
@@ -93,11 +74,31 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         if not self._is_a_fail_possible():
             return
 
+
         if self._check_fail(event.task, node):
             # generate fail time, post it
             duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
             time_of_fail = (item.end_time - self.current_time)*random.random()
             time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
+
+            ## TODO: refactor
+            if self._check_resource_fail(event.task, node):
+                duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
+                time_of_fail = (item.end_time - self.current_time)*random.random()
+                time_of_fail = self.current_time + (time_of_fail if time_of_fail > 0 else 0.01) ##(item.end_time - self.current_time)*0.01
+
+                resource = self.resource_manager.res_by_id(node.resource)
+                event_failed = ResourceFailed(resource, event.task)
+                event_failed.time_happened = time_of_fail
+                self.post(event_failed)
+
+                if self.base_fail_duration != -1:
+                    duration = self.base_fail_duration + self.base_fail_dispersion * random.random()
+                    event_up = ResourceUp(resource, event_failed)
+                    event_up.time_happened = time_of_fail + duration
+                    self.post(event_up)
+
+                return
 
             event_failed = NodeFailed(node, event.task)
             event_failed.time_happened = time_of_fail
@@ -105,7 +106,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
             if self.base_fail_duration != -1:
                 duration = self.base_fail_duration + self.base_fail_dispersion *random.random()
-                event_nodeup = NodeUp(node)
+                event_nodeup = NodeUp(node, event_failed)
                 event_nodeup.time_happened = time_of_fail + duration
                 self.post(event_nodeup)
 
@@ -122,9 +123,17 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         if not self._is_a_fail_possible():
             return
 
+           ## TODO: refactor
+        def remove_all(ev):
+            # False means Remove
+            # True means Save
+            if isinstance(ev, TaskFinished) and ev.task.id == event.task.id: return False
+            if isinstance(ev, ResourceFailed) and ev.resource.name == event.node.resource.name: return False
+            # TODO: correct id
+            if isinstance(ev, ResourceUp) and ev.resource.name == event.node.resource.name: return False
+            return True
 
-
-        self._remove_events(lambda ev: not (isinstance(ev, TaskFinished) and ev.task.id == event.task.id))
+        self._remove_events(remove_all)
 
         ## interrupt ga
         self._stop_ga()
@@ -140,21 +149,12 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         it[0].state = ScheduleItem.FAILED
         it[0].end_time = self.current_time
 
-        # print("Before!")
-        # fsh = [hash(key) for key in self.current_schedule.mapping.keys()]
-        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
-        # if any(((h not in fsh) for h in rm_hashes)):
-        #     raise Exception("Fixed schedule is broken")
+        ## change for Blade Resource (Vm resources)
+        if isinstance(self.resource_manager, BladeExperimentalManager.ExperimentResourceManager):
+            self.resource_manager.resource(event.node.resource).farm_capacity -= event.node.flops
 
         # run HEFT
         self._reschedule(event)
-
-        # print("After!")
-        # fsh = [hash(key) for key in self.current_schedule.mapping.keys()]
-        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
-        # if any(((h not in fsh) for h in rm_hashes)):
-        #     raise Exception("Fixed schedule is broken")
-
 
         #run GA
         self._run_ga_in_background(event)
@@ -166,19 +166,81 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         # check node up
         self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
 
-        # print("Before!")
-        # fsh = [hash(key) for key in self.current_schedule.mapping.keys()]
-        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
-        # if any(((h not in fsh) for h in rm_hashes)):
-        #     raise Exception("Fixed schedule is broken")
+        ## change for Blade Resource (Vm resources)
+        if isinstance(self.resource_manager, BladeExperimentalManager.ExperimentResourceManager):
+            self.resource_manager.resource(event.node.resource).farm_capacity += event.node.flops
 
         self._reschedule(event)
 
-        # print("After!")
-        # fsh = [hash(key) for key in self.current_schedule.mapping.keys()]
-        # rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
-        # if any(((h not in fsh) for h in rm_hashes)):
-        #     raise Exception("Fixed schedule is broken")
+        #run GA
+        self._run_ga_in_background(event)
+        pass
+
+    def _resource_failed_handler(self, event):
+
+        if not self._is_a_fail_possible():
+            return
+
+
+
+
+        # print("Debug info: ")
+        # print("Failed task: ", event.task)
+        # print("Nodes: ", self.resource_manager.get_nodes_by_resource(event.resource))
+
+        nodes = self.resource_manager.get_nodes_by_resource(event.resource)
+
+        ## check if there is any live nodes after killing of the resource,
+        ## if not, don't kill the resource - cancel the killing
+        live_nodes = [node for node in self.resource_manager.get_nodes()
+                      if node.resource.name == event.resource.name]
+        if set(nodes) == set(live_nodes):
+            self._remove_events(lambda ev: not (isinstance(ev, ResourceUp) and ev.failed_event != event))
+            return
+
+
+        ## TODO: refactor
+        def remove_all(ev):
+            # False means Remove
+            # True means Save
+            if isinstance(ev, TaskFinished) and ev.task.id == event.task.id: return False
+            if isinstance(ev, NodeFailed) and ev.node.resource.name == event.resource.name: return False
+            if isinstance(ev, NodeUp) and ev.node.resource.name == event.resource.name: return False
+            if isinstance(ev, ResourceFailed) and ev.resource.name == event.resource.name: return False
+            if isinstance(ev, ResourceUp) and ev.failed_event != event: return False
+            return True
+
+        self._remove_events(remove_all)
+
+        ## interrupt ga
+        self._stop_ga()
+        # check node down
+
+        for node in nodes:
+            node.state = Node.Down
+            it = [item for item in self.current_schedule.mapping[node]
+                  if item.start_time <= event.time_happened < item.end_time and item.state == ScheduleItem.EXECUTING]
+            if len(it) > 0:
+                it[0].state = ScheduleItem.FAILED
+                it[0].end_time = self.current_time
+        self.resource_manager.resource(event.resource).state = Resource.Down
+
+
+        # run HEFT
+        self._reschedule(event)
+
+        #run GA
+        self._run_ga_in_background(event)
+        pass
+
+    def _resource_up_handler(self, event):
+        ## interrupt ga
+        self._stop_ga()
+        # check node up
+        self.resource_manager.resource(event.resource).state = Resource.Unknown
+
+        self._reschedule(event)
+
         #run GA
         self._run_ga_in_background(event)
         pass
@@ -267,16 +329,24 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         pass
 
     # def _is_a_fail_possible(self):
-    #     if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 1:
+    #     live_resources_overall = [res for res in self.resource_manager.get_resources() if res.state != Resource.Down]
+    #     live_nodes_overall = [nd for nd in self.resource_manager.get_nodes()if nd.state != Node.Down]
+    #
+    #     if len(live_nodes_overall) == 1:
     #         print("DECLINE NODE DOWN")
     #         st = functools.reduce(operator.add, (" {0} - {1}".format(nd.name, nd.state) for nd in self.resource_manager.get_nodes()), "")
     #         print("STATE INFORMATION: " + st)
     #         return False
+    #     print("Live resources: ", live_resources_overall)
+    #     print("Live nodes: ", live_nodes_overall)
     #     return True
 
+    ## kill of the last alive node is not allowed
     def _is_a_fail_possible(self):
+        live_nodes = [node for node in self.resource_manager.get_nodes() if node.state != Node.Down]
+        if len(live_nodes) == 1:
+            return False
         return True
-
 
 
     def _run_ga_in_background(self, event):

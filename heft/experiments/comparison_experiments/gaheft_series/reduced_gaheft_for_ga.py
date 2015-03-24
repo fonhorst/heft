@@ -5,7 +5,8 @@ from heft.experiments.comparison_experiments.gaheft_series.experiments import do
 from heft.experiments.comparison_experiments.gaheft_series.utilities import changing_reliability_run, test_run, \
     changing_tasks_run
 
-
+### Warning !!!
+### This experiment has not been applied for real. So, it is only a prototype
 EXPERIMENT_NAME = "reduced_gaheft_for_ga"
 REPEAT_COUNT = 1
 WF_NAMES = ["Montage_100"]

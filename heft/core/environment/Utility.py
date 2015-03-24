@@ -3,6 +3,7 @@ import functools
 import json
 import operator
 import os
+from pprint import pprint
 import pstats
 import subprocess
 import io
@@ -210,7 +211,8 @@ class Utility:
 
     ## TODO: under development now
     @staticmethod
-    def validateParentsAndChildren(schedule, workflow, AllUnstartedMode=False):
+    def validateParentsAndChildren(schedule, workflow, AllUnstartedMode=False, RaiseException=False):
+        INCORRECT_SCHEDULE = "Incorrect schedule"
         #{
         #   task: (node,start_time,end_time),
         #   ...
@@ -229,25 +231,31 @@ class Utility:
             states = [item.state for item in seq]
             if AllUnstartedMode:
                 if len(states) > 1 or states[0] != ScheduleItem.UNSTARTED:
-                    return False
+                    if RaiseException: raise Exception(INCORRECT_SCHEDULE)
+                    else: return False
             else:
                 if states[-1] != ScheduleItem.FINISHED:
-                    return False
+                    if RaiseException: raise Exception(INCORRECT_SCHEDULE)
+                    else: return False
                 finished = [state for state in states if state == ScheduleItem.FINISHED]
                 if len(finished) != 1:
-                    return False
+                    if RaiseException: raise Exception(INCORRECT_SCHEDULE)
+                    else: return False
                 failed = [state for state in states if state == ScheduleItem.FAILED]
                 if len(states) - len(finished) != len(failed):
-                    return False
+                    if RaiseException: raise Exception(INCORRECT_SCHEDULE)
+                    else: return False
             return True
 
         task_to_node = {job_id: sorted(seq, key=lambda x: x.start_time) for (job_id, seq) in task_to_node.items()}
         for (job_id, seq) in task_to_node.items():
             result = Utility.validate_time_seq(seq)
             if result is False:
-                return False
+                if RaiseException: raise Exception(INCORRECT_SCHEDULE)
+                else: return False
             if check_failed(seq) is False:
-                return False
+                if RaiseException: raise Exception(INCORRECT_SCHEDULE)
+                else: return False
 
 
         def check(task):
@@ -255,16 +263,24 @@ class Utility:
                 p_end_time = task_to_node[task.id][-1].end_time
                 c_start_time = task_to_node[child.id][-1].start_time
                 if c_start_time < p_end_time:
-                    return False
+
+                    #TODO: debug
+                    print("Parent task: ", task.id)
+                    print("Child task: ", child.id)
+
+                    if RaiseException: raise Exception(INCORRECT_SCHEDULE)
+                    else: return False
                 res = check(child)
                 if res is False:
-                    return False
+                    if RaiseException: raise Exception(INCORRECT_SCHEDULE)
+                    else: return False
             return True
 
         for task in workflow.head_task.children:
             res = check(task)
             if res is False:
-                return False
+                if RaiseException: raise Exception(INCORRECT_SCHEDULE)
+                else: return False
         return True
 
     ##TODO: only for static remove duplicate code later
@@ -390,7 +406,15 @@ class Utility:
     @staticmethod
     def validate_dynamic_schedule(_wf, schedule):
         seq_time_validaty = Utility.validateNodesSeq(schedule)
-        dependency_validaty = Utility.validateParentsAndChildren(schedule, _wf, AllUnstartedMode=False)
+
+
+
+        ## TODO: debug
+        print("SCHEDULE")
+        print("======================================")
+        pprint(schedule.mapping)
+        #dependency_validaty = Utility.validateParentsAndChildren(schedule, _wf, AllUnstartedMode=False)
+        dependency_validaty = Utility.validateParentsAndChildren(schedule, _wf, AllUnstartedMode=False, RaiseException=True)
 
         if seq_time_validaty is False:
             print("Schedule===================================")
@@ -683,7 +707,6 @@ class Utility:
         ## TODO: fix it later.
         os.chdir(old_dir)
         pass
-
 
 pass
 

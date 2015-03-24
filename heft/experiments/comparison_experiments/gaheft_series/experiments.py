@@ -6,6 +6,8 @@ from deap.tools import Logbook
 import numpy
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
+from heft.core.CommonComponents.BladeExperimentalManager import ExperimentResourceManager as BladeExperimentResourceManager, \
+    ExperimentEstimator as BladeExperimentEstimator
 from heft.core.CommonComponents.failers.FailOnce import FailOnce
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
@@ -14,7 +16,8 @@ from heft.experiments.comparison_experiments.executors.MIGaHeftExecutor import M
 from heft.experiments.comparison_experiments.executors.MPGaHeftOldPopExecutor import MPGaHeftOldPopExecutor
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
 from heft.experiments.comparison_experiments.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
-from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
+#from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
+from heft.core.environment.BladeResourceGenrator import ResourceGenerator as rg
 from heft.settings import TEMP_PATH
 
 
@@ -67,7 +70,11 @@ def do_reduced_gaheft_exp(saver, alg_builder, wf_name, **params):
 def do_gaheft_exp(saver, alg_builder, wf_name, **params):
     print("EXPERIMENT RUN START===========================")
     _wf = wf(wf_name)
-    rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
+
+    resources = params["resource_set"]["nodes_conf"]
+
+    rm = ExperimentResourceManager(rg.generate_resources([r if isinstance(r, (list, tuple, dict)) else [r]
+                                                          for r in resources]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
     ga = alg_builder(_wf, rm, estimator,
@@ -103,6 +110,54 @@ def do_gaheft_exp(saver, alg_builder, wf_name, **params):
     if saver is not None:
         saver(data)
     return data
+
+
+def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
+    print("EXPERIMENT RUN START===========================")
+    _wf = wf(wf_name)
+
+    resources = params["resource_set"]["nodes_conf"]
+
+    rm = BladeExperimentResourceManager(rg.generate_resources([r if isinstance(r, (list, tuple, dict)) else [r]
+                                                               for r in resources]))
+    rm.setVMParameter(params["resource_set"]["rules_list"])
+        # now transfer time less, if nodes from one blade
+    estimator = BladeExperimentEstimator(**params["estimator_settings"])
+    dynamic_heft = DynamicHeft(_wf, rm, estimator)
+    ga = alg_builder(_wf, rm, estimator,
+                     params["init_sched_percent"],
+                     log_book=None, stats=None,
+                     alg_params=params["alg_params"])
+
+    machine = GaHeftExecutor(heft_planner=dynamic_heft,
+                             wf=_wf,
+                             resource_manager=rm,
+                             ga_builder=lambda: ga,
+                             **params["executor_params"])
+
+    machine.init()
+    machine.run()
+    resulted_schedule = machine.current_schedule
+
+    Utility.validate_dynamic_schedule(_wf, resulted_schedule)
+
+    data = {
+        "wf_name": wf_name,
+        "params": None,
+        "result": {
+            "makespan": Utility.makespan(resulted_schedule),
+            ## TODO: this function should be remade to adapt under conditions of dynamic env
+            #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
+            "overall_execution_time": Utility.overall_execution_time(resulted_schedule),
+            "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
+        }
+    }
+    print("EXPERIMENT RUN END=========================")
+
+    if saver is not None:
+        saver(data)
+    return data
+
 
 
 def do_inherited_pop_exp(saver, alg_builder, chromosome_cleaner_builder, wf_name, **params):

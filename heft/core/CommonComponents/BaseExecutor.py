@@ -1,7 +1,7 @@
 from collections import deque
 from heft.core.environment.BaseElements import Node
 
-from heft.core.environment.EventMachine import TaskStart, TaskFinished, NodeFailed, NodeUp
+from heft.core.environment.EventMachine import TaskStart, TaskFinished, NodeFailed, NodeUp, ResourceFailed, ResourceUp
 from heft.core.environment.EventMachine import EventMachine
 from heft.core.environment.ResourceManager import ScheduleItem, Schedule
 from heft.utilities.common import trace
@@ -24,6 +24,12 @@ class BaseExecutor(EventMachine):
             return
         if isinstance(event, NodeUp):
             self._node_up_handler(event)
+            return
+        if isinstance(event, ResourceFailed):
+            self._resource_failed_handler(event)
+            return
+        if isinstance(event, ResourceUp):
+            self._resource_up_handler(event)
             return
         raise Exception("Unknown event: " + str(event))
 
@@ -107,4 +113,9 @@ class BaseExecutor(EventMachine):
     def _node_up_handler(self, event):
         pass
 
+    def _resource_failed_handler(self, event):
+        pass
+
+    def _resource_up_handler(self, event):
+        pass
     pass

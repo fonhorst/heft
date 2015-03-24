@@ -257,6 +257,28 @@ class GaheftSeriesTest(TestCase):
         inherited_pop_run(ga_exp, self.WF_TASKIDS_MAPPING, self.REPEAT_COUNT, params, is_debug=True)
         pass
 
+    def test_resources_gaheft_for_ga(self):
+        params = deepcopy(TEST_BASE_PARAMS)
+        params["resource_set"]["nodes_conf"] = [[10, 15, 25, 30], [15, 15, 20, 30]]
+        params["experiment_name"] = "test_gaheft_for_ga"
+        params["alg_name"] = "ga"
+        params["alg_params"] = {
+            "kbest": 5,
+            "n": 10,
+            "cxpb": 0.3,  # 0.8
+            "mutpb": 0.1,  # 0.5
+            "sweepmutpb": 0.3,  # 0.4
+            "gen_curr": 0,
+            "gen_step": 10,
+            "is_silent": True
+        }
+
+        saver = SaveToDirectory(self.save_path, params["experiment_name"])
+        pso_exp = partial(do_gaheft_exp, alg_builder=create_old_ga)
+        pso_exp = saver(pso_exp)
+        changing_reliability_run(pso_exp, self.RELIABILITY, self.INDIVIDUALS_COUNTS, self.REPEAT_COUNT, self.WF_NAMES, params, is_debug=True)
+        pass
+
 
     pass
 
