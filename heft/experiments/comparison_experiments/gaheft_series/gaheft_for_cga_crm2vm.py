@@ -2,7 +2,7 @@ from copy import deepcopy
 from functools import partial
 from deap.base import Toolbox
 import functools
-from heft.algs.ga.coevolution.cga import Env, Specie, VMCoevolutionGA
+from heft.algs.ga.coevolution.cga import Env, Specie, VMCoevolutionGA, vm_run_cooperative_ga
 from heft.algs.ga.coevolution.operators import GA_SPECIE, ga_crossover, ga_mutate, ga_default_initialize, \
     RESOURCE_CONFIG_SPECIE, resource_conf_crossover, resource_config_mutate, vm_resource_default_initialize, \
     MutRegulator, one_to_one_vm_build_solutions, fitness_ga_and_vm, max_assign_credits, ga2resources_build_schedule
@@ -14,8 +14,9 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 
 
 EXPERIMENT_NAME = "gaheft_for_ga"
-REPEAT_COUNT = 1
-WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+REPEAT_COUNT = 2
+WF_NAMES = ["Montage_25"]
+# WF_NAMES = ["Montage_25"]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 RELIABILITY = [0.95]
 INDIVIDUALS_COUNTS = [5]
@@ -35,14 +36,14 @@ BASE_PARAMS = {
                                cxb=0.5, mb=0.5,
                                mate=ga_crossover,
                                mutate=ga_mutate,
-                               select=ArchivedSelector(3)(tourn),
+                               select=tourn,
                                initialize=ga_default_initialize,
                                ),
                         Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=50,
                                cxb=0.5, mb=0.5,
                                mate=resource_conf_crossover,
                                mutate=resource_config_mutate,
-                               select=ArchivedSelector(3)(tourn),
+                               select=tourn,
                                initialize=vm_resource_default_initialize,
                                )
                         ],
@@ -52,7 +53,7 @@ BASE_PARAMS = {
             "operators": {
                 # "choose": default_choose,
                 # "build_solutions": default_build_solutions,
-                "build_solutions": one_to_one_vm_build_solutions,
+                "build_solutions": one_to_one_vm_build_solutions(),
                 "fitness": fitness_ga_and_vm,
                 # "fitness": overhead_fitness_mapping_and_ordering,
                 # "assign_credits": default_assign_credits
@@ -84,26 +85,24 @@ def create_cga_crm2vm(_wf, rm, estimator,
                      log_book, stats,
                      alg_params):
 
-
-    kwargs = deepcopy(alg_params)
-    kwargs["env"] = Env(_wf, rm, estimator)
-
     class CgaVmWrapper:
-        def __init__(self, **kwargs):
-            self.cga = VMCoevolutionGA(**kwargs)
-            pass
-
         def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None):
-            self.cga.__call__()
-            best, pops, logbook, initial_pops, hall, vm_series = self.cga.result()
-            schedule = ga2resources_build_schedule(_wf, estimator, rm, best)
+            kwargs = deepcopy(alg_params)
+            kwargs["env"] = Env(_wf, rm, estimator)
+            kwargs["fixed_schedule"] = fixed_schedule_part
+            kwargs["initial_schedule"] = initial_schedule
+            kwargs["current_time"] = current_time
+            kwargs["initial_population"] = initial_population
+
+            best, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**kwargs)
+            schedule = ga2resources_build_schedule(_wf, estimator, rm, best, ctx=kwargs)
             # logbook = None
 
             return (best, pops, schedule, None), logbook
             # TODO: debug. Just for test
             # return (None, None, initial_schedule, None), logbook
 
-    return CgaVmWrapper(**kwargs)
+    return CgaVmWrapper()
 
 
 
@@ -111,5 +110,6 @@ def create_cga_crm2vm(_wf, rm, estimator,
 ga_exp = partial(do_gaheft_exp_for_cga, alg_builder=create_cga_crm2vm)
 
 if __name__ == "__main__":
+    p = deepcopy(BASE_PARAMS)
     # test_run(ga_exp, BASE_PARAMS)
     changing_reliability_run(ga_exp, RELIABILITY, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS, is_debug=True)

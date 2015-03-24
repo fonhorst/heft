@@ -82,6 +82,13 @@ class ExperimentResourceManager(ResourceManager):
     def node(self, node):
         result = [nd for nd in self.resources_map[node.resource.name].nodes if nd.name == node.name]
         if len(result) == 0:
+
+            ## TODO: debug
+            print("node not found: ", node)
+            print("Resource name: ", node.resource.name)
+            print("Nodes: ", self.resources_map[node.resource.name].nodes)
+
+
             return None
         return result[0]
 
