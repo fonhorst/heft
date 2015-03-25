@@ -60,6 +60,13 @@ class Node:
     def __repr__(self):
         return str(self.name)
 
+    def __cmp__(self, other):
+        if isinstance(other, Node) and self.name == other.name:
+            return True
+        else:
+            return super().__cmp__(other)
+
+
 
 class Workflow:
     def __init__(self, id, name, head_task):

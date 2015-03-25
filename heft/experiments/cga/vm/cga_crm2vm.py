@@ -8,6 +8,7 @@ from heft.algs.ga.coevolution.operators import RESOURCE_CONFIG_SPECIE, GA_SPECIE
     max_assign_credits, MutRegulator, resource_config_mutate, \
     one_to_one_vm_build_solutions, fitness_ga_and_vm
 from heft.core.CommonComponents.BladeExperimentalManager import ExperimentResourceManager, ExperimentEstimator
+#from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.core.environment.ResourceManager import ScheduleItem, Schedule
 from heft.core.environment.Utility import wf
 from heft.core.environment.BladeResourceGenrator import ResourceGenerator as rg
@@ -25,11 +26,13 @@ class Config:
         self.wf_name = input_wf_name
         self._wf = wf(self.wf_name)
         # input changed from 1 dimension list to 2 dimensions
-        self.rm = ExperimentResourceManager(rg.generate_resources([[15, 15, 20, 30]]))
-        #self.rm.resources[0].nodes[0].state = "down"
+        self.rm = ExperimentResourceManager(rg.generate_resources([[10, 15, 25, 30]]))
+        self.rm.resources[0].nodes[0].state = "down"
         self.rm.setVMParameter([(80, 30)])
         # now transfer time less, if nodes from one blade
-        self.estimator = ExperimentEstimator(ideal_flops=20, transfer_nodes=10, transfer_blades=10)
+        self.estimator = ExperimentEstimator(ideal_flops=20, transfer_nodes=100, transfer_blades=100)
+        #self.estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
+        #                            ideal_flops=20, transfer_time=100)
 
         self.mapping_selector = ArchivedSelector(3)(tourn)
         self.ordering_selector = ArchivedSelector(3)(tourn)
@@ -39,7 +42,7 @@ class Config:
         self.config = {
             "hall_of_fame_size": 5,
             "interact_individuals_count": 200,
-            "generations": 100,
+            "generations": 10,
             "env": Env(self._wf, self.rm, self.estimator),
             "species": [Specie(name=GA_SPECIE, pop_size=100,
                                cxb=0.2, mb=0.5,
@@ -101,14 +104,18 @@ def do_experiment(saver, config, number):
 
     # create HEFT schedule
     heft_schedule = run_heft(config["env"][0], config["env"][1], config["env"][2])
-    for node, sched in heft_schedule.mapping.items():
-        if len(sched) > 0:
-            first_event = sched[0]
-            break
+    fix_items = [(sched, sched[-1].end_time) for node, sched in heft_schedule.mapping.items() if len(sched) > 0]
+    fix_items.sort(key=lambda x: x[1])
+    first_event = fix_items[-1][0][len(fix_items[-1][0]) - 2]
+    #for node, sched in heft_schedule.mapping.items():
+    #    if len(sched) > 0:
+    #        first_event = sched[0]
+    #        break
     fixed_schedule = _get_fixed_schedule(heft_schedule, first_event)
+    fixed_schedule.mapping = {node: [] for node in fixed_schedule.mapping}
     config["fixed_schedule"] = fixed_schedule
     config["initial_schedule"] = heft_schedule
-    config["current_time"] = 0
+    config["current_time"] = 0#first_event.end_time
     config["initial_population"] = None
 
     solution, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**config)
@@ -190,9 +197,9 @@ if __name__ == "__main__":
                 "Montage_25", "Montage_50", "Montage_75", "Montage_100",
                 "CyberShake_30", "CyberShake_50", "CyberShake_75", "CyberShake_100"
                 ]
-    wf_names = ["Montage_100"]
+    wf_names = ["Montage_25"]
     dir = "./cga_results/"
-    repeat_count = 10
+    repeat_count = 1
 
     for wf_name in wf_names:
         print("++++++========++++++++")

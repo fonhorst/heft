@@ -22,7 +22,7 @@ def _comm_ready_func(workflow,
         res_list = []
         for p in task.parents:
             c1 = task_to_node[p.id][2]
-            c2 = estimate(node, chrmo_mapping[p.id], task, p)
+            c2 = estimate(node.name, chrmo_mapping[p.id].name, task, p)
             res_list.append(c1 + c2)
 
         return max(res_list)

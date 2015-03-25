@@ -16,6 +16,7 @@ from heft.core.environment.Utility import Utility
 from heft.core.environment.ResourceGenerator import ResourceGenerator
 from heft.core.environment.ResourceGenerator import ResourceGenerator
 from heft.core.environment.BaseElements import Resource, Node, SoftItem, Workflow
+from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividual
 
 GA_SPECIE = "GASpecie"
 RESOURCE_CONFIG_SPECIE = "ResourceConfigSpecie"
@@ -81,8 +82,6 @@ def get_res_by_name(res_list, name):
     for res in res_list:
         if res.name == name:
             return res
-    print("Res: ", res)
-    print("Res_list: ", res_list)
     return None
 
 def get_node_by_name(node_list, name):
@@ -172,7 +171,6 @@ class one_to_one_vm_build_solutions:
                     for (elem, idx) in zip(ga_individual, range(len(ga_individual))):
                         res = get_res_by_name(res_individual, elem[1])
                         while len(res.nodes) == 0:
-                            print("problem in res init")
                             res_individual = res_pop[random.randint(0, len(res_pop) - 1)]
                             res = get_res_by_name(res_individual, elem[1])
                         if elem[2] not in [node.name for node in res.nodes]:
@@ -293,7 +291,6 @@ def _check_precedence(workflow, seq):
 def ga2resources_build_schedule(workflow, estimator, resource_manager, solution, ctx):
     gs = solution[GA_SPECIE]
     rs = solution[RESOURCE_CONFIG_SPECIE]
-
     # i don't know why it needed, but it is here
     #if not individual_lengths_compare(rs, get_max_resource_number(gs)):
     #    print('found')
@@ -318,11 +315,19 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
     ## TODO: не добавлены ноды из fixed_schedule
     schedule_mapping = {n: [] for n in set(ms.values())}
     fix_sched = ctx["fixed_schedule"]
-    temp_ga_ind = []
+    fix_items = []
     for node, items in fix_sched.mapping.items():
         for item in items:
-            temp_ga_ind.append((item.job.id, node.resource.name, node.name))
-            ms[item.job.id] = node
+            fix_items.append((item.job.id, node.resource.name, node, item.start_time))
+    temp_ga_ind = []
+    fix_items.sort(key=lambda x: x[3])
+    for item in fix_items:
+        temp_ga_ind.append((item[0], item[1], item[2].name))
+        ms[item[0]] = item[2]
+    #for node, items in fix_sched.mapping.items():
+    #    for item in items:
+    #        temp_ga_ind.append((item.job.id, node.resource.name, node.name))
+    #        ms[item.job.id] = node
     for t in gs:
         temp_ga_ind.append(t)
     temp_ga_ind = ListBasedIndividual(temp_ga_ind)
@@ -686,50 +691,65 @@ def vm_resource_default_initialize(ctx, size):
             fc = res.farm_capacity
             mrc = res.max_resource_capacity
             used_nodes = []
+            env_names = [node.name for node in res.nodes]
             while current_cap < fc - mrc and n < max_sweep_size:
+                if random.random() > 0.7:
+                    possible_nodes = [node for node in res.nodes if node.name not in used_nodes]
+                    tmp_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
+                    used_nodes.append(tmp_node.name)
+                    current_cap += tmp_node.flops
+                    generated_vms.add(tmp_node)
+                    continue
                 n += 1
                 node_name = res.name + "_node_" + str(n)
-                if node_name in [name for name in [node.name for node in cemetery]]:
-                    continue
                 tmp_capacity = random.randint(1, mrc)
-                nodes_filter = [node for node in res.nodes if (node.flops == tmp_capacity and node.name not in used_nodes)]
-                if len(nodes_filter) > 0:
-                    used_nodes.append(nodes_filter[0].name)
-                    tmp_node = nodes_filter[0]
-                else:
-                    while node_name in ([node.name for node in res.nodes] + [node.name for node in cemetery]):
-                        n += 1
-                        node_name = res.name + "_node_" + str(n)
-                    tmp_node = Node(node_name, res, [SoftItem.ANY_SOFT], tmp_capacity)
+                while node_name in (env_names + [node.name for node in cemetery] + used_nodes):
+                    n += 1
+                    node_name = res.name + "_node_" + str(n)
+                tmp_node = Node(node_name, res, [SoftItem.ANY_SOFT], tmp_capacity)
                 generated_vms.add(tmp_node)
+                used_nodes.append(tmp_node.name)
                 current_cap += tmp_capacity
             if current_cap < fc and n < max_sweep_size:
                 n += 1
                 node_name = res.name + "_node_" + str(n)
-                if node_name in [name for name in [node.name for node in cemetery]]:
-                    continue
+                while node_name in (env_names + [node.name for node in cemetery] + used_nodes):
+                    n += 1
+                    node_name = res.name + "_node_" + str(n)
                 cap = fc - current_cap
                 tmp_node = Node(node_name, res, [SoftItem.ANY_SOFT], cap)
+                used_nodes.append(tmp_node.name)
                 generated_vms.add(tmp_node)
+
+            for (gen_node, idx) in zip(generated_vms, range(len(generated_vms))):
+                if gen_node.name == 'res_0_node_1' and gen_node.flops == 25:
+                    print("shit node")
+                possible_nodes = [node for node in res.nodes if gen_node.flops == node.flops and node.name not in used_nodes]
+                if len(possible_nodes) > 1:
+                    generated_vms[idx] = deepcopy(possible_nodes[0])
+                    used_nodes.append(possible_nodes[0].name)
 
             new_res = deepcopy(res)
             new_res.nodes = generated_vms
+            if len(generated_vms) == 0:
+                pass
             default_inited_pop.append(new_res)
-
+            #print("init " + str([(node, node.flops) for node in generated_vms]))
             #for s in default_inited_pop:
-                #all_flops = sum(tmp.flops for tmp in s)
-                #if all_flops > fc:
-                #    print("=============wrong initialization " + all_flops)
-                #for tmp in s:
-                #    if tmp.flops < 1:
-                #        print('=============wrong initialization ' + tmp.flops)
+            #    all_flops = sum(tmp.flops for tmp in s)
+            #    if all_flops > fc:
+            #        print("=============wrong initialization " + all_flops)
+            #    for tmp in s:
+            #        if tmp.flops < 1:
+            #            print('=============wrong initialization ' + tmp.flops)
 
         #print('vm initialization complited : ' + random_values)
+
         result.append(default_inited_pop)
     result_list = [ListBasedIndividual(s) for s in result]
     return result_list
 
-def resource_conf_crossover(ctx, child1, child2):
+def resource_conf_crossover(ctx, parent1, parent2):
 
     def get_child_from_pair(p1, p2, k):
         filled_power = sum(s.flops for s in p1[0:k])
@@ -760,6 +780,8 @@ def resource_conf_crossover(ctx, child1, child2):
 
     env = ctx['env']
 
+    child1 = deepcopy(parent1)
+    child2 = deepcopy(parent2)
     cemetery = ctx['cemetery']
     for bl_idx in range(len(child1)):
         res = env[1].resources[bl_idx]
@@ -791,9 +813,23 @@ def resource_conf_crossover(ctx, child1, child2):
                 second = get_child_from_pair(blade1, blade2, k)
 
         if first is not None:
+            used_nodes = [node.name for node in first]
+            for (gen_node, idx) in zip(first, range(len(first))):
+                possible_nodes = [node for node in res.nodes if gen_node.flops == node.flops and node.name not in used_nodes]
+                if len(possible_nodes) > 1:
+                    first[idx] = deepcopy(possible_nodes[0])
+                    used_nodes.append(possible_nodes[0].name)
+
             blade1.clear()
             blade1.extend(first)
         if second is not None:
+            used_nodes = [node.name for node in second]
+            for (gen_node, idx) in zip(second, range(len(second))):
+                possible_nodes = [node for node in res.nodes if gen_node.flops == node.flops and node.name not in used_nodes]
+                if len(possible_nodes) > 1:
+                    second[idx] = deepcopy(possible_nodes[0])
+                    used_nodes.append(possible_nodes[0].name)
+
             blade2.clear()
             blade2.extend(second)
 
@@ -804,16 +840,27 @@ def resource_conf_crossover(ctx, child1, child2):
         filled_power = sum(s.flops for s in blade1)
         if filled_power > fc:
             print('================= wrong value of flops after crossover child1 ' + str(filled_power))
+
+        env_nodes = res.nodes
+        for node in child1:
+            for e_node in env_nodes:
+                if node.name == e_node.name and e_node.flops != node.flops:
+                    pass
+        for node in child2:
+            for e_node in env_nodes:
+                if node.name == e_node.name and e_node.flops != node.flops:
+                    pass
+
         if first is not None:
             child1[bl_idx].nodes = set(blade1)
         if second is not None:
             child2[bl_idx].nodes = set(blade2)
-    pass
+    return child1, child2
 
 
 def resource_config_mutate(ctx, mutant):
 
-    def try_to_decrease_resources(mutant, k1):
+    def try_to_decrease_resources(mutant, k1, env_names):
 
         str_po_print = 'd ' + str(len(mutant)) + ' '
 
@@ -824,6 +871,8 @@ def resource_config_mutate(ctx, mutant):
 
         for i in range(len(mutant)):
             k_tmp = random.randint(0, len(mutant) - 1)
+            while mutant[k_tmp].name in env_names:
+                k_tmp = random.randint(0, len(mutant) - 1)
             value_to_add = min(rc - mutant[k_tmp].flops, flops_to_share)
             mutant[k_tmp].flops += value_to_add
             flops_to_share -= value_to_add
@@ -834,7 +883,7 @@ def resource_config_mutate(ctx, mutant):
 
         return str_po_print + str(len(mutant))
 
-    def try_to_increase_resources(mutant, k1, k2):
+    def try_to_increase_resources(mutant, k1, k2, env_names):
         cur_res = mutant[0].resource.name
         str_po_print = 'i ' + str(len(mutant)) + ' '
         tmp_node = Node(k1, mutant[0].resource, [SoftItem.ANY_SOFT])
@@ -857,7 +906,7 @@ def resource_config_mutate(ctx, mutant):
         k_tmp = random.randint(0, len(mutant) - 1)
 
         if tmp_node.flops < rc:
-            while k_tmp == k1 or mutant[k_tmp].flops <= 1:
+            while k_tmp == k1 or mutant[k_tmp].flops <= 1 or mutant[k_tmp].name in env_names:
                 k_tmp = random.randint(0, len(mutant) - 1)
             value_to_add = random.randint(1, min(rc - tmp_node.flops, mutant[k_tmp].flops - 1))
             tmp_node.flops += value_to_add
@@ -890,6 +939,8 @@ def resource_config_mutate(ctx, mutant):
         blade = [node for node in res.nodes]
         fc = env.rm.resources[idx].farm_capacity
         rc = env.rm.resources[idx].max_resource_capacity
+        env_nodes = [node for node in env.rm.resources[idx].nodes]
+        env_names = [node.name for node in env_nodes]
 
         filled_power = sum(s.flops for s in blade)
         if filled_power > fc:
@@ -898,12 +949,21 @@ def resource_config_mutate(ctx, mutant):
 
         k1, k2 = 0, 0
 
+
         if filled_power > fc:
                 print('================= wrong value of flops before all' + str(filled_power))
 
-        while k1 == k2 and len(blade) > 1:
+        counter = 0
+        is_static_nodes = False
+        while blade[k1].name in env_names or blade[k2].name in env_names or k1 == k2:
+            if counter > len(blade) * len(blade):
+                is_static_nodes = True
+                break
+            counter += 1
             k1 = random.randint(0, len(blade) - 1)
             k2 = random.randint(0, len(blade) - 1)
+        if is_static_nodes:
+            continue
 
         option = random.random()
 
@@ -913,12 +973,12 @@ def resource_config_mutate(ctx, mutant):
             if filled_power > fc:
                 print('================= wrong value of flops after resource changes' + str(filled_power))
         elif option < 2 / 3 and k1 != k2:
-            try_to_decrease_resources(blade, k1)
+            try_to_decrease_resources(blade, k1, env_names)
             filled_power = sum(s.flops for s in blade)
             if filled_power > fc:
                 print('================= wrong value of flops after resource decrease' + str(filled_power))
         elif (k1 != k2) and option > 2 / 3 and filled_power < fc:
-            try_to_increase_resources(blade, k1, k2)
+            try_to_increase_resources(blade, k1, k2, env_names)
             filled_power = sum(s.flops for s in blade)
             if filled_power > fc:
                 print('================= wrong value of flops after resource increase' + str(filled_power))
@@ -926,16 +986,43 @@ def resource_config_mutate(ctx, mutant):
         filled_power = sum(s.flops for s in blade)
         if filled_power > fc:
                 print('================= wrong value of flops after all' + str(filled_power))
-        fixed_nodes = [resour for resour in env.rm.resources][idx].nodes
-        fixed_names = [node.name for node in fixed_nodes]
-        new_res = set()
-        for node in res.nodes:
-            if node.name in fixed_names and node.name in blade:
-                new_res.add(node)
+        #fixed_nodes = [resour for resour in env.rm.resources][idx].nodes
+        #fixed_names = [node.name for node in fixed_nodes]
+        #new_res = set()
+        #for node in res.nodes:
+        #    if node.name in fixed_names and node.name in blade:
+        #        new_res.add(node)
+        #for node in blade:
+        #    if node.name not in fixed_names:
+        #        new_res.add(node)
+        #res.nodes = new_res
+
+        # check corectness
         for node in blade:
-            if node.name not in fixed_names:
-                new_res.add(node)
-        res.nodes = new_res
+            for e_node in env_nodes:
+                if node.name == e_node.name and e_node.flops != node.flops:
+                    pass
+
+        filled_power = sum(s.flops for s in blade)
+        if filled_power > fc:
+            print("================= wrong chromosome at the start of mutate phase " + str(filled_power))
+
+        used_nodes = [node.name for node in res.nodes]
+        temp_nodes = set()
+        for gen_node in blade:
+            possible_nodes = [node for node in env_nodes if gen_node.flops == node.flops and node.name not in used_nodes]
+            if len(possible_nodes) > 0:
+                gen_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
+                used_nodes.append(gen_node.name)
+            temp_nodes.add(gen_node)
+        res.nodes = temp_nodes
+
+        filled_power = sum(s.flops for s in res.nodes)
+        if filled_power > fc:
+            print("================= wrong chromosome at the start of mutate phase " + str(filled_power))
+
+        if len(res.nodes) == 0:
+            pass
 
 
 ##===================================
@@ -982,9 +1069,6 @@ def ga_default_initialize(ctx, size):
 
 
 def vm_random_count_generate(ctx):
-    """
-    now this function returns indexes for each blade
-    """
     env = ctx['env']
     result = []
     for res in env.rm.resources:
@@ -1006,8 +1090,9 @@ def ga_mutate(ctx, mutant):
     k = len(mutant) / 25
     env = ctx['env']
     wf = env.wf
+    env_nodes = [node.name for node in env.rm.resources[0].nodes]
     for i in range(len(mutant)):
-        if random.random() < k / len(mutant):
+        if random.random() < 2 * k / len(mutant):
             found_inconsistency = True
             while found_inconsistency:
                 k1 = random.randint(0, len(mutant) - 1)
@@ -1043,7 +1128,7 @@ def ga_mutate(ctx, mutant):
                     used_resources.append(c[1])
             cell = random.randint(0, len(mutant) - 1)
             res = used_resources[random.randint(0, len(used_resources) - 1)]
-            used_nodes = [c[2] for c in mutant if c[1] == res]
+            used_nodes = [c[2] for c in mutant if c[1] == res] + env_nodes
             node = used_nodes[random.randint(0, len(used_nodes) - 1)]
             mutant[cell] = (mutant[cell][0], res, node)
     if random.random() < k / (2 * len(mutant)):
@@ -1056,7 +1141,9 @@ def ga_mutate(ctx, mutant):
             if random.random() < k / len(mutant):
                 k1 = random.randint(0, len(mutant) - 1)
                 res_number = used_resources[random.randint(0, len(used_resources) - 1)]
-                used_nodes = [c[2] for c in mutant if c[1] == res_number]
+                used_nodes = [c[2] for c in mutant if c[1] == res_number] + env_nodes
+                if len(used_nodes) == 0:
+                    continue
                 node_number = used_nodes[random.randint(0, len(used_nodes) - 1)]
                 mutant[k1] = (mutant[k1][0], res_number, node_number)
 
@@ -1073,6 +1160,57 @@ def ga_mutate(ctx, mutant):
     check_consistency(ctx, mutant)
     return mutant
 
+"""
+def ga_crossover(ctx, child1, child2):
+    env = ctx['env']
+    wf = env.wf
+    i1 = random.randint(0, len(child1))
+    i2 = random.randint(0, len(child1))
+
+    index1 = min(i1, i2)
+    index2 = max(i1, i2)
+
+    def make_offspring(ch1, ch2):
+        global fe1
+        f1 = ch1[0:index1]
+        f2 = ch1[index1:index2]
+        f3 = ch1[index2:]
+
+        s1 = ch2[0:index1]
+        s2 = ch2[index1:index2]
+        s3 = ch2[index2:]
+
+        diff_s1_f2 = [(se1, se2, se3) for (se1, se2, se3) in s1 if se1 not in [fe1 for (fe1, fe2, fe3) in f2]]
+        diff_s3_f2 = [(se1, se2, se3) for (se1, se2, se3) in s3 if se1 not in [fe1 for (fe1, fe2, fe3) in f2]]
+        diff_s2_f2 = [(s2[i], i) for i in range(len(s2)) if s2[i][0] not in [fe1 for (fe1, fe2, fe3) in f2]]
+        if len(diff_s2_f2) > 0:
+            pass
+
+        merged_f2_s2 = ListBasedIndividual(s for s in f2)
+
+        def insert_cell(cell, cromo_part):
+            t = wf.byId(cell[0][0])
+            pos = cell[1]
+            i = pos
+            while i < len(cromo_part):
+                if wf.byId(cromo_part[i][0]) in t.parents:
+                    pos = i + 1
+                i += 1
+            cromo_part.insert(pos, cell[0])
+
+        j = 0
+        while len(diff_s2_f2) > j:
+            insert_cell(diff_s2_f2[j], merged_f2_s2)
+            j += 1
+        return list(diff_s1_f2 + merged_f2_s2 + diff_s3_f2)
+
+    chrm1 = make_offspring(child1, child2)
+    chrm2 = make_offspring(child2, child1)
+
+    check_consistency(ctx, chrm1)
+    check_consistency(ctx, chrm2)
+    return ListBasedIndividual(chrm1), ListBasedIndividual(chrm2)
+"""
 
 def ga_crossover(ctx, child1, child2):
     env = ctx['env']
@@ -1122,8 +1260,7 @@ def ga_crossover(ctx, child1, child2):
 
     check_consistency(ctx, chrm1)
     check_consistency(ctx, chrm2)
-
-    return chrm1, chrm2
+    return ListBasedIndividual(chrm1), ListBasedIndividual(chrm2)
 
 
 def check_consistency(ctx, chromosome):
