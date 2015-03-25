@@ -681,7 +681,7 @@ def vm_resource_default_initialize(ctx, size):
 
     for i in range(size):
 
-        max_sweep_size = env.wf.get_max_sweep() / 2
+        max_sweep_size = env.wf.get_max_sweep()
         default_inited_pop = []
         resources = env.rm.get_live_resources()
         for res in resources:
@@ -693,7 +693,7 @@ def vm_resource_default_initialize(ctx, size):
             used_nodes = []
             env_names = [node.name for node in res.nodes]
             while current_cap < fc - mrc and n < max_sweep_size:
-                if random.random() > 0.7:
+                if random.random() < 0.05:
                     possible_nodes = [node for node in res.nodes if node.name not in used_nodes]
                     tmp_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
                     used_nodes.append(tmp_node.name)
@@ -722,17 +722,14 @@ def vm_resource_default_initialize(ctx, size):
                 generated_vms.add(tmp_node)
 
             for (gen_node, idx) in zip(generated_vms, range(len(generated_vms))):
-                if gen_node.name == 'res_0_node_1' and gen_node.flops == 25:
-                    print("shit node")
                 possible_nodes = [node for node in res.nodes if gen_node.flops == node.flops and node.name not in used_nodes]
                 if len(possible_nodes) > 1:
-                    generated_vms[idx] = deepcopy(possible_nodes[0])
-                    used_nodes.append(possible_nodes[0].name)
+                    gen_node = deepcopy((possible_nodes[random.randint(0, len(possible_nodes) - 1)]))
+                    generated_vms[idx] = gen_node
+                    used_nodes.append(gen_node.name)
 
             new_res = deepcopy(res)
             new_res.nodes = generated_vms
-            if len(generated_vms) == 0:
-                pass
             default_inited_pop.append(new_res)
             #print("init " + str([(node, node.flops) for node in generated_vms]))
             #for s in default_inited_pop:
@@ -817,8 +814,9 @@ def resource_conf_crossover(ctx, parent1, parent2):
             for (gen_node, idx) in zip(first, range(len(first))):
                 possible_nodes = [node for node in res.nodes if gen_node.flops == node.flops and node.name not in used_nodes]
                 if len(possible_nodes) > 1:
-                    first[idx] = deepcopy(possible_nodes[0])
-                    used_nodes.append(possible_nodes[0].name)
+                    new_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
+                    first[idx] = new_node
+                    used_nodes.append(new_node.name)
 
             blade1.clear()
             blade1.extend(first)
@@ -827,8 +825,9 @@ def resource_conf_crossover(ctx, parent1, parent2):
             for (gen_node, idx) in zip(second, range(len(second))):
                 possible_nodes = [node for node in res.nodes if gen_node.flops == node.flops and node.name not in used_nodes]
                 if len(possible_nodes) > 1:
-                    second[idx] = deepcopy(possible_nodes[0])
-                    used_nodes.append(possible_nodes[0].name)
+                    new_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
+                    second[idx] = new_node
+                    used_nodes.append(new_node.name)
 
             blade2.clear()
             blade2.extend(second)
@@ -841,16 +840,6 @@ def resource_conf_crossover(ctx, parent1, parent2):
         if filled_power > fc:
             print('================= wrong value of flops after crossover child1 ' + str(filled_power))
 
-        env_nodes = res.nodes
-        for node in child1:
-            for e_node in env_nodes:
-                if node.name == e_node.name and e_node.flops != node.flops:
-                    pass
-        for node in child2:
-            for e_node in env_nodes:
-                if node.name == e_node.name and e_node.flops != node.flops:
-                    pass
-
         if first is not None:
             child1[bl_idx].nodes = set(blade1)
         if second is not None:
@@ -860,7 +849,7 @@ def resource_conf_crossover(ctx, parent1, parent2):
 
 def resource_config_mutate(ctx, mutant):
 
-    def try_to_decrease_resources(mutant, k1, env_names):
+    def try_to_decrease_resources(mutant, k1):
 
         str_po_print = 'd ' + str(len(mutant)) + ' '
 
@@ -871,8 +860,8 @@ def resource_config_mutate(ctx, mutant):
 
         for i in range(len(mutant)):
             k_tmp = random.randint(0, len(mutant) - 1)
-            while mutant[k_tmp].name in env_names:
-                k_tmp = random.randint(0, len(mutant) - 1)
+            #while mutant[k_tmp].name in env_names:
+            #    k_tmp = random.randint(0, len(mutant) - 1)
             value_to_add = min(rc - mutant[k_tmp].flops, flops_to_share)
             mutant[k_tmp].flops += value_to_add
             flops_to_share -= value_to_add
@@ -883,7 +872,7 @@ def resource_config_mutate(ctx, mutant):
 
         return str_po_print + str(len(mutant))
 
-    def try_to_increase_resources(mutant, k1, k2, env_names):
+    def try_to_increase_resources(mutant, k1, k2):
         cur_res = mutant[0].resource.name
         str_po_print = 'i ' + str(len(mutant)) + ' '
         tmp_node = Node(k1, mutant[0].resource, [SoftItem.ANY_SOFT])
@@ -906,7 +895,7 @@ def resource_config_mutate(ctx, mutant):
         k_tmp = random.randint(0, len(mutant) - 1)
 
         if tmp_node.flops < rc:
-            while k_tmp == k1 or mutant[k_tmp].flops <= 1 or mutant[k_tmp].name in env_names:
+            while k_tmp == k1 or mutant[k_tmp].flops <= 1:# or mutant[k_tmp].name in env_names:
                 k_tmp = random.randint(0, len(mutant) - 1)
             value_to_add = random.randint(1, min(rc - tmp_node.flops, mutant[k_tmp].flops - 1))
             tmp_node.flops += value_to_add
@@ -941,6 +930,7 @@ def resource_config_mutate(ctx, mutant):
         rc = env.rm.resources[idx].max_resource_capacity
         env_nodes = [node for node in env.rm.resources[idx].nodes]
         env_names = [node.name for node in env_nodes]
+        cemetery = [node.name for node in ctx['cemetery']]
 
         filled_power = sum(s.flops for s in blade)
         if filled_power > fc:
@@ -955,15 +945,15 @@ def resource_config_mutate(ctx, mutant):
 
         counter = 0
         is_static_nodes = False
-        while blade[k1].name in env_names or blade[k2].name in env_names or k1 == k2:
-            if counter > len(blade) * len(blade):
+        while len(blade) > 1 and k1 == k2:
+            if counter > len(blade):
                 is_static_nodes = True
                 break
             counter += 1
             k1 = random.randint(0, len(blade) - 1)
             k2 = random.randint(0, len(blade) - 1)
-        if is_static_nodes:
-            continue
+        #if is_static_nodes:
+        #    continue
 
         option = random.random()
 
@@ -973,12 +963,12 @@ def resource_config_mutate(ctx, mutant):
             if filled_power > fc:
                 print('================= wrong value of flops after resource changes' + str(filled_power))
         elif option < 2 / 3 and k1 != k2:
-            try_to_decrease_resources(blade, k1, env_names)
+            try_to_decrease_resources(blade, k1)
             filled_power = sum(s.flops for s in blade)
             if filled_power > fc:
                 print('================= wrong value of flops after resource decrease' + str(filled_power))
         elif (k1 != k2) and option > 2 / 3 and filled_power < fc:
-            try_to_increase_resources(blade, k1, k2, env_names)
+            try_to_increase_resources(blade, k1, k2)
             filled_power = sum(s.flops for s in blade)
             if filled_power > fc:
                 print('================= wrong value of flops after resource increase' + str(filled_power))
@@ -986,22 +976,8 @@ def resource_config_mutate(ctx, mutant):
         filled_power = sum(s.flops for s in blade)
         if filled_power > fc:
                 print('================= wrong value of flops after all' + str(filled_power))
-        #fixed_nodes = [resour for resour in env.rm.resources][idx].nodes
-        #fixed_names = [node.name for node in fixed_nodes]
-        #new_res = set()
-        #for node in res.nodes:
-        #    if node.name in fixed_names and node.name in blade:
-        #        new_res.add(node)
-        #for node in blade:
-        #    if node.name not in fixed_names:
-        #        new_res.add(node)
-        #res.nodes = new_res
 
         # check corectness
-        for node in blade:
-            for e_node in env_nodes:
-                if node.name == e_node.name and e_node.flops != node.flops:
-                    pass
 
         filled_power = sum(s.flops for s in blade)
         if filled_power > fc:
@@ -1014,7 +990,17 @@ def resource_config_mutate(ctx, mutant):
             if len(possible_nodes) > 0:
                 gen_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
                 used_nodes.append(gen_node.name)
+            wrong_nodes = [node for node in env_nodes if gen_node.name == node.name and node.name]
+            if len(wrong_nodes) > 0:
+                if gen_node.flops != wrong_nodes[0].flops:
+                    name_idx = 0
+                    new_name = res.name + "_node_" + str(name_idx)
+                    while new_name in (env_names + used_nodes + cemetery):
+                        name_idx += 1
+                        new_name = res.name + "_node_" + str(name_idx)
+                    gen_node.name = new_name
             temp_nodes.add(gen_node)
+
         res.nodes = temp_nodes
 
         filled_power = sum(s.flops for s in res.nodes)
