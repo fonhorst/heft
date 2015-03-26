@@ -26,8 +26,9 @@ class ExperimentEstimator(Estimator):
     def estimate_transfer_time(self, node1, node2, task1, task2):
         # TODO transfer time should depends on a task data size
         # TODO should be refactored, because now comparing of resources making by names of resources!!!
-        if node1.resource.name == node2.resource.name:
-            res = self.transfer_nodes
+        if node1 == node2:
+            #res = self.transfer_nodes
+            res = 0
         else:
             res = self.transfer_blades
         """

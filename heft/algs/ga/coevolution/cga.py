@@ -102,7 +102,7 @@ class VMCoevolutionGA():
            assert sm == self.INTERACT_INDIVIDUALS_COUNT, \
                "For specie {0} count doesn't equal to {1}. Actual value {2}".format(s, self.INTERACT_INDIVIDUALS_COUNT, sm)
 
-        print("Initialization finished")
+        #print("Initialization finished")
 
         self.hall = HallOfFame(self.HALL_OF_FAME_SIZE)
 
@@ -326,20 +326,31 @@ class VMCoevolutionGA():
                     c2 = child2.fitness
                     #print("cross prev")
                     #if s.name == 'ResourceConfigSpecie':
-                    #    print("    child1 = " + str(child1[0].nodes))
-                    #    print("    child2 = " + str(child2[0].nodes))
+                    #    print("    child1 = " + str([(node, node.flops) for node in child1[0].nodes]))
+                    #    print("    child2 = " + str([(node, node.flops) for node in child2[0].nodes]))
                     #else:
                     #    print("    child1 = " + str(child1))
                     #    print("    child2 = " + str(child2))
                     #print("     cross started")
-                    s.mate(kwargs, child1, child2)
+                    if s.name == 'ResourceConfigSpecie':
+                        chd1, chd2 = s.mate(kwargs, child1, child2)
+                        chd1.fitness = (c1 + c2) / 2.0
+                        chd2.fitness = (c1 + c2) / 2.0
+                        pop.append(chd1)
+                        pop.append(chd2)
+                    else:
+                        chd1, chd2 = s.mate(kwargs, child1, child2)
+                        chd1.fitness = (c1 + c2) / 2.0
+                        chd2.fitness = (c1 + c2) / 2.0
+                        pop.append(chd1)
+                        pop.append(chd2)
                     #print("cross after")
                     #if s.name == 'ResourceConfigSpecie':
-                    #    print("    child1 = " + str(child1[0].nodes))
-                    #    print("    child2 = " + str(child2[0].nodes))
+                    #    print("    child1 = " + str([(node, node.flops) for node in chd1[0].nodes]))
+                    #    print("    child2 = " + str([(node, node.flops) for node in chd2[0].nodes]))
                     #else:
-                    #    print("    child1 = " + str(child1))
-                    #    print("    child2 = " + str(child2))
+                    #    print("    child1 = " + str(chd1))
+                    #    print("    child2 = " + str(chd2))
                     #print("-----")
                     #print("     cross done, child fintess : " + str((c1 + c2) / 2.0))
                     ## TODO: make credit inheritance here
@@ -347,8 +358,7 @@ class VMCoevolutionGA():
                     ## TODO: perhaps, this operation should be done after all crossovers in the pop
                     ## default implementation
                     ## ?
-                    child1.fitness = (c1 + c2) / 2.0
-                    child2.fitness = (c1 + c2) / 2.0
+
                     pass
 
             for mutant in offspring:
@@ -359,7 +369,10 @@ class VMCoevolutionGA():
                     #    print("    mutant = " + str([(node, node.flops)for node in mutant[0].nodes]))
                     #else:
                     #    print("    mutant = " + str(mutant))
-                    s.mutate(kwargs, mutant)
+                    if s.name == 'ResourceConfigSpecie':
+                        s.mutate(kwargs, mutant)
+                    else:
+                        s.mutate(kwargs, mutant)
                     #print("mut after")
                     #if s.name == 'ResourceConfigSpecie':
                     #    print("    mutant = " + str([(node, node.flops)for node in mutant[0].nodes]))
