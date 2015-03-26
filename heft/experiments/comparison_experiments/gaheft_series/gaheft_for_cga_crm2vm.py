@@ -22,7 +22,7 @@ WF_NAMES = ["Montage_25"]
 # WF_NAMES = ["Montage_25"]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 RELIABILITY = [0.95]
-INDIVIDUALS_COUNTS = [5]
+INDIVIDUALS_COUNTS = [100]
 # INDIVIDUALS_COUNTS = [60, 105, 150]
 
 BASE_PARAMS = {
@@ -32,7 +32,7 @@ BASE_PARAMS = {
 
     "alg_params": {
             "hall_of_fame_size": 5,
-            "interact_individuals_count": 5,
+            "interact_individuals_count": 20,
             "generations": 10,
             #"env": Env(self._wf, self.rm, self.estimator),
             "species": [Specie(name=GA_SPECIE, pop_size=50,

@@ -237,6 +237,7 @@ class VMCoevolutionGA():
 
         solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
 
+
         ## estimate fitness
         for sol in solutions:
             sol.fitness = self.fitness(kwargs, sol)
