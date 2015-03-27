@@ -18,11 +18,12 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 
 
 EXPERIMENT_NAME = "gaheft_for_cga_crm2vm"
-REPEAT_COUNT = 100
-WF_NAMES = ["Montage_25"]
+
+REPEAT_COUNT = 350
 # WF_NAMES = ["Montage_25"]
-# RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
-RELIABILITY = [0.9]
+WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+# RELIABILITY = [0.9]
 INDIVIDUALS_COUNTS = [100]
 # INDIVIDUALS_COUNTS = [60, 105, 150]
 
@@ -33,18 +34,18 @@ BASE_PARAMS = {
 
     "alg_params": {
             "hall_of_fame_size": 5,
-            "interact_individuals_count": 20,
-            "generations": 10,
+            "interact_individuals_count": 150,
+            "generations": 300,
             #"env": Env(self._wf, self.rm, self.estimator),
-            "species": [Specie(name=GA_SPECIE, pop_size=50,
-                               cxb=0.5, mb=0.5,
+            "species": [Specie(name=GA_SPECIE, pop_size=75,
+                               cxb=0.6, mb=0.8,
                                mate=ga_crossover,
                                mutate=ga_mutate,
                                select=tourn,
                                initialize=ga_default_initialize,
                                ),
-                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=50,
-                               cxb=0.5, mb=0.5,
+                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=75,
+                               cxb=0.6, mb=0.8,
                                mate=resource_conf_crossover,
                                mutate=resource_config_mutate,
                                select=tourn,

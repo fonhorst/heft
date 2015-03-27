@@ -144,9 +144,12 @@ def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
 
     Utility.validate_dynamic_schedule(_wf, resulted_schedule)
 
+    print("EXPERIMENT RUN END=========================")
     data = {
         "wf_name": wf_name,
         "params": None,
+        "estimator_settings": params["estimator_settings"],
+        "executor_params": params["executor_params"],
         "result": {
             "makespan": Utility.makespan(resulted_schedule),
             ## TODO: this function should be remade to adapt under conditions of dynamic env
@@ -155,7 +158,6 @@ def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
             "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
         }
     }
-    print("EXPERIMENT RUN END=========================")
 
     if saver is not None:
         saver(data)
