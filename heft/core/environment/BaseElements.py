@@ -13,6 +13,7 @@ class SoftItem:
 
 
 class Resource:
+
     Down = "down"
     Unknown = "unknown"
     Static = "static"
@@ -39,8 +40,18 @@ class Resource:
                 result.add(node)
         return result
 
+    def __eq__(self, other):
+        if isinstance(other, Resource) and self.name == other.name:
+            return True
+        else:
+            return super().__eq__(other)
+
+    def __hash__(self):
+        return hash(self.name)
+
 
 class Node:
+
     Down = "down"
     Unknown = "unknown"
     Static = "static"
@@ -60,11 +71,14 @@ class Node:
     def __repr__(self):
         return str(self.name)
 
-    def __cmp__(self, other):
+    def __eq__(self, other):
         if isinstance(other, Node) and self.name == other.name:
             return True
         else:
-            return super().__cmp__(other)
+            return super().__eq__(other)
+
+    def __hash__(self):
+        return hash(self.name)
 
 
 
