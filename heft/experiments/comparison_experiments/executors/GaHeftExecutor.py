@@ -423,8 +423,8 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
             fsh = [hash(key) for key in fixed_schedule.mapping.keys()]
             rm_hashes = [hash(node) for node in self.resource_manager.get_nodes()]
-            if any(((h not in fsh) for h in rm_hashes)):
-                raise Exception("Fixed schedule is broken")
+            # if any(((h not in fsh) for h in rm_hashes)):
+            #     raise Exception("Fixed schedule is broken")
 
             self.back_cmp = BackCmp(fixed_schedule, None, self.current_schedule, event, current_time, front_event.end_time)
             pass

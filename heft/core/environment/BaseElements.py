@@ -28,14 +28,14 @@ class Resource:
     def get_live_nodes(self):
         result = set()
         for node in self.nodes:
-            if node.state != "down":
+            if node.state != Node.Down:
                 result.add(node)
         return result
 
     def get_cemetery(self):
         result = set()
         for node in self.nodes:
-            if node.state == 'down':
+            if node.state == Node.Down:
                 result.add(node)
         return result
 

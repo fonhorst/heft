@@ -14,11 +14,11 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 
 
 EXPERIMENT_NAME = "gaheft_for_ga"
-REPEAT_COUNT = 2
+REPEAT_COUNT = 10
 WF_NAMES = ["Montage_25"]
 # WF_NAMES = ["Montage_25"]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
-RELIABILITY = [0.95]
+RELIABILITY = [0.9]
 INDIVIDUALS_COUNTS = [5]
 # INDIVIDUALS_COUNTS = [60, 105, 150]
 
@@ -94,13 +94,14 @@ def create_cga_crm2vm(_wf, rm, estimator,
             kwargs["current_time"] = current_time
             kwargs["initial_population"] = initial_population
 
+            print("CGA_START")
             best, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**kwargs)
             schedule = ga2resources_build_schedule(_wf, estimator, rm, best, ctx=kwargs)
-            # logbook = None
-
+            logbook = None
+            print("CGA_STOP")
             return (best, pops, schedule, None), logbook
             # TODO: debug. Just for test
-            # return (None, None, initial_schedule, None), logbook
+            #return (None, None, initial_schedule, None), logbook
 
     return CgaVmWrapper()
 

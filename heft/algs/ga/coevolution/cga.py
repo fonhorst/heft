@@ -122,14 +122,20 @@ class VMCoevolutionGA():
         resources = self.ENV[1].resources
         cemetery = set()
         for res in resources:
+            nodes_to_remove = []
             for node in res.nodes:
                 if node.state == 'down':
                     cemetery.add(node)
-                    res.nodes.remove(node)
+                    nodes_to_remove.append(node)
+            for node in nodes_to_remove:
+                res.nodes.remove(node)
         for res in ctx["env"][1].resources:
+            nodes_to_remove = []
             for node in res.nodes:
                 if node.state == 'down':
-                    res.nodes.remove(node)
+                    nodes_to_remove.append(node)
+            for node in nodes_to_remove:
+                res.nodes.remove(node)
         return cemetery
 
     def get_max_resource_number(self, ga_individual):
@@ -398,33 +404,30 @@ def vm_run_cooperative_ga(**kwargs):
     cga = VMCoevolutionGA(**kwargs)
     VMCoevolutionGA.vm_series = []
     res = cga()
-
-    fixed = kwargs_copy['fixed_schedule']
-    temp_ga_ind = []
-    for node, items in fixed.mapping.items():
-        for item in items:
-            temp_ga_ind.append((item.job.id, node.resource.name, node.name))
-    for t in res[0]['GASpecie']:
-        temp_ga_ind.append(t)
-    res[0]['GASpecie'] = ListBasedIndividual(temp_ga_ind)
-
     res_rm = res[0]['ResourceConfigSpecie']
     kw_rm = kwargs_copy['env'][1].resources
 
+    best = res[0]
+    if isinstance(best['ResourceConfigSpecie'][0].nodes, set):
+        raise Exception("Alarm! Debug")
 
     for (resource, idx) in zip(res_rm, range(len(res_rm))):
-        new_set = set()
+        new_set = []
         kw_nodes = kw_rm[idx].nodes
         for node in kw_nodes:
             if node.name not in [res_node.name for res_node in resource.nodes]:
                 node.state = Node.Down
-                new_set.add(node)
+                new_set.append(node)
         for node in resource.nodes:
-            new_set.add(node)
+            if node.name not in [s_node.name for s_node in new_set]:
+                new_set.append(node)
         for node in [c_node for c_node in cga.CEMETERY if c_node.resource.name == resource.name]:
-            new_set.add(node)
+            if node.name not in [s_node.name for s_node in new_set]:
+                new_set.append(node)
         # TODO doesn't change(
         kwargs['env'][1].resources[idx].nodes = new_set
+    kwargs['cemetery'] = cga.CEMETERY
+
 
     return res
 

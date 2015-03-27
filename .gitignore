@@ -12,3 +12,4 @@ experiments/cga/debug
 temp/
 build/
 dist/
+heft/experiments/cga/vm/cga_results
