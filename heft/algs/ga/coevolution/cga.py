@@ -403,14 +403,14 @@ def vm_run_cooperative_ga(**kwargs):
     VMCoevolutionGA.vm_series = []
     res = cga()
 
-    fixed = kwargs_copy['fixed_schedule']
-    temp_ga_ind = []
-    for node, items in fixed.mapping.items():
-        for item in items:
-            temp_ga_ind.append((item.job.id, node.resource.name, node.name))
-    for t in res[0]['GASpecie']:
-        temp_ga_ind.append(t)
-    res[0]['GASpecie'] = ListBasedIndividual(temp_ga_ind)
+    # fixed = kwargs_copy['fixed_schedule']
+    # temp_ga_ind = []
+    # for node, items in fixed.mapping.items():
+    #     for item in items:
+    #         temp_ga_ind.append((item.job.id, node.resource.name, node.name))
+    # for t in res[0]['GASpecie']:
+    #     temp_ga_ind.append(t)
+    # res[0]['GASpecie'] = ListBasedIndividual(temp_ga_ind)
 
     res_rm = res[0]['ResourceConfigSpecie']
     kw_rm = kwargs_copy['env'][1].resources
@@ -419,15 +419,16 @@ def vm_run_cooperative_ga(**kwargs):
     for (i, resource) in enumerate(res_rm):
         new_set = set()
         kw_nodes = kw_rm[i].nodes
+        names_of_alive_nodes = set(res_node.name for res_node in resource.nodes)
         for node in kw_nodes:
-            if node.name not in [res_node.name for res_node in resource.nodes]:
+            if node.name not in names_of_alive_nodes:
                 node.state = Node.Down
                 new_set.add(node)
         for node in resource.nodes:
             new_set.add(node)
         for node in [c_node for c_node in cga.CEMETERY if c_node.resource.name == resource.name]:
             new_set.add(node)
-        # TODO doesn't change(
+        # TODO make a sepecial method in ResourceManager to change resource and node sets in a TRACKABLE way
         kwargs['env'][1].resources[i].nodes = new_set
 
     return res
