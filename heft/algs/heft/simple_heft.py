@@ -1,4 +1,5 @@
 from functools import partial
+from pprint import pprint
 
 from heft.algs.common.ScheduleBuilder import FreeSlotIterator
 from heft.algs.heft.HeftHelper import HeftHelper

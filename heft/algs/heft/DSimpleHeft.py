@@ -49,13 +49,13 @@ class DynamicHeft(StaticHeftPlanner):
         ## 3. map on the existed nodes according to current_cleaned_schedule
 
         nodes = self.get_nodes()
-        nodes = [node for node in nodes if node.state != Node.Down]
+        live_nodes = [node for node in nodes if node.state != Node.Down]
 
         for_planning = HeftHelper.get_tasks_for_planning(self.workflow, current_cleaned_schedule)
         ## TODO: check if it sorted properly
         for_planning = set([task.id for task in for_planning])
 
-        self.wf_jobs = self.make_ranking(self.workflow, nodes) if self.ranking is None else self.ranking
+        self.wf_jobs = self.make_ranking(self.workflow, live_nodes) if self.ranking is None else self.ranking
 
         sorted_tasks = [task for task in self.wf_jobs if task.id in for_planning]
 
