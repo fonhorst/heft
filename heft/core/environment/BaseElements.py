@@ -204,6 +204,15 @@ class Task:
     def __repr__(self):
         return self.id
 
+    # def __hash__(self):
+    #     return hash(self.id)
+    #
+    # def __eq__(self, other):
+    #     if isinstance(other, Task):
+    #         return self.id == other.id
+    #     else:
+    #         return super().__eq__(other)
+
 
 class File:
     def __init__(self, name, size):

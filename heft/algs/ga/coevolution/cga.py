@@ -112,9 +112,7 @@ class VMCoevolutionGA():
 
     def __call__(self):
         for gen in range(self.GENERATIONS):
-            #print("gen strted = " + str(gen))
             self.gen()
-            #print("gen finished = " + str(gen))
             pass
         return self.result()
 

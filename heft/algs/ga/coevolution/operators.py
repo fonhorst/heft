@@ -107,6 +107,8 @@ class one_to_one_vm_build_solutions:
                 if res_pop_current_index in ga_res_list:
                     return True
 
+
+
         already_found_pairs = 0
         found_pairs = {}
 
@@ -711,8 +713,8 @@ def vm_resource_default_initialize(ctx, size):
             used_nodes = []
             env_names = [node.name for node in res.nodes]
             while current_cap < fc - mrc and n < max_sweep_size:
-                if random.random() < 0.1:
-                    possible_nodes = [node for node in res.nodes if node.name not in used_nodes]
+                possible_nodes = [node for node in res.nodes if node.name not in used_nodes]
+                if random.random() < 0.1 and len(possible_nodes) > 0:
                     tmp_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
                     used_nodes.append(tmp_node.name)
                     current_cap += tmp_node.flops
@@ -1039,7 +1041,7 @@ def ga_default_initialize(ctx, size):
     """
     env = ctx['env']
     fix_sched = ctx['fixed_schedule']
-    fix_tasks = fix_sched.get_all_unique_tasks()
+    fix_tasks = fix_sched.get_unfailed_taks()
 
     result = []
     chromo = [task for task in env.wf.get_all_unique_tasks()
@@ -1070,6 +1072,8 @@ def ga_default_initialize(ctx, size):
             temp.append((t.id, res.name, node.name))
         ls = ListBasedIndividual(temp)
         result.append(ls)
+
+
     return result
 
 

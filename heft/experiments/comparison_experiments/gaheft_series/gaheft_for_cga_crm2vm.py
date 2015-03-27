@@ -17,8 +17,8 @@ from heft.experiments.comparison_experiments.gaheft_series.experiments import do
 from heft.experiments.comparison_experiments.gaheft_series.utilities import changing_reliability_run, test_run
 
 
-EXPERIMENT_NAME = "gaheft_for_ga"
-REPEAT_COUNT = 10
+EXPERIMENT_NAME = "gaheft_for_cga_crm2vm"
+REPEAT_COUNT = 100
 WF_NAMES = ["Montage_25"]
 # WF_NAMES = ["Montage_25"]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
@@ -132,7 +132,7 @@ def create_cga_crm2vm(_wf, rm, estimator,
             if None in correct_schedule.mapping:
                 raise Exception("Invalid name of node. Perhaprs resource manager in inconsistent state")
             # logbook = None
-			print("CGA_STOP")
+            # print("CGA_STOP")
             #pprint(correct_schedule.mapping)
 
             return (best, pops, correct_schedule, None), logbook

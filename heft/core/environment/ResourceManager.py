@@ -191,10 +191,13 @@ class Schedule:
         ids = set(t.id for t in tasks)
         return ids
 
-    def get_unfailed_tasks_ids(self):
-        return [item.job.id for (node, items) in self.mapping.items()
+    def get_unfailed_taks(self):
+        return [item.job for (node, items) in self.mapping.items()
                 for item in items if item.state == ScheduleItem.FINISHED or
                 item.state == ScheduleItem.EXECUTING or item.state == ScheduleItem.UNSTARTED]
+
+    def get_unfailed_tasks_ids(self):
+        return [job.id for job in self.get_unfailed_taks()]
 
     def task_to_node(self):
         """
