@@ -22,7 +22,7 @@ REPEAT_COUNT = 10
 WF_NAMES = ["Montage_25"]
 # WF_NAMES = ["Montage_25"]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
-RELIABILITY = [0.95]
+RELIABILITY = [1.0]
 INDIVIDUALS_COUNTS = [100]
 # INDIVIDUALS_COUNTS = [60, 105, 150]
 
@@ -121,8 +121,11 @@ def create_cga_crm2vm(_wf, rm, estimator,
                 raise Exception("Alarm! a node in built schedule has incorrect type")
 
             ## TODO: this is a hack for correct algorithm work. It should be removed later
-            # correct_schedule = Schedule({rm.node(node_name): items for node_name, items in schedule.mapping.items()})
-            correct_schedule = schedule
+            correct_schedule = Schedule({rm.node(node_name): items for node_name, items in schedule.mapping.items()})
+            # correct_schedule = schedule
+
+            if None in correct_schedule.mapping:
+                raise Exception("Invalid name of node. Perhaprs resource manager in inconsistent state")
 
             schedule_nodes = set(correct_schedule.mapping.keys())
             if len(schedule_nodes.symmetric_difference(rm.get_nodes())) > 0:
@@ -130,12 +133,21 @@ def create_cga_crm2vm(_wf, rm, estimator,
                 print("Schedule nodes", schedule_nodes)
                 raise Exception("Alarm! The new schedule doesn't contain all possible nodes from ResourceManager")
 
-            #pprint(correct_schedule.mapping)
-            Utility.Utility.validate_is_schedule_complete(_wf, correct_schedule)
+
+            if not Utility.Utility.validate_is_schedule_complete(_wf, correct_schedule):
+                pprint(correct_schedule)
+                raise Exception("Alarm! Schedule is not complete")
+
+            try:
+                Utility.Utility.check_and_raise_for_fixed_part(correct_schedule, fixed_schedule_part, current_time)
+            except:
+                print("Incorrect schedule")
+                pprint(correct_schedule)
+                raise
+
             #Utility.Utility.validate_static_schedule(_wf, correct_schedule)
 
-            if None in correct_schedule.mapping:
-                raise Exception("Invalid name of node. Perhaprs resource manager in inconsistent state")
+
             # logbook = None
 
             #pprint(correct_schedule.mapping)
