@@ -279,7 +279,8 @@ def extract_ordering_from_ga_file(path):
     ordering = ListBasedIndividual([t for t in data["ordering"]])
     return ordering
 
-tourn = lambda ctx, pop: tools.selTournament(pop, len(pop), 2)
+def tourn(ctx, pop):
+    return tools.selTournament(pop, len(pop), 2)
 ## TODO: remove this hack later
 
 class Fitness(ComparableMixin):
