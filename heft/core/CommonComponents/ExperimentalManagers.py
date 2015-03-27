@@ -1,4 +1,4 @@
-from heft.core.environment.BaseElements import Resource
+from heft.core.environment.BaseElements import Resource, Node
 from heft.core.environment.ResourceManager import Estimator
 from heft.core.environment.ResourceManager import ResourceManager
 
@@ -64,7 +64,12 @@ class ExperimentResourceManager(ResourceManager):
 
     # # TODO: fix problem with id
     def node(self, node):
-        result = [nd for nd in self.resources_map[node.resource.name].nodes if nd.name == node.name]
+        if isinstance(node, Node):
+            result = [nd for nd in self.resources_map[node.resource.name].nodes if nd.name == node.name]
+        else:
+            name = node
+            result = [nd for nd in self.get_nodes() if nd.name == name]
+
         if len(result) == 0:
             return None
         return result[0]

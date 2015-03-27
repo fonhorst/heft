@@ -1,4 +1,5 @@
 from heft.algs.heft.HeftHelper import HeftHelper
+from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import Schedule, ScheduleItem
 from heft.core.environment.Utility import timing
 from heft.algs.heft.simple_heft import StaticHeftPlanner
@@ -18,12 +19,13 @@ class DynamicHeft(StaticHeftPlanner):
         self.workflow = workflow
         self.resource_manager = resource_manager
         self.estimator = estimator
+        self.ranking = ranking
 
         self.current_time = 0
 
         nodes = self.get_nodes()
 
-        self.wf_jobs = self.make_ranking(self.workflow, nodes) if ranking is None else ranking
+
 
         # print("A: " + str(self.wf_jobs))
 
@@ -47,10 +49,13 @@ class DynamicHeft(StaticHeftPlanner):
         ## 3. map on the existed nodes according to current_cleaned_schedule
 
         nodes = self.get_nodes()
+        live_nodes = [node for node in nodes if node.state != Node.Down]
 
         for_planning = HeftHelper.get_tasks_for_planning(self.workflow, current_cleaned_schedule)
         ## TODO: check if it sorted properly
         for_planning = set([task.id for task in for_planning])
+
+        self.wf_jobs = self.make_ranking(self.workflow, live_nodes) if self.ranking is None else self.ranking
 
         sorted_tasks = [task for task in self.wf_jobs if task.id in for_planning]
 

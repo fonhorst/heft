@@ -91,6 +91,15 @@ def get_node_by_name(node_list, name):
     return None
 
 class one_to_one_vm_build_solutions:
+    """
+    pops should contain two populations
+    "GASpecie" and "ResourceConfigSpecie"
+    each individual of population "GASpecie" has the following structure
+    [(task_id, res_name, node_name), ...]
+
+    each individual of "ResourceConfigSpecie":
+    [Resource, ...], where each Resource object contains generated nodes configuration
+    """
     def __call__(self, pops, interact_count):
         def is_found_pair(current_tmp_ga_number, res_pop_current_index, pairs):
             if current_tmp_ga_number in pairs:
@@ -299,6 +308,13 @@ def chrom_converter(gs, task_map, node_map):
     return chrom
 
 def ga2resources_build_schedule(workflow, estimator, resource_manager, solution, ctx):
+    """
+    return: Schedule
+    mapiing = {
+        Node: [ScheduleItem(), ...]
+        ...
+    }
+    """
     gs = solution[GA_SPECIE]
     rs = solution[RESOURCE_CONFIG_SPECIE]
 
@@ -676,6 +692,7 @@ def vm_resource_default_initialize(ctx, size):
         from [ListBasedIndividuals([n1, n2, ...])]
         to [ListBasedIndividuals([[b1n1, b1n2, ...], [b2n1, b2n2, ...]])]
     """
+
     env = ctx['env']
     cemetery = ctx['cemetery']
     result = []
@@ -1025,7 +1042,9 @@ def ga_default_initialize(ctx, size):
     fix_tasks = fix_sched.get_all_unique_tasks()
 
     result = []
-    chromo = [task for task in env.wf.get_all_unique_tasks() if task not in fix_tasks]
+    chromo = [task for task in env.wf.get_all_unique_tasks()
+              if task not in fix_tasks]
+
     found = True
     while found:
         found = False
@@ -1040,6 +1059,7 @@ def ga_default_initialize(ctx, size):
                 chromo.insert(ind_to_change, val)
                 found = True
                 break
+
     for i in range(size):
         temp = []
         for t in chromo:

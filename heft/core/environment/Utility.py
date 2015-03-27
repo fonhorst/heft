@@ -400,14 +400,26 @@ class Utility:
         if seq_time_validaty is False:
             raise Exception("Sequence validaty check failed")
         if dependency_validaty is False:
+
+            ## TODO: debug
+            pprint(schedule)
+
             raise Exception("Dependency validaty check failed")
         pass
 
+
+    @staticmethod
+    def validate_is_schedule_complete(_wf, schedule):
+        scheduled_tasks = schedule.tasks_to_node()
+        tasks = _wf.get_all_unique_tasks()
+        return set(tasks) in set(scheduled_tasks.keys())
+
     @staticmethod
     def validate_dynamic_schedule(_wf, schedule):
+
+
+
         seq_time_validaty = Utility.validateNodesSeq(schedule)
-
-
 
         ## TODO: debug
         print("SCHEDULE")

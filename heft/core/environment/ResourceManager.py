@@ -1,6 +1,7 @@
 ##interface Algorithm
 import functools
 import operator
+import itertools
 from heft.core.environment.BaseElements import Resource
 
 
@@ -97,6 +98,9 @@ class ScheduleItem:
 
     def __repr__(self):
         return str(self.job.id) + ":" + str(self.start_time) + ":" + str(self.end_time) + ":" + self.state
+    #
+    # def __hash__(self):
+    #     raise NotImplementedError()
 
 
 class Schedule:
@@ -203,6 +207,19 @@ class Schedule:
             "This operation is applicable only for static scheduling"
         t_to_n = {item.job: node for (node, items) in self.mapping.items() for item in items}
         return t_to_n
+
+    def tasks_to_node(self):
+        ## there can be several instances of a task due to fails of node
+        ## we should take all possible occurences
+        task_instances = itertools.groupby(((item.job.id, item , node) for (node, items) in self.mapping.items() for item in items),
+                          key=lambda x: x[0])
+        task_instances = {task_id: [(item, node) for _, item, node in group]
+                          for task_id, group in task_instances}
+        return task_instances
+
+    def is_partial_equal(self):
+        raise NotImplementedError()
+
 
     @staticmethod
     def insert_item(mapping, node, item):

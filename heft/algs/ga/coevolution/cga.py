@@ -234,11 +234,9 @@ class VMCoevolutionGA():
     def gen(self):
         kwargs = self.kwargs
         kwargs['gen'] = kwargs['gen'] + 1
-        #print("Gen: " + str(kwargs['gen']))
 
         solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
 
-        #print("Solutions have been built")
 
         ## estimate fitness
         for sol in solutions:
@@ -411,11 +409,12 @@ def vm_run_cooperative_ga(**kwargs):
     if isinstance(best['ResourceConfigSpecie'][0].nodes, set):
         raise Exception("Alarm! Debug")
 
-    for (resource, idx) in zip(res_rm, range(len(res_rm))):
+    for (i, resource) in enumerate(res_rm):
         new_set = []
-        kw_nodes = kw_rm[idx].nodes
+        kw_nodes = kw_rm[i].nodes
+        names_of_alive_nodes = set(res_node.name for res_node in resource.nodes)
         for node in kw_nodes:
-            if node.name not in [res_node.name for res_node in resource.nodes]:
+            if node.name not in names_of_alive_nodes:
                 node.state = Node.Down
                 new_set.append(node)
         for node in resource.nodes:
@@ -424,8 +423,8 @@ def vm_run_cooperative_ga(**kwargs):
         for node in [c_node for c_node in cga.CEMETERY if c_node.resource.name == resource.name]:
             if node.name not in [s_node.name for s_node in new_set]:
                 new_set.append(node)
-        # TODO doesn't change(
-        kwargs['env'][1].resources[idx].nodes = new_set
+        # TODO make a sepecial method in ResourceManager to change resource and node sets in a TRACKABLE way
+        kwargs['env'][1].resources[i].nodes = new_set
     kwargs['cemetery'] = cga.CEMETERY
 
 

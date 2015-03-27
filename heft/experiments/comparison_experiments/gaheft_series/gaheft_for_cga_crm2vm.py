@@ -1,11 +1,15 @@
 from copy import deepcopy
 from functools import partial
+from pprint import pprint
 from deap.base import Toolbox
 import functools
 from heft.algs.ga.coevolution.cga import Env, Specie, VMCoevolutionGA, vm_run_cooperative_ga
 from heft.algs.ga.coevolution.operators import GA_SPECIE, ga_crossover, ga_mutate, ga_default_initialize, \
     RESOURCE_CONFIG_SPECIE, resource_conf_crossover, resource_config_mutate, vm_resource_default_initialize, \
     MutRegulator, one_to_one_vm_build_solutions, fitness_ga_and_vm, max_assign_credits, ga2resources_build_schedule
+from heft.core.environment import Utility
+from heft.core.environment.BaseElements import Node
+from heft.core.environment.ResourceManager import Schedule
 from heft.experiments.cga.utilities.common import tourn, ArchivedSelector
 
 from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_old_ga
@@ -19,7 +23,7 @@ WF_NAMES = ["Montage_25"]
 # WF_NAMES = ["Montage_25"]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 RELIABILITY = [0.9]
-INDIVIDUALS_COUNTS = [5]
+INDIVIDUALS_COUNTS = [100]
 # INDIVIDUALS_COUNTS = [60, 105, 150]
 
 BASE_PARAMS = {
@@ -29,7 +33,7 @@ BASE_PARAMS = {
 
     "alg_params": {
             "hall_of_fame_size": 5,
-            "interact_individuals_count": 5,
+            "interact_individuals_count": 20,
             "generations": 10,
             #"env": Env(self._wf, self.rm, self.estimator),
             "species": [Specie(name=GA_SPECIE, pop_size=50,
@@ -86,7 +90,15 @@ def create_cga_crm2vm(_wf, rm, estimator,
                      alg_params):
 
     class CgaVmWrapper:
+
         def __call__(self, fixed_schedule_part, initial_schedule, current_time=0, initial_population=None):
+
+            # if self.count == 1:
+            #     return (None, None, initial_schedule, None), None
+            # self.count += 1
+
+
+
             kwargs = deepcopy(alg_params)
             kwargs["env"] = Env(_wf, rm, estimator)
             kwargs["fixed_schedule"] = fixed_schedule_part
@@ -97,9 +109,33 @@ def create_cga_crm2vm(_wf, rm, estimator,
             print("CGA_START")
             best, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**kwargs)
             schedule = ga2resources_build_schedule(_wf, estimator, rm, best, ctx=kwargs)
-            logbook = None
-            print("CGA_STOP")
-            return (best, pops, schedule, None), logbook
+            
+            
+            if any( not isinstance(node, Node) for node in schedule.mapping):
+                print("Node types: ", [type(node) for node in schedule.mapping])
+                raise Exception("Alarm! a node in built schedule has incorrect type")
+
+            ## TODO: this is a hack for correct algorithm work. It should be removed later
+            # correct_schedule = Schedule({rm.node(node_name): items for node_name, items in schedule.mapping.items()})
+            correct_schedule = schedule
+
+            schedule_nodes = set(correct_schedule.mapping.keys())
+            if len(schedule_nodes.symmetric_difference(rm.get_nodes())) > 0:
+                print("Rm_nodes", rm.get_nodes())
+                print("Schedule nodes", schedule_nodes)
+                raise Exception("Alarm! The new schedule doesn't contain all possible nodes from ResourceManager")
+
+            #pprint(correct_schedule.mapping)
+            Utility.Utility.validate_is_schedule_complete(_wf, correct_schedule)
+            #Utility.Utility.validate_static_schedule(_wf, correct_schedule)
+
+            if None in correct_schedule.mapping:
+                raise Exception("Invalid name of node. Perhaprs resource manager in inconsistent state")
+            # logbook = None
+			print("CGA_STOP")
+            #pprint(correct_schedule.mapping)
+
+            return (best, pops, correct_schedule, None), logbook
             # TODO: debug. Just for test
             #return (None, None, initial_schedule, None), logbook
 

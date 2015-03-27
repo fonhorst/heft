@@ -1,4 +1,5 @@
 from functools import partial
+from pprint import pprint
 
 from heft.algs.common.ScheduleBuilder import FreeSlotIterator
 from heft.algs.heft.HeftHelper import HeftHelper
@@ -64,7 +65,7 @@ class StaticHeftPlanner(Scheduler):
 
         return new_schedule
 
-    def mapping(self, sorted_jobs, existing_plan, nodes, commcost, compcost):
+    def mapping(self, sorted_jobs, existing_plan, live_nodes, commcost, compcost):
         """def allocate(job, orders, jobson, prec, compcost, commcost):"""
         """ Allocate job to the machine with earliest finish time
 
@@ -94,28 +95,33 @@ class StaticHeftPlanner(Scheduler):
 
             return cost
 
-        for wf, tasks in sorted_jobs:
-            ##wf_dag = self.convert_to_parent_children_map(wf)
-            wf_dag = HeftHelper.convert_to_parent_children_map(wf)
-            prec = reverse_dict(wf_dag)
-            for task in tasks:
-                st = partial(self.start_time, wf, task, new_plan, jobson, prec, commcost)
+        if len(live_nodes) != 0:
+            ## in case if there is not any live nodes we just return the same cleaned schedule
+            for wf, tasks in sorted_jobs:
+                ##wf_dag = self.convert_to_parent_children_map(wf)
+                wf_dag = HeftHelper.convert_to_parent_children_map(wf)
+                prec = reverse_dict(wf_dag)
+                for task in tasks:
+                    st = partial(self.start_time, wf, task, new_plan, jobson, prec, commcost)
 
-                # ress = [(key, ft(key)) for key in new_plan.keys()]
-                # agent_pair = min(ress, key=lambda x: x[1][0])
-                # agent = agent_pair[0]
-                # start = agent_pair[1][0]
-                # end = agent_pair[1][1]
+                    # ress = [(key, ft(key)) for key in new_plan.keys()]
+                    # agent_pair = min(ress, key=lambda x: x[1][0])
+                    # agent = agent_pair[0]
+                    # start = agent_pair[1][0]
+                    # end = agent_pair[1][1]
 
-                agent = min(new_plan.keys(), key=ft)
-                runtime = compcost(task, agent)
-                start = st(agent, runtime)
-                end = ft(agent)
+                    # agent = min(new_plan.keys(), key=ft)
+                    agent = min(live_nodes, key=ft)
+                    runtime = compcost(task, agent)
+                    start = st(agent, runtime)
+                    end = ft(agent)
 
-                # new_plan[agent].append(ScheduleItem(task, start, end))
-                Schedule.insert_item(new_plan, agent, ScheduleItem(task, start, end))
+                    # new_plan[agent].append(ScheduleItem(task, start, end))
+                    Schedule.insert_item(new_plan, agent, ScheduleItem(task, start, end))
 
-                jobson[task] = agent
+                    jobson[task] = agent
+
+
         new_sched = Schedule(new_plan)
         return new_sched
 
