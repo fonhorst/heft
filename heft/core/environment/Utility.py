@@ -417,7 +417,8 @@ class Utility:
     def validate_is_schedule_complete(_wf, schedule):
         scheduled_tasks = schedule.tasks_to_node()
         tasks = _wf.get_all_unique_tasks()
-        return set(tasks) in set(scheduled_tasks.keys())
+        difference = set(scheduled_tasks.keys()).symmetric_difference(set(tasks))
+        return len(difference) > 0
 
     @staticmethod
     def validate_dynamic_schedule(_wf, schedule):
