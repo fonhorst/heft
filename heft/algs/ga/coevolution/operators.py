@@ -58,13 +58,31 @@ def one_to_one_build_solutions(pops, interact_count):
     return solutions
 
 
+def get_max_resource_number(ga_individual):
+    # this function returns dict of max used node for each blade
+    max_set = dict()
+    max_set[ga_individual[0][1]] = [ga_individual[0][2]]
+    for task in ga_individual:
+        if task[1] not in max_set.keys() or task[2] not in max_set[task[1]]:
+            if task[1] not in max_set.keys():
+                max_set[task[1]] = [task[2]]
+            else:
+                max_set[task[1]].append(task[2])
+    return max_set
 
+def individual_lengths_compare(res_individual, used_resources):
+    # TODO change name of this function
+    for res in res_individual:
+        for node in used_resources[res.name]:
+            if node not in [res_node.name for res_node in res.nodes]:
+                return False
+    return True
 
 def get_res_by_name(res_list, name):
     for res in res_list:
         if res.name == name:
             return res
-    raise Exception()
+    return None
 
 def get_node_by_name(node_list, name):
     for node in node_list:
@@ -83,66 +101,79 @@ class one_to_one_vm_build_solutions:
     [Resource, ...], where each Resource object contains generated nodes configuration
     """
     def __call__(self, pops, interact_count):
+        def is_found_pair(current_tmp_ga_number, res_pop_current_index, pairs):
+            if current_tmp_ga_number in pairs:
+                ga_res_list = pairs[current_tmp_ga_number]
+                if res_pop_current_index in ga_res_list:
+                    return True
 
         already_found_pairs = 0
         found_pairs = {}
 
-        ga_pop, ga_name = [], ''
-        res_pop, res_name = [], ''
-
+        ga_pop = []
+        ga_name = ''
+        res_pop = []
+        res_name = ''
         for s, p in pops.items():
-            element_of_individual = p[0][0]
-            if isinstance(element_of_individual, Resource):
-                res_pop, res_name = p, s.name
+            if type(p[0][0]) is Resource:
+                res_pop = p
+                res_name = s.name
             else:
-                ga_pop, ga_name = p, s.name
+                ga_pop = p
+                ga_name = s.name
+
+        """ is it required?
+        no_similar = False
+
+        for i in range(0, len(ga_pop) - 1):
+            for j in range(0, len(ga_pop[i])):
+                if ga_pop[i][j][0] != ga_pop[i+1][j][0]:
+                    no_similar = True
+
+        #if not no_similar:
+        #    print("====================================================================Similar found");
+        """
 
         not_valid = set()
-        MAX_ATTEMPT_COUNTER = interact_count * 10
-        overall_attempts_counter = 0
-        while already_found_pairs < interact_count: #and overall_attempts_counter < MAX_ATTEMPT_COUNTER:
-
+        while already_found_pairs < interact_count:
+            # ga_pop = pops[GA_SPECIE]
+            # res_pop = pops[RESOURCE_CONFIG_SPECIE]
             pair_not_found = True
 
             ga_elem_number = random.randint(0, len(ga_pop))
             choose_counter = 0
-
-            ## looking for untested composition
             while ga_elem_number in not_valid:
-                if 100 < choose_counter < 150:
+                if choose_counter > 100 and choose_counter < 150:
                     print("ga_elem_number in not_valid = ")
-                if choose_counter > 150:
-                    ga_elem_number = -1
-                    break
+                    print(ga_pop(ga_elem_number))
                 choose_counter += 1
-                ga_elem_number = random.randint(0, len(ga_pop) - 1)
-
-            # if ga_elem_number == -1:
-            #     overall_attempts_counter += 1
-            #     print("Attempt", overall_attempts_counter)
-            #     continue
+                ga_elem_number = random.randint(0, len(ga_pop))
 
             current_ga_index = 0
             while pair_not_found and current_ga_index < len(ga_pop):
-                ## choose individual
-                res_elem_number = random.randint(0, len(res_pop) - 1)
+                res_elem_number = random.randint(0, len(res_pop))
                 current_tmp_ga_number = (ga_elem_number + current_ga_index) % len(ga_pop)
                 ga_individual = ga_pop[current_tmp_ga_number]
-
                 #TODO rename this
-                res_nodes_map = self._get_used_resources_and_nodes(ga_individual)
+                ga_max_res_number = get_max_resource_number(ga_individual)
 
                 res_individual = None
 
                 for i in range(len(res_pop)):
                     res_pop_current_index = (res_elem_number + i) % len(res_pop)
                     res_individual = res_pop[res_pop_current_index]
-
-                    is_match = self._is_individuals_match_by_nodes(res_individual, res_nodes_map)
-                    if is_match and self._add_if_not_present(current_tmp_ga_number, res_pop_current_index, found_pairs):
-                        print("HERE")
+                    #print("GA_ind = " + str(ga_individual))
+                    #print("RES_ind = " + str(res_individual))
+                    # TODO this is weak place now and need to rename functions in condition
+                    if individual_lengths_compare(res_individual, ga_max_res_number) and \
+                            not is_found_pair(current_tmp_ga_number, res_pop_current_index, found_pairs):
+                        if current_tmp_ga_number not in found_pairs:
+                            found_pairs[current_tmp_ga_number] = set()
+                        found_pairs[current_tmp_ga_number].add(res_pop_current_index)
                         pair_not_found = False
+                        #print("Correct")
                         break
+                    #print("Incorrect")
 
                 # TODO this is crutch, refactoring later(
                 if pair_not_found:
@@ -160,60 +191,15 @@ class one_to_one_vm_build_solutions:
                 already_found_pairs += 1
             else:
                 not_valid.add(ga_elem_number)
+                #print('set size is: ' + str(len(not_valid)) + ' added ' + str(ga_elem_number))
+                # assert not pair_not_found, "Pair of scheduling and resource organization"
+        # elts = [[(s, p) for p in pop] for s, pop in pops.items()]
 
-            #overall_attempts_counter += 1
-
+        # solutions = [DictBasedIndividual({s.name: pop for s, pop in el}) for el in zip(*elts)]
         solutions = [DictBasedIndividual({res_name: res_pop[ls], ga_name: ga_pop[ga_num]}) for
                      ga_num, ls_numbers in found_pairs.items() for ls in ls_numbers]
 
-        if len(solutions) == 0:
-            raise Exception()
-
-        self._check_solutions(solutions, ga_name, res_name)
-
         return solutions
-
-    def _is_individuals_match_by_nodes(self, res_individual, used_resources):
-        available_nodes = set(node.name for res in res_individual for node in res.nodes)
-        desired_nodes = set(node_name for res_name, nodes_names in used_resources.items() for node_name in nodes_names)
-        return desired_nodes in available_nodes
-
-
-    def _get_used_resources_and_nodes(self, ga_individual):
-        """
-        this function returns the following dict:
-        {
-            res_name: [node_name, ...]
-            ....
-        }. It describes what resources and nodes are used by the ga_individual
-        """
-        max_set = dict()
-        #max_set[ga_individual[0][1]] = [ga_individual[0][2]]
-        for task_id, res_name, node_name in ga_individual:
-            if res_name not in max_set:
-                max_set[res_name] = [node_name]
-            elif node_name not in max_set[res_name]:
-                max_set[res_name].append(node_name)
-        return max_set
-
-    def _add_if_not_present(current_tmp_ga_number, res_pop_current_index, found_pairs):
-        if current_tmp_ga_number not in found_pairs:
-            found_pairs[current_tmp_ga_number] = set()
-            found_pairs[current_tmp_ga_number].add(res_pop_current_index)
-            return True
-
-        if res_pop_current_index not in found_pairs[current_tmp_ga_number]:
-            found_pairs[current_tmp_ga_number].add(res_pop_current_index)
-            return True
-        return False
-
-    def _check_solutions(self, solutions, ga_name, res_name):
-        for sol in solutions:
-            ga_ind = sol[ga_name]
-            res_ind = sol[res_name]
-            used_nodes = self._get_used_resources_and_nodes(ga_ind)
-            assert self._is_individuals_match_by_nodes(res_ind, ga_ind), "Solution is broken."
-
 
 class EnhancedMapping(one_to_one_vm_build_solutions):
     def __call__(self, pops, interact_count):
@@ -312,6 +298,13 @@ def _check_precedence(workflow, seq):
 
 
 def ga2resources_build_schedule(workflow, estimator, resource_manager, solution, ctx):
+    """
+    return: Schedule
+    mapiing = {
+        Node: [ScheduleItem(), ...]
+        ...
+    }
+    """
     gs = solution[GA_SPECIE]
     rs = solution[RESOURCE_CONFIG_SPECIE]
     # i don't know why it needed, but it is here
@@ -359,7 +352,6 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
     task_to_node = {}
     for t in temp_ga_ind:
         node = ms[t[0]]
-        ## get true node entity
         if node is None:
             # This is for debug
             error = 5 / (1-1)
@@ -381,6 +373,8 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
     for node in fix_sched.mapping:
         if node not in schedule_mapping:
             schedule_mapping[node.name] = []
+
+
     schedule = Schedule(schedule_mapping)
     return schedule
 
@@ -704,6 +698,7 @@ def vm_resource_default_initialize(ctx, size):
         from [ListBasedIndividuals([n1, n2, ...])]
         to [ListBasedIndividuals([[b1n1, b1n2, ...], [b2n1, b2n2, ...]])]
     """
+
     env = ctx['env']
     cemetery = ctx['cemetery']
     result = []
