@@ -32,6 +32,11 @@ Toolbox need to implement functions:
 
 Env = namedtuple('Env', ['wf', 'rm', 'estimator'])
 
+## to be able to pickle
+def _empty_stat(pop):
+    return {}
+
+
 class Specie:
     def __init__(self, **kwargs):
         if kwargs.get("fixed", False):
@@ -49,7 +54,7 @@ class Specie:
             self.initialize = kwargs["initialize"]
             self.cxb = kwargs["cxb"]
             self.mb = kwargs["mb"]
-        self.stat = kwargs.get("stat", lambda pop: {})
+        self.stat = kwargs.get("stat", _empty_stat)
         pass
 
 class VMCoevolutionGA():
