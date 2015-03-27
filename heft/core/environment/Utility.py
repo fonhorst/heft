@@ -19,6 +19,11 @@ from heft.core.environment.BaseElements import Node, Resource
 from heft.core.environment.ResourceManager import ScheduleItem, Schedule
 from heft.core.environment.DAXParser import DAXParser
 
+def f_eq(a, b):
+    """
+    check equality for two float numbers
+    """
+    return abs(a - b) < 0.00000001
 
 def wf(wf_name, task_postfix_id="00"):
     # dax_filepath = "../../resources/{0}.xml".format(wf_name)
