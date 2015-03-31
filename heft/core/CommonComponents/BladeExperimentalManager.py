@@ -115,6 +115,13 @@ class ExperimentResourceManager(ResourceManager):
                     result.add(node)
         return result
 
+    def get_all_nodes(self):
+        result = set()
+        for res in self.resources:
+            for node in res.nodes:
+                result.add(node)
+        return result
+
     def change_performance(self, node, performance):
         ##TODO: rethink it
         self.resources[node.resource][node].flops = performance
@@ -127,6 +134,26 @@ class ExperimentResourceManager(ResourceManager):
     def res_by_id(self, id):
         name = id.name if isinstance(id, Resource)else id
         return self.resources_map[name]
+
+    def get_res_by_name(self, name):
+        """
+        find resource from resource list by name
+        """
+        for res in self.resources:
+            if res.name == name:
+                return res
+        return None
+
+    def get_node_by_name(self, name):
+        """
+        find node in all resources by name
+        """
+        for res in self.resources:
+            for node in res.nodes:
+                if node.name == name:
+                    return node
+        return None
+
 
 
 

@@ -30,13 +30,12 @@ class MappingParticle(Particle):
     pass
 
     def __sub__(self, other):
-        # return Position({k: self[k] for k in self.keys() - other.keys()})
-        return MappingParticle.Velocity({item: 1.0 for item in self.entity.items()# - other.entity.items()
+        return MappingParticle.Velocity({item: 1.0 for item in self.entity.items() - other.entity.items()
         })
 
     def __mul__(self, other):
         if isinstance(other, Number):
-            return MappingParticle.Velocity({k: other for k, v in self.entity.items()})
+            return MappingParticle.Velocity({k: v * other for k, v in self.entity.items()})
         raise ValueError("Other has not a suitable type for multiplication")
 
     def emptify(self):
@@ -47,7 +46,7 @@ class MappingParticle(Particle):
             if isinstance(other, Number):
                 if other < 0:
                     raise ValueError("Only positive numbers can be used for operations with velocity")
-                return MappingParticle.Velocity({k: 1.0 if v * other > 1.0 else v * other for k, v in self.items()})
+                return MappingParticle.Velocity({k: v * other for k, v in self.items()})
             raise ValueError("{0} has not a suitable type for multiplication".format(other))
 
         def __add__(self, other):
@@ -173,7 +172,11 @@ class CompoundParticle(Particle):
     best = property(_get_best, _set_best)
     pass
 
+
 class ConfigurationParticle(Particle):
+    """
+    ResourceManager([resource1, resource2,...])
+    """
     def __init__(self, config):
         super().__init__(config)
         self.velocity = ConfigurationParticle.Velocity({})
@@ -184,29 +187,56 @@ class ConfigurationParticle(Particle):
     def __sub__(self, other):
         if not isinstance(other, ConfigurationParticle):
             raise ValueError("Invalid type of the argument for this operation")
-        vel = ConfigurationParticle.Velocity({key: (val - other.entity[key]) for key, val in self.entity.items()})
+        self_flops = [node.flops for node in self.entity.get_all_nodes()]
+        self_flops.sort()
+        other_flops = [node.flops for node in other.entity.get_all_nodes()]
+        other_flops.sort()
+        vel_flops = []
+        for idx in range(min(len(self_flops), len(other_flops))):
+            vel_flops.append(self_flops[idx] - other_flops[idx])
+        diff = len(self_flops) - len(other_flops)
+        if diff > 0:
+            for idx in range(diff):
+                vel_flops.append(self_flops[len(other_flops) + idx])
+        if diff < 0:
+            for idx in range(-diff):
+                vel_flops.append(-other_flops[len(self_flops) + idx])
+        vel = ConfigurationParticle.Velocity(vel_flops)
         return vel
 
-    def get_nodes(self):
-        nodes = [(k, v) for k, v in self.entity.items()]
-        nodes.sort(key=lambda k: k[0])
-        return [v for k, v in nodes]
-
     def __add__(self, other):
-        new_pos = ConfigurationParticle({k: v + other[k] for k, v in self.entity.items()})
-        return new_pos
+        if not isinstance(other, ConfigurationParticle.Velocity):
+            raise Exception("other shold be a velocity")
+        self_flops = [node.flops for node in self.entity.get_all_nodes()]
+        res_flops = []
+        for idx in range(min(len(self_flops), len(other))):
+            res_flops.append(self_flops[idx] + other[idx])
+        diff = len(self_flops) - len(other)
+        if diff > 0:
+            for idx in range(diff):
+                res_flops.append(self_flops[len(other) + idx])
+        if diff < 0:
+            for idx in range(-diff):
+                res_flops.append(other[len(self_flops) + idx])
+        return res_flops
 
-    class Velocity(dict):
+    class Velocity(list):
         def __mul__(self, other):
-            vel = ConfigurationParticle.Velocity({k: v * other for k, v in self.items()})
-            return vel
+            vel = [flops * other for flops in self]
+            return ConfigurationParticle.Velocity(vel)
 
         def __add__(self, other):
-            if len(self) == 0:
-                vel = other
-            else:
-                vel = ConfigurationParticle.Velocity({k: (v + other[k]) for k, v in self.items()})
-            return vel
+            res_flops = []
+            for idx in range(min(len(self), len(other))):
+                res_flops.append(self[idx] + other[idx])
+            diff = len(self) - len(other)
+            if diff > 0:
+                for idx in range(diff):
+                    res_flops.append(self[len(other) + idx])
+            if diff < 0:
+                for idx in range(-diff):
+                    res_flops.append(other[len(self) + idx])
+            return ConfigurationParticle.Velocity(res_flops)
 
 
 

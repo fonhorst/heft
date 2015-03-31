@@ -6,7 +6,6 @@ import numpy
 from heft.algs.heft.DSimpleHeft import run_heft
 
 from heft.algs.pso.cpso.ordering_operators import build_schedule, generate, ordering_update, fitness
-
 from heft.algs.pso.cpso.csdpso import run_cpso
 from heft.algs.pso.cpso.mapping_operators import update as mapping_update
 from heft.algs.pso.cpso.configuration_particle import config_generate, make_rm, configuration_update
@@ -56,7 +55,7 @@ class CompsoBaseExperiment(AbstractExperiment):
         rm = make_rm(best[0][1])
         self._rm = rm
         self._resorces_set = best[0][1].get_nodes()
-        #print("Resources: " + str(self._resorces_set))
+        print("Resources: " + str(self._resorces_set))
 
         schedule = build_schedule(_wf, rm, estimator, best[0][0])
 
@@ -105,9 +104,9 @@ class CompsoBaseExperiment(AbstractExperiment):
     pass
 
 if __name__ == "__main__":
-    exp = CompsoBaseExperiment(wf_name="Montage_50",
+    exp = CompsoBaseExperiment(wf_name="Montage_25",
                               W=0.5, C1=1.6, C2=1.2,
-                              GEN=10, N=10, MAX_FLOPS=30, SUM_FLOPS=80)
+                              GEN=100, N=10, MAX_FLOPS=30, SUM_FLOPS=80)
     exec_count = 1
     result, logbooks = unzip_result(repeat(exp, exec_count))
     sts1 = interval_statistics(result)

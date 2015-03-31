@@ -14,7 +14,6 @@ from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceMa
 from heft.core.environment.ResourceManager import Schedule
 from heft.core.environment.Utility import Utility
 from heft.core.environment.ResourceGenerator import ResourceGenerator
-from heft.core.environment.ResourceGenerator import ResourceGenerator
 from heft.core.environment.BaseElements import Resource, Node, SoftItem, Workflow
 from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividual
 

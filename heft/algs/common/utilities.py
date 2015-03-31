@@ -1,3 +1,4 @@
+import random
 def mapping_as_vector(mapping):
     """
     mapping MUST be a dictionary
@@ -20,7 +21,10 @@ def gather_info(logbook, stats, g, pop, best, need_to_print=True):
     if logbook is not None:
         logbook.record(gen=g, evals=len(pop), **data)
         if need_to_print:
-            print(logbook.stream)
+            if best is None:
+                print(logbook.stream)
+            else:
+                print(logbook.stream)#print(logbook.stream + "\t" + str(round(data['best'], 2)))
     return data
 
 def logbooks_in_data(logbooks, with_best=False, need_print=False):
@@ -80,3 +84,17 @@ def unzip_result(tuple_list):
     fst_list = [fst for fst, snd in tuple_list]
     snd_list = [snd for fst, snd in tuple_list]
     return fst_list, snd_list
+
+def weight_random(list):
+    """
+    return index of choosen element after weight random
+    """
+    summ = sum(list)
+    norm = [v / summ for v in list]
+    rnd = random.random()
+    idx = 0
+    stack = norm[idx]
+    while rnd >= stack:
+        idx += 1
+        stack += norm[idx]
+    return idx

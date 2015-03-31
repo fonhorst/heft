@@ -1,130 +1,220 @@
 from copy import deepcopy
 import random
 import math
+import numpy
 from heft.algs.common.utilities import gather_info
+from heft.core.environment.BaseElements import Node
+from collections import namedtuple
+from deap import tools
+from deap.base import Toolbox
+from heft.algs.pso.vm_cpso.ordering_operators import build_schedule, generate, ordering_update, fitness
+from heft.algs.pso.vm_cpso.mapping_operators import update as mapping_update
+from heft.algs.pso.vm_cpso.configuration_particle import config_generate, configuration_update
+from heft.algs.pso.vm_cpso.mapordschedule import merge_rms
 
-def run_cpso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=True, initial_pop=None, **params):
+Env = namedtuple('Env', ['wf', 'rm', 'estimator'])
 
-    pop = initial_pop
+class VMCoevolutionPSO():
 
-    w, c1, c2 = params["w"], params["c1"], params["c2"]
+    def __init__(self, **kwargs):
+        self.kwargs = deepcopy(kwargs)
+        self.initial_pops = []
+        self.vm_series = []
 
-    n = len(pop) if pop is not None else params["n"]
+        self.env = kwargs["env"]
+        self.fixed_schedule = kwargs["fixed_schedule"]
+        self.current_time = kwargs["current_time"]
 
-    best = params.get('best', None)
+        self.stats = tools.Statistics(lambda ind: ind.fitness.values[0])
+        self.stats.register("avg", numpy.mean)
+        self.stats.register("std", numpy.std)
+        self.stats.register("min", numpy.min)
+        self.stats.register("max", numpy.max)
 
-    hallOfFame = []
-    hallOfFameSize = int(math.log(n))
-    if hallOfFameSize == 0:
-        raise ValueError("hall_of_fame_size = 0")
+        self.logbook = tools.Logbook()
+        self.logbook.header = ["gen", "evals"] + self.stats.fields + ["best"]
+        self.kwargs['logbook'] = self.logbook
 
-    bestIndex = 0
-    changeChance = 0.1
+        self.toolbox = self.toolbox_init()
+        self.kwargs['toolbox'] = self.toolbox
 
-    if pop is None:
-        pop = toolbox.population(n)
-    pop2 = toolbox.config_population(n)
+        pass
 
-    for g in range(gen_curr, gen_curr + gen_step, 1):
-        #print("g: {0}".format(g))
-        if g == 0:
-            #leaders, winner = gamble(pop, pop2, n, toolbox, toolbox.standard())
-            leaders, winner = gamble(pop, pop2, n, toolbox)
-        else:
-            leaders, winner = gamble(pop, pop2, n, toolbox)
+    def toolbox_init(self):
 
-        p1_leader = leaders[random.randint(0, len(leaders)-1)][0][0]
-        p2_leader = leaders[random.randint(0, len(leaders)-1)][0][1]
-        # fitness for pop1
-        for p in pop:
-            if not hasattr(p, "fitness") or not p.fitness.valid:
-                p.fitness = toolbox.fitness(p, p2_leader)
-            if not p.best or p.best.fitness < p.fitness:
-                p.best = deepcopy(p)
+        _wf, rm, estimator = self.env
+        fix_sched = self.fixed_schedule
+        current_time = self.current_time
 
-            if not best or hallOfFame[hallOfFameSize-1][1] < p.fitness:
-                hallOfFame = changeHall(hallOfFame, ((p, p2_leader), p.fitness), hallOfFameSize)
+        pop_gen = lambda n: ([generate(_wf, rm, estimator, fixed_schedule_part=fix_sched) for _ in range(n)])
 
-        # fitness for pop2
-        for p in pop2:
-            if not hasattr(p, "fitness") or not p.fitness.valid:
-                p.fitness = toolbox.fitness(p1_leader, p)
-            if not p.best or p.best.fitness < p.fitness:
-                p.best = deepcopy(p)
+        config_gen = lambda n: ([config_generate(rm) for _ in range(n)])
 
-            if not best or hallOfFame[hallOfFameSize-1][1] < p.fitness:
-                hallOfFame = changeHall(hallOfFame, ((p1_leader, p), p.fitness), hallOfFameSize)
+        def compound_update(w, c1, c2, p, best, min=-1, max=1):
+            mapping_update(w, c1, c2, p.mapping, best.mapping)
+            ordering_update(w, c1, c2, p.ordering, best.ordering, min=min, max=max)
 
-        # is winner best?
-        if hallOfFame[hallOfFameSize-1][1] < winner[1]:
-            hallOfFame = changeHall(hallOfFame, winner, hallOfFameSize)
+        def config_update(w, c1, c2, p, best, init_rm):
+            configuration_update(w, c1, c2, p, best, init_rm)
 
-        # Gather all the fitnesses in one list and print the stats
-        winner[0][0].fitness = winner[1]
-        gather_info(logbook, stats, g, (pop+pop2+[winner[0][0]]), hallOfFame[0], True)
+        toolbox = Toolbox()
+        toolbox.register("sched_pop_gen", pop_gen)
+        toolbox.register("conf_pop_gen", config_gen)
+        toolbox.register("fitness", fitness, _wf, estimator, rm, fix_sched, current_time)
+        toolbox.register("comp_update", compound_update)
+        toolbox.register("config_update", config_update)
+        return toolbox
 
-        bestIndex = changeIndex(bestIndex, changeChance, hallOfFameSize)
-        best = hallOfFame[bestIndex]
+    def __call__(self):
 
-        # update pop1
-        for p in pop:
-            toolbox.update(w, c1, c2, p, best[0][0])
-        if invalidate_fitness and not g == gen_step-1:
-            for p in pop:
-                del p.fitness
+        params = self.kwargs
+        invalidate_fitness = True
 
-        # update pop2
-        for p in pop2:
-            toolbox.config_update(w, c1, c2, p, best[0][1])
-        if invalidate_fitness and not g == gen_step-1:
-            for p in pop2:
-                del p.fitness
+        w, c1, c2 = params["w"], params["c1"], params["c2"]
+        gen_steps = params['generations']
 
-    hallOfFame.sort(key=lambda p: p[1], reverse=True)
-    best = hallOfFame[0]
+        init_rm = params['env'][1]
 
-    return pop, logbook, best
+        n = params['pop_size']
+        sched_pop = params['initial_population']
+        conf_pop = None
+
+        if sched_pop is None:
+            sched_pop = self.toolbox.sched_pop_gen(n)
+            conf_pop = self.toolbox.conf_pop_gen(n)
+
+        best = params.get('best', None)
+
+        hall_of_fame = []
+        hall_of_fame_size = params['hall_of_fame_size']
+        if hall_of_fame_size == 0:
+            raise ValueError("hall_of_fame_size = 0")
+
+        best_index = 0
+        change_chance = params['hall_idx_change_chance']
+
+        for g in range(gen_steps):
+            #print("g: {0}".format(g))
+
+            leaders, winner = self.gamble(sched_pop, conf_pop, n, self.toolbox)
+
+            p1_leader = leaders[random.randint(0, len(leaders)-1)][0][0]
+            p2_leader = leaders[random.randint(0, len(leaders)-1)][0][1]
+
+            # fitness for pop1
+            for p in sched_pop:
+                if not hasattr(p, "fitness") or not p.fitness.valid:
+                    p.fitness = self.toolbox.fitness(p, p2_leader)
+                if not p.best or p.best.fitness < p.fitness:
+                    p.best = deepcopy(p)
+
+                if not best or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
+                    hall_of_fame = self.change_hall(hall_of_fame, ((p, p2_leader), p.fitness), hall_of_fame_size)
+
+            # fitness for pop2
+            for p in conf_pop:
+                if not hasattr(p, "fitness") or not p.fitness.valid:
+                    p.fitness = self.toolbox.fitness(p1_leader, p)
+                if not p.best or p.best.fitness < p.fitness:
+                    p.best = deepcopy(p)
+
+                if not best or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
+                    hall_of_fame = self.change_hall(hall_of_fame, ((p1_leader, p), p.fitness), hall_of_fame_size)
+
+            # is winner best?
+            if hall_of_fame[hall_of_fame_size-1][1] < winner[1]:
+                hall_of_fame = self.change_hall(hall_of_fame, winner, hall_of_fame_size)
+
+            # Gather all the fitnesses in one list and print the stats
+            winner[0][0].fitness = winner[1]
+            gather_info(self.logbook, self.stats, g, (sched_pop+conf_pop+[winner[0][0]]), hall_of_fame[0], False)
+
+            # Best update
+            best_index = self.change_index(best_index, change_chance, hall_of_fame_size)
+            best = hall_of_fame[best_index]
+
+            # update pop1
+            for p in sched_pop:
+                self.toolbox.comp_update(w, c1, c2, p, best[0][0])
+            if invalidate_fitness and not g == gen_steps-1:
+                for p in sched_pop:
+                    del p.fitness
+
+            # update pop2
+            for p in conf_pop:
+                self.toolbox.config_update(w, c1, c2, p, best[0][1], init_rm)
+            if invalidate_fitness and not g == gen_steps-1:
+                for p in conf_pop:
+                    del p.fitness
+
+        # Gather result
+        hall_of_fame.sort(key=lambda p: p[1], reverse=True)
+        self.best = hall_of_fame[0]
+        self.pops = [sched_pop, conf_pop]
+        self.hall = hall_of_fame
+        return self.result()
+
+    def result(self):
+        return self.best, self.pops, self.logbook, self.initial_pops, self.hall, self.vm_series
 
 
-def velocity_update(w, c1, c2, pbest, gbest, velocity, particle):
-    r1 = random.random()
-    r2 = random.random()
+    def change_hall(self, hall, part, size):
+        """
+        try to add new particle to the hall
+        """
+        if part[1] in [p[1] for p in hall]:
+            return hall
+        hall.append(deepcopy(part))
+        hall.sort(key=lambda p: p[1], reverse=True)
+        return hall[0:size]
 
-    old_velocity = velocity*w
-    pbest_velocity = (pbest - particle)*(c1*r1)
-    gbest_velocity = (gbest - particle)*(c2*r2)
-
-    new_velocity = old_velocity + pbest_velocity + gbest_velocity
-    return new_velocity
-
-def changeHall(hall, part, size):
-    if part[1] in [p[1] for p in hall]:
-        return hall
-    hall.append(deepcopy(part))
-    hall.sort(key=lambda p: p[1], reverse=True)
-    return hall[0:size]
-
-def changeIndex(idx, chance, size):
-    if random.random() < chance:
-        rnd = int(random.random() * size)
-        while (rnd == idx):
+    def change_index(self, idx, chance, size):
+        """
+        try to change index of best from hall_of_fame
+        """
+        if random.random() < chance:
             rnd = int(random.random() * size)
-        return rnd
-    return idx
+            while (rnd == idx):
+                rnd = int(random.random() * size)
+            return rnd
+        return idx
 
-def gamble(pop1, pop2, n, toolbox, fix_solution=None):
-    games = {}
-    if fix_solution is not None:
-        games[fix_solution] = toolbox.fitness(fix_solution[0], fix_solution[1])
-    for _ in range(n * 4):
-        p1 = pop1[random.randint(0, n - 1)]
-        p2 = pop2[random.randint(0, n - 1)]
-        games[(p1, p2)] = toolbox.fitness(p1, p2)
-    leaders = [(k, v) for k, v in games.items()]
-    leaders.sort(key = lambda item : item[1], reverse = True)
-    l = int(math.log(n))
-    leaders = leaders[:l]
-    return leaders, leaders[0]
+    def gamble(self, pop1, pop2, n, toolbox):
+        """
+        gamble between pop1 and pop2 to make leaders list
+        """
+        games = {}
+        for _ in range(self.kwargs['gamble_size']):
+            p1 = pop1[random.randint(0, n - 1)]
+            p2 = pop2[random.randint(0, n - 1)]
+            games[(p1, p2)] = toolbox.fitness(p1, p2)
+        leaders = [(k, v) for k, v in games.items()]
+        leaders.sort(key=lambda item: item[1], reverse=True)
+        size = self.kwargs['leader_list_size']
+        leaders = leaders[:size]
+        return leaders, leaders[0]
+
+
+def vm_run_cpso(**kwargs):
+    """
+    welcome to the cpso
+    """
+    kwargs_copy = deepcopy(kwargs)
+    cpso = VMCoevolutionPSO(**kwargs)
+    VMCoevolutionPSO.vm_series = []
+    res = cpso()
+    res_rm = res[0][0][1].entity
+    kw_rm = kwargs_copy['env'][1]
+
+    # Change current resource manager
+    new_rm = merge_rms(kw_rm, res_rm)
+    for node in new_rm.get_all_nodes():
+        if node.name not in [r_node.name for r_node in res_rm.get_all_nodes()]:
+            node.state = Node.Down
+
+    kwargs['env'][1].resources[0].nodes = new_rm.resources[0].nodes
+
+    return res
 
 
 

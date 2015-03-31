@@ -1,43 +1,90 @@
 from deap.base import Fitness
-from heft.algs.common.NewSchedulerBuilder import place_task_to_schedule
+from copy import deepcopy
+from heft.algs.common.NewSchedulerBuilder import NewScheduleBuilder
 from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import Schedule, ScheduleItem
 from heft.core.environment.Utility import Utility
+import random
 
 MAPPING_SPECIE = "MappingSpecie"
 ORDERING_SPECIE = "OrderingSpecie"
 
 
-def build_schedule(workflow, estimator, resource_manager, solution):
+def particle_converter(ms, os, node_map):
     """
-    the solution consists all parts necessary to build whole solution
-    For the moment, it is mentioned that all species taking part in algorithm
-    are necessary to build complete solution
-    solution = {
-        s1.name: val1,
-        s2.name: val2,
-        ....
-    }
+    Convert ms and os to one particle {node:[task]}
+    :param ms: [taskId, nodeName]
+    :param os: {taskId]
+    :return:{node:[tasks]}
+    """
+    res_part = dict()
+    for node in node_map.keys():
+        res_part[node] = []
+    for ord_it in os:
+        map_it = [m for m in ms if m[0] == ord_it][0]
+        res_part[map_it[1]].append(map_it[0])
+    return res_part
+
+def merge_rms(old, new):
+    """
+    Merge complete RM with init RM and with new RM from particle
+    :param old: init RM
+    :param new: RM in particle
+    :return: new Merged RM with all nodes
+    """
+    rm = deepcopy(old)
+    for res in new.resources:
+        if res.name not in [elem.name for elem in rm.resources]:
+            rm.resources.append(res)
+        else:
+            for node in res.nodes:
+                rm_res = rm.get_res_by_name(res.name)
+                if node.name not in [elem.name for elem in rm_res.nodes]:
+                    rm_res.nodes.append(node)
+    return rm
+
+def build_schedule(workflow, estimator, resource_manager, fixed_schedule, current_time, solution, res_particle):
+    """
+    build schedule with merged RM and with fixed schedule
+    :param resource_manager: init RM
+    :param solution: ms = [taskId, nodeName] os = [taskId]
+    :param res_particle: new RM without all nodes in RM
     """
     ms = solution[MAPPING_SPECIE]
     os = solution[ORDERING_SPECIE]
 
-    assert check_precedence(workflow, os), "Precedence is violated"
+    #assert check_precedence(workflow, os), "Precedence is violated"
 
-    ms = {t: resource_manager.byName(n) for t, n in ms}
-    schedule_mapping = {n: [] for n in set(ms.values())}
-    task_to_node = {}
-    for t in os:
-        node = ms[t]
-        t = workflow.byId(t)
-        (start_time, end_time) = place_task_to_schedule(workflow,
-                                                        estimator,
-                                                        schedule_mapping,
-                                                        task_to_node,
-                                                        ms, t, node, 0)
+    # Merge init ResourceManger with config particle
+    rm = merge_rms(resource_manager, res_particle.entity)
 
-        task_to_node[t.id] = (node, start_time, end_time)
-    schedule = Schedule(schedule_mapping)
+    # check all map items, if resource not found in res_particle, change to random resource
+    for map_item in ms:
+        node = res_particle.entity.get_node_by_name(map_item[1])
+        if node is None:
+            live_nodes = [l_node for l_node in res_particle.entity.get_live_nodes()]
+            if len(live_nodes) == 0:
+                raise Exception("Live_nodes lenght == 0")
+            node = live_nodes[random.randint(0, len(live_nodes) - 1)]
+            bad_idx = ms.index(map_item)
+            new_map_item = (map_item[0], node.name)
+            ms[bad_idx] = new_map_item
+
+    # make task and node maps
+    task_map = {}
+    node_map = {}
+
+    for task in workflow.get_all_unique_tasks():
+        task_map[task.id] = task
+
+    for node in rm.get_all_nodes():
+        node_map[node.name] = node
+
+    particle = particle_converter(ms, os, node_map)
+
+    builder = NewScheduleBuilder(workflow, rm, estimator, task_map, node_map, fixed_schedule)
+
+    schedule = builder(particle, current_time)
     return schedule
 
 
@@ -55,11 +102,7 @@ def fitness(wf, rm, estimator, position):
     if isinstance(position, Schedule):
         sched = position
     else:
-        sched = build_schedule(wf, estimator, rm, position)
-
-    # isvalid = Utility.is_static_schedule_valid(wf,sched)
-    # if not isvalid:
-    #     print("NOT VALID SCHEDULE!")
+        raise Exception("sched is incorrect")
 
     makespan = Utility.makespan(sched)
     ## TODO: make a real estimation later

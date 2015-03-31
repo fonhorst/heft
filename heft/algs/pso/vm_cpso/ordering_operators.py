@@ -1,30 +1,34 @@
 from heft.algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
-from heft.algs.pso.cpso.particle_operations import MappingParticle, OrderingParticle, CompoundParticle
+from heft.algs.pso.vm_cpso.particle_operations import MappingParticle, OrderingParticle, CompoundParticle
 from heft.algs.ga.GAImplementation.GAFunctions2 import unmoveable_tasks
-from heft.algs.pso.cpso.mapping_operators import construct_solution
-from heft.algs.pso.cpso.mapordschedule import ord_and_map, build_schedule as base_build_schedule, \
+from heft.algs.pso.vm_cpso.mapping_operators import construct_solution, velocity_update
+from heft.algs.pso.vm_cpso.mapordschedule import ord_and_map, build_schedule as base_build_schedule, \
     validate_mapping_with_alive_nodes
-from heft.algs.pso.cpso.mapordschedule import fitness as basefitness
-from heft.algs.pso.cpso.csdpso import velocity_update
+from heft.algs.pso.vm_cpso.mapordschedule import fitness as basefitness
+from heft.algs.pso.vm_cpso.mapordschedule import merge_rms
 from heft.core.environment.ResourceManager import Schedule, ScheduleItem
 from heft.core.environment.Utility import Utility
-from heft.algs.pso.cpso.configuration_particle import make_rm
 
-
-def build_schedule(wf, rm, estimator, particle):
+def build_schedule(wf, rm, estimator, fix_sched, current_time, particle, config):
     ordering_particle = particle.ordering
     mapping_particle = particle.mapping
-    ordering = numseq_to_ordering(wf, ordering_particle)
+    fix_ids = []
+    for node, items in fix_sched.mapping.items():
+        for item in items:
+            fix_ids.append(item.job.id)
+    ordering = numseq_to_ordering(wf, ordering_particle, fix_ids)
     solution = construct_solution(mapping_particle, ordering)
-    sched = base_build_schedule(wf, estimator, rm, solution)
+    sched = base_build_schedule(wf, estimator, rm, fix_sched, current_time, solution, config)
     return sched
 
-
-def fitness(wf, estimator, p1, p2):
-    rm = make_rm(p2)
-    sched = build_schedule(wf, rm, estimator, p1)
-    return basefitness(wf, rm, estimator, sched)
-
+def fitness(wf, estimator, rm, fix_sched, current_time, p1, p2):
+    """
+    p1 - mapping, ordering
+    p2 - ResourceManager
+    """
+    sched = build_schedule(wf, rm, estimator, fix_sched, current_time, p1, p2)
+    merged_rm = merge_rms(rm, p2.entity)
+    return basefitness(wf, merged_rm, estimator, sched)
 
 def ordering_to_numseq(ordering, min=-1, max=1):
     step = abs((max - min)/len(ordering))
@@ -34,7 +38,6 @@ def ordering_to_numseq(ordering, min=-1, max=1):
         initial += step
         ord_position.append(initial)
     return ord_position
-
 
 def numseq_to_ordering(wf, ordering_particle, fixed_tasks_ids=[]):
     def recover_ordering(ordering):
@@ -56,7 +59,6 @@ def numseq_to_ordering(wf, ordering_particle, fixed_tasks_ids=[]):
 
     ordering = recover_ordering(ordering)
     return ordering
-
 
 def generate(wf, rm, estimator, schedule=None, fixed_schedule_part=None, current_time=0.0):
     sched = schedule if schedule is not None else SimpleRandomizedHeuristic(wf, rm.get_nodes(), estimator).schedule(fixed_schedule_part, current_time)
