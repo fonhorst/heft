@@ -9,7 +9,7 @@ from heft.algs.common.utilities import weight_random
 def position_update(mapping_particle, velocity):
     # TODO if value riched 1, than change node
     def _cutting_by_task(velocity, cur_task):
-        #return [node for (task, node), v in velocity.items()]
+        # return [node for (task, node), v in velocity.items()]
         return [(node, v) for (task, node), v in velocity.items() if task == cur_task]
     alpha = random.random()
     cut_velocity = velocity.cutby(alpha)
@@ -18,8 +18,10 @@ def position_update(mapping_particle, velocity):
         available_nodes = _cutting_by_task(cut_velocity, task)
         if len(available_nodes) == 0:
             available_nodes = [(mapping_particle.entity[task], 1)]
+            # available_nodes = [mapping_particle.entity[task]]
 
         new_node = available_nodes[weight_random([v for k, v in available_nodes])]
+        # new_node = available_nodes[random.randint(0, len(available_nodes) - 1)]
         new_position[task] = new_node[0]
     return new_position
 

@@ -15,9 +15,9 @@ from heft.algs.pso.vm_cpso.mapordschedule import build_schedule
 
 EXPERIMENT_NAME = "cpso"
 
-REPEAT_COUNT = 18
+REPEAT_COUNT = 6
 WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-# WF_NAMES = ["Montage_50"]
+# WF_NAMES = ["Montage_40"]
 RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 # RELIABILITY = [0.9]
 INDIVIDUALS_COUNTS = [100]
@@ -83,7 +83,9 @@ class CpsoVmWrapper:
         best, pops, logbook, initial_pops, hall, vm_series = vm_run_cpso(**kwargs)
         print("RES config = " + str([node.flops for node in best[0][1].entity.get_live_nodes()]))
         ms = [(t, n) for t, n in best[0][0].mapping.entity.items()]
-        os = [t for t in best[0][0].ordering.entity]
+        temp_os = [(k, v) for k, v in best[0][0].ordering.entity.items()]
+        temp_os.sort(key=lambda x: x[1])
+        os = [t[0] for t in temp_os]
         solution = dict()
         solution['MappingSpecie'] = ms
         solution['OrderingSpecie'] = os

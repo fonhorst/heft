@@ -11,6 +11,7 @@ from heft.algs.pso.vm_cpso.ordering_operators import build_schedule, generate, o
 from heft.algs.pso.vm_cpso.mapping_operators import update as mapping_update
 from heft.algs.pso.vm_cpso.configuration_particle import config_generate, configuration_update
 from heft.algs.pso.vm_cpso.mapordschedule import merge_rms
+from heft.algs.pso.vm_cpso.particle_operations import ConfigurationParticle, MappingParticle
 
 Env = namedtuple('Env', ['wf', 'rm', 'estimator'])
 
@@ -46,9 +47,12 @@ class VMCoevolutionPSO():
         fix_sched = self.fixed_schedule
         current_time = self.current_time
 
-        pop_gen = lambda n: ([generate(_wf, rm, estimator, fixed_schedule_part=fix_sched) for _ in range(n)])
+        init_particle = generate(_wf, rm, estimator, schedule=self.kwargs['initial_schedule'], fixed_schedule_part=fix_sched)
 
-        config_gen = lambda n: ([config_generate(rm) for _ in range(n)])
+        #pop_gen = lambda n: ([generate(_wf, rm, estimator, fixed_schedule_part=fix_sched) for _ in range(n)])
+        pop_gen = lambda n: ([generate(_wf, rm, estimator, fixed_schedule_part=fix_sched) for _ in range(n - 1)] + [init_particle])
+
+        config_gen = lambda n: ([config_generate(rm) for _ in range(n - 1)] + [deepcopy(ConfigurationParticle(rm))])
 
         def compound_update(w, c1, c2, p, best, min=-1, max=1):
             mapping_update(w, c1, c2, p.mapping, best.mapping)
@@ -104,22 +108,23 @@ class VMCoevolutionPSO():
             # fitness for pop1
             for p in sched_pop:
                 if not hasattr(p, "fitness") or not p.fitness.valid:
+                    particles_adapter(p, p2_leader.entity)
                     p.fitness = self.toolbox.fitness(p, p2_leader)
                 if not p.best or p.best.fitness < p.fitness:
                     p.best = deepcopy(p)
-
                 if not best or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
                     hall_of_fame = self.change_hall(hall_of_fame, ((p, p2_leader), p.fitness), hall_of_fame_size)
 
             # fitness for pop2
             for p in conf_pop:
+                p1_leader_copy = deepcopy(p1_leader)
                 if not hasattr(p, "fitness") or not p.fitness.valid:
-                    p.fitness = self.toolbox.fitness(p1_leader, p)
+                    particles_adapter(p1_leader_copy, p.entity)
+                    p.fitness = self.toolbox.fitness(p1_leader_copy, p)
                 if not p.best or p.best.fitness < p.fitness:
                     p.best = deepcopy(p)
-
                 if not best or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
-                    hall_of_fame = self.change_hall(hall_of_fame, ((p1_leader, p), p.fitness), hall_of_fame_size)
+                    hall_of_fame = self.change_hall(hall_of_fame, ((p1_leader_copy, p), p.fitness), hall_of_fame_size)
 
             # is winner best?
             if hall_of_fame[hall_of_fame_size-1][1] < winner[1]:
@@ -185,14 +190,31 @@ class VMCoevolutionPSO():
         """
         games = {}
         for _ in range(self.kwargs['gamble_size']):
-            p1 = pop1[random.randint(0, n - 1)]
-            p2 = pop2[random.randint(0, n - 1)]
+            p1 = deepcopy(pop1[random.randint(0, n - 1)])
+            p2 = deepcopy(pop2[random.randint(0, n - 1)])
+            particles_adapter(p1, p2.entity)
             games[(p1, p2)] = toolbox.fitness(p1, p2)
         leaders = [(k, v) for k, v in games.items()]
         leaders.sort(key=lambda item: item[1], reverse=True)
         size = self.kwargs['leader_list_size']
         leaders = leaders[:size]
         return leaders, leaders[0]
+
+def particles_adapter(sched, config):
+    """
+    During init and update process, some assigned nodes in mapping not existed in config.
+    Therefore, it is required to change this nodes according to nodes from current config.
+    """
+    nodes = [node for node in config.get_live_nodes()]
+    nodes_names = [node.name for node in nodes]
+    new_mapping = dict()
+    for task, node in sched.mapping.entity.items():
+        if node not in nodes_names:
+            new_mapping[task] = nodes[random.randint(0, len(nodes) - 1)].name
+        else:
+            new_mapping[task] = node
+    sched.mapping.entity = new_mapping
+
 
 
 def vm_run_cpso(**kwargs):

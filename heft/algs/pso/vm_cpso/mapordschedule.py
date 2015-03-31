@@ -58,17 +58,11 @@ def build_schedule(workflow, estimator, resource_manager, fixed_schedule, curren
     # Merge init ResourceManger with config particle
     rm = merge_rms(resource_manager, res_particle.entity)
 
-    # check all map items, if resource not found in res_particle, change to random resource
+    # check all map items, if resource not found in res_particle
     for map_item in ms:
         node = res_particle.entity.get_node_by_name(map_item[1])
         if node is None:
-            live_nodes = [l_node for l_node in res_particle.entity.get_live_nodes()]
-            if len(live_nodes) == 0:
-                raise Exception("Live_nodes lenght == 0")
-            node = live_nodes[random.randint(0, len(live_nodes) - 1)]
-            bad_idx = ms.index(map_item)
-            new_map_item = (map_item[0], node.name)
-            ms[bad_idx] = new_map_item
+            raise Exception("Paticles are not compatible")
 
     # make task and node maps
     task_map = {}
