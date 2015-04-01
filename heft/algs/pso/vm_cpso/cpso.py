@@ -12,6 +12,7 @@ from heft.algs.pso.vm_cpso.mapping_operators import update as mapping_update
 from heft.algs.pso.vm_cpso.configuration_particle import config_generate, configuration_update
 from heft.algs.pso.vm_cpso.mapordschedule import merge_rms
 from heft.algs.pso.vm_cpso.particle_operations import ConfigurationParticle, MappingParticle
+from datetime import datetime
 
 Env = namedtuple('Env', ['wf', 'rm', 'estimator'])
 
@@ -96,7 +97,11 @@ class VMCoevolutionPSO():
         best_index = 0
         change_chance = params['hall_idx_change_chance']
 
+        # tstart = datetime.now()
         for g in range(gen_steps):
+            # tend = datetime.now()
+            # print("Generation time = " + str(tend - tstart))
+            # tstart = tend
             #print("g: {0}".format(g))
 
             leaders, winner = self.gamble(sched_pop, conf_pop, n, self.toolbox)

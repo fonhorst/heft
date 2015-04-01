@@ -15,9 +15,9 @@ from heft.algs.pso.vm_cpso.mapordschedule import build_schedule
 
 EXPERIMENT_NAME = "cpso"
 
-REPEAT_COUNT = 6
+REPEAT_COUNT = 5
 WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-# WF_NAMES = ["Montage_40"]
+# WF_NAMES = ["Montage_75"]
 RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 # RELIABILITY = [0.9]
 INDIVIDUALS_COUNTS = [100]
