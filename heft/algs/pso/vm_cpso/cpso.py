@@ -49,7 +49,6 @@ class VMCoevolutionPSO():
 
         init_particle = generate(_wf, rm, estimator, schedule=self.kwargs['initial_schedule'], fixed_schedule_part=fix_sched)
 
-        #pop_gen = lambda n: ([generate(_wf, rm, estimator, fixed_schedule_part=fix_sched) for _ in range(n)])
         pop_gen = lambda n: ([generate(_wf, rm, estimator, fixed_schedule_part=fix_sched) for _ in range(n - 1)] + [init_particle])
 
         config_gen = lambda n: ([config_generate(rm) for _ in range(n - 1)] + [deepcopy(ConfigurationParticle(rm))])

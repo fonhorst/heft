@@ -7,6 +7,29 @@ from scipy import stats
 import scipy
 import numpy
 
+# HACK
+BASE_PARAMS = {
+    "alg_name": "cga",
+    "executor_params": {
+        "base_fail_duration": 40,
+        "base_fail_dispersion": 1,
+        "fixed_interval_for_ga": 15,
+        "fail_count_upper_limit": 15,
+        "replace_anyway": True
+    },
+    "resource_set": {
+        "nodes_conf": [(10, 15, 25, 30)],
+        "rules_list": [(80, 30)]
+    },
+    "estimator_settings": {
+        "ideal_flops": 20,
+        "transfer_nodes": 100,
+        "reliability": 1.0,
+        "transfer_blades": 100
+    }
+}
+
+
 WFS_COLORS_30 = {
     # 30 - series
     "Montage_25": "-gD",
@@ -108,6 +131,7 @@ class InMemoryDataAggregator:
     def __call__(self, picture_path="gh.png", extract_and_add=None, functions=None):
         data = {}
         for d in self._data_array:
+            d['params'] = BASE_PARAMS
             extract_and_add(data, d)
         path = os.path.join(TEMP_PATH, picture_path) if not os.path.isabs(picture_path) else picture_path
         visualize(data, functions, path)

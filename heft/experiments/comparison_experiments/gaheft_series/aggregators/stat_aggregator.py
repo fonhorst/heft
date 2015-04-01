@@ -73,7 +73,7 @@ def plot_aggregate_results(wf_name, data):
 
 
 if __name__ == "__main__":
-    wf_name = "Montage_75"
+    wf_names = ["Montage_75"]
     reliabilities = [0.99, 0.975, 0.95, 0.925, 0.9]
     base_picture_path = os.path.join(TEMP_PATH, "compilation", "pso_gsa", "histograms")
 
@@ -95,6 +95,6 @@ if __name__ == "__main__":
             wf_plot = partial(plot_aggregate_results, wf_name)
 
 
-                picture_path = os.path.join(base_picture_path, "hist_gaheft_for_{0}_{1}_{2}.png".format(alg_name, wf_name, reliability))
+            picture_path = os.path.join(base_picture_path, "hist_gaheft_for_{0}_{1}_{2}.png".format(alg_name, wf_name, reliability))
 
-                data_aggr(picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
+            data_aggr(picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])

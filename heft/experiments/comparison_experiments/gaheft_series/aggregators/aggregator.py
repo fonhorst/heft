@@ -68,7 +68,7 @@ def extract_and_add(alg_name, data, d):
 
 
 def composite_extract_and_add(data, d, alg_names):
-    alg_name = d["params"]["alg_name"]
+    alg_name = "cga" #d["params"]["alg_name"]
 
     if alg_name not in alg_names:
         return data
@@ -244,10 +244,10 @@ if __name__ == "__main__":
     algs = {
         # "ga": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
         # "pso": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
-        "gsa": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
-        "heft": [os.path.join(TEMP_PATH, "compilation/gaheft_for_heft_new_500")],
+        # "gsa": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
+        "cga": ["D:\Projects\cga_dynamic"]
+        # "heft": [os.path.join(TEMP_PATH, "compilation/gaheft_for_heft_new_500")],
     }
-
     # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
     wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
 

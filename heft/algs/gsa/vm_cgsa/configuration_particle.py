@@ -1,10 +1,7 @@
 import random
-from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
-from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
-from heft.algs.pso.vm_cpso.particle_operations import ConfigurationParticle
-from heft.algs.pso.vm_cpso.mapping_operators import velocity_update
-from heft.core.environment.BaseElements import Resource, Node, SoftItem, Workflow
 from copy import deepcopy
+from heft.algs.gsa.vm_cgsa.particle_operations import ConfigurationParticle
+from heft.core.environment.BaseElements import Node, SoftItem
 
 def config_generate(rm):
     """
@@ -22,6 +19,9 @@ def config_generate(rm):
             cur_config.append(temp_cap)
         if cur_cap < fc:
             cur_config.append((fc - cur_cap))
+        for con in cur_config:
+            if con > 30:
+                pass
         new_res = flops_to_resource(res, cur_config)
         config.append(new_res)
     new_rm = deepcopy(rm)
@@ -88,12 +88,12 @@ def normalization(particle, init_rm):
             pass
     return res_particle
 
-def configuration_update(w, c1, c2, p, best, init_rm):
-    new_velocity = velocity_update(w, c1, c2, p.best, best, p.velocity, p)
+def configuration_update(w, c, p, init_rm):
+    acceleration = p.force / p.mass
+    alpha = random.random()
+    new_velocity = p.velocity*w + acceleration*c*alpha
     new_entity = normalization((p + new_velocity), init_rm)
     new_res = flops_to_resource(init_rm.resources[0], new_entity)
     p.entity.resources = [new_res]
     p.velocity = new_velocity
     pass
-
-

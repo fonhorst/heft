@@ -2,6 +2,7 @@ from numbers import Number
 from uuid import uuid4
 import math
 from heft.algs.common.individuals import FitAdapter
+import random
 
 
 class Particle(FitAdapter):
@@ -35,7 +36,7 @@ class MappingParticle(Particle):
 
     def __mul__(self, other):
         if isinstance(other, Number):
-            return MappingParticle.Velocity({k: v * other for k, v in self.entity.items()})
+            return MappingParticle.Velocity({k: other for k, v in self.entity.items()})
         raise ValueError("Other has not a suitable type for multiplication")
 
     def emptify(self):
@@ -62,7 +63,14 @@ class MappingParticle(Particle):
             return MappingParticle.Velocity({k: v for k, v in self.items() if v >= alpha})
 
         def vector_length(self):
-            return len(self)
+            #return len(self)
+            if len(self) == 0:
+                return 1
+            vec_len = math.pow(sum(val*val for t, val in self.items()), 1 / len(self))
+            if vec_len == 0:
+                vec_len = 1
+            #print(str(vec_len))
+            return len(self)#vec_len
 
 
         pass
@@ -141,7 +149,13 @@ class OrderingParticle(Particle):
             pass
 
         def vector_length(self):
-            return math.sqrt(sum(val*val for t, val in self.items()))/len(self)
+            if len(self) == 0:
+                return 1
+            vec_len = math.pow(sum(val*val for t, val in self.items()), 1 / len(self))
+            if vec_len < 1:
+                vec_len = 1
+            #print(str(vec_len))
+            return vec_len
         pass
     pass
 
@@ -169,7 +183,6 @@ class CompoundParticle(Particle):
 
     best = property(_get_best, _set_best)
     pass
-
 
 class ConfigurationParticle(Particle):
     """
@@ -236,6 +249,10 @@ class ConfigurationParticle(Particle):
                     res_flops.append(other[len(self) + idx])
             return ConfigurationParticle.Velocity(res_flops)
 
+        def __truediv__(self, denumenator):
+           if isinstance(denumenator, Number):
+               return self.__mul__(1/denumenator)
+           raise ValueError("{0} has not a suitable type for division".format(denumenator))
 
 
 
