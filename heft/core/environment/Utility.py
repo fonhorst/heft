@@ -19,6 +19,11 @@ from heft.core.environment.BaseElements import Node, Resource
 from heft.core.environment.ResourceManager import ScheduleItem, Schedule
 from heft.core.environment.DAXParser import DAXParser
 
+def f_eq(a, b):
+    """
+    check equality for two float numbers
+    """
+    return abs(a - b) < 0.00000001
 
 def wf(wf_name, task_postfix_id="00"):
     # dax_filepath = "../../resources/{0}.xml".format(wf_name)
@@ -412,7 +417,8 @@ class Utility:
     def validate_is_schedule_complete(_wf, schedule):
         scheduled_tasks = schedule.tasks_to_node()
         tasks = _wf.get_all_unique_tasks()
-        return set(tasks) in set(scheduled_tasks.keys())
+        difference = set(scheduled_tasks.keys()).symmetric_difference(set(tasks))
+        return len(difference) > 0
 
     @staticmethod
     def validate_dynamic_schedule(_wf, schedule):

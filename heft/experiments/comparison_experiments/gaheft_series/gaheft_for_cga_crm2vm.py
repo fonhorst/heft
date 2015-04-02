@@ -122,6 +122,9 @@ class CgaVmWrapper:
         ## TODO: this is a hack for correct algorithm work. It should be removed later
         # correct_schedule = Schedule({rm.node(node_name): items for node_name, items in schedule.mapping.items()})
         correct_schedule = schedule
+
+            if None in correct_schedule.mapping:
+                raise Exception("Invalid name of node. Perhaprs resource manager in inconsistent state")
         schedule_nodes = set(correct_schedule.mapping.keys())
         if len(schedule_nodes.symmetric_difference(self.rm.get_nodes())) > 0:
             print("Rm_nodes", self.rm.get_nodes())
@@ -129,6 +132,16 @@ class CgaVmWrapper:
             raise Exception("Alarm! The new schedule doesn't contain all possible nodes from ResourceManager")
         #pprint(correct_schedule.mapping)
         Utility.Utility.validate_is_schedule_complete(self._wf, correct_schedule)
+                pprint(correct_schedule)
+                raise Exception("Alarm! Schedule is not complete")
+
+            try:
+                Utility.Utility.check_and_raise_for_fixed_part(correct_schedule, fixed_schedule_part, current_time)
+            except:
+                print("Incorrect schedule")
+                pprint(correct_schedule)
+                raise
+
         #Utility.Utility.validate_static_schedule(_wf, correct_schedule)
         if None in correct_schedule.mapping:
             raise Exception("Invalid name of node. Perhaprs resource manager in inconsistent state")

@@ -2,6 +2,7 @@ from functools import partial
 import functools
 import operator
 import os
+from pprint import pprint
 
 import numpy
 import matplotlib.pyplot as plt
@@ -14,7 +15,8 @@ ALG_COLORS = {
     "ga": "-gD",
     "heft": "-rD",
     "pso": "-yD",
-    "gsa": "-mD"
+    "gsa": "-mD",
+    "cga": "-mD"
 }
 
 # aggr = confidence_aggr
@@ -52,7 +54,10 @@ def extract_and_add(alg_name, data, d):
         return data
 
     wf_name = d["wf_name"]
-    reliability = d["params"]["estimator_settings"]["reliability"]
+    if "estimator_settings" not in d["params"]:
+        reliability = d["estimator_settings"]["reliability"]
+    else:
+        reliability = d["params"]["estimator_settings"]["reliability"]
     makespan = d["result"]["makespan"]
     failed_count = d["result"]["overall_failed_tasks_count"]
 
@@ -70,6 +75,20 @@ def extract_and_add(alg_name, data, d):
 def composite_extract_and_add(data, d, alg_names):
     alg_name = "cga" #d["params"]["alg_name"]
 
+    if alg_name not in alg_names:
+        return data
+
+    alg_data = data.get(alg_name, {})
+    extract_and_add(alg_name, alg_data, d)
+    data[alg_name] = alg_data
+    return data
+
+
+def advanced_composite_extract_and_add(data, d, alg_names):
+    if d["params"] is None:
+        d["params"] = {"alg_name": "cga"}
+
+    alg_name = d["params"]["alg_name"]
     if alg_name not in alg_names:
         return data
 
@@ -179,6 +198,8 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
 
     format_points = get_points_format(data) if reliability is None else [(str(r), 0) for r in reliability]
 
+    # pprint(data)
+
     plt.grid(True)
     ax = plt.gca()
     # + 1 for legend box
@@ -204,6 +225,14 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
         raise ValueError("base_alg_name cannot be None")
 
     d = {alg_name: { wf_name: {} } for alg_name in data}
+
+
+    # print("===========================")
+    # print("===========================")
+    # print("===========================")
+    #
+    #pprint(data)
+
     for alg_name, item in data.items():
         # wf_name = wf_name.split("_")[0]
         if alg_name not in alg_colors:
@@ -213,6 +242,28 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
             if value in reliability or reliability is None:
                 d[alg_name][wf_name][value] = aggr(results)
                 # points.append((value, aggr(results)))
+
+    print("===========================")
+    print("===========================")
+    print("===========================")
+    pprint(d)
+
+
+    kr = {alg_name: { wf_name: {} } for alg_name in data}
+    for alg_name, item in data.items():
+        # wf_name = wf_name.split("_")[0]
+        if alg_name not in alg_colors:
+            continue
+
+        for value, results in item[wf_name]["reliability"].items():
+            if value in reliability or reliability is None:
+                kr[alg_name][wf_name][value] = len(results)
+
+
+    print("===========================")
+    print("===========================")
+    print("===========================")
+    pprint(kr)
 
     for alg_name, item in d.items():
         if alg_name not in alg_colors:
@@ -234,6 +285,7 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
 
 if __name__ == "__main__":
 
+
     # algs = {
     #     "ga": [os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_ga_[0.99-0.9]x[m25-m75]x50")],
     #     #"pso": os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_pso_[0.99-0.9]x[m25-m75]x50"),
@@ -244,12 +296,16 @@ if __name__ == "__main__":
     algs = {
         # "ga": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
         # "pso": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
-        # "gsa": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
-        "cga": ["D:\Projects\cga_dynamic"]
-        # "heft": [os.path.join(TEMP_PATH, "compilation/gaheft_for_heft_new_500")],
+        #"cga": [os.path.join(TEMP_PATH, "cga_dynamic_results")],
+        "cga": [r"D:\wspace\gaheft_series_Misha\cga_dynamic"],
+        #"gsa": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
+        "heft": [os.path.join(TEMP_PATH, "gaheft_for_heft_new_500")],
     }
     # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-    wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+    # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+    # wf_names = ["Montage_25"]
+    # wf_names = ["Montage_40", "Montage_50", "Montage_75"]
+    wf_names = ["Montage_75"]
 
 
     pathes = functools.reduce(operator.add, algs.values(), [])
@@ -257,9 +313,13 @@ if __name__ == "__main__":
     for wf_name in wf_names:
 
         # wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
-        wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], base_alg_name="heft")
-        extract = partial(composite_extract_and_add, alg_names=algs.keys())
+        # reliability=[0.925]
+        reliability=[0.9, 0.925, 0.95, 0.975, 0.99]
+        # reliability=[0.975]
+        wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=reliability, base_alg_name="heft")
+        extract = partial(advanced_composite_extract_and_add, alg_names=algs.keys())
 
         names = functools.reduce(operator.add, ("_" + alg_name for alg_name in algs.keys()), "")
-        picture_path = os.path.join(TEMP_PATH, "compilation", "gaheft_series_for{0}_{1}.png".format(names, wf_name))
+        # picture_path = os.path.join(TEMP_PATH, "gaheft_series_for{0}_{1}.png".format(names, wf_name))
+        picture_path = os.path.join("D:/wspace/gaheft_series_Misha", "gaheft_series_for{0}_{1}.png".format(names, wf_name))
         data_aggr(picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])

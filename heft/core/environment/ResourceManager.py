@@ -98,10 +98,16 @@ class ScheduleItem:
 
     def __repr__(self):
         return str(self.job.id) + ":" + str(self.start_time) + ":" + str(self.end_time) + ":" + self.state
-    #
-    # def __hash__(self):
-    #     raise NotImplementedError()
 
+    # def __hash__(self):
+    #
+    #     raise NotImplementedError()
+    #
+    # def __eq__(self, other):
+    #     if isinstance(other, ScheduleItem):
+    #         return self.job == other.job and self.start_time == other.start_time \
+    #                and self.end_time == other.end_time and self.state == other.state
+    #     return False
 
 class Schedule:
     def __init__(self, mapping):
@@ -220,8 +226,18 @@ class Schedule:
                           for task_id, group in task_instances}
         return task_instances
 
-    def is_partial_equal(self):
-        raise NotImplementedError()
+    ## TODO: there is duplicate functionality Utility.check_and_raise_for_fixed_part
+    # def contains(self, other):
+    #     for node, other_items in other.mapping.items():
+    #         if node not in self.mapping:
+    #             return False
+    #         this_items = self.mapping[node]
+    #         for i, item in enumerate(other_items):
+    #             if len(this_items) <= i:
+    #                 return False
+    #             if item != this_items[i]:
+    #                 return False
+    #     return True
 
 
     @staticmethod
