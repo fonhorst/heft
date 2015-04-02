@@ -116,7 +116,7 @@ class VMCoevolutionPSO():
                     p.fitness = self.toolbox.fitness(p, p2_leader)
                 if not p.best or p.best.fitness < p.fitness:
                     p.best = deepcopy(p)
-                if not best or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
+                if len(hall_of_fame) < hall_of_fame_size or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
                     hall_of_fame = self.change_hall(hall_of_fame, ((p, p2_leader), p.fitness), hall_of_fame_size)
 
             # fitness for pop2
@@ -127,11 +127,11 @@ class VMCoevolutionPSO():
                     p.fitness = self.toolbox.fitness(p1_leader_copy, p)
                 if not p.best or p.best.fitness < p.fitness:
                     p.best = deepcopy(p)
-                if not best or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
+                if len(hall_of_fame) < hall_of_fame_size or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
                     hall_of_fame = self.change_hall(hall_of_fame, ((p1_leader_copy, p), p.fitness), hall_of_fame_size)
 
             # is winner best?
-            if hall_of_fame[hall_of_fame_size-1][1] < winner[1]:
+            if len(hall_of_fame) < hall_of_fame_size or hall_of_fame[hall_of_fame_size-1][1] < winner[1]:
                 hall_of_fame = self.change_hall(hall_of_fame, winner, hall_of_fame_size)
 
             # Gather all the fitnesses in one list and print the stats

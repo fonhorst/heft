@@ -129,18 +129,18 @@ class VMCoevolutionGSA():
             for p in sched_pop:
                 particles_adapter(p, p2_leader.entity)
                 p.fitness = self.toolbox.fitness(p, p2_leader)
-                if not best or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
+                if len(hall_of_fame) < hall_of_fame_size or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
                     hall_of_fame = self.change_hall(hall_of_fame, ((p, p2_leader), p.fitness), hall_of_fame_size)
 
             for p in conf_pop:
                 p1_leader_copy = deepcopy(p1_leader)
                 particles_adapter(p1_leader_copy, p.entity)
                 p.fitness = self.toolbox.fitness(p1_leader_copy, p)
-                if not best or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
+                if len(hall_of_fame) < hall_of_fame_size or hall_of_fame[hall_of_fame_size-1][1] < p.fitness:
                     hall_of_fame = self.change_hall(hall_of_fame, ((p1_leader_copy, p), p.fitness), hall_of_fame_size)
 
             # is winner best?
-            if hall_of_fame[hall_of_fame_size-1][1] < winner[1]:
+            if len(hall_of_fame) < hall_of_fame_size or hall_of_fame[hall_of_fame_size-1][1] < winner[1]:
                 hall_of_fame = self.change_hall(hall_of_fame, winner, hall_of_fame_size)
 
             best_idx = self.change_index(best_idx, change_chance, len(hall_of_fame))
@@ -152,7 +152,7 @@ class VMCoevolutionGSA():
 
             ##statistics gathering
             winner[0][0].fitness = winner[1]
-            gather_info(self.logbook, self.stats, i, (sched_pop+conf_pop+[winner[0][0]]), hall_of_fame[0], True)
+            gather_info(self.logbook, self.stats, i, (sched_pop+conf_pop+[winner[0][0]]), hall_of_fame[0], False)
 
             ## mass estimation
             ## It is assumed that a minimization task is solved
