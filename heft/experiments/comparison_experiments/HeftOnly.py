@@ -1,5 +1,6 @@
 from heft.algs.heft.DSimpleHeft import run_heft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
+from heft.core.CommonComponents.BladeExperimentalManager import ExperimentResourceManager, ExperimentEstimator
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
@@ -7,6 +8,7 @@ from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
 estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
                                     ideal_flops=20, transfer_time=100)
+estimator = ExperimentEstimator(ideal_flops=20, transfer_nodes=100, transfer_blades=100)
 
 def do_exp(wf_name):
     _wf = wf(wf_name)
@@ -17,6 +19,5 @@ def do_exp(wf_name):
     # print("Heft makespan: {0}".format(Utility.makespan(heft_schedule)))
 
 if __name__ == "__main__":
-    repeat_count = 1
-    result = [do_exp("Montage_25") for _ in range(repeat_count)]
+    result = do_exp("Sipht_60")
     print(result)

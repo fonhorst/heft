@@ -1,6 +1,7 @@
 from copy import deepcopy
 from functools import reduce
 import operator
+from pprint import pprint
 from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import Schedule, ScheduleItem
@@ -120,6 +121,14 @@ class NewScheduleBuilder:
 
         schedule_mapping = {node: [item for item in items] for (node, items) in self.fixed_schedule_part.mapping.items()}
 
+        ## add nodes which can be in the resource manager, but empty in chromo and fixed schedule
+        ## in such they wouldn't be added to the resulted schedule at all
+        ## Note: schedule must contain all nodes from ResourceManager always
+        for node in self.nodes:
+            if node not in schedule_mapping:
+                schedule_mapping[node] = []
+
+
         finished_tasks = [item.job.id for (node, items) in self.fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)]
         finished_tasks = set([self.workflow.head_task.id] + finished_tasks)
 
@@ -163,6 +172,10 @@ class NewScheduleBuilder:
         #if count_of_tasks(chromo) + count_of_tasks(self.fixed_schedule_part.mapping) !=
 
         (schedule_mapping, finished_tasks, ready_tasks, chrmo_mapping, task_to_node) = self._create_helping_structures(chromo)
+
+        # print("SCHEDULE_MAPPING")
+        # print("AlIVE_NODES", alive_nodes)
+        # pprint(schedule_mapping)
 
         #chromo_copy = {nd_name: [item for item in items] for (nd_name, items) in chromo.items()}
         chromo_copy = deepcopy(chromo)

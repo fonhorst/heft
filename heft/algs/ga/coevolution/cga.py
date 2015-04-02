@@ -32,6 +32,11 @@ Toolbox need to implement functions:
 
 Env = namedtuple('Env', ['wf', 'rm', 'estimator'])
 
+## to be able to pickle
+def _empty_stat(pop):
+    return {}
+
+
 class Specie:
     def __init__(self, **kwargs):
         if kwargs.get("fixed", False):
@@ -49,7 +54,7 @@ class Specie:
             self.initialize = kwargs["initialize"]
             self.cxb = kwargs["cxb"]
             self.mb = kwargs["mb"]
-        self.stat = kwargs.get("stat", lambda pop: {})
+        self.stat = kwargs.get("stat", _empty_stat)
         pass
 
 class VMCoevolutionGA():
@@ -112,9 +117,7 @@ class VMCoevolutionGA():
 
     def __call__(self):
         for gen in range(self.GENERATIONS):
-            #print("gen strted = " + str(gen))
             self.gen()
-            #print("gen finished = " + str(gen))
             pass
         return self.result()
 
@@ -402,34 +405,31 @@ def vm_run_cooperative_ga(**kwargs):
     cga = VMCoevolutionGA(**kwargs)
     VMCoevolutionGA.vm_series = []
     res = cga()
-
-    # fixed = kwargs_copy['fixed_schedule']
-    # temp_ga_ind = []
-    # for node, items in fixed.mapping.items():
-    #     for item in items:
-    #         temp_ga_ind.append((item.job.id, node.resource.name, node.name))
-    # for t in res[0]['GASpecie']:
-    #     temp_ga_ind.append(t)
-    # res[0]['GASpecie'] = ListBasedIndividual(temp_ga_ind)
-
     res_rm = res[0]['ResourceConfigSpecie']
     kw_rm = kwargs_copy['env'][1].resources
 
+    best = res[0]
+    if isinstance(best['ResourceConfigSpecie'][0].nodes, set):
+        raise Exception("Alarm! Debug")
 
     for (i, resource) in enumerate(res_rm):
-        new_set = set()
+        new_set = []
         kw_nodes = kw_rm[i].nodes
         names_of_alive_nodes = set(res_node.name for res_node in resource.nodes)
         for node in kw_nodes:
             if node.name not in names_of_alive_nodes:
                 node.state = Node.Down
-                new_set.add(node)
+                new_set.append(node)
         for node in resource.nodes:
-            new_set.add(node)
+            if node.name not in [s_node.name for s_node in new_set]:
+                new_set.append(node)
         for node in [c_node for c_node in cga.CEMETERY if c_node.resource.name == resource.name]:
-            new_set.add(node)
+            if node.name not in [s_node.name for s_node in new_set]:
+                new_set.append(node)
         # TODO make a sepecial method in ResourceManager to change resource and node sets in a TRACKABLE way
         kwargs['env'][1].resources[i].nodes = new_set
+    kwargs['cemetery'] = cga.CEMETERY
+
 
     return res
 

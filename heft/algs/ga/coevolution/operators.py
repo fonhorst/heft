@@ -4,7 +4,7 @@ import random
 from deap import tools
 import numpy
 from numpy.lib.function_base import append, insert
-from heft.algs.common.NewSchedulerBuilder import place_task_to_schedule
+from heft.algs.common.NewSchedulerBuilder import place_task_to_schedule, NewScheduleBuilder
 from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividual
 from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE, check_precedence
 from heft.algs.ga.coevolution.cga import Specie, Env
@@ -13,7 +13,6 @@ from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.ResourceManager import Schedule
 from heft.core.environment.Utility import Utility
-from heft.core.environment.ResourceGenerator import ResourceGenerator
 from heft.core.environment.ResourceGenerator import ResourceGenerator
 from heft.core.environment.BaseElements import Resource, Node, SoftItem, Workflow
 from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividual
@@ -106,6 +105,8 @@ class one_to_one_vm_build_solutions:
                 ga_res_list = pairs[current_tmp_ga_number]
                 if res_pop_current_index in ga_res_list:
                     return True
+
+
 
         already_found_pairs = 0
         found_pairs = {}
@@ -296,6 +297,16 @@ def _check_precedence(workflow, seq):
                 return False
     return True
 
+def chrom_converter(gs, task_map, node_map):
+    """
+    Convert [task:node] with [nodes] to {node:[tasks]}
+    """
+    chrom = {}
+    for node in node_map.keys():
+        chrom[node] = []
+    for (task, res, node) in gs:
+        chrom[node].append(task)
+    return chrom
 
 def ga2resources_build_schedule(workflow, estimator, resource_manager, solution, ctx):
     """
@@ -307,13 +318,24 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
     """
     gs = solution[GA_SPECIE]
     rs = solution[RESOURCE_CONFIG_SPECIE]
-    # i don't know why it needed, but it is here
-    #if not individual_lengths_compare(rs, get_max_resource_number(gs)):
-    #    print('found')
 
     check_consistency(workflow, gs)
-    # index of blade was added
-    ms = {}
+
+    rm = deepcopy(resource_manager)
+    for res in rs:
+        if res.name not in [elem.name for elem in rm.resources]:
+            rm.resources.append(res)
+        else:
+            for node in res.nodes:
+                rm_res = get_res_by_name(rm.resources, res.name)
+                if node.name not in [elem.name for elem in rm_res.nodes]:
+                    rm_res.nodes.append(node)
+    if 'cemetery' in ctx.keys():
+        for node in ctx['cemetery']:
+            temp_node = deepcopy(node)
+            #temp_node.state = Node.Unknown
+            rm_res = get_res_by_name(rm.resources, node.resource.name)
+            rm_res.nodes.append(temp_node)
 
     for map_item in gs:
         res = get_res_by_name(rs, map_item[1])
@@ -326,56 +348,29 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
             map_item = (map_item[0], map_item[1], node.name)
             gs[bad_idx] = map_item
 
-        ms[map_item[0]] = node
+    task_map = {}
+    node_map = {}
 
-    ## TODO: не добавлены ноды из fixed_schedule
-    schedule_mapping = {n: [] for n in set(ms.values())}
-    fix_sched = ctx["fixed_schedule"]
-    fix_items = []
-    for node, items in fix_sched.mapping.items():
-        for item in items:
-            fix_items.append((item.job.id, node.resource.name, node, item.start_time))
-    temp_ga_ind = []
-    fix_items.sort(key=lambda x: x[3])
-    for item in fix_items:
-        temp_ga_ind.append((item[0], item[1], item[2].name))
-        ms[item[0]] = item[2]
-    #for node, items in fix_sched.mapping.items():
-    #    for item in items:
-    #        temp_ga_ind.append((item.job.id, node.resource.name, node.name))
-    #        ms[item.job.id] = node
-    for t in gs:
-        temp_ga_ind.append(t)
-    temp_ga_ind = ListBasedIndividual(temp_ga_ind)
+    for task in workflow.get_all_unique_tasks():
+        task_map[task.id] = task
+    for res in resource_manager.resources:
+        for node in res.nodes:
+            node_map[node.name] = node
+    for res in rs:
+        for node in res.nodes:
+            if node.name not in node_map.keys():
+                node_map[node.name] = node
+    if 'cemetery' in ctx.keys():
+        for node in ctx['cemetery']:
+            temp_node = deepcopy(node)
+            #temp_node.state = Node.Unknown
+            node_map[temp_node.name] = temp_node
 
+    chrom = chrom_converter(gs, task_map, node_map)
 
-    task_to_node = {}
-    for t in temp_ga_ind:
-        node = ms[t[0]]
-        if node is None:
-            # This is for debug
-            error = 5 / (1-1)
-        task = workflow.byId(t[0])
-        (start_time, end_time) = place_task_to_schedule(workflow,
-                                                        estimator,
-                                                        schedule_mapping,
-                                                        task_to_node,
-                                                        ms, task, node, ctx["current_time"])
+    builder = NewScheduleBuilder(workflow, rm, estimator, task_map, node_map, ctx['fixed_schedule'])
 
-        task_to_node[task.id] = (node, start_time, end_time)
-    for node, items in fix_sched.mapping.items():
-        for item in items:
-            for sched_item in schedule_mapping[node]:
-                if item.job == sched_item.job:
-                    sched_item.state = item.state
-
-    # corner case when initial schedule is empty
-    for node in fix_sched.mapping:
-        if node not in schedule_mapping:
-            schedule_mapping[node.name] = []
-
-
-    schedule = Schedule(schedule_mapping)
+    schedule = builder(chrom, ctx['current_time'])
     return schedule
 
 
@@ -710,19 +705,19 @@ def vm_resource_default_initialize(ctx, size):
         resources = env.rm.get_live_resources()
         for res in resources:
             current_cap = 0
-            generated_vms = set()
+            generated_vms = []
             n = -1
             fc = res.farm_capacity
             mrc = res.max_resource_capacity
             used_nodes = []
             env_names = [node.name for node in res.nodes]
             while current_cap < fc - mrc and n < max_sweep_size:
-                if random.random() < 0.05:
-                    possible_nodes = [node for node in res.nodes if node.name not in used_nodes]
+                possible_nodes = [node for node in res.nodes if node.name not in used_nodes]
+                if random.random() < 0.1 and len(possible_nodes) > 0:
                     tmp_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
                     used_nodes.append(tmp_node.name)
                     current_cap += tmp_node.flops
-                    generated_vms.add(tmp_node)
+                    generated_vms.append(tmp_node)
                     continue
                 n += 1
                 node_name = res.name + "_node_" + str(n)
@@ -731,7 +726,7 @@ def vm_resource_default_initialize(ctx, size):
                     n += 1
                     node_name = res.name + "_node_" + str(n)
                 tmp_node = Node(node_name, res, [SoftItem.ANY_SOFT], tmp_capacity)
-                generated_vms.add(tmp_node)
+                generated_vms.append(tmp_node)
                 used_nodes.append(tmp_node.name)
                 current_cap += tmp_capacity
             if current_cap < fc and n < max_sweep_size:
@@ -743,7 +738,7 @@ def vm_resource_default_initialize(ctx, size):
                 cap = fc - current_cap
                 tmp_node = Node(node_name, res, [SoftItem.ANY_SOFT], cap)
                 used_nodes.append(tmp_node.name)
-                generated_vms.add(tmp_node)
+                generated_vms.append(tmp_node)
 
             for (gen_node, idx) in zip(generated_vms, range(len(generated_vms))):
                 possible_nodes = [node for node in res.nodes if gen_node.flops == node.flops and node.name not in used_nodes]
@@ -1008,7 +1003,7 @@ def resource_config_mutate(ctx, mutant):
             print("================= wrong chromosome at the start of mutate phase " + str(filled_power))
 
         used_nodes = [node.name for node in res.nodes]
-        temp_nodes = set()
+        temp_nodes = []
         for gen_node in blade:
             possible_nodes = [node for node in env_nodes if gen_node.flops == node.flops and node.name not in used_nodes]
             if len(possible_nodes) > 0:
@@ -1023,7 +1018,7 @@ def resource_config_mutate(ctx, mutant):
                         name_idx += 1
                         new_name = res.name + "_node_" + str(name_idx)
                     gen_node.name = new_name
-            temp_nodes.add(gen_node)
+            temp_nodes.append(gen_node)
 
         res.nodes = temp_nodes
 
@@ -1044,9 +1039,8 @@ def ga_default_initialize(ctx, size):
     chromosome representation changed from (task, node_idx) to (task, blade_idx, node_idx)
     """
     env = ctx['env']
-    cemetery = ctx['cemetery']
     fix_sched = ctx['fixed_schedule']
-    fix_tasks = fix_sched.get_all_unique_tasks()
+    fix_tasks = fix_sched.get_unfailed_taks()
 
     result = []
     chromo = [task for task in env.wf.get_all_unique_tasks()
@@ -1068,7 +1062,6 @@ def ga_default_initialize(ctx, size):
                 break
 
     for i in range(size):
-        res_amount = vm_random_count_generate(ctx)
         temp = []
         for t in chromo:
             resources = env.rm.get_live_resources()
@@ -1078,6 +1071,8 @@ def ga_default_initialize(ctx, size):
             temp.append((t.id, res.name, node.name))
         ls = ListBasedIndividual(temp)
         result.append(ls)
+
+
     return result
 
 

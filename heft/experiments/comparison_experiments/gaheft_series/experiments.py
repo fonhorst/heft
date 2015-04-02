@@ -144,9 +144,12 @@ def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
 
     Utility.validate_dynamic_schedule(_wf, resulted_schedule)
 
+    print("EXPERIMENT RUN END=========================")
     data = {
         "wf_name": wf_name,
         "params": None,
+        "estimator_settings": params["estimator_settings"],
+        "executor_params": params["executor_params"],
         "result": {
             "makespan": Utility.makespan(resulted_schedule),
             ## TODO: this function should be remade to adapt under conditions of dynamic env
@@ -155,7 +158,6 @@ def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
             "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
         }
     }
-    print("EXPERIMENT RUN END=========================")
 
     if saver is not None:
         saver(data)
@@ -337,3 +339,100 @@ def do_island_inherited_pop_exp(alg_builder, mp_alg_builder, algorithm_builder, 
 
     return data
 
+def do_cpso(saver, alg_builder, wf_name, **params):
+    print("EXPERIMENT RUN START===========================")
+    _wf = wf(wf_name)
+
+    params = deepcopy(params)
+
+    resources = params["resource_set"]["nodes_conf"]
+
+    rm = BladeExperimentResourceManager(rg.generate_resources([r if isinstance(r, (list, tuple, dict)) else [r]
+                                                               for r in resources]))
+    rm.setVMParameter(params["resource_set"]["rules_list"])
+    estimator = BladeExperimentEstimator(**params["estimator_settings"])
+    dynamic_heft = DynamicHeft(_wf, rm, estimator)
+    cpso = alg_builder(_wf, rm, estimator,
+                     params["init_sched_percent"],
+                     log_book=None, stats=None,
+                     alg_params=params["alg_params"])
+
+    machine = GaHeftExecutor(heft_planner=dynamic_heft,
+                             wf=_wf,
+                             resource_manager=rm,
+                             ga_builder=lambda: cpso,
+                             **params["executor_params"])
+
+    machine.init()
+    machine.run()
+    resulted_schedule = machine.current_schedule
+
+    Utility.validate_dynamic_schedule(_wf, resulted_schedule)
+
+    print("EXPERIMENT RUN END=========================")
+    data = {
+        "wf_name": wf_name,
+        "params": None,
+        "estimator_settings": params["estimator_settings"],
+        "executor_params": params["executor_params"],
+        "result": {
+            "makespan": Utility.makespan(resulted_schedule),
+            ## TODO: this function should be remade to adapt under conditions of dynamic env
+            #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
+            "overall_execution_time": Utility.overall_execution_time(resulted_schedule),
+            "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
+        }
+    }
+
+    if saver is not None:
+        saver(data)
+    return data
+
+def do_cgsa(saver, alg_builder, wf_name, **params):
+    print("EXPERIMENT RUN START===========================")
+    _wf = wf(wf_name)
+
+    params = deepcopy(params)
+
+    resources = params["resource_set"]["nodes_conf"]
+
+    rm = BladeExperimentResourceManager(rg.generate_resources([r if isinstance(r, (list, tuple, dict)) else [r]
+                                                               for r in resources]))
+    rm.setVMParameter(params["resource_set"]["rules_list"])
+    estimator = BladeExperimentEstimator(**params["estimator_settings"])
+    dynamic_heft = DynamicHeft(_wf, rm, estimator)
+    cgsa = alg_builder(_wf, rm, estimator,
+                     params["init_sched_percent"],
+                     log_book=None, stats=None,
+                     alg_params=params["alg_params"])
+
+    machine = GaHeftExecutor(heft_planner=dynamic_heft,
+                             wf=_wf,
+                             resource_manager=rm,
+                             ga_builder=lambda: cgsa,
+                             **params["executor_params"])
+
+    machine.init()
+    machine.run()
+    resulted_schedule = machine.current_schedule
+
+    Utility.validate_dynamic_schedule(_wf, resulted_schedule)
+
+    print("EXPERIMENT RUN END=========================")
+    data = {
+        "wf_name": wf_name,
+        "params": None,
+        "estimator_settings": params["estimator_settings"],
+        "executor_params": params["executor_params"],
+        "result": {
+            "makespan": Utility.makespan(resulted_schedule),
+            ## TODO: this function should be remade to adapt under conditions of dynamic env
+            #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
+            "overall_execution_time": Utility.overall_execution_time(resulted_schedule),
+            "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
+        }
+    }
+
+    if saver is not None:
+        saver(data)
+    return data

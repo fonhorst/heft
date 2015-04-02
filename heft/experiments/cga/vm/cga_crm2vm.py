@@ -45,14 +45,14 @@ class Config:
             "generations": 10,
             "env": Env(self._wf, self.rm, self.estimator),
             "species": [Specie(name=GA_SPECIE, pop_size=100,
-                               cxb=0.2, mb=0.5,
+                               cxb=0.5, mb=0.5,
                                mate=ga_crossover,
                                mutate=ga_mutate,
                                select=self.mapping_selector,
                                initialize=ga_default_initialize,
                                ),
                         Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=100,
-                               cxb=0.2, mb=0.5,
+                               cxb=0.5, mb=0.5,
                                mate=resource_conf_crossover,
                                mutate=resource_config_mutate,
                                select=self.ordering_selector,
@@ -107,12 +107,12 @@ def do_experiment(saver, config, number):
     fix_items = [(sched, sched[-1].end_time) for node, sched in heft_schedule.mapping.items() if len(sched) > 0]
     fix_items.sort(key=lambda x: x[1])
     first_event = fix_items[-1][0][len(fix_items[-1][0]) - 2]
-    #for node, sched in heft_schedule.mapping.items():
-    #    if len(sched) > 0:
-    #        first_event = sched[0]
-    #        break
+    for node, sched in heft_schedule.mapping.items():
+       if len(sched) > 0:
+           first_event = sched[0]
+           break
     fixed_schedule = _get_fixed_schedule(heft_schedule, first_event)
-    fixed_schedule.mapping = {node: [] for node in fixed_schedule.mapping}
+    #fixed_schedule.mapping = {node: [] for node in fixed_schedule.mapping}
     config["fixed_schedule"] = fixed_schedule
     config["initial_schedule"] = heft_schedule
     config["current_time"] = 0#first_event.end_time
@@ -197,7 +197,11 @@ if __name__ == "__main__":
                 "Montage_25", "Montage_50", "Montage_75", "Montage_100",
                 "CyberShake_30", "CyberShake_50", "CyberShake_75", "CyberShake_100"
                 ]
-    wf_names = ["Montage_25"]
+    # wf_names = [
+    #             "Inspiral_30"
+    # ]
+    wf_names = ['Montage_25']
+
     dir = "./cga_results/"
     repeat_count = 1
 
@@ -207,13 +211,14 @@ if __name__ == "__main__":
         print("")
         number = uuid.uuid4()
 
+
         result = repeat(partial(do_exp, [number, wf_name]), repeat_count)
         print("FINISH")
         res, logbooks = unzip_result(result)
 
         # Output to file
-        #res_log = logbooks_reduce(logbooks)
-        #logs_to_file(res_log, dir, wf_name)
+        # res_log = logbooks_reduce(logbooks)
+        # logs_to_file(res_log, dir, wf_name)
 
         print("RESULTS: ")
         print(res)
