@@ -238,7 +238,6 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
         if alg_name not in alg_colors:
             continue
 
-
         for value, results in item[wf_name]["reliability"].items():
             if value in reliability or reliability is None:
                 d[alg_name][wf_name][value] = aggr(results)
@@ -248,6 +247,23 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
     print("===========================")
     print("===========================")
     pprint(d)
+
+
+    kr = {alg_name: { wf_name: {} } for alg_name in data}
+    for alg_name, item in data.items():
+        # wf_name = wf_name.split("_")[0]
+        if alg_name not in alg_colors:
+            continue
+
+        for value, results in item[wf_name]["reliability"].items():
+            if value in reliability or reliability is None:
+                kr[alg_name][wf_name][value] = len(results)
+
+
+    print("===========================")
+    print("===========================")
+    print("===========================")
+    pprint(kr)
 
     for alg_name, item in d.items():
         if alg_name not in alg_colors:
@@ -281,7 +297,7 @@ if __name__ == "__main__":
         # "ga": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
         # "pso": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
         #"cga": [os.path.join(TEMP_PATH, "cga_dynamic_results")],
-        "cga": ["D:/wspace/gaheft_series_Misha/cpso_bd39a58f-9f21-4044-b8c0-4c6128240f02"],
+        "cga": [r"D:\wspace\gaheft_series_Misha\cga_dynamic"],
         #"gsa": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
         "heft": [os.path.join(TEMP_PATH, "gaheft_for_heft_new_500")],
     }
@@ -298,12 +314,13 @@ if __name__ == "__main__":
     for wf_name in wf_names:
 
         # wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
-        reliability=[0.925]
-        # reliability=[0.9, 0.925, 0.95, 0.975, 0.99]
+        # reliability=[0.925]
+        reliability=[0.9, 0.925, 0.95, 0.975, 0.99]
+        # reliability=[0.975]
         wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=reliability, base_alg_name="heft")
         extract = partial(advanced_composite_extract_and_add, alg_names=algs.keys())
 
         names = functools.reduce(operator.add, ("_" + alg_name for alg_name in algs.keys()), "")
         # picture_path = os.path.join(TEMP_PATH, "gaheft_series_for{0}_{1}.png".format(names, wf_name))
-        picture_path = os.path.join("D:/wspace/gaheft_series_Misha", "cpso_bd39a58f-9f21-4044-b8c0-4c6128240f02_gaheft_series_for{0}_{1}.png".format(names, wf_name))
+        picture_path = os.path.join("D:/wspace/gaheft_series_Misha", "gaheft_series_for{0}_{1}.png".format(names, wf_name))
         data_aggr(picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
