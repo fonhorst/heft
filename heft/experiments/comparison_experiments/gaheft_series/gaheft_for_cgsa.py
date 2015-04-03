@@ -17,7 +17,7 @@ EXPERIMENT_NAME = "cgsa"
 
 REPEAT_COUNT = 30
 # WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-WF_NAMES = ["Montage_50"]
+WF_NAMES = ["Montage_75"]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 RELIABILITY = [0.9]
 INDIVIDUALS_COUNTS = [100]
@@ -28,11 +28,11 @@ BASE_PARAMS = {
     "alg_name": "cpso",
 
     "alg_params": {
-            "pop_size": 10,
+            "pop_size": 25,
             "hall_of_fame_size": 5,
             "hall_idx_change_chance": 0.1,
             "leader_list_size": 5,
-            "gamble_size": 100,
+            "gamble_size": 50,
             "generations": 50,
             "w": 0.65,
             "c": 0.35,

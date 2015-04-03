@@ -19,10 +19,11 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 
 EXPERIMENT_NAME = "gaheft_for_cga_crm2vm"
 
-REPEAT_COUNT = 1
-WF_NAMES = ["Montage_25"]#, "Montage_40", "Montage_50", "Montage_75"]
-RELIABILITY = [0.99]#, 0.975, 0.95, 0.925, 0.9]
+REPEAT_COUNT = 350
+WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
 INDIVIDUALS_COUNTS = [100]
+# INDIVIDUALS_COUNTS = [60, 105, 150]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
@@ -31,10 +32,10 @@ BASE_PARAMS = {
 
     "alg_params": {
             "hall_of_fame_size": 5,
-            "interact_individuals_count": 100,
-            "generations": 10,
+            "interact_individuals_count": 150,
+            "generations": 300,
             # "env": Env(self._wf, self.rm, self.estimator),
-            "species": [Specie(name=GA_SPECIE, pop_size=50,
+            "species": [Specie(name=GA_SPECIE, pop_size=75,
                                cxb=0.6, mb=0.8,
                                mate=ga_crossover,
                                mutate=ga_mutate,
@@ -42,7 +43,7 @@ BASE_PARAMS = {
                                initialize=ga_default_initialize,
 
                                ),
-                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=50,
+                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=75,
                                cxb=0.6, mb=0.8,
                                mate=resource_conf_crossover,
                                mutate=resource_config_mutate,
@@ -103,8 +104,6 @@ class CgaVmWrapper:
         #     return (None, None, initial_schedule, None), None
         # self.count += 1
 
-
-
         kwargs = deepcopy(self.alg_params)
         kwargs["env"] = Env(self._wf, self.rm, self.estimator)
         kwargs["fixed_schedule"] = fixed_schedule_part
@@ -115,16 +114,12 @@ class CgaVmWrapper:
         best, pops, logbook, initial_pops, hall, vm_series = vm_run_cooperative_ga(**kwargs)
         schedule = ga2resources_build_schedule(self._wf, self.estimator, self.rm, best, ctx=kwargs)
 
-
         if any( not isinstance(node, Node) for node in schedule.mapping):
             print("Node types: ", [type(node) for node in schedule.mapping])
             raise Exception("Alarm! a node in built schedule has incorrect type")
         ## TODO: this is a hack for correct algorithm work. It should be removed later
         # correct_schedule = Schedule({rm.node(node_name): items for node_name, items in schedule.mapping.items()})
         correct_schedule = schedule
-
-            if None in correct_schedule.mapping:
-                raise Exception("Invalid name of node. Perhaprs resource manager in inconsistent state")
         schedule_nodes = set(correct_schedule.mapping.keys())
         if len(schedule_nodes.symmetric_difference(self.rm.get_nodes())) > 0:
             print("Rm_nodes", self.rm.get_nodes())
@@ -132,16 +127,6 @@ class CgaVmWrapper:
             raise Exception("Alarm! The new schedule doesn't contain all possible nodes from ResourceManager")
         #pprint(correct_schedule.mapping)
         Utility.Utility.validate_is_schedule_complete(self._wf, correct_schedule)
-                pprint(correct_schedule)
-                raise Exception("Alarm! Schedule is not complete")
-
-            try:
-                Utility.Utility.check_and_raise_for_fixed_part(correct_schedule, fixed_schedule_part, current_time)
-            except:
-                print("Incorrect schedule")
-                pprint(correct_schedule)
-                raise
-
         #Utility.Utility.validate_static_schedule(_wf, correct_schedule)
         if None in correct_schedule.mapping:
             raise Exception("Invalid name of node. Perhaprs resource manager in inconsistent state")
