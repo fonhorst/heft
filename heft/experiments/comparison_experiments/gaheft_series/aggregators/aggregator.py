@@ -10,31 +10,19 @@ import matplotlib.pyplot as plt
 from heft.experiments.aggregate_utilities import InMemoryDataAggregator
 from heft.settings import TEMP_PATH
 
+UNKNOWN = "unknown"
+
 
 ALG_COLORS = {
     "ga": "-gD",
     "heft": "-rD",
     "pso": "-yD",
     "gsa": "-mD",
-    "cga": "-mD"
+    "cga": "-mD",
+    UNKNOWN: "-bD"
 }
 
-# aggr = confidence_aggr
 aggr = lambda results: numpy.mean(results)
-
-
-# def aggr(results):
-#     counts_arr = [[] for _ in range(15)]
-#     for makespan, failed_count in results:
-#         if len(counts_arr) < failed_count:
-#             for _ in range(failed_count - len(counts_arr)):
-#                 counts_arr.append([])
-#         counts_arr[failed_count].append(makespan)
-#
-#     interval_statistics([for counts_arr])
-
-
-
 
 
 def extract_and_add(alg_name, data, d):
@@ -68,6 +56,8 @@ def extract_and_add(alg_name, data, d):
     arr_data.append((makespan, failed_count))
     rel_results["reliability"][reliability] = arr_data
 
+    #pprint(rel_results["reliability"].keys())
+
     data[wf_name] = rel_results
     return data
 
@@ -86,10 +76,10 @@ def composite_extract_and_add(data, d, alg_names):
 
 def advanced_composite_extract_and_add(data, d, alg_names):
     if d["params"] is None:
-        d["params"] = {"alg_name": "cga"}
+        d["params"] = {"alg_name": UNKNOWN}
 
     alg_name = d["params"]["alg_name"]
-    if alg_name not in alg_names:
+    if alg_name != UNKNOWN and alg_name not in alg_names:
         return data
 
     alg_data = data.get(alg_name, {})
@@ -157,15 +147,6 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=Non
 
         plt.plot([i for i in range(0, len(points))], [x[1] for x in points], style, label=alg_name, linewidth=4.0, markersize=10)
 
-        # plt.errorbar([i for i in range(0, len(points))], [x[1][0] for x in points],
-        #              yerr=([x[1][4] for x in points],
-        #                         [x[1][5] for x in points]))
-
-        # for i, p in zip(range(0, len(points)), points):
-        #     val, stat = p
-        #     mean, mn, mx, std, left, right = stat
-        #     plt.errorbar(i, mean, yerr=[left, right])
-
         plt.tick_params(axis='both', which='major', labelsize=32)
         plt.tick_params(axis='both', which='minor', labelsize=32)
 
@@ -174,33 +155,48 @@ def plot_aggregate_results(data, wf_name, alg_colors=ALG_COLORS, reliability=Non
 
 
 def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliability=None, base_alg_name=None):
+    """
+    plot comparison results relatively to base_alg_name.
+    It will plot values only for a reliability which is present in results for each algorithm and wf
+    :param data:
+    :param wf_name:
+    :param alg_colors:
+    :param reliability:
+    :param base_alg_name:
+    :return:
+    """
 
-    # aggr = lambda results: numpy.mean(results)
+    ## data checking
+    if len(data) == 0:
+        raise ValueError("data is empty")
 
-    def get_points_format(data):
-        if len(data) == 0:
-            raise ValueError("data is empty")
+    for alg_name, itm in data.items():
+        if wf_name not in itm:
+            print("Warning! {0} is not found for {1}. Skip drawing it".format(wf_name, alg_name))
+            #raise ValueError("data don't contain iformation to plot according to wfs_colors limitations")
 
-        item = None
-        for alg_name, itm in data.items():
-            if wf_name in itm:
-                item = itm
-                break
+    if base_alg_name is None:
+        raise ValueError("base_alg_name cannot be None")
 
-        if item is None:
-            raise ValueError("data don't contain iformation to plot according to wfs_colors limitations")
+    ## let left only data which are in results for all algorithms
+    reliability_values = (item[wf_name]['reliability'].keys() for alg_name, item in data.items() if alg_name in alg_colors)
+    reliability_values = list(reliability_values)
+    comparable_rel_values = functools.reduce(lambda x, y: set(x).intersection(y), reliability_values)
+    comparable_rel_values = [rel for rel in comparable_rel_values if rel in reliability or reliability is None]
 
-        points = []
-        for value, results in item[wf_name]["reliability"].items():
-            points.append((value, aggr(results)))
-        points = sorted(points, key=lambda x: x[0])
-        return points
+    ## aggregate data
+    d = {alg_name: {} for alg_name in data}
+    for alg_name, item in data.items():
+        if alg_name not in alg_colors:
+            continue
 
-    format_points = get_points_format(data) if reliability is None else [(str(r), 0) for r in reliability]
+        for rel in comparable_rel_values:
+            results =item[wf_name]["reliability"][rel]
+            d[alg_name][rel] = aggr(results)
 
-    # pprint(data)
+    format_points = [str(p) for p in sorted(comparable_rel_values)]
 
-    plt.grid(True)
+    #plt.grid(True)
     ax = plt.gca()
     # + 1 for legend box
     ax.set_xlim(0, len(format_points) + 1)
@@ -219,52 +215,6 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
     plt.tick_params(axis='both', which='major', labelsize=32)
     plt.tick_params(axis='both', which='minor', labelsize=32)
 
-
-
-    if base_alg_name is None:
-        raise ValueError("base_alg_name cannot be None")
-
-    d = {alg_name: { wf_name: {} } for alg_name in data}
-
-
-    # print("===========================")
-    # print("===========================")
-    # print("===========================")
-    #
-    #pprint(data)
-
-    for alg_name, item in data.items():
-        # wf_name = wf_name.split("_")[0]
-        if alg_name not in alg_colors:
-            continue
-
-        for value, results in item[wf_name]["reliability"].items():
-            if value in reliability or reliability is None:
-                d[alg_name][wf_name][value] = aggr(results)
-                # points.append((value, aggr(results)))
-
-    print("===========================")
-    print("===========================")
-    print("===========================")
-    pprint(d)
-
-
-    kr = {alg_name: { wf_name: {} } for alg_name in data}
-    for alg_name, item in data.items():
-        # wf_name = wf_name.split("_")[0]
-        if alg_name not in alg_colors:
-            continue
-
-        for value, results in item[wf_name]["reliability"].items():
-            if value in reliability or reliability is None:
-                kr[alg_name][wf_name][value] = len(results)
-
-
-    print("===========================")
-    print("===========================")
-    print("===========================")
-    pprint(kr)
-
     for alg_name, item in d.items():
         if alg_name not in alg_colors:
             continue
@@ -272,54 +222,37 @@ def plot_aggregate_profit_results(data, wf_name, alg_colors=ALG_COLORS, reliabil
         style = alg_colors[alg_name]
         if alg_name == base_alg_name:
             continue
-        for value, res in item[wf_name].items():
-            points.append((value, (1 - res/d[base_alg_name][wf_name][value])*100))
-
+        for value, res in item.items():
+            points.append((value, (1 - res/d[base_alg_name][value])*100))
 
         points = sorted(points, key=lambda x: x[0])
-        #plt.setp(plt.xticks()[1], rotation=30, ha='right')
-        plt.plot([i for i in range(0, len(points))], [x[1] for x in points], style, label=alg_name, linewidth=4.0, markersize=10)
+        plt.plot([i for i in range(0, len(points))], [x[1] for x in points], style,
+                 label=alg_name, linewidth=4.0, markersize=10)
         ax.legend()
     pass
 
 
 if __name__ == "__main__":
 
-
-    # algs = {
-    #     "ga": [os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_ga_[0.99-0.9]x[m25-m75]x50")],
-    #     #"pso": os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_pso_[0.99-0.9]x[m25-m75]x50"),
-    #     # "gsa": os.path.join(TEMP_PATH, "old/all_results_sorted_and_merged/gaheft_0.99-0.9_series/gaheft_for_gsa_[0.99-0.9]x[m25-m75]x100"),
-    #     "heft": [os.path.join(TEMP_PATH, "compilation/gaheft_for_heft_new_500")],
-    # }
-
     algs = {
-        # "ga": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
-        # "pso": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
-        #"cga": [os.path.join(TEMP_PATH, "cga_dynamic_results")],
         "cga": [r"D:\wspace\gaheft_series_Misha\cga_dynamic"],
-        #"gsa": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
         "heft": [os.path.join(TEMP_PATH, "gaheft_for_heft_new_500")],
     }
-    # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-    # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-    # wf_names = ["Montage_25"]
-    # wf_names = ["Montage_40", "Montage_50", "Montage_75"]
-    wf_names = ["Montage_75"]
 
+    wf_names = ["Montage_50", "Montage_75"]
+    reliability = [0.9, 0.925, 0.95, 0.975, 0.99]
 
     pathes = functools.reduce(operator.add, algs.values(), [])
     data_aggr = InMemoryDataAggregator(pathes)
+    wf_names = sorted(wf_names)
+
+    plt.figure(figsize=(10, 10))
     for wf_name in wf_names:
 
-        # wf_plot = partial(plot_aggregate_results, wf_name=wf_name, reliability=[0.9, 0.925, 0.95, 0.975, 0.99], )
-        # reliability=[0.925]
-        reliability=[0.9, 0.925, 0.95, 0.975, 0.99]
-        # reliability=[0.975]
         wf_plot = partial(plot_aggregate_profit_results, wf_name=wf_name, reliability=reliability, base_alg_name="heft")
         extract = partial(advanced_composite_extract_and_add, alg_names=algs.keys())
 
         names = functools.reduce(operator.add, ("_" + alg_name for alg_name in algs.keys()), "")
-        # picture_path = os.path.join(TEMP_PATH, "gaheft_series_for{0}_{1}.png".format(names, wf_name))
         picture_path = os.path.join("D:/wspace/gaheft_series_Misha", "gaheft_series_for{0}_{1}.png".format(names, wf_name))
         data_aggr(picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
+
