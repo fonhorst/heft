@@ -14,8 +14,8 @@ from heft.settings import TEMP_PATH
 ALG_COLORS = {
     "ga": "-gD",
     "heft": "-rD",
-    "pso": "-yD",
-    "gsa": "-mD",
+    "cpso": "-yD",
+    "cgsa": "-mD",
     "cga": "-mD"
 }
 
@@ -297,15 +297,16 @@ if __name__ == "__main__":
         # "ga": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
         # "pso": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
         #"cga": [os.path.join(TEMP_PATH, "cga_dynamic_results")],
-        "cga": [r"D:\wspace\gaheft_series_Misha\cga_dynamic"],
+        "cga": [r"D:/Projects/heft/temp/result/cpso/cook"],
         #"gsa": [os.path.join(TEMP_PATH, "compilation/gaheft_[ga,pso,gsa]_[0.9-0.99]")],
-        "heft": [os.path.join(TEMP_PATH, "gaheft_for_heft_new_500")],
+        # "heft": [os.path.join(TEMP_PATH, "gaheft_for_heft_new_500")],
+        "heft": [r"D:/Projects/heft/temp/gaheft_for_heft_new_500"]
     }
     # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
     # wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-    # wf_names = ["Montage_25"]
+    wf_names = ["Montage_25"]
     # wf_names = ["Montage_40", "Montage_50", "Montage_75"]
-    wf_names = ["Montage_75"]
+    # wf_names = ["Montage_75"]
 
 
     pathes = functools.reduce(operator.add, algs.values(), [])
@@ -321,5 +322,5 @@ if __name__ == "__main__":
 
         names = functools.reduce(operator.add, ("_" + alg_name for alg_name in algs.keys()), "")
         # picture_path = os.path.join(TEMP_PATH, "gaheft_series_for{0}_{1}.png".format(names, wf_name))
-        picture_path = os.path.join("D:/wspace/gaheft_series_Misha", "gaheft_series_for{0}_{1}.png".format(names, wf_name))
+        picture_path = os.path.join("D:/Projects/heft/temp/result/cpso/", "gaheft_series_for{0}_{1}.png".format(names, wf_name))
         data_aggr(picture_path=picture_path, extract_and_add=extract, functions=[wf_plot])
