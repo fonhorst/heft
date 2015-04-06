@@ -17,9 +17,9 @@ EXPERIMENT_NAME = "cgsa"
 
 REPEAT_COUNT = 30
 # WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-WF_NAMES = ["Montage_75"]
+WF_NAMES = ["Montage_50"]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
-RELIABILITY = [0.975]
+RELIABILITY = [0.99]
 INDIVIDUALS_COUNTS = [100]
 
 BASE_PARAMS = {
@@ -33,7 +33,7 @@ BASE_PARAMS = {
             "hall_idx_change_chance": 0.1,
             "leader_list_size": 5,
             "gamble_size": 100,
-            "generations": 100,
+            "generations": 200,
             "w": 0.65,
             "c": 0.35,
             "kbest": 10,

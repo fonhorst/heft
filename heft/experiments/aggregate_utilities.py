@@ -77,7 +77,7 @@ WFS_COLORS.update(WFS_COLORS_100)
 
 
 def visualize(data, functions, path_to_save=None):
-    plt.figure(figsize=(10, 10))
+
 
     for i in range(len(functions)):
         #plt.subplot(len(functions), 1, i + 1)
@@ -128,19 +128,12 @@ class InMemoryDataAggregator:
             with open(p, "r") as f:
                 d = json.load(f)
                 self._data_array.append(d)
-
-        ## TODO: debug
-#        pprint(self._data_array)
         pass
 
     def __call__(self, picture_path="gh.png", extract_and_add=None, functions=None):
         data = {}
         for d in self._data_array:
-            d['params'] = BASE_PARAMS
             extract_and_add(data, d)
-
-        ## TODO: debug
-        pprint(data)
 
         path = os.path.join(TEMP_PATH, picture_path) if not os.path.isabs(picture_path) else picture_path
         visualize(data, functions, path)

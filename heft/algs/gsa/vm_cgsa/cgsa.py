@@ -14,6 +14,7 @@ from heft.algs.gsa.vm_cgsa.ordering_mapping_operators import force, mapping_upda
 from heft.algs.gsa.vm_cgsa.ordering_operators import fitness
 from heft.algs.gsa.vm_cgsa.configuration_particle import config_generate, configuration_update
 from heft.algs.gsa.vm_cgsa.particle_operations import ConfigurationParticle, MappingParticle
+from heft.algs.heft.DSimpleHeft import run_heft
 
 def _randvecsum(vectors):
     l = len(vectors[0])
@@ -80,6 +81,11 @@ class VMCoevolutionGSA():
         def configuration_force(p, pop, kbest, G):
             return force(p, pop, kbest, G)
 
+        def heft_solution():
+            heft_sol = run_heft(_wf, rm, estimator)
+            heft_part = (generate(_wf, rm, estimator, schedule=heft_sol, fixed_schedule_part=fix_sched), deepcopy(ConfigurationParticle(rm)))
+            return heft_part
+
         toolbox = Toolbox()
         toolbox.register("sched_pop_gen", pop_gen)
         toolbox.register("conf_pop_gen", config_gen)
@@ -90,6 +96,7 @@ class VMCoevolutionGSA():
         toolbox.register("config_force", configuration_force)
         toolbox.register("G", G)
         toolbox.register("kbest", Kbest)
+        toolbox.register("heft_solution", heft_solution)
         return toolbox
 
     def __call__(self):
@@ -225,6 +232,11 @@ class VMCoevolutionGSA():
         gamble between pop1 and pop2 to make leaders list
         """
         games = {}
+
+        # add heft solution
+        h1, h2 = toolbox.heft_solution()
+        games[(h1, h2)] = toolbox.fitness(h1, h2)
+
         for _ in range(self.kwargs['gamble_size']):
             p1 = deepcopy(pop1[random.randint(0, n - 1)])
             p2 = deepcopy(pop2[random.randint(0, n - 1)])
