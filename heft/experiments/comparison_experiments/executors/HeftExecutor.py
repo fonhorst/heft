@@ -8,7 +8,7 @@ from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import Schedule, ScheduleItem
 from heft.core.environment.EventMachine import NodeFailed, NodeUp, TaskFinished
 
-## TODO: refactor relations between HeftExecutor, BaseExecutor and GaheftExecutor
+## TODO: obsolete. It should be removed in a future release
 class HeftExecutor(FailRandom, BaseExecutor):
 
     def __init__(self,resource_manager, heft_planner, base_fail_duration, base_fail_dispersion,
@@ -57,10 +57,12 @@ class HeftExecutor(FailRandom, BaseExecutor):
 
         # try to find nodes in cloud
 
-
         # check if failed and post
         (node, item) = self.current_schedule.place_by_time(event.task, event.time_happened)
         item.state = ScheduleItem.EXECUTING
+
+        if not self._is_a_fail_possible():
+            return
 
         if self._check_fail(event.task, node):
 
@@ -70,7 +72,7 @@ class HeftExecutor(FailRandom, BaseExecutor):
             event_failed = NodeFailed(node, event.task)
             event_failed.time_happened = time_of_fail
 
-            event_nodeup = NodeUp(node)
+            event_nodeup = NodeUp(node, event_failed)
             event_nodeup.time_happened = time_of_fail + duration
 
             self.post(event_failed)
@@ -87,6 +89,10 @@ class HeftExecutor(FailRandom, BaseExecutor):
         pass
 
     def _node_failed_handler(self, event):
+
+        if not self._is_a_fail_possible():
+            return
+
         # check node down
         self.heft_planner.resource_manager.node(event.node).state = Node.Down
         # check failed event in schedule
@@ -108,6 +114,12 @@ class HeftExecutor(FailRandom, BaseExecutor):
         self.heft_planner.resource_manager.node(event.node).state = Node.Unknown
         self._reschedule(event)
         pass
+
+    def _is_a_fail_possible(self):
+        live_nodes = [node for node in self.resource_manager.get_nodes() if node.state != Node.Down]
+        if len(live_nodes) == 1:
+            return False
+        return True
 
     pass
 

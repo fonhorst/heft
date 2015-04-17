@@ -35,6 +35,8 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         self.ga_builder = kwargs["ga_builder"]
         self.replace_anyway = kwargs.get("replace_anyway", True)
 
+        self.heft_only = kwargs.get("heft_only", False)
+
         self.back_cmp = None
 
         pass
@@ -45,11 +47,17 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         initial_schedule = self.heft_planner.run(Schedule({node: [] for node in self.heft_planner.get_nodes()}))
 
         # TODO: change these two ugly records
-        result = self.ga_builder()(self.current_schedule, initial_schedule)
 
-        if not self._apply_mh_if_better(None, heuristic_resulted_schedule=initial_schedule,
-                           metaheuristic_resulted_schedule=result[0][2]):
+        if not self.heft_only:
+            result = self.ga_builder()(self.current_schedule, initial_schedule)
+
+            if not self._apply_mh_if_better(None, heuristic_resulted_schedule=initial_schedule,
+                               metaheuristic_resulted_schedule=result[0][2]):
+                self.current_schedule = initial_schedule
+                self._post_new_events()
+        else:
             self.current_schedule = initial_schedule
+            result = initial_schedule
             self._post_new_events()
 
         return result
@@ -60,6 +68,7 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
 
     def _task_start_handler(self, event):
+
 
         res = self._check_event_for_ga_result(event)
         if res:
@@ -350,6 +359,10 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
 
     def _run_ga_in_background(self, event):
+
+        if self.heft_only:
+            self.back_cmp = None
+            return
 
         if len([nd for nd in self.resource_manager.get_nodes() if nd.state != Node.Down]) == 0:
             return

@@ -6,11 +6,11 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 
 
 EXPERIMENT_NAME = "gaheft_for_ga"
-REPEAT_COUNT = 1
+REPEAT_COUNT = 100
 # WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-WF_NAMES = ["Montage_50"]
+WF_NAMES = ["Montage_25"]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
-RELIABILITY = [1.0]
+RELIABILITY = [0.95]
 INDIVIDUALS_COUNTS = [5]
 # INDIVIDUALS_COUNTS = [60, 105, 150]
 

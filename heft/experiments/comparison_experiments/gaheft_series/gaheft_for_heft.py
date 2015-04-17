@@ -4,13 +4,14 @@ from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceMa
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
+from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
 from heft.experiments.comparison_experiments.executors.HeftExecutor import HeftExecutor
 from heft.experiments.comparison_experiments.gaheft_series.utilities import changing_reliability_run, test_run
 
 EXPERIMENT_NAME = "gaheft_for_heft"
-REPEAT_COUNT = 500
-WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+REPEAT_COUNT = 100
+WF_NAMES = ["Montage_75"]
+RELIABILITY = [0.9]
 INDIVIDUALS_COUNTS = [50]
 
 BASE_PARAMS = {
@@ -42,8 +43,17 @@ def heft_exp(saver, wf_name, **params):
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
 
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
-    heft_machine = HeftExecutor(rm, heft_planner=dynamic_heft,
-                                **params["executor_params"])
+    # heft_machine = HeftExecutor(rm, heft_planner=dynamic_heft,
+    #                             **params["executor_params"])
+
+    heft_machine = GaHeftExecutor(heft_planner=dynamic_heft,
+                                  wf=_wf,
+                                  resource_manager=rm,
+                                  ga_builder=None,
+                                  fixed_interval_for_ga=None,
+                                  heft_only=True,
+                                  **params["executor_params"])
+
     heft_machine.init()
     heft_machine.run()
     resulted_schedule = heft_machine.current_schedule
@@ -69,4 +79,4 @@ def heft_exp(saver, wf_name, **params):
 
 if __name__ == "__main__":
     # test_run(heft_exp, BASE_PARAMS)
-    changing_reliability_run(heft_exp, RELIABILITY, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS)
+    changing_reliability_run(heft_exp, RELIABILITY, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS, is_debug=True)
