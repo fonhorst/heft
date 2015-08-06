@@ -136,8 +136,11 @@ class StaticHeftPlanner(Scheduler):
                 if len(task.parents) == 1 and wf.head_task.id == list(task.parents)[0].id:
                     comm_ready = 0
                 else:
-                    comm_ready = max([self.endtime(p, orders[jobson[p]])
-                                      + commcost(p, task, node, jobson[p]) for p in task.parents])
+                    parent_tasks = set()
+                    for p in task.parents:
+                        val = self.endtime(p, orders[jobson[p]]) + commcost(p, task, node, jobson[p])
+                        parent_tasks.add(val)
+                    comm_ready = max(parent_tasks)
 
 
                 (st, end) = next(FreeSlotIterator(self.current_time, comm_ready, runtime, orders[node]))

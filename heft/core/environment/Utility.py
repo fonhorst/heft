@@ -25,10 +25,10 @@ def f_eq(a, b):
     """
     return abs(a - b) < 0.00000001
 
-def wf(wf_name, task_postfix_id="00"):
+def wf(wf_name, task_postfix_id="00", deadline=1000, is_head=True):
     # dax_filepath = "../../resources/{0}.xml".format(wf_name)
     dax_filepath = "{0}/resources/{1}.xml".format(__root_path__, wf_name)
-    _wf = Utility.readWorkflow(dax_filepath, wf_name, task_postfix_id)
+    _wf = Utility.readWorkflow(dax_filepath, wf_name, task_postfix_id, deadline=deadline, is_head=is_head)
     return _wf
 
 def timing(f):
@@ -185,9 +185,9 @@ class Utility:
         return wfs
 
     @staticmethod
-    def readWorkflow(dax_filepath, wf_name, wf_start_id="00", task_postfix_id="00", deadline=1000):
+    def readWorkflow(dax_filepath, wf_name, wf_start_id="00", task_postfix_id="00", deadline=1000, is_head=True):
         parser = DAXParser()
-        wf = parser.parseXml(dax_filepath, wf_start_id + "0", task_postfix_id + "0", wf_name)
+        wf = parser.parseXml(dax_filepath, wf_start_id + "0", task_postfix_id + "0", wf_name, is_head=is_head)
         wf.deadline = deadline
         return wf
 

@@ -19,5 +19,5 @@ def do_exp(wf_name):
     # print("Heft makespan: {0}".format(Utility.makespan(heft_schedule)))
 
 if __name__ == "__main__":
-    result = do_exp("Sipht_60")
+    result = do_exp("Sipht_30")
     print(result)
