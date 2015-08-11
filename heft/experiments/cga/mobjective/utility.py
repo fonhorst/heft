@@ -1,4 +1,4 @@
-from heft.algs.ga.coevolution.operators import fitness_mapping_and_ordering, MAPPING_SPECIE, ORDERING_SPECIE, build_schedule
+from heft.algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE, build_schedule
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentEstimator
 from heft.core.environment.BaseElements import Resource, Node, SoftItem
 

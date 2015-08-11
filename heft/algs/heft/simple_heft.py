@@ -156,7 +156,8 @@ class StaticHeftPlanner(Scheduler):
 
     def can_be_executed(self, node, job):
         ## check it
-        return (job.soft_reqs in node.soft) or (SoftItem.ANY_SOFT in node.soft)
+        # return (job.soft_reqs in node.soft) or (SoftItem.ANY_SOFT in node.soft)
+        return SoftItem.ANY_SOFT in node.soft
 
     def endtime(self, job, events):
         """ Endtime of job in list of events """
