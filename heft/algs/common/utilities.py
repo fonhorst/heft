@@ -1,4 +1,5 @@
 import random
+import time
 def mapping_as_vector(mapping):
     """
     mapping MUST be a dictionary
@@ -16,6 +17,7 @@ def gather_info(logbook, stats, g, pop, best, need_to_print=True):
     for co-evolution scheme, it is required to record best, instead of min of population
     """
     data = stats.compile(pop) if stats is not None else None
+    data['time'] = time.clock()
     if best is not None:
         data['best'] = best[1].values[0]
     if logbook is not None:
@@ -38,17 +40,20 @@ def logbooks_in_data(logbooks, with_best=False, need_print=False):
             if (it['gen'], 'avg') in res:
                 res[(it['gen'], 'avg')] += it['avg']
                 res[(it['gen'], 'min')] += it['min']
+                res[(it['gen'], 'time')] += it['time']
                 if with_best:
                     res[(it['gen'], 'best')] += it['best']
             else:
                 res[(it['gen'], 'avg')] = it['avg']
                 res[(it['gen'], 'min')] = it['min']
+                res[(it['gen'], 'time')] = it['time']
                 if with_best:
                     res[(it['gen'], 'best')] = it['best']
     log_len = len(logbooks)
     for it in range(len(logbooks[0])):
         res[(it, 'avg')] /= log_len
         res[(it, 'min')] /= log_len
+        res[(it, 'time')] /= log_len
         if with_best:
             res[(it, 'best')] /= log_len
         if need_print:

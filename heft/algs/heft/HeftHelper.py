@@ -77,13 +77,7 @@ class HeftHelper(Scheduler):
 
         """print( "%s %s" % (ni, result))"""
         result = estimate(ni)
-        if hasattr(ni, 'priority'):
-            if ni.priority > 0:
-                result += pow(120, ni.priority)
-            result = float(round(result, 5)) + HeftHelper.get_seq_number(ni)
-        else:
-            result = int(round(result, 5) * 1000000) + HeftHelper.get_seq_number(ni)
-        #print(ni.id, result)
+        result = int(round(result, 5) * 1000000) + HeftHelper.get_seq_number(ni)
         return result
 
     @staticmethod

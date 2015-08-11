@@ -19,7 +19,7 @@ class DAXParser:
         task.input_files = input_files
 
 
-    def parseXml(self, filepath, wfId, taskPostfixId, wf_name, is_head=True):
+    def parseXml(self, filepath, wfId, taskPostfixId, wf_name):
         tree = ET.parse(filepath)
         root = tree.getroot()
         jobs = root.findall('./{http://pegasus.isi.edu/schema/DAX}job')
@@ -28,7 +28,7 @@ class DAXParser:
         for job in jobs:
             ## build task
             internal_id = job.attrib['id']
-            id = internal_id + "_" + taskPostfixId + "_" + wf_name
+            id = internal_id + "_" + taskPostfixId
             soft = job.attrib['name']
             task = Task(id,internal_id)
             task.soft_reqs.add(soft)
@@ -46,9 +46,7 @@ class DAXParser:
 
         heads = [task for (name, task) in internal_id2Task.items() if len(task.parents) == 0 ]
 
-        common_head = Task("000_" + taskPostfixId, "000", is_head)
-        if is_head != True:
-            common_head.runtime = 0
+        common_head = Task("000_" + taskPostfixId, "000", True)
         for head in heads:
             head.parents = set([common_head])
         common_head.children = heads
