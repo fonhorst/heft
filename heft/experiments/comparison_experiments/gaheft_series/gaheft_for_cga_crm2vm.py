@@ -6,7 +6,7 @@ import functools
 from heft.algs.ga.coevolution.cga import Env, Specie, VMCoevolutionGA, vm_run_cooperative_ga
 from heft.algs.ga.coevolution.operators import GA_SPECIE, ga_crossover, ga_mutate, ga_default_initialize, \
     RESOURCE_CONFIG_SPECIE, resource_conf_crossover, resource_config_mutate, vm_resource_default_initialize, \
-    MutRegulator, one_to_one_vm_build_solutions, fitness_ga_and_vm, max_assign_credits, ga2resources_build_schedule
+    one_to_one_vm_build_solutions, fitness_ga_and_vm, max_assign_credits, ga2resources_build_schedule
 from heft.core.environment import Utility
 from heft.core.environment.BaseElements import Node
 from heft.core.environment.ResourceManager import Schedule
@@ -19,11 +19,11 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 
 EXPERIMENT_NAME = "gaheft_for_cga_crm2vm"
 
-REPEAT_COUNT = 30
+REPEAT_COUNT = 1
 # WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-WF_NAMES = ["Montage_75"]
+WF_NAMES = ["Montage_25"]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
-RELIABILITY = [0.975]
+RELIABILITY = [0.9]
 INDIVIDUALS_COUNTS = [100]
 # INDIVIDUALS_COUNTS = [60, 105, 150]
 
@@ -34,10 +34,10 @@ BASE_PARAMS = {
 
     "alg_params": {
             "hall_of_fame_size": 5,
-            "interact_individuals_count": 100,
-            "generations": 100,
+            "interact_individuals_count": 50,
+            "generations": 10,
             # "env": Env(self._wf, self.rm, self.estimator),
-            "species": [Specie(name=GA_SPECIE, pop_size=50,
+            "species": [Specie(name=GA_SPECIE, pop_size=25,
                                cxb=0.6, mb=0.8,
                                mate=ga_crossover,
                                mutate=ga_mutate,
@@ -45,7 +45,7 @@ BASE_PARAMS = {
                                initialize=ga_default_initialize,
 
                                ),
-                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=50,
+                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=25,
                                cxb=0.6, mb=0.8,
                                mate=resource_conf_crossover,
                                mutate=resource_config_mutate,
@@ -53,9 +53,6 @@ BASE_PARAMS = {
                                initialize=vm_resource_default_initialize,
                                )
                         ],
-
-            "analyzers": [MutRegulator().analyze],
-
             "operators": {
                 # "choose": default_choose,
                 # "build_solutions": default_build_solutions,

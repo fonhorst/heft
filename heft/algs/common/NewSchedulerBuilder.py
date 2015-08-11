@@ -135,11 +135,10 @@ class NewScheduleBuilder:
         unfinished = [task for task in self.workflow.get_all_unique_tasks() if not task.id in finished_tasks]
 
         ready_tasks = [task.id for task in self._get_ready_tasks(unfinished, finished_tasks)]
-
-
-
-        chrmo_mapping = {item.job.id: self.node_map[node.name] for (node, items) in self.fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)}
-
+        try:
+            chrmo_mapping = {item.job.id: self.node_map[node.name] for (node, items) in self.fixed_schedule_part.mapping.items() for item in items if is_last_version_of_task_executing(item)}
+        except Exception:
+            pass
         for (node_name, tasks) in chromo.items():
             for tsk_id in tasks:
                 chrmo_mapping[tsk_id] = self.node_map[node_name]

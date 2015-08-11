@@ -5,9 +5,7 @@ from deap import tools
 import numpy
 from numpy.lib.function_base import append, insert
 from heft.algs.common.NewSchedulerBuilder import place_task_to_schedule, NewScheduleBuilder
-from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividual
 from heft.algs.common.mapordschedule import build_schedule, MAPPING_SPECIE, ORDERING_SPECIE, check_precedence
-from heft.algs.ga.coevolution.cga import Specie, Env
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
@@ -20,61 +18,36 @@ from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividua
 GA_SPECIE = "GASpecie"
 RESOURCE_CONFIG_SPECIE = "ResourceConfigSpecie"
 
-# # TODO: move it to experiments/five_runs/
-# # TODO: obsolete, remove it later.
-def default_choose(ctx, pop):
-    while True:
-        i = random.randint(0, len(pop) - 1)
-        if pop[i].k > 0:
-            return pop[i]
-
-
-def default_build_solutions(pops, interact_count):
-    def decrease_k(ind):
-        ind.k -= 1
-        return ind
-
-    def choose(pop):
-        while True:
-            i = random.randint(0, len(pop) - 1)
-            if pop[i].k > 0:
-                return pop[i]
-
-    solutions = [DictBasedIndividual({s.name: decrease_k(choose(pop)) if not s.fixed
-    else s.representative_individual
-                                      for s, pop in pops.items()})
-                 for i in range(interact_count)]
-
-    return solutions
-
-
-def one_to_one_build_solutions(pops, interact_count):
-    ls = [len(pop) for s, pop in pops.items()]
-    assert numpy.std(ls) == 0, "Pops have different lengths: " + str(pops)
-    assert ls[0] == interact_count, "Interact count doesn't equal to length of pops"
-    elts = [[(s, p) for p in pop] for s, pop in pops.items()]
-    solutions = [DictBasedIndividual({s.name: pop for s, pop in el}) for el in zip(*elts)]
-    return solutions
-
-
 def get_max_resource_number(ga_individual):
     # this function returns dict of max used node for each blade
     max_set = dict()
-    max_set[ga_individual[0][1]] = [ga_individual[0][2]]
     for task in ga_individual:
-        if task[1] not in max_set.keys() or task[2] not in max_set[task[1]]:
-            if task[1] not in max_set.keys():
-                max_set[task[1]] = [task[2]]
-            else:
-                max_set[task[1]].append(task[2])
+        if task[1] not in max_set.keys():
+            max_set[task[1]] = task[2]
+            continue
+        if max_set[task[1]] < task[2]:
+            max_set[task[1]] = task[2]
     return max_set
 
-def individual_lengths_compare(res_individual, used_resources):
-    # TODO change name of this function
-    for res in res_individual:
-        for node in used_resources[res.name]:
-            if node not in [res_node.name for res_node in res.nodes]:
-                return False
+def res_length(rc):
+    return {idx: len(rc[idx]) for idx in range(len(rc))}
+
+def resources_length(rc_pop):
+    # this function returns dict of node count for each blade
+    res_lengths = [res_length(rc) for rc in rc_pop]
+    cur_len = dict()
+    for res_len in res_lengths:
+        for item in res_len.items():
+            if item[0] not in cur_len.keys():
+                cur_len[item[0]] = item[1]
+            else:
+                cur_len[item[0]] = max(item[1], cur_len[item[0]])
+    return cur_len
+
+def individual_lengths_compare(res_individual, max_nodes):
+    for idx in range(len(res_individual)):
+        if len(res_individual[idx]) <= max_nodes[idx]:
+            return False
     return True
 
 def get_res_by_name(res_list, name):
@@ -94,19 +67,17 @@ class one_to_one_vm_build_solutions:
     pops should contain two populations
     "GASpecie" and "ResourceConfigSpecie"
     each individual of population "GASpecie" has the following structure
-    [(task_id, res_name, node_name), ...]
+    [(task_id, res_idx, node_idx), ...]
 
     each individual of "ResourceConfigSpecie":
-    [Resource, ...], where each Resource object contains generated nodes configuration
+    [[r1n1, r1n2, r1n3], [r2n1, r2n2..] ...], where each Resource object contains generated nodes configuration
     """
-    def __call__(self, pops, interact_count):
+    def __call__(self, pops, interact_count, additional_resources):
         def is_found_pair(current_tmp_ga_number, res_pop_current_index, pairs):
             if current_tmp_ga_number in pairs:
                 ga_res_list = pairs[current_tmp_ga_number]
                 if res_pop_current_index in ga_res_list:
                     return True
-
-
 
         already_found_pairs = 0
         found_pairs = {}
@@ -116,29 +87,15 @@ class one_to_one_vm_build_solutions:
         res_pop = []
         res_name = ''
         for s, p in pops.items():
-            if type(p[0][0]) is Resource:
+            if s.name is RESOURCE_CONFIG_SPECIE:
                 res_pop = p
                 res_name = s.name
             else:
                 ga_pop = p
                 ga_name = s.name
 
-        """ is it required?
-        no_similar = False
-
-        for i in range(0, len(ga_pop) - 1):
-            for j in range(0, len(ga_pop[i])):
-                if ga_pop[i][j][0] != ga_pop[i+1][j][0]:
-                    no_similar = True
-
-        #if not no_similar:
-        #    print("====================================================================Similar found");
-        """
-
         not_valid = set()
         while already_found_pairs < interact_count:
-            # ga_pop = pops[GA_SPECIE]
-            # res_pop = pops[RESOURCE_CONFIG_SPECIE]
             pair_not_found = True
 
             ga_elem_number = random.randint(0, len(ga_pop))
@@ -157,6 +114,8 @@ class one_to_one_vm_build_solutions:
                 ga_individual = ga_pop[current_tmp_ga_number]
                 #TODO rename this
                 ga_max_res_number = get_max_resource_number(ga_individual)
+                for item in ga_max_res_number.items():
+                    ga_max_res_number[item[0]] -= additional_resources[item[0]]
 
                 res_individual = None
 
@@ -172,19 +131,18 @@ class one_to_one_vm_build_solutions:
                             found_pairs[current_tmp_ga_number] = set()
                         found_pairs[current_tmp_ga_number].add(res_pop_current_index)
                         pair_not_found = False
-                        #print("Correct")
                         break
-                    #print("Incorrect")
 
                 # TODO this is crutch, refactoring later(
                 if pair_not_found:
-                    for (elem, idx) in zip(ga_individual, range(len(ga_individual))):
-                        res = get_res_by_name(res_individual, elem[1])
-                        while len(res.nodes) == 0:
-                            res_individual = res_pop[random.randint(0, len(res_pop) - 1)]
-                            res = get_res_by_name(res_individual, elem[1])
-                        if elem[2] not in [node.name for node in res.nodes]:
-                            ga_individual[idx] = (elem[0], elem[1], [node.name for node in res.nodes][random.randint(0, len(res.nodes) - 1)])
+                    print("PZDC")
+                    # for (elem, idx) in zip(ga_individual, range(len(ga_individual))):
+                    #     res = get_res_by_name(res_individual, elem[1])
+                    #     while len(res.nodes) == 0:
+                    #         res_individual = res_pop[random.randint(0, len(res_pop) - 1)]
+                    #         res = get_res_by_name(res_individual, elem[1])
+                    #     if elem[2] not in [node.name for node in res.nodes]:
+                    #         ga_individual[idx] = (elem[0], elem[1], [node.name for node in res.nodes][random.randint(0, len(res.nodes) - 1)])
 
                 current_ga_index += 1
 
@@ -202,65 +160,6 @@ class one_to_one_vm_build_solutions:
 
         return solutions
 
-class EnhancedMapping(one_to_one_vm_build_solutions):
-    def __call__(self, pops, interact_count):
-        solutions = super().__call__(self, pops, interact_count)
-        solutions = [self._process(s) for s in solutions]
-        return solutions
-
-def default_assign_credits(ctx, solutions):
-    # assign id for every elements in every population
-    # create dictionary for all individuals in all pop
-    inds_credit = dict()
-    for sol in solutions:
-        for s, ind in sol.items():
-            values = inds_credit.get(ind.id, [0, 0])
-            values[0] += float(sol.fitness) / len(sol)
-            values[1] += 1
-            inds_credit[ind.id] = values
-
-    result = {ind_id: float(all_fit) / float(count) for ind_id, (all_fit, count) in inds_credit.items()}
-    return result
-
-
-def bonus_assign_credits(ctx, solutions):
-    mn = min(solutions, key=lambda x: x.fitness).fitness
-    k = 0.1
-
-    # assign id for every elements in every population
-    # create dictionary for all individuals in all pop
-    inds_credit = dict()
-    for sol in solutions:
-        for s, ind in sol.items():
-            values = inds_credit.get(ind.id, [0, 0])
-            values[0] += float((sol.fitness - mn) * k + sol.fitness) / len(sol)
-            values[1] += 1
-            inds_credit[ind.id] = values
-
-    result = {ind_id: float(all_fit) / float(count) for ind_id, (all_fit, count) in inds_credit.items()}
-    return result
-
-
-def bonus2_assign_credits(ctx, solutions):
-    mn = min(solutions, key=lambda x: x.fitness).fitness
-    mx = max(solutions, key=lambda x: x.fitness).fitness
-    k = 0.1
-
-    # assign id for every elements in every population
-    # create dictionary for all individuals in all pop
-    inds_credit = dict()
-    for sol in solutions:
-        for s, ind in sol.items():
-            values = inds_credit.get(ind.id, [0, 0])
-            # values[0] += float((pow((sol.fitness - mn)/(mx - mn), 2) + k) * sol.fitness) / len(sol)
-            values[0] += 0.1 * sol.fitness / len(sol)
-            values[1] += 1
-            inds_credit[ind.id] = values
-
-    result = {ind_id: float(all_fit) / float(count) for ind_id, (all_fit, count) in inds_credit.items()}
-    return result
-
-
 def max_assign_credits(ctx, solutions):
     # assign id for every elements in every population
     # create dictionary for all individuals in all pop
@@ -275,28 +174,6 @@ def max_assign_credits(ctx, solutions):
     return result
 
 
-def assign_from_transfer_overhead(ctx, solutions):
-    result = max_assign_credits(ctx, solutions)
-    result = {k: v if v != 0 else -1 for k, v in result.items()}
-    return result
-
-
-# def initialize_from_predefined(ctx, name, size):
-# pop = ctx[name]
-# assert len(pop) == size, "Size of predefined population doesn't match to required size: {0} vs {1}"\
-# .format(len(pop), size)
-# return pop
-
-
-def _check_precedence(workflow, seq):
-    for i in range(len(seq)):
-        task = workflow.byId(seq[i])
-        pids = [p.id for p in task.parents]
-        for j in range(i + 1, len(seq)):
-            if seq[j] in pids:
-                return False
-    return True
-
 def chrom_converter(gs, task_map, node_map):
     """
     Convert [task:node] with [nodes] to {node:[tasks]}
@@ -307,6 +184,59 @@ def chrom_converter(gs, task_map, node_map):
     for (task, res, node) in gs:
         chrom[node].append(task)
     return chrom
+
+def live_fixed_nodes(fixed_schedule):
+    """
+    return nodes with executing tasks in fixed_schedule
+    """
+    res = []
+    for item in fixed_schedule.items():
+        if len(item[1]) > 0 and item[1][-1].state == 'executing':
+            res.append(item[0])
+    return res
+
+def dead_fixed_nodes(fixed_schedule):
+    """
+    return dead nodes in fixed_schedule
+    """
+    res = []
+    for item in fixed_schedule.items():
+        if len(item[1]) > 0 and item[1][-1].state == 'failed':
+            res.append(item[0])
+    return res
+
+def assignment_to_resources(nodes, rm):
+    result = dict()
+    for idx in range(len(rm.resources)):
+        result[idx] = [node for node in nodes if node.resource == rm.resources[idx]]
+    return result
+
+
+def rm_adapt(rm, fixed):
+    """
+    Adapt resource manager to fixed schedule
+    """
+    live_nodes = live_fixed_nodes(fixed)
+    dead_nodes = dead_fixed_nodes(fixed)
+
+    for res in rm.resources:
+        cur_len = len(res.nodes)
+        res_fixed_nodes = [node for node in live_nodes if node.resource == res]
+        for node in res_fixed_nodes:
+            new_node = deepcopy(node)
+            new_node.name = res.name + "_node_" + str(cur_len)
+            cur_len += 1
+            res.nodes.append(new_node)
+        res_dead_nodes = [node for node in dead_nodes if node.resource == res]
+        dead_counter = 0
+        for node in res_dead_nodes:
+            new_node = deepcopy(node)
+            new_node.state = Node.Down
+            new_node.name = res.name + "_dead_" + str(dead_counter)
+            dead_counter += 1
+            res.nodes.append(new_node)
+
+    pass
 
 def ga2resources_build_schedule(workflow, estimator, resource_manager, solution, ctx):
     """
@@ -319,30 +249,35 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
     gs = solution[GA_SPECIE]
     rs = solution[RESOURCE_CONFIG_SPECIE]
 
+
+
     check_consistency(workflow, gs)
 
+    print("_____")
+    print("rs = " + str(rs))
+
     rm = deepcopy(resource_manager)
-    for res in rs:
-        if res.name not in [elem.name for elem in rm.resources]:
-            rm.resources.append(res)
-        else:
-            for node in res.nodes:
-                rm_res = get_res_by_name(rm.resources, res.name)
-                if node.name not in [elem.name for elem in rm_res.nodes]:
-                    rm_res.nodes.append(node)
-    if 'cemetery' in ctx.keys():
-        for node in ctx['cemetery']:
-            temp_node = deepcopy(node)
-            #temp_node.state = Node.Unknown
-            rm_res = get_res_by_name(rm.resources, node.resource.name)
-            rm_res.nodes.append(temp_node)
+    for res_idx in range(len(rm.resources)):
+        res = rm.resources[res_idx]
+        res.nodes = []
+        for node_idx in range(len(rs[res_idx])):
+            res.nodes.append(Node("res_" + str(res_idx) + "_node_" + str(node_idx), res, SoftItem.ANY_SOFT, rs[res_idx][node_idx]))
 
+    print("before rm nodes = " + str(rm.resources[0].nodes))
+    print("fixed before = " + str(ctx['fixed_schedule'].mapping.keys()))
+    rm_adapt(rm, ctx['fixed_schedule'].mapping)
+    print("after rm nodes = " + str(rm.resources[0].nodes))
+    print("fixed after = " + str(ctx['fixed_schedule'].mapping.keys()))
+
+
+    gs_adapt = []
     for map_item in gs:
-        res = get_res_by_name(rs, map_item[1])
-        node = get_node_by_name(res.nodes, map_item[2])
-
+        res = rm.resources[map_item[1]]
+        node = res.nodes[map_item[2]]
+        gs_adapt.append((map_item[0], res.name, node.name))
         # TODO this is hack
         if node is None:
+            print("build hack")
             node = [res_node for res_node in res.nodes][random.randint(0, len(res.nodes) - 1)]
             bad_idx = gs.index(map_item)
             map_item = (map_item[0], map_item[1], node.name)
@@ -353,349 +288,76 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
 
     for task in workflow.get_all_unique_tasks():
         task_map[task.id] = task
-    for res in resource_manager.resources:
+    for res in rm.resources:
         for node in res.nodes:
             node_map[node.name] = node
-    for res in rs:
-        for node in res.nodes:
-            if node.name not in node_map.keys():
-                node_map[node.name] = node
-    if 'cemetery' in ctx.keys():
-        for node in ctx['cemetery']:
-            temp_node = deepcopy(node)
-            #temp_node.state = Node.Unknown
-            node_map[temp_node.name] = temp_node
 
-    chrom = chrom_converter(gs, task_map, node_map)
+    for node in ctx['fixed_schedule'].mapping.keys():
+        if node.name not in node_map.keys():
+            node_map[node.name] = node
 
+    def adapt_fixed_schedule(fixed):
+        node_list = [node for node in fixed.keys() if "dead" not in node.name]
+        node_list.sort(key=lambda x: x.name)
+        n = 0
+        for node in node_list:
+            for fix_node in fixed.keys():
+                if fix_node == node:
+                    fix_node.name = node.resource.name + "_node_" + str(n)
+            n += 1
+        pass
+
+    adapt_fixed_schedule(ctx['fixed_schedule'].mapping)
+    print("fixed after adaptation = " + str(ctx['fixed_schedule'].mapping.keys()))
+    chrom = chrom_converter(gs_adapt, task_map, node_map)
+    # try:
     builder = NewScheduleBuilder(workflow, rm, estimator, task_map, node_map, ctx['fixed_schedule'])
 
     schedule = builder(chrom, ctx['current_time'])
+    # except Exception:
+    #     pass
     return schedule
-
-
-def mapping2order_build_schedule(workflow, estimator, resource_manager, solution):
-    """
-    the solution consists all parts necessary to build whole solution
-    For the moment, it is mentioned that all species taking part in algorithm
-    are necessary to build complete solution
-    solution = {
-        s1.name: val1,
-        s2.name: val2,
-        ....
-    }
-    """
-    ms = solution[MAPPING_SPECIE]
-    os = solution[ORDERING_SPECIE]
-
-    assert _check_precedence(workflow, os), "Precedence is violated"
-
-    ms = {t: resource_manager.byName(n) for t, n in ms}
-    schedule_mapping = {n: [] for n in set(ms.values())}
-    task_to_node = {}
-    for t in os:
-        node = ms[t]
-        t = workflow.byId(t)
-        (start_time, end_time) = place_task_to_schedule(workflow,
-                                                        estimator,
-                                                        schedule_mapping,
-                                                        task_to_node,
-                                                        ms, t, node, 0)
-
-        task_to_node[t.id] = (node, start_time, end_time)
-    schedule = Schedule(schedule_mapping)
-    return schedule
-
-def fitness_mapping_and_ordering(ctx,
-                                 solution):
-    env = ctx['env']
-    #schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
-    schedule = mapping2order_build_schedule(env.wf, env.estimator, env.rm, solution)
-    result = Utility.makespan(schedule)
-    # result = ExecutorRunner.extract_result(schedule, True, workflow)
-    return -result
-
 
 def fitness_ga_and_vm(ctx, solution):
     env = ctx['env']
     schedule = ga2resources_build_schedule(env.wf, env.estimator, env.rm, solution, ctx)
     result = Utility.makespan(schedule)
-    result += nodes_overhead_estimate(env.rm.resources, solution["ResourceConfigSpecie"])
-    # result = ExecutorRunner.extract_result(schedule, True, workflow)
+    #result += nodes_overhead_estimate(env.rm.resources, solution["ResourceConfigSpecie"])
     return -result
 
 # Estimate overheads of startup or shutdown nodes
 # TODO move shutdown and start costs in estimator
-def nodes_overhead_estimate(rm, sol):
-    # Functions for estimate shutdowns and starts
-    def shutdown_node(node):
-        return 0
-    def start_node(node):
-        return 0
-
-    overhead = 0
-    for res_idx in range(len(rm)):
-        rm_res = rm[res_idx].nodes
-        sol_res = sol[res_idx].nodes
-        for node in sol_res:
-            if node not in rm_res:
-                overhead += start_node(node)
-        for node in rm_res:
-            if node not in sol_res:
-                overhead += shutdown_node(node)
-
-    return overhead
-
-def overhead_fitness_mapping_and_ordering(ctx,
-                                          solution):
-    env = ctx['env']
-    # schedule = build_schedule(env.wf, env.estimator, env.rm, solution)
-
-    task_to_node = {t: n for t, n in solution[MAPPING_SPECIE]}
-    unique_tasks = env.wf.get_all_unique_tasks()
-    transfer_overheads = 0
-    for task in unique_tasks:
-        tnode = task_to_node[task.id]
-        ## TODO: this is hack. See parametres
-        transfer_overheads += sum(
-            [env.estimator.estimate_transfer_time(env.rm.byName(tnode), env.rm.byName(task_to_node[p.id]), task, p) for
-             p in task.parents if p.id != env.wf.head_task.id])
-
-    compute_overheads = sum(
-        [env.estimator.estimate_runtime(task, env.rm.byName(task_to_node[task.id])) for task in unique_tasks])
-
-    # result = Utility.makespan(schedule)
-    # result = ExecutorRunner.extract_result(schedule, True, workflow)
-    return -(transfer_overheads + compute_overheads)
-
-
-
-## TODO: very simple version, As a ResourceConfig specie It will have to be extended to apply deeper analysis of situations
-def fitness_ordering_resourceconf(workflow,
-                                  estimator,
-                                  solution):
-    os = solution[ORDERING_SPECIE]
-    rcs = solution[RESOURCE_CONFIG_SPECIE]
-    # # TODO: refactor this
-    flops_set = [conf.flops for conf in rcs if conf is not None]
-    resources = ResourceGenerator.r(flops_set)
-    resource_manager = ExperimentResourceManager(resources)
-    heft = DynamicHeft(workflow, resource_manager, estimator, os)
-    schedule = heft.run({n: [] for n in resource_manager.get_nodes()})
-    result = Utility.makespan(schedule)
-    return 1 / result
-
-# #====================================
-# #Mapping specie
-# #====================================
-"""
-chromosome = [(task_id, node_name), ...]
-"""
-
-
-def mapping_default_initialize(ctx, size):
-    env = ctx['env']
-    nodes = list(env.rm.get_nodes())
-    tasks = sorted(list(env.wf.get_all_unique_tasks()), key=lambda x: x.id)
-    rnd = lambda: random.randint(0, len(nodes) - 1)
-    result = [ListBasedIndividual((t.id, nodes[rnd()].name) for t in tasks)
-              for i in range(size)]
-    return result
-
-
-def mapping_heft_based_initialize(ctx, size, heft_mapping, count):
-    result = [deepcopy(heft_mapping) for i in range(count)]
-    result = result + mapping_default_initialize(ctx, size - count)
-    return result
-
-
-def mapping_default_mutate(ctx, mutant):
-    env = ctx['env']
-    nodes = list(env.rm.get_nodes())
-    k = random.randint(0, len(mutant) - 1)
-    (t, n) = mutant[k]
-    names = [node.name for node in nodes if node.name != n]
-    mutant[k] = (t, nodes[random.randint(0, len(names) - 1)].name)
-    pass
-
-
-def mapping_k_mutate(ctx, k, mutant):
-    env = ctx['env']
-    nodes = list(env.rm.get_nodes())
-
-    count = random.randint(1, k)
-
-    genset = set()
-    for i in range(count):
-        for i in range(50):
-            m = random.randint(0, len(mutant) - 1)
-            if m not in genset:
-                genset.add(m)
-                break
-        pass
-    for i in genset:
-        (t, n) = mutant[i]
-        names = [node.name for node in nodes if node.name != n]
-        mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
-    pass
-
-
-def mapping_all_mutate(ctx, mutant):
-    env = ctx['env']
-    nodes = list(env.rm.get_nodes())
-    for i in range(len(mutant)):
-        if random.random() < 1 / len(mutant):
-            (t, n) = mutant[i]
-            names = [node.name for node in nodes if node.name != n]
-            mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
-    pass
-
-
-def mapping_all_mutate_configurable(ctx, mutant, k):
-    # gen_num = ctx['gen']
-    # k = 5 if gen_num < 100 else 1
-
-    env = ctx['env']
-    nodes = list(env.rm.get_nodes())
-    for i in range(len(mutant)):
-        if random.random() < k / len(mutant):
-            (t, n) = mutant[i]
-            names = [node.name for node in nodes if node.name != n]
-            mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
-    pass
-
-
-## TODO: only for debug of experiments. remove this enity later
-def mapping_all_mutate_variable(ctx, mutant):
-    gen_num = ctx['gen']
-    k = 5 if gen_num < 100 else 1
-
-    env = ctx['env']
-    nodes = list(env.rm.get_nodes())
-    for i in range(len(mutant)):
-        if random.random() < k / len(mutant):
-            (t, n) = mutant[i]
-            names = [node.name for node in nodes if node.name != n]
-            mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
-    pass
-
-
-def mapping_all_mutate_variable2(ctx, mutant):
-    gen_num = ctx['gen']
-    if gen_num < 100:
-        k = 20
-    elif gen_num < 200:
-        k = 10
-    elif gen_num < 300:
-        k = 5
-    else:
-        k = 1
-
-    env = ctx['env']
-    nodes = list(env.rm.get_nodes())
-    for i in range(len(mutant)):
-        if random.random() < k / len(mutant):
-            (t, n) = mutant[i]
-            names = [node.name for node in nodes if node.name != n]
-            mutant[i] = (t, nodes[random.randint(0, len(names) - 1)].name)
-    pass
-
-
-def mapping_improving_mutation(ctx, mutant):
-    env = ctx["env"]
-    task_to_node = {t: n for t, n in mutant}
-
-    def estimate_overheads(task_id, node_name):
-        task = env.wf.byId(task_id)
-        node = env.rm.byName(node_name)
-        ttime = env.estimator.estimate_transfer_time
-        ptransfer_time = [ttime(node, env.rm.byName(task_to_node[p.id]), task, p) for p in task.parents if
-                          p != env.wf.head_task]
-        ctransfer_time = [ttime(node, env.rm.byName(task_to_node[p.id]), task, p) for p in task.children]
-        computation_time = env.estimator.estimate_runtime(task, node)
-        return (ptransfer_time, ctransfer_time, computation_time)
-
-    overheads = {t: estimate_overheads(t, n) for t, n in task_to_node.items()}
-    sorted_overheads = sorted(overheads.items(), key=lambda x: x[1][0] + x[1][1])
-
-    ## choose overhead for improving
-    # try to improve max transfer overhead
-    # t, oheads = sorted_overheads[0]
-    for i in range(50):
-        t, oheads = sorted_overheads[random.randint(0, int(len(sorted_overheads) / 2))]
-
-        # improving
-        nodes = env.rm.get_nodes()
-        potential_overheads = [(n, estimate_overheads(t, n.name)) for n in nodes if task_to_node[t] != n.name]
-
-        n, noheads = min(potential_overheads, key=lambda x: x[1][0] + x[1][1])
-        if oheads[0] + oheads[1] > noheads[0] + noheads[1]:
-            for i in range(len(mutant)):
-                t1, n1 = mutant[i]
-                if t1 == t:
-                    mutant[i] = (t, n.name)
-                    break
-                pass
-    pass
-
-
-class MutRegulator:
-    def __init__(self, gens_count=30):
-        self.generations = []
-        self.gens_count = gens_count
-        pass
-
-    def __call__(self, mutation):
-        def wrapper(ctx, mutant):
-            if len(self.generations) >= self.gens_count and numpy.std(self.generations[-30::]) == 0:
-                mutation(ctx, mutant, 2)
-            else:
-                mutation(ctx, mutant, 1)
-
-        return wrapper
-
-    def analyze(self, ctx, solutions, pops):
-        gen = ctx['gen']
-        best = max(solutions, key=lambda x: x.fitness)
-        self.generations.append((gen, best.fitness))
-        pass
-
-
-class MappingArchiveMutate:
-    def __init__(self):
-        self._archive = set()
-        pass
-
-    def __call__(self, ctx, mutant):
-        #for i in range(50):
-        while True:
-            # mt = deepcopy(mutant)
-            mapping_default_mutate(ctx, mutant)
-            h = hash(tuple(mutant))
-            if h not in self._archive:
-                self._archive.add(h)
-                # for i in range(len(mutant)):
-                #     mutant[i] = mt[i]
-                break
-        pass
-
-    pass
+# def nodes_overhead_estimate(rm, sol):
+#     # Functions for estimate shutdowns and starts
+#     def shutdown_node(node):
+#         return 0
+#     def start_node(node):
+#         return 0
+#
+#     overhead = 0
+#     for res_idx in range(len(rm)):
+#         rm_res = rm[res_idx].nodes
+#         sol_res = sol[res_idx].nodes
+#         for node in sol_res:
+#             if node not in rm_res:
+#                 overhead += start_node(node)
+#         for node in rm_res:
+#             if node not in sol_res:
+#                 overhead += shutdown_node(node)
+#
+#     return overhead
 
 
 ##===================================
 ## RC specie
 ##==================================
 
-
 def vm_resource_default_initialize(ctx, size):
     """
-    result representation changed
-        from [ListBasedIndividuals([n1, n2, ...])]
-        to [ListBasedIndividuals([[b1n1, b1n2, ...], [b2n1, b2n2, ...]])]
+    result representation [ListBasedIndividuals([[b1n1, b1n2, ...], [b2n1, b2n2, ...]])]
     """
 
     env = ctx['env']
-    cemetery = ctx['cemetery']
     result = []
 
     for i in range(size):
@@ -709,57 +371,18 @@ def vm_resource_default_initialize(ctx, size):
             n = -1
             fc = res.farm_capacity
             mrc = res.max_resource_capacity
-            used_nodes = []
-            env_names = [node.name for node in res.nodes]
             while current_cap < fc - mrc and n < max_sweep_size:
-                possible_nodes = [node for node in res.nodes if node.name not in used_nodes]
-                if random.random() < 0.1 and len(possible_nodes) > 0:
-                    tmp_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
-                    used_nodes.append(tmp_node.name)
-                    current_cap += tmp_node.flops
-                    generated_vms.append(tmp_node)
-                    continue
                 n += 1
-                node_name = res.name + "_node_" + str(n)
                 tmp_capacity = random.randint(1, mrc)
-                while node_name in (env_names + [node.name for node in cemetery] + used_nodes):
-                    n += 1
-                    node_name = res.name + "_node_" + str(n)
-                tmp_node = Node(node_name, res, [SoftItem.ANY_SOFT], tmp_capacity)
-                generated_vms.append(tmp_node)
-                used_nodes.append(tmp_node.name)
+                generated_vms.append(tmp_capacity)
                 current_cap += tmp_capacity
             if current_cap < fc and n < max_sweep_size:
                 n += 1
-                node_name = res.name + "_node_" + str(n)
-                while node_name in (env_names + [node.name for node in cemetery] + used_nodes):
-                    n += 1
-                    node_name = res.name + "_node_" + str(n)
                 cap = fc - current_cap
-                tmp_node = Node(node_name, res, [SoftItem.ANY_SOFT], cap)
-                used_nodes.append(tmp_node.name)
-                generated_vms.append(tmp_node)
+                generated_vms.append(cap)
 
-            for (gen_node, idx) in zip(generated_vms, range(len(generated_vms))):
-                possible_nodes = [node for node in res.nodes if gen_node.flops == node.flops and node.name not in used_nodes]
-                if len(possible_nodes) > 1:
-                    gen_node = deepcopy((possible_nodes[random.randint(0, len(possible_nodes) - 1)]))
-                    generated_vms[idx] = gen_node
-                    used_nodes.append(gen_node.name)
-
-            new_res = deepcopy(res)
-            new_res.nodes = generated_vms
-            default_inited_pop.append(new_res)
-            #print("init " + str([(node, node.flops) for node in generated_vms]))
-            #for s in default_inited_pop:
-            #    all_flops = sum(tmp.flops for tmp in s)
-            #    if all_flops > fc:
-            #        print("=============wrong initialization " + all_flops)
-            #    for tmp in s:
-            #        if tmp.flops < 1:
-            #            print('=============wrong initialization ' + tmp.flops)
-
-        #print('vm initialization complited : ' + random_values)
+            generated_vms.sort()
+            default_inited_pop.append(generated_vms)
 
         result.append(default_inited_pop)
     result_list = [ListBasedIndividual(s) for s in result]
@@ -768,11 +391,11 @@ def vm_resource_default_initialize(ctx, size):
 def resource_conf_crossover(ctx, parent1, parent2):
 
     def get_child_from_pair(p1, p2, k):
-        filled_power = sum(s.flops for s in p1[0:k])
+        filled_power = sum(p1[0:k])
 
         i = k
         while filled_power < fc and i < len(p2):
-            filled_power += p2[i].flops
+            filled_power += p2[i]
             i += 1
 
         if filled_power > fc:
@@ -784,12 +407,8 @@ def resource_conf_crossover(ctx, parent1, parent2):
         new_part = [deepcopy(p2[p_tmp]) for p_tmp in range(k, i + 1)]
         old_part = [deepcopy(p1[p_tmp]) for p_tmp in range(0, k)]
 
-        temp_nch = old_part + new_part
-        nch = []
-        for node in temp_nch:
-            if node.name not in [n_node.name for n_node in nch]:
-                nch.append(node)
-        ch_sum = sum(s.flops for s in nch)
+        nch = old_part + new_part
+        ch_sum = sum(nch)
         if (ch_sum - fc) > 0:
             print('================sum after crossover ' + str(ch_sum) + ' ' + str(fc))
         return nch
@@ -798,19 +417,17 @@ def resource_conf_crossover(ctx, parent1, parent2):
 
     child1 = deepcopy(parent1)
     child2 = deepcopy(parent2)
-    cemetery = ctx['cemetery']
     for bl_idx in range(len(child1)):
-        res = env[1].resources[bl_idx]
-        blade1 = [node for node in child1[bl_idx].nodes]
-        blade2 = [node for node in child2[bl_idx].nodes]
+        blade1 = child1[bl_idx]
+        blade2 = child2[bl_idx]
         fc = env.rm.resources[bl_idx].farm_capacity
 
-        filled_power = sum(s.flops for s in blade2)
+        filled_power = sum(blade2)
         if filled_power > fc:
             print('================= wrong value of flops before crossover child2 ' + str(filled_power))
             return
 
-        filled_power = sum(s.flops for s in blade1)
+        filled_power = sum(blade1)
         if filled_power > fc:
             print('================= wrong value of flops before crossover child1 ' + str(filled_power))
             return
@@ -828,41 +445,15 @@ def resource_conf_crossover(ctx, parent1, parent2):
                 k = random.randint(0, len(blade1) - 2)
                 second = get_child_from_pair(blade1, blade2, k)
 
-        if first is not None:
-            used_nodes = [node.name for node in first]
-            for (gen_node, idx) in zip(first, range(len(first))):
-                possible_nodes = [node for node in res.nodes if gen_node.flops == node.flops and node.name not in used_nodes]
-                if len(possible_nodes) > 1:
-                    new_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
-                    first[idx] = new_node
-                    used_nodes.append(new_node.name)
-
-            blade1.clear()
-            blade1.extend(first)
-        if second is not None:
-            used_nodes = [node.name for node in second]
-            for (gen_node, idx) in zip(second, range(len(second))):
-                possible_nodes = [node for node in res.nodes if gen_node.flops == node.flops and node.name not in used_nodes]
-                if len(possible_nodes) > 1:
-                    new_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
-                    second[idx] = new_node
-                    used_nodes.append(new_node.name)
-
-            blade2.clear()
-            blade2.extend(second)
-
-        filled_power = sum(s.flops for s in blade2)
+        filled_power = sum(blade2)
         if filled_power > fc:
             print('================= wrong value of flops after crossover child2 ' + str(filled_power))
 
-        filled_power = sum(s.flops for s in blade1)
+        filled_power = sum(blade1)
         if filled_power > fc:
             print('================= wrong value of flops after crossover child1 ' + str(filled_power))
-
-        if first is not None:
-            child1[bl_idx].nodes = set(blade1)
-        if second is not None:
-            child2[bl_idx].nodes = set(blade2)
+        child1[bl_idx] = first
+        child2[bl_idx] = second
     return child1, child2
 
 
@@ -872,17 +463,15 @@ def resource_config_mutate(ctx, mutant):
 
         str_po_print = 'd ' + str(len(mutant)) + ' '
 
-        flops_to_share = mutant.pop(k1).flops
+        flops_to_share = mutant.pop(k1)
 
         if flops_to_share < 0:
             print('================= wrong value of flops to share ' + str(flops_to_share))
 
         for i in range(len(mutant)):
             k_tmp = random.randint(0, len(mutant) - 1)
-            #while mutant[k_tmp].name in env_names:
-            #    k_tmp = random.randint(0, len(mutant) - 1)
-            value_to_add = min(rc - mutant[k_tmp].flops, flops_to_share)
-            mutant[k_tmp].flops += value_to_add
+            value_to_add = min(rc - mutant[k_tmp], flops_to_share)
+            mutant[k_tmp] += value_to_add
             flops_to_share -= value_to_add
             if flops_to_share <= 0:
                 if flops_to_share < 0:
@@ -891,153 +480,69 @@ def resource_config_mutate(ctx, mutant):
 
         return str_po_print + str(len(mutant))
 
-    def try_to_increase_resources(mutant, k1, k2):
-        cur_res = mutant[0].resource.name
+    def try_to_increase_resources(mutant, k1):
         str_po_print = 'i ' + str(len(mutant)) + ' '
-        tmp_node = Node(k1, mutant[0].resource, [SoftItem.ANY_SOFT])
         if fc - filled_power < 1:
             print('wrong operation type')
-        tmp_node.flops = min(fc - filled_power, rc)
-        used_names = [node.name for node in mutant]
-        cemetery = ctx['cemetery']
-        used_names += [node.name for node in cemetery if node.resource.name == cur_res]
-        env_res = [res for res in ctx['env'][1].resources if res.name == cur_res][0]
-        used_names += [node.name for node in env_res.get_live_nodes()]
-        tmp_idx = 0
-        tmp_name = cur_res + "_node_" + str(tmp_idx)
-        while tmp_name in used_names:
-            tmp_idx += 1
-            tmp_name = cur_res + "_node_" + str(tmp_idx)
-        tmp_node.name = tmp_name
-        mutant.insert(k1, tmp_node)
+        tmp_flops = min(fc - filled_power, rc)
+        mutant.append(tmp_flops)
 
-        k_tmp = random.randint(0, len(mutant) - 1)
-
-        if tmp_node.flops < rc:
-            while k_tmp == k1 or mutant[k_tmp].flops <= 1:# or mutant[k_tmp].name in env_names:
-                k_tmp = random.randint(0, len(mutant) - 1)
-            value_to_add = random.randint(1, min(rc - tmp_node.flops, mutant[k_tmp].flops - 1))
-            tmp_node.flops += value_to_add
-            mutant[k_tmp].flops -= value_to_add
-            if mutant[k_tmp].flops < 1 or tmp_node.flops < 1:
-                print(
-                    '=================increase resource wrong logic ' + str(mutant[k_tmp].flops) + ' valuetoadd ' + str(
-                        value_to_add) + ' tmpNode ' + str(tmp_node.flops))
         return str_po_print + str(len(mutant))
 
     def try_to_change_resource_options(mutant, k1, k2):
         left_res_cap = fc - filled_power
         if left_res_cap < 0:
             print('===============negative flops amount left to add :' + str(left_res_cap))
-        mutant[k1].flops = min(rc, mutant[k1].flops + left_res_cap)
-        val_to_add = rc - mutant[k1].flops
+        mutant[k1] = min(rc, mutant[k1] + left_res_cap)
+        val_to_add = rc - mutant[k1]
         if val_to_add > 0:
-            if mutant[k2].flops - 1 < 0:
+            if mutant[k2] - 1 < 0:
                 print('=================negative flops amount in mutant[k2] before operation: ' + str(
                     mutant[k2].flops - 1))
-            flops_to_change = random.randint(0, min(mutant[k2].flops - 1, val_to_add))
-            mutant[k1].flops += flops_to_change
-            mutant[k2].flops -= flops_to_change
-            if mutant[k2].flops - 1 < 0:
+            flops_to_change = random.randint(0, min(mutant[k2] - 1, val_to_add))
+            mutant[k1] += flops_to_change
+            mutant[k2] -= flops_to_change
+            if mutant[k2] - 1 < 0:
                 print('================negative flops amount after : ' + str(mutant[k2].flops - 1))
 
     env = ctx['env']
 
     for res, idx in zip(mutant, range(len(mutant))):
-        blade = [node for node in res.nodes]
+        blade = [node for node in res]
         fc = env.rm.resources[idx].farm_capacity
         rc = env.rm.resources[idx].max_resource_capacity
-        env_nodes = [node for node in env.rm.resources[idx].nodes]
-        env_names = [node.name for node in env_nodes]
-        cemetery = [node.name for node in ctx['cemetery']]
 
-        filled_power = sum(s.flops for s in blade)
+        filled_power = sum(blade)
         if filled_power > fc:
             print("================= wrong chromosome at the start of mutate phase " + str(filled_power))
-            #return
 
         k1, k2 = 0, 0
 
-
-        if filled_power > fc:
-                print('================= wrong value of flops before all' + str(filled_power))
-
-        counter = 0
-        is_static_nodes = False
         while len(blade) > 1 and k1 == k2:
-            if counter > len(blade):
-                is_static_nodes = True
-                break
-            counter += 1
             k1 = random.randint(0, len(blade) - 1)
             k2 = random.randint(0, len(blade) - 1)
-        #if is_static_nodes:
-        #    continue
 
         option = random.random()
 
         if option < 1 / 3 and k1 != k2:
             try_to_change_resource_options(blade, k1, k2)
-            filled_power = sum(s.flops for s in blade)
-            if filled_power > fc:
-                print('================= wrong value of flops after resource changes' + str(filled_power))
         elif option < 2 / 3 and k1 != k2:
             try_to_decrease_resources(blade, k1)
-            filled_power = sum(s.flops for s in blade)
-            if filled_power > fc:
-                print('================= wrong value of flops after resource decrease' + str(filled_power))
-        elif (k1 != k2) and option > 2 / 3 and filled_power < fc:
-            try_to_increase_resources(blade, k1, k2)
-            filled_power = sum(s.flops for s in blade)
-            if filled_power > fc:
-                print('================= wrong value of flops after resource increase' + str(filled_power))
+        elif option > 2 / 3 and filled_power < fc:
+            try_to_increase_resources(blade, k1)
 
-        filled_power = sum(s.flops for s in blade)
-        if filled_power > fc:
-                print('================= wrong value of flops after all' + str(filled_power))
-
-        # check corectness
-
-        filled_power = sum(s.flops for s in blade)
+        filled_power = sum(blade)
         if filled_power > fc:
             print("================= wrong chromosome at the start of mutate phase " + str(filled_power))
 
-        used_nodes = [node.name for node in res.nodes]
-        temp_nodes = []
-        for gen_node in blade:
-            possible_nodes = [node for node in env_nodes if gen_node.flops == node.flops and node.name not in used_nodes]
-            if len(possible_nodes) > 0:
-                gen_node = deepcopy(possible_nodes[random.randint(0, len(possible_nodes) - 1)])
-                used_nodes.append(gen_node.name)
-            wrong_nodes = [node for node in env_nodes if gen_node.name == node.name and node.name]
-            if len(wrong_nodes) > 0:
-                if gen_node.flops != wrong_nodes[0].flops:
-                    name_idx = 0
-                    new_name = res.name + "_node_" + str(name_idx)
-                    while new_name in (env_names + used_nodes + cemetery):
-                        name_idx += 1
-                        new_name = res.name + "_node_" + str(name_idx)
-                    gen_node.name = new_name
-            temp_nodes.append(gen_node)
-
-        res.nodes = temp_nodes
-
-        filled_power = sum(s.flops for s in res.nodes)
-        if filled_power > fc:
-            print("================= wrong chromosome at the start of mutate phase " + str(filled_power))
-
-        if len(res.nodes) == 0:
-            pass
+        mutant[idx] = blade
 
 
 ##===================================
 ## GA specie
 ##==================================
 
-def ga_default_initialize(ctx, size):
-    """
-    chromosome representation changed from (task, node_idx) to (task, blade_idx, node_idx)
-    """
+def ga_default_initialize(ctx, size, max_nodes):
     env = ctx['env']
     fix_sched = ctx['fixed_schedule']
     fix_tasks = fix_sched.get_unfailed_taks()
@@ -1063,42 +568,20 @@ def ga_default_initialize(ctx, size):
 
     for i in range(size):
         temp = []
+        max_res = len(max_nodes.keys())
         for t in chromo:
-            resources = env.rm.get_live_resources()
-            res = [resource for resource in resources][random.randint(0, len(resources) - 1)]
-            # TODO may be need use res_amount, later
-            node = [elem for elem in res.nodes][random.randint(0, len(res.nodes) - 1)]
-            temp.append((t.id, res.name, node.name))
+            res = random.randint(0, max_res - 1)
+            node = random.randint(0, max_nodes[res] - 1)
+            temp.append((t.id, res, node))
         ls = ListBasedIndividual(temp)
         result.append(ls)
 
-
     return result
 
-
-def vm_random_count_generate(ctx):
-    env = ctx['env']
-    result = []
-    for res in env.rm.resources:
-        fc = res.farm_capacity
-        mrc = res.max_resource_capacity
-        max_sweep_size = env.wf.get_max_sweep() / 2
-        currentCap = 0
-        n = -1
-        while currentCap < fc - mrc and n < max_sweep_size:
-            n += 1
-            tmp_capacity = random.randint(0, mrc)
-            currentCap += tmp_capacity
-        if currentCap < fc and n < max_sweep_size:
-            n += 1
-        result.append(random.randint(0, n))
-    return result
-
-def ga_mutate(ctx, mutant):
+def ga_mutate(ctx, mutant, max_nodes):
     k = len(mutant) / 25
     env = ctx['env']
     wf = env.wf
-    env_nodes = [node.name for node in env.rm.resources[0].nodes]
     for i in range(len(mutant)):
         if random.random() < 2 * k / len(mutant):
             found_inconsistency = True
@@ -1126,99 +609,17 @@ def ga_mutate(ctx, mutant):
             mutant[k1], mutant[k2] = mutant[k2], mutant[k1]
 
             check_consistency(ctx, mutant)
-
-            # find all used resources in mutant and choose resource only from this list,
-            # without this list may be cases, when all task mapped on res_1,
-            # then in random from 0 to 1, can be chosen res_0 with unknown nodes
-            used_resources = []
-            for c in mutant:
-                if c[1] not in used_resources:
-                    used_resources.append(c[1])
-            cell = random.randint(0, len(mutant) - 1)
-            res = used_resources[random.randint(0, len(used_resources) - 1)]
-            used_nodes = [c[2] for c in mutant if c[1] == res] + env_nodes
-            node = used_nodes[random.randint(0, len(used_nodes) - 1)]
-            mutant[cell] = (mutant[cell][0], res, node)
     if random.random() < k / (2 * len(mutant)):
-        # I don't know, why it is required, however same strategy as in 2 lines above
-        used_resources = []
-        for c in mutant:
-            if c[1] not in used_resources:
-                used_resources.append(c[1])
+        max_res = len(max_nodes.keys())
         for i in range(len(mutant)):
             if random.random() < k / len(mutant):
                 k1 = random.randint(0, len(mutant) - 1)
-                res_number = used_resources[random.randint(0, len(used_resources) - 1)]
-                used_nodes = [c[2] for c in mutant if c[1] == res_number] + env_nodes
-                if len(used_nodes) == 0:
-                    continue
-                node_number = used_nodes[random.randint(0, len(used_nodes) - 1)]
+                res_number = random.randint(0, max_res - 1)
+                node_number = random.randint(0, max_nodes[res_number] - 1)
                 mutant[k1] = (mutant[k1][0], res_number, node_number)
 
-    # TODO is it required???
-    """
-    elif random.random() < k / (2 * len(mutant)):
-        num = get_max_resource_number(mutant)
-        if (num > 0):
-            for i in range(len(mutant)):
-                if mutant[i][1] == num:
-                    res_number = random.randint(0, num - 1)
-                    mutant[i] = (mutant[i][0], res_number)
-    """
     check_consistency(ctx, mutant)
     return mutant
-
-"""
-def ga_crossover(ctx, child1, child2):
-    env = ctx['env']
-    wf = env.wf
-    i1 = random.randint(0, len(child1))
-    i2 = random.randint(0, len(child1))
-
-    index1 = min(i1, i2)
-    index2 = max(i1, i2)
-
-    def make_offspring(ch1, ch2):
-        global fe1
-        f1 = ch1[0:index1]
-        f2 = ch1[index1:index2]
-        f3 = ch1[index2:]
-
-        s1 = ch2[0:index1]
-        s2 = ch2[index1:index2]
-        s3 = ch2[index2:]
-
-        diff_s1_f2 = [(se1, se2, se3) for (se1, se2, se3) in s1 if se1 not in [fe1 for (fe1, fe2, fe3) in f2]]
-        diff_s3_f2 = [(se1, se2, se3) for (se1, se2, se3) in s3 if se1 not in [fe1 for (fe1, fe2, fe3) in f2]]
-        diff_s2_f2 = [(s2[i], i) for i in range(len(s2)) if s2[i][0] not in [fe1 for (fe1, fe2, fe3) in f2]]
-        if len(diff_s2_f2) > 0:
-            pass
-
-        merged_f2_s2 = ListBasedIndividual(s for s in f2)
-
-        def insert_cell(cell, cromo_part):
-            t = wf.byId(cell[0][0])
-            pos = cell[1]
-            i = pos
-            while i < len(cromo_part):
-                if wf.byId(cromo_part[i][0]) in t.parents:
-                    pos = i + 1
-                i += 1
-            cromo_part.insert(pos, cell[0])
-
-        j = 0
-        while len(diff_s2_f2) > j:
-            insert_cell(diff_s2_f2[j], merged_f2_s2)
-            j += 1
-        return list(diff_s1_f2 + merged_f2_s2 + diff_s3_f2)
-
-    chrm1 = make_offspring(child1, child2)
-    chrm2 = make_offspring(child2, child1)
-
-    check_consistency(ctx, chrm1)
-    check_consistency(ctx, chrm2)
-    return ListBasedIndividual(chrm1), ListBasedIndividual(chrm2)
-"""
 
 def ga_crossover(ctx, child1, child2):
     env = ctx['env']
@@ -1283,182 +684,3 @@ def check_consistency(ctx, chromosome):
         for k in range(i + 1, len(chromosome)):
             if chromosome[k][0] in prnts:
                 assert True, "wrong" + str(chromosome[i][0])
-
-
-##===================================
-## Ordering specie
-##==================================
-
-def ordering_heft_based_initialize(ctx, size, heft_ordering, count):
-    result = [deepcopy(heft_ordering) for i in range(count)]
-    result = result + ordering_default_initialize(ctx, size - count)
-    return result
-
-
-def ordering_default_initialize(ctx, size):
-    env = ctx['env']
-    sorted_tasks = HeftHelper.heft_rank(env.wf, env.rm, env.estimator)
-
-    assert check_precedence(env.wf, sorted_tasks), "Check precedence failed"
-
-    result = [ListBasedIndividual(ordering_default_mutate(ctx, deepcopy(sorted_tasks))) for i in range(size)]
-    return result
-
-
-def ordering_default_mutate(ctx, mutant):
-    env = ctx['env']
-    wf = env.wf
-    while True:
-        k1 = random.randint(0, len(mutant) - 1)
-        k2 = random.randint(0, len(mutant) - 1)
-        mx, mn = max(k1, k2), min(k1, k2)
-        pids = [p.id for p in wf.byId(mutant[mx]).parents]
-        cids = wf.ancestors(mutant[mn])
-        if not any(el in pids or el in cids for el in mutant[mn: mx + 1]):
-            break
-    mutant[k1], mutant[k2] = mutant[k2], mutant[k1]
-    #assert _check_precedence(self.wf, mutant), "Precedence is violated"
-    return mutant
-
-
-def ordering_default_crossover(ctx, child1, child2):
-    def cutby(p1, p2, k):
-        d = set(p1[0:k]) - set(p2[0:k])
-        f = set(p2[0:k]) - set(p1[0:k])
-        migr = [p for p in p2[0:k] if p in f]
-        rest = [p for p in p2[k:] if p not in d]
-        return p1[0:k] + migr + rest
-
-    k = random.randint(1, len(child1) - 1)
-    first = cutby(child1, child2, k)
-    second = cutby(child2, child1, k)
-    ## TODO: remake it
-    child1.clear()
-    child1.extend(first)
-    child2.clear()
-    child2.extend(second)
-    pass
-
-
-def resource_default_crossover(ctx, child1, child2):
-    def cutby(p1, p2, k):
-        d = set(p1[0:k]) - set(p2[0:k])
-        f = set(p2[0:k]) - set(p1[0:k])
-        migr = [p for p in p2[0:k] if p in f]
-        rest = [p for p in p2[k:] if p not in d]
-        return p1[0:k] + migr + rest
-
-    k = random.randint(1, len(child1) - 1)
-    first = cutby(child1, child2, k)
-    second = cutby(child2, child1, k)
-    ## TODO: remake it
-    child1.clear()
-    child1.extend(first)
-    child2.clear()
-    child2.extend(second)
-    pass
-
-
-##===========================================
-## ResourceConfig specie
-##==========================================
-
-
-
-class ResourceConfig(Specie):
-    """
-    chromosome = [Config, NONE ,...]
-    """
-
-    def __init__(self, resource_manager, name, pop_size, fixed=False, representative_individual=None):
-        super().__init__(name, pop_size, fixed, representative_individual)
-        self.resource_manager = resource_manager
-        pass
-
-    def initialize(self, size):
-        ## TODO: implement that methods
-        raise NotImplementedError()
-        slots = self.resource_manager.slots_count
-        configs = self.resource_manager.get_configs()
-        genconf = lambda: random.randint(0, len(configs) - 1)
-        ## TODO: implement
-        result = [ListBasedIndividual(genconf() if random.random() > 0.5 else None for s in slots)
-                  for i in range(size)]
-        return result
-
-    def crossover(self, child1, child2):
-        tools.cxTwoPoint(child1, child2)
-        pass
-
-    def mutate(self, mutant):
-        configs = self.resource_manager.get_configs()
-        cfgs = configs + [None]
-        k = random.randint(0, len(mutant) - 1)
-        c = random.randint(0, len(cfgs) - 1)
-        mutant[k] = cfgs[c]
-        pass
-
-    pass
-
-
-class VMConfig:
-    def __init__(self, flops):
-        self.flops = flops
-
-    pass
-
-
-class VMResourceManager(ExperimentResourceManager):
-    def __init__(self, slots_count, resources=[]):
-        super().__init__(resources)
-        self.slots_count = slots_count
-
-    def get_configs(self):
-        SMALL = VMConfig(10)
-        MEDIUM = VMConfig(30)
-        HIGH = VMConfig(50)
-        return [SMALL, MEDIUM, HIGH]
-
-    pass
-
-
-##=====================================
-## Default configs
-##=====================================
-
-def default_config(wf, rm, estimator):
-    selector = lambda env, pop: tools.selTournament(pop, len(pop), 4)
-    return {
-        "interact_individuals_count": 22,
-        "generations": 5,
-        "env": Env(wf, rm, estimator),
-        "species": [Specie(name=MAPPING_SPECIE, pop_size=10,
-                           cxb=0.8, mb=0.5,
-                           mate=lambda env, child1, child2: tools.cxOnePoint(child1, child2),
-                           mutate=mapping_default_mutate,
-                           select=selector,
-                           initialize=mapping_default_initialize
-        ),
-                    Specie(name=ORDERING_SPECIE, pop_size=10,
-                           cxb=0.8, mb=0.5,
-                           mate=ordering_default_crossover,
-                           mutate=ordering_default_mutate,
-                           select=selector,
-                           initialize=ordering_default_initialize,
-                    )
-        ],
-
-        "operators": {
-            # "choose": default_choose,
-            "build_solutions": default_build_solutions,
-            "fitness": fitness_mapping_and_ordering,
-            "assign_credits": default_assign_credits
-        }
-    }
-
-
-
-
-
-
-

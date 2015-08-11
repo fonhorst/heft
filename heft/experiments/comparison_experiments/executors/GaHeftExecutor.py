@@ -137,6 +137,8 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
             # False means Remove
             # True means Save
             if isinstance(ev, TaskFinished) and ev.task.id == event.task.id: return False
+            if isinstance(ev, TaskStart) and ev.node.name == event.node.name: return False
+            if isinstance(ev, TaskFinished) and ev.node.name == event.node.name: return False
             if isinstance(ev, ResourceFailed) and ev.resource.name == event.node.resource.name: return False
             # TODO: correct id
             if isinstance(ev, ResourceUp) and ev.resource.name == event.node.resource.name: return False
@@ -151,12 +153,15 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
         # check failed event in schedule
         ## TODO: ambigious choice
         ##self.current_schedule.change_state(event.task, ScheduleItem.FAILED)
-        it = [item for item in self.current_schedule.mapping[event.node] if item.job.id == event.task.id and item.state == ScheduleItem.EXECUTING]
+        it = [item for item in self.current_schedule.mapping[event.node]
+              if item.job.id == event.task.id and item.state == ScheduleItem.EXECUTING]
+
         if len(it) != 1:
             raise Exception(" Trouble in finding of the task: count of found tasks {0}".format(len(it)))
 
         it[0].state = ScheduleItem.FAILED
         it[0].end_time = self.current_time
+
 
         ## change for Blade Resource (Vm resources)
         if isinstance(self.resource_manager, BladeExperimentalManager.ExperimentResourceManager):
@@ -233,7 +238,6 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
                 it[0].state = ScheduleItem.FAILED
                 it[0].end_time = self.current_time
         self.resource_manager.resource(event.resource).state = Resource.Down
-
 
         # run HEFT
         self._reschedule(event)

@@ -9,20 +9,30 @@ class BaseEvent:
         self.time_posted = time_posted
         self.time_happened = time_happened
 
+
 class TaskStart(BaseEvent):
     def __init__(self, task):
         self.task = task
         self.node = None
 
     def __str__(self):
-        return "TaskStart"
+        return "TaskStart: {id}-{node}-{time:.2f}".format(id=self.task.id, node=self.node.name, time=self.time_happened)
+
+    def __repr__(self):
+        return self.__str__()
+
 
 class TaskFinished(BaseEvent):
     def __init__(self, task):
         self.task = task
         self.node = None
+
     def __str__(self):
-        return "TaskFinished"
+        return "TaskFinished: {id}-{node}-{time:.2f}".format(id=self.task.id, node=self.node.name, time=self.time_happened)
+
+    def __repr__(self):
+        return self.__str__()
+
 
 class NodeFailed(BaseEvent):
     def __init__(self, node, task):

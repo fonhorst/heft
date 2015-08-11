@@ -65,21 +65,24 @@ class BaseExecutor(EventMachine):
         pass
 
     def _post_new_events(self):
-        unstarted_items = set()
+        # unstarted_items = set()
         for (node, items) in self.current_schedule.mapping.items():
+            unstarted_items = set()
             for item in items:
                 if item.state == ScheduleItem.UNSTARTED:
                     unstarted_items.add(item)
 
-        for item in unstarted_items:
-            event_start = TaskStart(item.job)
-            event_start.time_happened = item.start_time
+            for item in unstarted_items:
+                event_start = TaskStart(item.job)
+                event_start.time_happened = item.start_time
+                event_start.node = node
 
-            event_finish = TaskFinished(item.job)
-            event_finish.time_happened = item.end_time
+                event_finish = TaskFinished(item.job)
+                event_finish.time_happened = item.end_time
+                event_finish.node = node
 
-            self.post(event_start)
-            self.post(event_finish)
+                self.post(event_start)
+                self.post(event_finish)
         pass
 
     def _reschedule(self, event):

@@ -3,8 +3,10 @@ from copy import deepcopy
 import random
 from deap import creator, tools
 from deap.tools import HallOfFame
-from heft.core.environment.BaseElements import Node
+from heft.core.environment.BaseElements import Node, SoftItem
 import numpy
+from heft.algs.common.utilities import gather_info
+from heft.algs.ga.coevolution.operators import get_max_resource_number, resources_length, live_fixed_nodes, assignment_to_resources, dead_fixed_nodes, rm_adapt
 from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividual
 
 SPECIES = "species"
@@ -63,21 +65,41 @@ class VMCoevolutionGA():
 
     def __init__(self, **kwargs):
         self.kwargs = deepcopy(kwargs)
-        self.ENV = kwargs["env"]
-        self.CEMETERY = self.create_cemetery(self.kwargs)
-        self.kwargs["cemetery"] = self.CEMETERY
-        self.SPECIES = kwargs["species"]
-        self.INTERACT_INDIVIDUALS_COUNT = kwargs["interact_individuals_count"]
-        self.GENERATIONS = kwargs["generations"]
+        self.ENV = self.kwargs["env"]
 
-        self.solstat = kwargs.get("solstat", lambda sols: {})
-        self.build_solutions = kwargs["operators"]["build_solutions"]
+        # delete fixed nodes from rm
+        live_nodes = live_fixed_nodes(self.kwargs['fixed_schedule'].mapping)
+        live_res_dict = assignment_to_resources(live_nodes, self.ENV[1])
+        print("live = ")
+        print(len(live_nodes))
+        dead_nodes = dead_fixed_nodes(self.kwargs['fixed_schedule'].mapping)
+        dead_res_dict = assignment_to_resources(dead_nodes, self.ENV[1])
+        print("dead = ")
+        print(len(dead_nodes))
+        print("fixed schedule = " + str(self.kwargs['fixed_schedule'].mapping.keys()))
+        for idx in range(len(self.ENV[1].resources)):
+            res = self.ENV[1].resources[idx]
+            delete_flops = sum([node.flops for node in live_res_dict[idx]])
+            for node in live_res_dict[idx]:
+                res.nodes.remove(node)
+            res.farm_capacity -= delete_flops
+            delete_flops = sum([node.flops for node in dead_res_dict[idx]])
+            for node in dead_res_dict[idx]:
+                res.nodes.remove(node)
+            res.farm_capacity -= delete_flops
 
-        self.fitness = kwargs["operators"]["fitness"]
-        self.assign_credits = kwargs["operators"]["assign_credits"]
-        self.analyzers = kwargs.get("analyzers", [])
-        self.USE_CREDIT_INHERITANCE = kwargs.get("use_credit_inheritance", False)
-        self.HALL_OF_FAME_SIZE = kwargs.get("hall_of_fame_size", 0)
+        self.SPECIES = self.kwargs["species"]
+        self.INTERACT_INDIVIDUALS_COUNT = self.kwargs["interact_individuals_count"]
+        self.GENERATIONS = self.kwargs["generations"]
+
+        self.solstat = self.kwargs.get("solstat", lambda sols: {})
+        self.build_solutions = self.kwargs["operators"]["build_solutions"]
+
+        self.fitness = self.kwargs["operators"]["fitness"]
+        self.assign_credits = self.kwargs["operators"]["assign_credits"]
+        self.analyzers = self.kwargs.get("analyzers", [])
+        self.USE_CREDIT_INHERITANCE = self.kwargs.get("use_credit_inheritance", False)
+        self.HALL_OF_FAME_SIZE = self.kwargs.get("hall_of_fame_size", 0)
 
         self._result = None
 
@@ -94,9 +116,31 @@ class VMCoevolutionGA():
 
         ## TODO: make processing of population consisting of 1 element uniform
         ## generate initial population
-        self.pops = {s: self._generate_k(s.initialize(self.kwargs, s.pop_size)) if not s.fixed
-        else self._generate_k([s.representative_individual])
-                for s in self.SPECIES}
+
+        for s in self.SPECIES:
+            if s.name == 'ResourceConfigSpecie':
+                res_spec = s
+            else:
+                ga_spec = s
+
+        res_lengths = {idx: len(self.ENV[1].resources[idx].nodes) for idx in range(len(self.ENV[1].resources))}
+        lvd = live_fixed_nodes(self.kwargs['fixed_schedule'].mapping)
+        live_res_dict = assignment_to_resources(lvd, self.kwargs['env'][1])
+        for item in live_res_dict.items():
+            res_lengths[item[0]] += len(item[1])
+
+        self.pops = dict()
+        for s in self.SPECIES:
+            if s.fixed:
+                print("FIXED INITIALIZATION< AAAAA")
+            if s.name == 'ResourceConfigSpecie':
+                self.pops[s] = self._generate_k(s.initialize(self.kwargs, s.pop_size))
+            else:
+                self.pops[s] = self._generate_k(s.initialize(self.kwargs, s.pop_size, res_lengths))
+
+        # self.pops = {s: self._generate_k(s.initialize(self.kwargs, s.pop_size)) if not s.fixed
+        # else self._generate_k([s.representative_individual])
+        #         for s in self.SPECIES}
 
         ## make a copy for logging. TODO: remake it with logbook later.
         self.initial_pops = {s.name: deepcopy(pop) for s, pop in self.pops.items()}
@@ -107,12 +151,10 @@ class VMCoevolutionGA():
            assert sm == self.INTERACT_INDIVIDUALS_COUNT, \
                "For specie {0} count doesn't equal to {1}. Actual value {2}".format(s, self.INTERACT_INDIVIDUALS_COUNT, sm)
 
-        #print("Initialization finished")
-
         self.hall = HallOfFame(self.HALL_OF_FAME_SIZE)
-
         self.kwargs['gen'] = 0
 
+        print("Initialization finished")
         pass
 
     def __call__(self):
@@ -205,10 +247,6 @@ class VMCoevolutionGA():
                 for node in nodes:
                     res_ids += ' ' + str(node.name)
                 res_ids += ')'
-            #print(' fl '+res_fl)
-            #print(' fl '+res_ids)
-            #print(' num '+res_num)
-            #print("Fitness have been evaluated. Best is " + str(bf) + ' amoung ' + str(len(solutions)) + ' solutions')
 
     def result(self):
         return self.best, self.pops, self.logbook, self.initial_pops, self.hall, self.vm_series
@@ -235,24 +273,32 @@ class VMCoevolutionGA():
         return pop
     
     def gen(self):
+
+        for s in self.pops:
+                if s.name == 'ResourceConfigSpecie':
+                    res_spec = s
+                else:
+                    ga_spec = s
+
         kwargs = self.kwargs
         kwargs['gen'] = kwargs['gen'] + 1
 
-        solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT)
+        res_lengths = resources_length(self.pops[res_spec])
+        lvd = live_fixed_nodes(self.kwargs['fixed_schedule'].mapping)
+        live_res_dict = assignment_to_resources(lvd, self.kwargs['env'][1])
+        additional_resources = {item[0]: len(item[1]) for item in live_res_dict.items()}
+        for item in live_res_dict.items():
+            res_lengths[item[0]] += len(item[1])
 
+        solutions = self.build_solutions(self.pops, self.INTERACT_INDIVIDUALS_COUNT, additional_resources)
 
         ## estimate fitness
         for sol in solutions:
             sol.fitness = self.fitness(kwargs, sol)
 
-        # TODO add statistic
-        #self.statistic_processing(solutions)
-
         for s, pop in self.pops.items():
             for p in pop:
                 p.fitness = -1000000000.0
-
-        ## assign id, calculate credits and save it
 
         i = 0
         for s, pop in self.pops.items():
@@ -268,11 +314,7 @@ class VMCoevolutionGA():
         assert all([sum(p.fitness for p in pop) != 0 for s, pop in self.pops.items()]), \
                 "Error. Some population has individuals only with zero fitness"
 
-        #print("Credit have been estimated")
-
-        #print("Dict 1: " + str(len(list(self.stat.compile(solutions).items()))) + ' Dict2: ' + str(len(list(self.solstat(solutions).items()))))
         solsstat_dict = {}
-        #solsstat_dict = dict(list(self.stat.compile(solutions).items()) + list(self.solstat(solutions).items()))
         solsstat_dict["fitnesses"] = [sol.fitness for sol in solutions]
 
         popsstat_dict = {s.name: dict(list(self.stat.compile(pop).items()) + list(s.stat(pop).items())) for s, pop in self.pops.items()}
@@ -286,14 +328,19 @@ class VMCoevolutionGA():
             solutions = list(deepcopy(self.hall)) + solutions
             solutions = solutions[0:lsols]
 
-        self.logbook.record(gen=kwargs['gen'],
-                        popsstat=(popsstat_dict,),
-                        solsstat=(solsstat_dict,))
+        stats = tools.Statistics(lambda ind: -ind.fitness)
+        stats.register("avg", numpy.mean)
+        stats.register("std", numpy.std)
+        stats.register("min", numpy.min)
+        stats.register("max", numpy.max)
+        IS_SILENT = True
+
+        gather_info(self.logbook, stats, kwargs['gen'] - 1, solutions + self.hall.items, None, need_to_print=not IS_SILENT)
 
         for an in self.analyzers:
             an(kwargs, solutions, self.pops)
 
-        #print("hall: " + str(list(map(lambda x: x.fitness, self.hall))))
+        #print(str(kwargs['gen']) + " hall: mean = " + str(numpy.mean(list(map(lambda x: x.fitness, self.hall)))) + " max = " + str(numpy.max(list(map(lambda x: x.fitness, self.hall)))) + " min = " + str(numpy.min(list(map(lambda x: x.fitness, self.hall)))))
 
         ## select best solution as a result
         ## TODO: remake it in a more generic way
@@ -304,15 +351,15 @@ class VMCoevolutionGA():
         # best = hall[0] if hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
         self.best = self.hall[0] if self.hall.maxsize > 0 else max(solutions, key=lambda x: x.fitness)
 
-        #print("best selected.")
         ## produce offsprings
         items = [(s, pop) for s, pop in self.pops.items() if not s.fixed]
+
+
+
         for s, pop in items:
-            #print("item pair operating.")
             if s.fixed:
                 continue
             offspring = s.select(kwargs, pop)
-            #print("     offspring selected.")
             offspring = list(map(deepcopy, offspring))
 
             ## apply mixin elite ones from the hall
@@ -327,14 +374,6 @@ class VMCoevolutionGA():
                 if random.random() < s.cxb:
                     c1 = child1.fitness
                     c2 = child2.fitness
-                    #print("cross prev")
-                    #if s.name == 'ResourceConfigSpecie':
-                    #    print("    child1 = " + str([(node, node.flops) for node in child1[0].nodes]))
-                    #    print("    child2 = " + str([(node, node.flops) for node in child2[0].nodes]))
-                    #else:
-                    #    print("    child1 = " + str(child1))
-                    #    print("    child2 = " + str(child2))
-                    #print("     cross started")
                     if s.name == 'ResourceConfigSpecie':
                         chd1, chd2 = s.mate(kwargs, child1, child2)
                         chd1.fitness = (c1 + c2) / 2.0
@@ -347,13 +386,6 @@ class VMCoevolutionGA():
                         chd2.fitness = (c1 + c2) / 2.0
                         pop.append(chd1)
                         pop.append(chd2)
-                    #print("cross after")
-                    #if s.name == 'ResourceConfigSpecie':
-                    #    print("    child1 = " + str([(node, node.flops) for node in chd1[0].nodes]))
-                    #    print("    child2 = " + str([(node, node.flops) for node in chd2[0].nodes]))
-                    #else:
-                    #    print("    child1 = " + str(chd1))
-                    #    print("    child2 = " + str(chd2))
                     #print("-----")
                     #print("     cross done, child fintess : " + str((c1 + c2) / 2.0))
                     ## TODO: make credit inheritance here
@@ -364,25 +396,14 @@ class VMCoevolutionGA():
 
                     pass
 
+
+
             for mutant in offspring:
                 if random.random() < s.mb:
-                    #print("mutation started")
-                    #print("mut prev")
-                    #if s.name == 'ResourceConfigSpecie':
-                    #    print("    mutant = " + str([(node, node.flops)for node in mutant[0].nodes]))
-                    #else:
-                    #    print("    mutant = " + str(mutant))
                     if s.name == 'ResourceConfigSpecie':
                         s.mutate(kwargs, mutant)
                     else:
-                        s.mutate(kwargs, mutant)
-                    #print("mut after")
-                    #if s.name == 'ResourceConfigSpecie':
-                    #    print("    mutant = " + str([(node, node.flops)for node in mutant[0].nodes]))
-                    #else:
-                    #    print("    mutant = " + str(mutant))
-                    #print("----")
-                    #print("mutation done")
+                        s.mutate(kwargs, mutant, res_lengths)
                 pass
 
             self.pops[s] = offspring
@@ -408,32 +429,31 @@ def vm_run_cooperative_ga(**kwargs):
     res_rm = res[0]['ResourceConfigSpecie']
     kw_rm = kwargs_copy['env'][1].resources
 
-    best = res[0]
-    if isinstance(best['ResourceConfigSpecie'][0].nodes, set):
-        raise Exception("Alarm! Debug")
-
-    for (i, resource) in enumerate(res_rm):
-        new_set = []
-        kw_nodes = kw_rm[i].nodes
-        names_of_alive_nodes = set(res_node.name for res_node in resource.nodes)
-        for node in kw_nodes:
-            if node.name not in names_of_alive_nodes:
-                node.state = Node.Down
-                new_set.append(node)
-        for node in resource.nodes:
-            if node.name not in [s_node.name for s_node in new_set]:
-                new_set.append(node)
-        for node in [c_node for c_node in cga.CEMETERY if c_node.resource.name == resource.name]:
-            if node.name not in [s_node.name for s_node in new_set]:
-                new_set.append(node)
-        # TODO make a sepecial method in ResourceManager to change resource and node sets in a TRACKABLE way
-        kwargs['env'][1].resources[i].nodes = new_set
-    kwargs['cemetery'] = cga.CEMETERY
+    best_res = deepcopy(kw_rm)
 
 
+    for blade_idx in range(len(best_res)):
+        cur_res = best_res[blade_idx]
+        cur_res.nodes.clear()
+        for node_idx in range(len(res_rm[blade_idx])):
+            cur_res.nodes.append(Node("res_" + str(blade_idx) + "_node_" + str(node_idx), cur_res, SoftItem.ANY_SOFT, res_rm[blade_idx][node_idx]))
+
+    # for (i, resource) in enumerate(res_rm):
+    #     new_set = []
+    #     kw_nodes = kw_rm[i].nodes
+    #     names_of_alive_nodes = set(res_node.name for res_node in resource.nodes)
+    #     for node in kw_nodes:
+    #         if node.name not in names_of_alive_nodes:
+    #             node.state = Node.Down
+    #             new_set.append(node)
+    #     for node in resource.nodes:
+    #         if node.name not in [s_node.name for s_node in new_set]:
+    #             new_set.append(node)
+    #     for node in [c_node for c_node in cga.CEMETERY if c_node.resource.name == resource.name]:
+    #         if node.name not in [s_node.name for s_node in new_set]:
+    #             new_set.append(node)
+    #     # TODO make a sepecial method in ResourceManager to change resource and node sets in a TRACKABLE way
+
+    kwargs['env'][1].resources = best_res
+    rm_adapt(kwargs['env'][1], kwargs['fixed_schedule'].mapping)
     return res
-
-"""
-def (fixed_schedule, initial_schedule, current_time, initial_population):
-    return (best, pop, fixed_schedule, current_time, g), logbook
-    """
