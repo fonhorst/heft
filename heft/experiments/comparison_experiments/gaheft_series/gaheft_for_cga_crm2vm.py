@@ -90,6 +90,8 @@ class CgaVmWrapper:
                      alg_params):
         self._wf = _wf
         self.rm = rm
+        for res in self.rm.resources:
+            res.nodes.sort(key=lambda x: x.flops, reverse=True)
         self.estimator = estimator
         self.init_sched_percent = init_sched_percent
         self.log_book = log_book

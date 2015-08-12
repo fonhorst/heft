@@ -375,6 +375,8 @@ class VMCoevolutionGA():
                     c1 = child1.fitness
                     c2 = child2.fitness
                     if s.name == 'ResourceConfigSpecie':
+                        if len(child1[0]) == 0 or len(child1[0]) == 0:
+                            continue
                         chd1, chd2 = s.mate(kwargs, child1, child2)
                         chd1.fitness = (c1 + c2) / 2.0
                         chd2.fitness = (c1 + c2) / 2.0
@@ -455,5 +457,7 @@ def vm_run_cooperative_ga(**kwargs):
     #     # TODO make a sepecial method in ResourceManager to change resource and node sets in a TRACKABLE way
 
     kwargs['env'][1].resources = best_res
-    rm_adapt(kwargs['env'][1], kwargs['fixed_schedule'].mapping)
+    for resource in kwargs['env'][1].resources:
+        resource.nodes.clear()
+    rm_adapt(kwargs['env'][1], kwargs['fixed_schedule'].mapping, res_rm)
     return res

@@ -136,13 +136,18 @@ class one_to_one_vm_build_solutions:
                 # TODO this is crutch, refactoring later(
                 if pair_not_found:
                     print("PZDC")
-                    # for (elem, idx) in zip(ga_individual, range(len(ga_individual))):
-                    #     res = get_res_by_name(res_individual, elem[1])
-                    #     while len(res.nodes) == 0:
-                    #         res_individual = res_pop[random.randint(0, len(res_pop) - 1)]
-                    #         res = get_res_by_name(res_individual, elem[1])
-                    #     if elem[2] not in [node.name for node in res.nodes]:
-                    #         ga_individual[idx] = (elem[0], elem[1], [node.name for node in res.nodes][random.randint(0, len(res.nodes) - 1)])
+                    max_nodes = res_length(res_individual)
+                    for item in max_nodes.items():
+                        max_nodes[item[0]] += additional_resources[item[0]]
+                    for (elem, idx) in zip(ga_individual, range(len(ga_individual))):
+
+                        # while len(res.nodes) == 0:
+                        #     res_individual = res_pop[random.randint(0, len(res_pop) - 1)]
+                        #     res = get_res_by_name(res_individual, elem[1])
+                        if elem[2] >= max_nodes[elem[1]]:
+                            if max_nodes[elem[1]] <= 1:
+                                pass
+                            ga_individual[idx] = (elem[0], elem[1], random.randint(0, max_nodes[elem[1]] - 1))
 
                 current_ga_index += 1
 
@@ -201,7 +206,7 @@ def dead_fixed_nodes(fixed_schedule):
     """
     res = []
     for item in fixed_schedule.items():
-        if len(item[1]) > 0 and item[1][-1].state == 'failed':
+        if item[0].state == Node.Down or (len(item[1]) > 0 and item[1][-1].state == 'failed'):
             res.append(item[0])
     return res
 
@@ -212,31 +217,48 @@ def assignment_to_resources(nodes, rm):
     return result
 
 
-def rm_adapt(rm, fixed):
+def rm_adapt(rm, fixed, rc):
     """
     Adapt resource manager to fixed schedule
     """
     live_nodes = live_fixed_nodes(fixed)
     dead_nodes = dead_fixed_nodes(fixed)
 
-    for res in rm.resources:
-        cur_len = len(res.nodes)
-        res_fixed_nodes = [node for node in live_nodes if node.resource == res]
-        for node in res_fixed_nodes:
-            new_node = deepcopy(node)
-            new_node.name = res.name + "_node_" + str(cur_len)
-            cur_len += 1
-            res.nodes.append(new_node)
-        res_dead_nodes = [node for node in dead_nodes if node.resource == res]
-        dead_counter = 0
-        for node in res_dead_nodes:
-            new_node = deepcopy(node)
-            new_node.state = Node.Down
-            new_node.name = res.name + "_dead_" + str(dead_counter)
-            dead_counter += 1
-            res.nodes.append(new_node)
+    rc_copy = deepcopy(rc)
 
-    pass
+    for node in fixed.keys():
+        node_res = node.resource
+        res_idx = rm.resources.index(node_res)
+        if node not in live_nodes and node not in dead_nodes:
+            node_copy = deepcopy(node)
+            if node.flops not in rc_copy[res_idx]:
+                node_copy.state = Node.Down
+            else:
+                rc_copy[res_idx].remove(node.flops)
+            rm.resources[res_idx].nodes.append(node_copy)
+
+        if node in dead_nodes:
+            node_copy = deepcopy(node)
+            node_copy.state = Node.Down
+            rm.resources[res_idx].nodes.append(node_copy)
+        if node in live_nodes:
+            node_copy = deepcopy(node)
+            rm.resources[res_idx].nodes.append(node_copy)
+    for res_idx in range(len(rc_copy)):
+        n = 0
+        used_names = [node.name for node in rm.resources[res_idx].nodes]
+        for node_idx in range(len(rc_copy[res_idx])):
+            new_name = "res_" + str(res_idx) + "_node_" + str(n)
+            while new_name in used_names:
+                n += 1
+                new_name = "res_" + str(res_idx) + "_node_" + str(n)
+            new_node = Node(new_name, rm.resources[res_idx], SoftItem.ANY_SOFT, rc_copy[res_idx][node_idx])
+            used_names.append(new_name)
+            rm.resources[res_idx].nodes.append(new_node)
+    for res in rm.resources:
+        rm.resources_map[res.name] = res
+
+
 
 def ga2resources_build_schedule(workflow, estimator, resource_manager, solution, ctx):
     """
@@ -260,28 +282,31 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
     for res_idx in range(len(rm.resources)):
         res = rm.resources[res_idx]
         res.nodes = []
-        for node_idx in range(len(rs[res_idx])):
-            res.nodes.append(Node("res_" + str(res_idx) + "_node_" + str(node_idx), res, SoftItem.ANY_SOFT, rs[res_idx][node_idx]))
+        # for node_idx in range(len(rs[res_idx])):
+        #     res.nodes.append(Node("res_" + str(res_idx) + "_node_" + str(node_idx), res, SoftItem.ANY_SOFT, rs[res_idx][node_idx]))
 
-    print("before rm nodes = " + str(rm.resources[0].nodes))
-    print("fixed before = " + str(ctx['fixed_schedule'].mapping.keys()))
-    rm_adapt(rm, ctx['fixed_schedule'].mapping)
-    print("after rm nodes = " + str(rm.resources[0].nodes))
-    print("fixed after = " + str(ctx['fixed_schedule'].mapping.keys()))
+    rm_adapt(rm, ctx['fixed_schedule'].mapping, rs)
 
+    live_rm_nodes = []
+    for res_idx in range(len(rm.resources)):
+        cur_res = rm.resources[res_idx]
+        live_res_nodes = [node for node in cur_res.nodes if node.state != Node.Down]
+        live_res_nodes.sort(key=lambda x: x.flops, reverse=True)
+        live_rm_nodes.append(live_res_nodes)
 
     gs_adapt = []
     for map_item in gs:
         res = rm.resources[map_item[1]]
-        node = res.nodes[map_item[2]]
+        node = live_rm_nodes[map_item[1]][map_item[2]]
         gs_adapt.append((map_item[0], res.name, node.name))
         # TODO this is hack
         if node is None:
-            print("build hack")
-            node = [res_node for res_node in res.nodes][random.randint(0, len(res.nodes) - 1)]
-            bad_idx = gs.index(map_item)
-            map_item = (map_item[0], map_item[1], node.name)
-            gs[bad_idx] = map_item
+            assert("build hack")
+            # print("build hack")
+            # node = [res_node for res_node in res.nodes][random.randint(0, len(res.nodes) - 1)]
+            # bad_idx = gs.index(map_item)
+            # map_item = (map_item[0], map_item[1], node.name)
+            # gs[bad_idx] = map_item
 
     task_map = {}
     node_map = {}
@@ -292,23 +317,10 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
         for node in res.nodes:
             node_map[node.name] = node
 
-    for node in ctx['fixed_schedule'].mapping.keys():
-        if node.name not in node_map.keys():
-            node_map[node.name] = node
+    # for node in ctx['fixed_schedule'].mapping.keys():
+    #     if node.name not in node_map.keys():
+    #         node_map[node.name] = node
 
-    def adapt_fixed_schedule(fixed):
-        node_list = [node for node in fixed.keys() if "dead" not in node.name]
-        node_list.sort(key=lambda x: x.name)
-        n = 0
-        for node in node_list:
-            for fix_node in fixed.keys():
-                if fix_node == node:
-                    fix_node.name = node.resource.name + "_node_" + str(n)
-            n += 1
-        pass
-
-    adapt_fixed_schedule(ctx['fixed_schedule'].mapping)
-    print("fixed after adaptation = " + str(ctx['fixed_schedule'].mapping.keys()))
     chrom = chrom_converter(gs_adapt, task_map, node_map)
     # try:
     builder = NewScheduleBuilder(workflow, rm, estimator, task_map, node_map, ctx['fixed_schedule'])
@@ -381,7 +393,7 @@ def vm_resource_default_initialize(ctx, size):
                 cap = fc - current_cap
                 generated_vms.append(cap)
 
-            generated_vms.sort()
+            generated_vms.sort(reverse=True)
             default_inited_pop.append(generated_vms)
 
         result.append(default_inited_pop)
@@ -434,16 +446,21 @@ def resource_conf_crossover(ctx, parent1, parent2):
 
         first = None
         second = None
-        if len(blade1) > 2:
-            k = random.randint(0, len(blade1) - 2)
+        if len(blade1) > 1:
+            k = random.randint(0, len(blade1) - 1)
             first = get_child_from_pair(blade1, blade2, k)
 
-            if len(blade2) > 2:
-                k = random.randint(0, len(blade2) - 2)
+            if len(blade2) > 1:
+                k = random.randint(0, len(blade2) - 1)
                 second = get_child_from_pair(blade2, blade1, k)
             else:
-                k = random.randint(0, len(blade1) - 2)
+                k = random.randint(0, len(blade1) - 1)
                 second = get_child_from_pair(blade1, blade2, k)
+
+        if first is None:
+            first = deepcopy(blade1)
+        if second is None:
+            second = deepcopy(blade2)
 
         filled_power = sum(blade2)
         if filled_power > fc:
@@ -452,6 +469,8 @@ def resource_conf_crossover(ctx, parent1, parent2):
         filled_power = sum(blade1)
         if filled_power > fc:
             print('================= wrong value of flops after crossover child1 ' + str(filled_power))
+        first.sort(reverse=True)
+        second.sort(reverse=True)
         child1[bl_idx] = first
         child2[bl_idx] = second
     return child1, child2
@@ -534,7 +553,7 @@ def resource_config_mutate(ctx, mutant):
         filled_power = sum(blade)
         if filled_power > fc:
             print("================= wrong chromosome at the start of mutate phase " + str(filled_power))
-
+        blade.sort(reverse=True)
         mutant[idx] = blade
 
 
