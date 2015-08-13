@@ -1,5 +1,5 @@
 from functools import partial
-
+import random
 from heft.core.environment.ResourceManager import Scheduler, ScheduleItem, Schedule
 
 
@@ -46,9 +46,8 @@ class HeftHelper(Scheduler):
             #print("===========END_JBS=================")
 
             jobs = sorted(jobs, key=rank)
-
-
-
+            jobs_ranks = [(job.id, rank(job)) for job in jobs]
+            # print(jobs_ranks)
             return list(reversed(jobs))
 
         return ranking_func
@@ -72,18 +71,25 @@ class HeftHelper(Scheduler):
                 result = w(ni) + max(c(ni, nj) + estimate(nj) for nj in succ[ni]) ##+ math.pow((nodes.len - cnt(ni)),2)/nodes.len - include it later.
             else:
                 result = w(ni)
+            # add dispersion
+            # disp = ni.runtime * 0.025
+            disp = result * 0.025
+            result -= random.uniform(-disp, disp)
+
             task_rank_cache[ni] = result
             return result
 
         """print( "%s %s" % (ni, result))"""
         result = estimate(ni)
+        # result = int(round(result, 5) * 1000000) + HeftHelper.get_seq_number(ni)
         if hasattr(ni, 'priority'):
             if ni.priority > 0:
                 result += pow(120, ni.priority)
-            result = float(round(result, 5)) + HeftHelper.get_seq_number(ni)
+            result = float(round(result, 5) * 100000) + HeftHelper.get_seq_number(ni)
         else:
-            result = int(round(result, 5) * 1000000) + HeftHelper.get_seq_number(ni)
-        #print(ni.id, result)
+            # result = int(round(result, 5) * 1000000) + HeftHelper.get_seq_number(ni)
+            result = int(round(result, 5) * 100000) + HeftHelper.get_seq_number(ni)
+        # print(ni.id, result)
         return result
 
     @staticmethod

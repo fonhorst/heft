@@ -136,6 +136,8 @@ class StaticHeftPlanner(Scheduler):
                 if len(task.parents) == 1 and wf.head_task.id == list(task.parents)[0].id:
                     comm_ready = 0
                 else:
+                    # comm_ready = max([self.endtime(p, orders[jobson[p]])
+                    #                   + commcost(p, task, node, jobson[p]) for p in task.parents])
                     parent_tasks = set()
                     for p in task.parents:
                         val = self.endtime(p, orders[jobson[p]]) + commcost(p, task, node, jobson[p])
@@ -156,7 +158,8 @@ class StaticHeftPlanner(Scheduler):
 
     def can_be_executed(self, node, job):
         ## check it
-        return (job.soft_reqs in node.soft) or (SoftItem.ANY_SOFT in node.soft)
+        # return (job.soft_reqs in node.soft) or (SoftItem.ANY_SOFT in node.soft)
+        return SoftItem.ANY_SOFT in node.soft
 
     def endtime(self, job, events):
         """ Endtime of job in list of events """

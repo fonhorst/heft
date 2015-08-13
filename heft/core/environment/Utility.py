@@ -12,6 +12,7 @@ from random import Random
 import xml.etree.ElementTree as ET
 import numpy
 from heft.experiments.aggregate_utilities import interval_statistics
+from heft.core.environment.BaseElements import Task, Workflow
 
 from heft.settings import __root_path__
 from heft.experiments.comparison_experiments.common.ComparisonBase import ComparisonUtility
@@ -30,6 +31,52 @@ def wf(wf_name, task_postfix_id="00", deadline=1000, is_head=True):
     dax_filepath = "{0}/resources/{1}.xml".format(__root_path__, wf_name)
     _wf = Utility.readWorkflow(dax_filepath, wf_name, task_postfix_id, deadline=deadline, is_head=is_head)
     return _wf
+
+def wf_set(wf_list):
+    common_head = Task("0_", "0", True)
+    _work_wf = Workflow("test", "test", common_head)
+    wfs = set()
+    for i in range(0,int(len(wf_list)/2)):
+        _wf = wf(wf_list[2*i], deadline=wf_list[2*i+1],is_head=False)
+        wfs.update(set([_wf]))
+
+    def set_priority(task, priority):
+        task.priority = priority
+        # for i in range(0, len(task.children)):
+        for child_task in task.children:
+            # child_task = task.children.pop()
+            child_task.wf = task.wf
+            child_task.deadline = task.deadline
+            set_priority(child_task, priority)
+            # task.children.add(child_task)
+
+    wfs = sorted(wfs, key=lambda wf: wf.deadline != 0)
+    wfs = list(reversed(wfs))
+    for i in range(0,int(len(wfs))):
+        current_wf = wfs.pop()
+        for task in current_wf.head_task.children:
+            task.wf = current_wf.name
+            task.deadline = current_wf.deadline
+            task.parents = set([common_head])
+            if current_wf.deadline != 0:
+                set_priority(task, i+1)
+            else:
+                set_priority(task, 0)
+        common_head.children.update(set(current_wf.head_task.children))
+    return _work_wf
+
+def deadlines_from_schedule(schedule):
+    result = dict()
+    all_tasks = []
+    for sched in schedule.mapping.values():
+        for si in sched:
+            all_tasks.append((si.job, si.job.wf, si.job.deadline, si.end_time))
+    for task in all_tasks:
+        if task[1] not in result:
+            result[task[1]] = (task[2], task[3])
+        else:
+            result[task[1]] = (task[2], max(result[task[1]][1], task[3]))
+    return result
 
 def timing(f):
     def wrap(*args, **kwargs):

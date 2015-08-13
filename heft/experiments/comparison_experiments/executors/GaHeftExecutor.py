@@ -421,6 +421,15 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
 
         ## TODO: make previous_result used
         def run_ga(current_schedule):
+            # delete dead and useless nodes from rm
+            dead_nodes = []
+            for res in self.resource_manager.resources:
+                for node in res.nodes:
+                    if node.state == Node.Down:
+                        if len(current_schedule.mapping[node]) == 0:
+                            res.nodes.remove(node)
+                        dead_nodes.append(node.name)
+
             fixed_interval = self.fixed_interval_for_ga
             front_event = _get_front_line(current_schedule, current_time, fixed_interval)
             # we can't meet the end of computation so we do nothing
@@ -428,6 +437,10 @@ class GaHeftExecutor(FailRandom, BaseExecutor):
                 print("ga's computation isn't able to meet the end of computation")
                 return
             fixed_schedule = _get_fixed_schedule(current_schedule, front_event)
+            # Shut down dead nodes in fixed-schedule
+            for node in fixed_schedule.mapping.keys():
+                if node.name in dead_nodes:
+                    node.state = Node.Down
 
             #TODO: It isn't a good reliable solution. It should be reconsider later.
             fixed_ids = set(fixed_schedule.get_all_unique_tasks_id())

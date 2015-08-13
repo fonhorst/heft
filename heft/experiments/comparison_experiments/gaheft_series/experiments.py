@@ -10,7 +10,7 @@ from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceMa
 from heft.core.CommonComponents.BladeExperimentalManager import ExperimentResourceManager as BladeExperimentResourceManager, \
     ExperimentEstimator as BladeExperimentEstimator
 from heft.core.CommonComponents.failers.FailOnce import FailOnce
-from heft.core.environment.Utility import wf, Utility
+from heft.core.environment.Utility import wf, Utility, wf_set
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.experiments.cga.utilities.common import UniqueNameSaver
 from heft.experiments.comparison_experiments.executors.MIGaHeftExecutor import MIGaHeftExecutor
@@ -24,7 +24,7 @@ from heft.settings import TEMP_PATH
 
 def do_reduced_gaheft_exp(saver, alg_builder, wf_name, **params):
     print("EXPERIMENT RUN START===========================")
-    _wf = wf(wf_name)
+    _wf = wf_set(wf_name)
     rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
@@ -70,7 +70,7 @@ def do_reduced_gaheft_exp(saver, alg_builder, wf_name, **params):
 
 def do_gaheft_exp(saver, alg_builder, wf_name, **params):
     print("EXPERIMENT RUN START===========================")
-    _wf = wf(wf_name)
+    _wf = wf_set(wf_name)
 
     resources = params["resource_set"]["nodes_conf"]
 
@@ -115,7 +115,7 @@ def do_gaheft_exp(saver, alg_builder, wf_name, **params):
 
 def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
     print("EXPERIMENT RUN START===========================")
-    _wf = wf(wf_name)
+    _wf = wf_set(wf_name)
 
     params = deepcopy(params)
 
@@ -145,6 +145,7 @@ def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
     Utility.validate_dynamic_schedule(_wf, resulted_schedule)
 
     print("EXPERIMENT RUN END=========================")
+    print("MAKESPAN = " + str(Utility.makespan(resulted_schedule)))
     data = {
         "wf_name": wf_name,
         "params": None,

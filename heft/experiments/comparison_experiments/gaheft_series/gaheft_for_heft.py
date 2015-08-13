@@ -1,7 +1,7 @@
 from functools import partial
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
-from heft.core.environment.Utility import wf, Utility
+from heft.core.environment.Utility import wf, Utility, wf_set
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
@@ -9,9 +9,9 @@ from heft.experiments.comparison_experiments.executors.HeftExecutor import HeftE
 from heft.experiments.comparison_experiments.gaheft_series.utilities import changing_reliability_run, test_run
 
 EXPERIMENT_NAME = "gaheft_for_heft"
-REPEAT_COUNT = 100
-WF_NAMES = ["Montage_75"]
-RELIABILITY = [0.9]
+REPEAT_COUNT = 1
+WF_NAMES = [["Montage_25", 2000, "CyberShake_30", 3000]]
+RELIABILITY = [0.95]
 INDIVIDUALS_COUNTS = [50]
 
 BASE_PARAMS = {
@@ -38,7 +38,7 @@ BASE_PARAMS = {
 }
 
 def heft_exp(saver, wf_name, **params):
-    _wf = wf(wf_name)
+    _wf = wf_set(wf_name)
     rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
 
@@ -59,7 +59,7 @@ def heft_exp(saver, wf_name, **params):
     resulted_schedule = heft_machine.current_schedule
 
     Utility.validate_dynamic_schedule(_wf, resulted_schedule)
-
+    print("MAKESPAN = " + str(Utility.makespan(resulted_schedule)))
     data = {
         "wf_name": wf_name,
         "params": params,

@@ -10,10 +10,11 @@ from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.algs.heft.HeftHelper import HeftHelper
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.ResourceManager import Schedule
-from heft.core.environment.Utility import Utility
+from heft.core.environment.Utility import Utility, deadlines_from_schedule
 from heft.core.environment.ResourceGenerator import ResourceGenerator
 from heft.core.environment.BaseElements import Resource, Node, SoftItem, Workflow
 from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividual
+import time
 
 GA_SPECIE = "GASpecie"
 RESOURCE_CONFIG_SPECIE = "ResourceConfigSpecie"
@@ -94,25 +95,17 @@ class one_to_one_vm_build_solutions:
                 ga_pop = p
                 ga_name = s.name
 
-        not_valid = set()
         while already_found_pairs < interact_count:
             pair_not_found = True
 
             ga_elem_number = random.randint(0, len(ga_pop))
-            choose_counter = 0
-            while ga_elem_number in not_valid:
-                if choose_counter > 100 and choose_counter < 150:
-                    print("ga_elem_number in not_valid = ")
-                    print(ga_pop(ga_elem_number))
-                choose_counter += 1
-                ga_elem_number = random.randint(0, len(ga_pop))
 
             current_ga_index = 0
             while pair_not_found and current_ga_index < len(ga_pop):
                 res_elem_number = random.randint(0, len(res_pop))
                 current_tmp_ga_number = (ga_elem_number + current_ga_index) % len(ga_pop)
                 ga_individual = ga_pop[current_tmp_ga_number]
-                #TODO rename this
+
                 ga_max_res_number = get_max_resource_number(ga_individual)
                 for item in ga_max_res_number.items():
                     ga_max_res_number[item[0]] -= additional_resources[item[0]]
@@ -122,9 +115,10 @@ class one_to_one_vm_build_solutions:
                 for i in range(len(res_pop)):
                     res_pop_current_index = (res_elem_number + i) % len(res_pop)
                     res_individual = res_pop[res_pop_current_index]
-                    #print("GA_ind = " + str(ga_individual))
-                    #print("RES_ind = " + str(res_individual))
-                    # TODO this is weak place now and need to rename functions in condition
+
+                    # print("GA_ind = " + str(ga_individual))
+                    # print("RES_ind = " + str(res_individual))
+
                     if individual_lengths_compare(res_individual, ga_max_res_number) and \
                             not is_found_pair(current_tmp_ga_number, res_pop_current_index, found_pairs):
                         if current_tmp_ga_number not in found_pairs:
@@ -140,24 +134,14 @@ class one_to_one_vm_build_solutions:
                     for item in max_nodes.items():
                         max_nodes[item[0]] += additional_resources[item[0]]
                     for (elem, idx) in zip(ga_individual, range(len(ga_individual))):
-
-                        # while len(res.nodes) == 0:
-                        #     res_individual = res_pop[random.randint(0, len(res_pop) - 1)]
-                        #     res = get_res_by_name(res_individual, elem[1])
                         if elem[2] >= max_nodes[elem[1]]:
-                            if max_nodes[elem[1]] <= 1:
-                                pass
-                            ga_individual[idx] = (elem[0], elem[1], random.randint(0, max_nodes[elem[1]] - 1))
+                            if max_nodes[elem[1]] >= 1:
+                                ga_individual[idx] = (elem[0], elem[1], random.randint(0, max_nodes[elem[1]] - 1))
 
                 current_ga_index += 1
 
             if not pair_not_found:
                 already_found_pairs += 1
-            else:
-                not_valid.add(ga_elem_number)
-                #print('set size is: ' + str(len(not_valid)) + ' added ' + str(ga_elem_number))
-                # assert not pair_not_found, "Pair of scheduling and resource organization"
-        # elts = [[(s, p) for p in pop] for s, pop in pops.items()]
 
         # solutions = [DictBasedIndividual({s.name: pop for s, pop in el}) for el in zip(*elts)]
         solutions = [DictBasedIndividual({res_name: res_pop[ls], ga_name: ga_pop[ga_num]}) for
@@ -196,7 +180,7 @@ def live_fixed_nodes(fixed_schedule):
     """
     res = []
     for item in fixed_schedule.items():
-        if len(item[1]) > 0 and item[1][-1].state == 'executing':
+        if len(item[1]) > 0 and item[1][-1].state == 'executing' and item[0].state != Node.Down:
             res.append(item[0])
     return res
 
@@ -207,6 +191,16 @@ def dead_fixed_nodes(fixed_schedule):
     res = []
     for item in fixed_schedule.items():
         if item[0].state == Node.Down or (len(item[1]) > 0 and item[1][-1].state == 'failed'):
+            res.append(item[0])
+    return res
+
+def failed_fixed_nodes(fixed_schedule):
+    """
+    return failed nodes in fixed_schedule
+    """
+    res = []
+    for item in fixed_schedule.items():
+        if len(item[1]) > 0 and item[1][-1].state == 'failed':
             res.append(item[0])
     return res
 
@@ -226,6 +220,7 @@ def rm_adapt(rm, fixed, rc):
 
     rc_copy = deepcopy(rc)
 
+    time2 = time.clock()
     for node in fixed.keys():
         node_res = node.resource
         res_idx = rm.resources.index(node_res)
@@ -236,14 +231,21 @@ def rm_adapt(rm, fixed, rc):
             else:
                 rc_copy[res_idx].remove(node.flops)
             rm.resources[res_idx].nodes.append(node_copy)
+            continue
 
         if node in dead_nodes:
             node_copy = deepcopy(node)
             node_copy.state = Node.Down
+            # if len(fixed[node]) > 0:
             rm.resources[res_idx].nodes.append(node_copy)
+            continue
+
         if node in live_nodes:
             node_copy = deepcopy(node)
             rm.resources[res_idx].nodes.append(node_copy)
+            continue
+    time3 = time.clock()
+
     for res_idx in range(len(rc_copy)):
         n = 0
         used_names = [node.name for node in rm.resources[res_idx].nodes]
@@ -257,10 +259,11 @@ def rm_adapt(rm, fixed, rc):
             rm.resources[res_idx].nodes.append(new_node)
     for res in rm.resources:
         rm.resources_map[res.name] = res
+    print("time32 = " + str(time3 - time2))
 
 
 
-def ga2resources_build_schedule(workflow, estimator, resource_manager, solution, ctx):
+def ga2resources_build_schedule(workflow, estimator, resource_manager, solution, ctx, is_result_build=False):
     """
     return: Schedule
     mapiing = {
@@ -271,19 +274,15 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
     gs = solution[GA_SPECIE]
     rs = solution[RESOURCE_CONFIG_SPECIE]
 
-
-
     check_consistency(workflow, gs)
 
-    print("_____")
-    print("rs = " + str(rs))
-
-    rm = deepcopy(resource_manager)
+    if not is_result_build:
+        rm = deepcopy(resource_manager)
+    else:
+        rm = resource_manager
     for res_idx in range(len(rm.resources)):
         res = rm.resources[res_idx]
         res.nodes = []
-        # for node_idx in range(len(rs[res_idx])):
-        #     res.nodes.append(Node("res_" + str(res_idx) + "_node_" + str(node_idx), res, SoftItem.ANY_SOFT, rs[res_idx][node_idx]))
 
     rm_adapt(rm, ctx['fixed_schedule'].mapping, rs)
 
@@ -316,24 +315,22 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
     for res in rm.resources:
         for node in res.nodes:
             node_map[node.name] = node
-
-    # for node in ctx['fixed_schedule'].mapping.keys():
-    #     if node.name not in node_map.keys():
-    #         node_map[node.name] = node
-
     chrom = chrom_converter(gs_adapt, task_map, node_map)
-    # try:
     builder = NewScheduleBuilder(workflow, rm, estimator, task_map, node_map, ctx['fixed_schedule'])
-
     schedule = builder(chrom, ctx['current_time'])
-    # except Exception:
-    #     pass
     return schedule
 
 def fitness_ga_and_vm(ctx, solution):
     env = ctx['env']
     schedule = ga2resources_build_schedule(env.wf, env.estimator, env.rm, solution, ctx)
     result = Utility.makespan(schedule)
+    deadlines = deadlines_from_schedule(schedule)
+    success = True
+    for dl in deadlines.items():
+        if dl[1][0] < dl[1][1]:
+            result += 100000
+            success = False
+
     #result += nodes_overhead_estimate(env.rm.resources, solution["ResourceConfigSpecie"])
     return -result
 

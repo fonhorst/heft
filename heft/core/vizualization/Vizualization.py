@@ -28,6 +28,10 @@ class Vizualizator:
                     '<conf name="font_size_axes" value="18" />' \
                     '<task id="wf1"><color type="fg" rgb="FFFFFF" />' \
                     '<color type="bg" rgb="0000FF" /></task>' \
+                    '<task id="wf2"><color type="fg" rgb="FFFFFF" />' \
+                    '<color type="bg" rgb="00FF00" /></task>' \
+                    '<task id="wf3"><color type="fg" rgb="FFFFFF" />' \
+                    '<color type="bg" rgb="FF0000" /></task>' \
                     '</cmap>'
 
         cmap = ET.fromstring(cmap_tmpl)
@@ -50,7 +54,7 @@ class Vizualizator:
 
         task_tmpl = '<node_statistics> \
 			<node_property name="id" value="{0}"/> \
-			<node_property name="type" value="wf1"/> \
+			<node_property name="type" value="{4}"/> \
 			<node_property name="start_time" value="{1}"/> \
 			<node_property name="end_time" value="{2}"/> \
 			<configuration> \
@@ -62,6 +66,12 @@ class Vizualizator:
 			</configuration> \
 		    </node_statistics>'
 
+        wf_map = []
+        for val in schedule.mapping.values():
+            for sched in val:
+                if sched.job.wf not in wf_map:
+                    wf_map.append(sched.job.wf)
+
         grid_schedule.append(meta_info)
         grid_schedule.append(grid_info)
         node_infos = ET.SubElement(grid_schedule, 'node_infos')
@@ -72,7 +82,8 @@ class Vizualizator:
 
         for (node, items) in schedule.mapping.items():
             for item in items:
-                el = ET.fromstring(task_tmpl.format(item.job.id, item.start_time, item.end_time, ns[node]))
+                el = ET.fromstring(task_tmpl.format(item.job.id, item.start_time, item.end_time, ns[node],
+                                                    "wf" + str(wf_map.index(item.job.wf) + 1)))
                 node_infos.append(el)
 
         return ET.ElementTree(grid_schedule), ET.ElementTree(cmap), ns
