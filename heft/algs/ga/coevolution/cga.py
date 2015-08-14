@@ -6,7 +6,7 @@ from deap.tools import HallOfFame
 from heft.core.environment.BaseElements import Node, SoftItem
 import numpy
 from heft.algs.common.utilities import gather_info
-from heft.algs.ga.coevolution.operators import get_max_resource_number, resources_length, live_fixed_nodes, assignment_to_resources, dead_fixed_nodes, rm_adapt, failed_fixed_nodes
+from heft.algs.ga.coevolution.operators import get_max_resource_number, resources_length, live_fixed_nodes, assignment_to_resources, dead_fixed_nodes, rm_adapt, failed_fixed_nodes, rm_adapt_fit1
 from heft.algs.common.individuals import DictBasedIndividual, ListBasedIndividual
 import time
 
@@ -204,6 +204,7 @@ class VMCoevolutionGA():
 
         kwargs = self.kwargs
         kwargs['gen'] = kwargs['gen'] + 1
+        print(kwargs['gen'])
 
         res_lengths = resources_length(self.pops[res_spec])
         lvd = live_fixed_nodes(self.kwargs['fixed_schedule'].mapping)
@@ -219,10 +220,19 @@ class VMCoevolutionGA():
         ## estimate fitness
         # print("Start fitness")
         sol_count = 0
+        #pre_adaptation
+        #cur_rm = deepcopy(kwargs['env'][1])
+        #rm = kwargs['env'][1]
+        #for res_idx in range(len(rm.resources)):
+        #    res = rm.resources[res_idx]
+        #    res.nodes = []
+        #rm_adapt_fit1(rm, kwargs['fixed_schedule'].mapping)
+
         for sol in solutions:
             # print(str(sol_count) + "/" + str(len(solutions)))
             sol.fitness = self.fitness(kwargs, sol)
             sol_count += 1
+        #kwargs['env'] = Env(kwargs['env'][0], cur_rm, kwargs['env'][2])
         # print("Fitness finished")
 
         for s, pop in self.pops.items():

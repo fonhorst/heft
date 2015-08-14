@@ -5,12 +5,12 @@ import pprint
 from deap import tools
 from deap.tools import Logbook
 import numpy
-from heft.algs.heft.DSimpleHeft import DynamicHeft
+from heft.algs.heft.DSimpleHeft import DynamicHeft, run_heft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.CommonComponents.BladeExperimentalManager import ExperimentResourceManager as BladeExperimentResourceManager, \
     ExperimentEstimator as BladeExperimentEstimator
 from heft.core.CommonComponents.failers.FailOnce import FailOnce
-from heft.core.environment.Utility import wf, Utility, wf_set
+from heft.core.environment.Utility import wf, Utility, wf_set, deadlines_from_schedule, clean_deadlines
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.experiments.cga.utilities.common import UniqueNameSaver
 from heft.experiments.comparison_experiments.executors.MIGaHeftExecutor import MIGaHeftExecutor
@@ -19,6 +19,7 @@ from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaH
 from heft.experiments.comparison_experiments.executors.GaHeftOldPopExecutor import GaHeftOldPopExecutor
 #from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.core.environment.BladeResourceGenrator import ResourceGenerator as rg
+
 from heft.settings import TEMP_PATH
 
 
@@ -93,6 +94,7 @@ def do_gaheft_exp(saver, alg_builder, wf_name, **params):
     machine.run()
     resulted_schedule = machine.current_schedule
 
+
     Utility.validate_dynamic_schedule(_wf, resulted_schedule)
 
     data = {
@@ -115,17 +117,26 @@ def do_gaheft_exp(saver, alg_builder, wf_name, **params):
 
 def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
     print("EXPERIMENT RUN START===========================")
-    _wf = wf_set(wf_name)
+    # _wf = wf_set(wf_name)
 
     params = deepcopy(params)
-
     resources = params["resource_set"]["nodes_conf"]
-
     rm = BladeExperimentResourceManager(rg.generate_resources([r if isinstance(r, (list, tuple, dict)) else [r]
                                                                for r in resources]))
     rm.setVMParameter(params["resource_set"]["rules_list"])
         # now transfer time less, if nodes from one blade
     estimator = BladeExperimentEstimator(**params["estimator_settings"])
+
+    cur_wf = wf(wf_name[0])
+    heft_schedule = run_heft(cur_wf, rm, estimator)
+    Utility.validate_static_schedule(cur_wf, heft_schedule)
+    heft_makespan = Utility.makespan(heft_schedule)
+    deadline = heft_makespan * (1 + 0.2 * (len(wf_name) / 2))
+    #for i in range(int(len(wf_name) / 2)):
+    #    wf_name[2 * i + 1] = deadline
+    _wf = wf_set(wf_name)
+
+
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
     ga = alg_builder(_wf, rm, estimator,
                      params["init_sched_percent"],
@@ -143,6 +154,7 @@ def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
     resulted_schedule = machine.current_schedule
 
     Utility.validate_dynamic_schedule(_wf, resulted_schedule)
+    finish_times, start_times = clean_deadlines(resulted_schedule)
 
     print("EXPERIMENT RUN END=========================")
     print("MAKESPAN = " + str(Utility.makespan(resulted_schedule)))
@@ -157,7 +169,9 @@ def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
             #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
             "overall_execution_time": Utility.overall_execution_time(resulted_schedule),
             "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
-        }
+        },
+        "wf_starts": start_times,
+        "wf_finishs": finish_times
     }
 
     if saver is not None:

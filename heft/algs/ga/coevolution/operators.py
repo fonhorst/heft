@@ -118,7 +118,6 @@ class one_to_one_vm_build_solutions:
 
                     # print("GA_ind = " + str(ga_individual))
                     # print("RES_ind = " + str(res_individual))
-
                     if individual_lengths_compare(res_individual, ga_max_res_number) and \
                             not is_found_pair(current_tmp_ga_number, res_pop_current_index, found_pairs):
                         if current_tmp_ga_number not in found_pairs:
@@ -245,7 +244,75 @@ def rm_adapt(rm, fixed, rc):
             rm.resources[res_idx].nodes.append(node_copy)
             continue
     time3 = time.clock()
+    #print("time32 = " + str(time3 - time2))
 
+    for res_idx in range(len(rc_copy)):
+        n = 0
+        used_names = [node.name for node in rm.resources[res_idx].nodes]
+        for node_idx in range(len(rc_copy[res_idx])):
+            new_name = "res_" + str(res_idx) + "_node_" + str(n)
+            while new_name in used_names:
+                n += 1
+                new_name = "res_" + str(res_idx) + "_node_" + str(n)
+            new_node = Node(new_name, rm.resources[res_idx], SoftItem.ANY_SOFT, rc_copy[res_idx][node_idx])
+            used_names.append(new_name)
+            rm.resources[res_idx].nodes.append(new_node)
+    for res in rm.resources:
+        rm.resources_map[res.name] = res
+
+def rm_adapt_fit1(rm, fixed):
+    live_nodes = live_fixed_nodes(fixed)
+    dead_nodes = dead_fixed_nodes(fixed)
+
+
+    for node in fixed.keys():
+        node_res = node.resource
+        res_idx = rm.resources.index(node_res)
+
+        if node in dead_nodes:
+            node_copy = deepcopy(node)
+            node_copy.state = Node.Down
+            rm.resources[res_idx].nodes.append(node_copy)
+            continue
+
+        if node in live_nodes:
+            node_copy = deepcopy(node)
+            rm.resources[res_idx].nodes.append(node_copy)
+            continue
+
+def rm_adapt_fit(rm, fixed, rc):
+    """
+    Adapt resource manager to fixed schedule
+    """
+    live_nodes = live_fixed_nodes(fixed)
+    dead_nodes = dead_fixed_nodes(fixed)
+
+    rc_copy = deepcopy(rc)
+    time2 = time.clock()
+    for node in fixed.keys():
+        node_res = node.resource
+        res_idx = rm.resources.index(node_res)
+        if node not in live_nodes and node not in dead_nodes:
+            node_copy = deepcopy(node)
+            if node.flops not in rc_copy[res_idx]:
+                node_copy.state = Node.Down
+            else:
+                rc_copy[res_idx].remove(node.flops)
+            rm.resources[res_idx].nodes.append(node_copy)
+            continue
+
+        if node in dead_nodes:
+            node_copy = deepcopy(node)
+            node_copy.state = Node.Down
+            # if len(fixed[node]) > 0:
+            rm.resources[res_idx].nodes.append(node_copy)
+            continue
+
+        if node in live_nodes:
+            node_copy = deepcopy(node)
+            rm.resources[res_idx].nodes.append(node_copy)
+            continue
+    time3 = time.clock()
     for res_idx in range(len(rc_copy)):
         n = 0
         used_names = [node.name for node in rm.resources[res_idx].nodes]
@@ -280,10 +347,12 @@ def ga2resources_build_schedule(workflow, estimator, resource_manager, solution,
         rm = deepcopy(resource_manager)
     else:
         rm = resource_manager
-    for res_idx in range(len(rm.resources)):
-        res = rm.resources[res_idx]
-        res.nodes = []
 
+    for res_idx in range(len(rm.resources)):
+            res = rm.resources[res_idx]
+            res.nodes = []
+    #rm_adapt_fit1(rm, ctx['fixed_schedule'].mapping)
+    #rm_adapt_fit(rm, ctx['fixed_schedule'].mapping, rs)
     rm_adapt(rm, ctx['fixed_schedule'].mapping, rs)
 
     live_rm_nodes = []
@@ -325,11 +394,9 @@ def fitness_ga_and_vm(ctx, solution):
     schedule = ga2resources_build_schedule(env.wf, env.estimator, env.rm, solution, ctx)
     result = Utility.makespan(schedule)
     deadlines = deadlines_from_schedule(schedule)
-    success = True
     for dl in deadlines.items():
         if dl[1][0] < dl[1][1]:
-            result += 100000
-            success = False
+            result += 1000
 
     #result += nodes_overhead_estimate(env.rm.resources, solution["ResourceConfigSpecie"])
     return -result
@@ -368,8 +435,8 @@ def vm_resource_default_initialize(ctx, size):
 
     env = ctx['env']
     result = []
-
-    for i in range(size):
+    init_size = int(size * 0.1)
+    for i in range(size - init_size):
 
         max_sweep_size = env.wf.get_max_sweep()
         default_inited_pop = []
@@ -394,6 +461,16 @@ def vm_resource_default_initialize(ctx, size):
             default_inited_pop.append(generated_vms)
 
         result.append(default_inited_pop)
+
+    #heft
+    heft_resources = []
+    for res in env[1].resources:
+        nodes = [node.flops for node in res.nodes]
+        nodes.sort(reverse=True)
+        heft_resources.append(nodes)
+    for i in range(init_size):
+        result.append(heft_resources)
+
     result_list = [ListBasedIndividual(s) for s in result]
     return result_list
 
@@ -582,7 +659,9 @@ def ga_default_initialize(ctx, size, max_nodes):
                 found = True
                 break
 
-    for i in range(size):
+    init_size = int(size * 0.1)
+
+    for i in range(size - init_size):
         temp = []
         max_res = len(max_nodes.keys())
         for t in chromo:
@@ -591,6 +670,42 @@ def ga_default_initialize(ctx, size, max_nodes):
             temp.append((t.id, res, node))
         ls = ListBasedIndividual(temp)
         result.append(ls)
+
+    # heft
+    live_rm_nodes = []
+    for res_idx in range(len(env[1].resources)):
+        cur_res = env[1].resources[res_idx]
+        live_res_nodes = [node for node in cur_res.nodes if node.state != Node.Down]
+        live_res_nodes.sort(key=lambda x: x.flops, reverse=True)
+        live_rm_nodes.append(live_res_nodes)
+
+    init_tasks = []
+    res_map = dict()
+    node_map = dict()
+    for res_idx in range(len(env[1].resources)):
+        res = env[1].resources[res_idx]
+        res_map[res.name] = res_idx
+        #for node_idx in range(len(res.nodes)):
+        #    node_map[res.nodes[node_idx].name] = node_idx
+    live_nodes = [node for node in ctx['fixed_schedule'].mapping.keys() if node.state != Node.Down]
+    live_nodes.sort(key=lambda x: x.flops, reverse=True)
+    for node_idx in range(len(live_nodes)):
+        node = live_nodes[node_idx]
+        if node.name not in node_map:
+            node_map[node.name] = node_idx
+    for sched in ctx['initial_schedule'].mapping.items():
+        for si in sched[1]:
+            if sched[0].name not in node_map:
+                pass
+            if si.job in chromo and si.state != 'failed' and si.state != 'executing':
+                if sched[0].name not in node_map:
+                    print(sched[0].state)
+                init_tasks.append((si.job.id, res_map[sched[0].resource.name], node_map[sched[0].name], si.start_time))
+    init_tasks.sort(key=lambda x: x[3])
+    init_tasks = [(task[0], task[1], task[2]) for task in init_tasks]
+    for i in range(init_size):
+        result.append(ListBasedIndividual(init_tasks))
+
 
     return result
 

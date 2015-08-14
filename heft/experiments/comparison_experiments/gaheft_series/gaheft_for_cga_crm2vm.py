@@ -19,25 +19,27 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 
 EXPERIMENT_NAME = "gaheft_for_cga_crm2vm"
 
-REPEAT_COUNT = 6
+REPEAT_COUNT = 1
 # WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-WF_NAMES = [["Montage_25", 2000, "CyberShake_30", 3000]]
+# WF_NAMES = [["Montage_25", 2000, "CyberShake_30", 3000]]
+WF_NAMES = [["Montage_25", 2000, "Montage_25", 3000, "Montage_25", 3000, "Montage_25", 3000]]
+#WF_NAMES = [["Montage_25", 2000]]
 # RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
-RELIABILITY = [0.95]
+RELIABILITY = [1]
 INDIVIDUALS_COUNTS = [100]
 # INDIVIDUALS_COUNTS = [60, 105, 150]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
-    "init_sched_percent": 0.05,
+    "init_sched_percent": 0.25,
     "alg_name": "cga_crm2vm",
 
     "alg_params": {
             "hall_of_fame_size": 5,
-            "interact_individuals_count": 200,
-            "generations": 300,
+            "interact_individuals_count": 20,
+            "generations": 50,
             # "env": Env(self._wf, self.rm, self.estimator),
-            "species": [Specie(name=GA_SPECIE, pop_size=50,
+            "species": [Specie(name=GA_SPECIE, pop_size=10,
                                cxb=0.6, mb=0.8,
                                mate=ga_crossover,
                                mutate=ga_mutate,
@@ -45,7 +47,7 @@ BASE_PARAMS = {
                                initialize=ga_default_initialize,
 
                                ),
-                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=50,
+                        Specie(name=RESOURCE_CONFIG_SPECIE, pop_size=10,
                                cxb=0.6, mb=0.8,
                                mate=resource_conf_crossover,
                                mutate=resource_config_mutate,

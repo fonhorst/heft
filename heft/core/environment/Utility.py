@@ -26,18 +26,18 @@ def f_eq(a, b):
     """
     return abs(a - b) < 0.00000001
 
-def wf(wf_name, task_postfix_id="00", deadline=1000, is_head=True):
+def wf(wf_name, task_postfix_id="00", deadline=1000, is_head=True, suffix=""):
     # dax_filepath = "../../resources/{0}.xml".format(wf_name)
     dax_filepath = "{0}/resources/{1}.xml".format(__root_path__, wf_name)
-    _wf = Utility.readWorkflow(dax_filepath, wf_name, task_postfix_id, deadline=deadline, is_head=is_head)
+    _wf = Utility.readWorkflow(dax_filepath, wf_name + suffix, task_postfix_id, deadline=deadline, is_head=is_head)
     return _wf
 
 def wf_set(wf_list):
     common_head = Task("0_", "0", True)
     _work_wf = Workflow("test", "test", common_head)
     wfs = set()
-    for i in range(0,int(len(wf_list)/2)):
-        _wf = wf(wf_list[2*i], deadline=wf_list[2*i+1],is_head=False)
+    for i in range(0, int(len(wf_list)/2)):
+        _wf = wf(wf_list[2*i], deadline=wf_list[2*i+1],is_head=False, suffix=("_" + str(i)))
         wfs.update(set([_wf]))
 
     def set_priority(task, priority):
@@ -77,6 +77,22 @@ def deadlines_from_schedule(schedule):
         else:
             result[task[1]] = (task[2], max(result[task[1]][1], task[3]))
     return result
+
+def clean_deadlines(schedule):
+    result = dict()
+    min_result = dict()
+    all_tasks = []
+    for sched in schedule.mapping.values():
+        for si in sched:
+            all_tasks.append((si.job, si.job.wf, si.job.deadline, si.end_time, si.start_time))
+    for task in all_tasks:
+        if task[1] not in result:
+            result[task[1]] = (task[2], task[3])
+            min_result[task[1]] = (task[2], task[4])
+        else:
+            result[task[1]] = (task[2], max(result[task[1]][1], task[3]))
+            min_result[task[1]] = (task[2], min(min_result[task[1]][1], task[4]))
+    return result, min_result
 
 def timing(f):
     def wrap(*args, **kwargs):

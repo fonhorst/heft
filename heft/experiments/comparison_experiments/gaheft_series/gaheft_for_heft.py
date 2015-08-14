@@ -1,7 +1,7 @@
 from functools import partial
-from heft.algs.heft.DSimpleHeft import DynamicHeft
+from heft.algs.heft.DSimpleHeft import DynamicHeft, run_heft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
-from heft.core.environment.Utility import wf, Utility, wf_set
+from heft.core.environment.Utility import wf, Utility, wf_set, clean_deadlines
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
@@ -10,8 +10,9 @@ from heft.experiments.comparison_experiments.gaheft_series.utilities import chan
 
 EXPERIMENT_NAME = "gaheft_for_heft"
 REPEAT_COUNT = 1
-WF_NAMES = [["Montage_25", 2000, "CyberShake_30", 3000]]
-RELIABILITY = [0.95]
+WF_NAMES = [["Montage_25", 2000, "Montage_25", 3000, "Montage_25", 3000, "Montage_25", 3000]]
+#WF_NAMES = [["Montage_25", 2000]]
+RELIABILITY = [1]
 INDIVIDUALS_COUNTS = [50]
 
 BASE_PARAMS = {
@@ -38,13 +39,24 @@ BASE_PARAMS = {
 }
 
 def heft_exp(saver, wf_name, **params):
-    _wf = wf_set(wf_name)
     rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
+
+    cur_wf = wf(wf_name[0])
+    heft_schedule = run_heft(cur_wf, rm, estimator)
+    Utility.validate_static_schedule(cur_wf, heft_schedule)
+    heft_makespan = Utility.makespan(heft_schedule)
+    deadline = heft_makespan * (1 + 0.2 * (len(wf_name) / 2))
+    #for i in range(int(len(wf_name) / 2)):
+    #    wf_name[2 * i + 1] = deadline
+    _wf = wf_set(wf_name)
+
 
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
     # heft_machine = HeftExecutor(rm, heft_planner=dynamic_heft,
     #                             **params["executor_params"])
+
+
 
     heft_machine = GaHeftExecutor(heft_planner=dynamic_heft,
                                   wf=_wf,
@@ -57,6 +69,7 @@ def heft_exp(saver, wf_name, **params):
     heft_machine.init()
     heft_machine.run()
     resulted_schedule = heft_machine.current_schedule
+    finish_times, start_times = clean_deadlines(resulted_schedule)
 
     Utility.validate_dynamic_schedule(_wf, resulted_schedule)
     print("MAKESPAN = " + str(Utility.makespan(resulted_schedule)))
@@ -69,7 +82,9 @@ def heft_exp(saver, wf_name, **params):
             #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
             "overall_execution_time": Utility.overall_execution_time(resulted_schedule),
             "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
-        }
+        },
+        "wf_starts": start_times,
+        "wf_finishs": finish_times
     }
 
     if saver is not None:
