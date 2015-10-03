@@ -49,7 +49,6 @@ class ExperimentEstimator(Estimator):
     def estimate_reliability(self, task, node):
         return self.reliability
 
-
 class ExperimentResourceManager(ResourceManager):
 
     def setVMParameter(self, farm_capacity, max_resource_capacity):
