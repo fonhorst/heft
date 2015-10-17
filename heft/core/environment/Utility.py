@@ -17,7 +17,7 @@ from heft.settings import __root_path__
 from heft.experiments.comparison_experiments.common.ComparisonBase import ComparisonUtility
 from heft.core.environment.BaseElements import Node, Resource
 from heft.core.environment.ResourceManager import ScheduleItem, Schedule
-from heft.core.environment.DAXParser import DAXParser
+from heft.core.environment.DAXExtendParser import DAXParser
 
 def f_eq(a, b):
     """

@@ -14,8 +14,8 @@ def do_exp(wf_info):
     common_head = Task("0_", "0", True)
     _work_wf = Workflow("test", "test", common_head)
     wfs = set()
-    for i in range(0,int(len(wf_info)/2)):
-        _wf = wf(wf_info[2*i],deadline=wf_info[2*i+1],is_head=False)
+    for i in range(0,len(wf_info)):
+        _wf = wf(wf_info[i],is_head=False, task_postfix_id=str(i))
         wfs.update(set([_wf]))
 
     def set_priority(task, priority):
@@ -43,5 +43,5 @@ def do_exp(wf_info):
     return makespan
 
 if __name__ == "__main__":
-    result = do_exp(["Sipht_30", 5000, "Montage_25", 2000, "Inspiral_30", 0])
+    result = do_exp(["DAM"])
     print(result)

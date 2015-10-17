@@ -83,7 +83,7 @@ class HeftHelper(Scheduler):
             result = float(round(result, 5)) + HeftHelper.get_seq_number(ni)
         else:
             result = int(round(result, 5) * 1000000) + HeftHelper.get_seq_number(ni)
-        #print(ni.id, result)
+        print(ni.id, result)
         return result
 
     @staticmethod
