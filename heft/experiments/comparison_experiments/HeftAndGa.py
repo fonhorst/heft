@@ -16,7 +16,7 @@ from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 """
 def do_run_heft():
     heft_schedule = run_heft(_wf, rm, estimator)
-    Utility.validate_static_schedule(_wf, heft_schedule)
+    #Utility.validate_static_schedule(_wf, heft_schedule)
     print("HEFT makespan: " + str(Utility.makespan(heft_schedule)))
     return heft_schedule
 
@@ -35,8 +35,7 @@ def do_run_ga(initial_schedule):
                    ga_params=GA_PARAMS)(fix_schedule_part, initial_schedule)
 
     _validate(wf, estimator, schedule)
-
-    Utility.makespan("GA makespan: " + str(Utility.makespan(schedule)))
+    print("GA makespan: " + str(Utility.makespan(schedule)))
     return schedule
 
 
@@ -60,17 +59,17 @@ if __name__ == '__main__':
 
     ideal_flops = 1
 
-    _wf = wf("CyberShake_50")
+    _wf = wf("Montage_25")
     # rm = ExperimentResourceManager(rg.r([0.5, 0.75, 1.25, 1.5]))
     rm = ExperimentResourceManager(rg.r([1.2, 1.2, 1.2, 1.0, 1.0, 1.0, 0.8, 0.8, 0.8]))
     # estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
     #                                     ideal_flops=ideal_flops, transfer_time=100)
-    # estimator = ExperimentEstimator(ideal_flops=ideal_flops, transfer_nodes=100, transfer_blades=100)
+    estimator = ExperimentEstimator(ideal_flops=ideal_flops, transfer_nodes=100, transfer_blades=100)
 
     ## transfer_nodes means now channel bandwidth
     # MB_100_CHANNEL = 100*1024*1024
-    MB_100_CHANNEL = 7*1024*1024
-    estimator = TransferCalcExperimentEstimator(ideal_flops=ideal_flops, transfer_nodes=MB_100_CHANNEL, transfer_blades=100)
+    # MB_100_CHANNEL = 7*1024*1024
+    # estimator = TransferCalcExperimentEstimator(ideal_flops=ideal_flops, transfer_nodes=MB_100_CHANNEL, transfer_blades=100)
 
     GA_PARAMS = {
             "Kbest": 5,
@@ -78,8 +77,8 @@ if __name__ == '__main__':
             "crossover_probability": 0.4, #0.3
             "replacing_mutation_probability": 0.2, #0.1
             "sweep_mutation_probability": 0.3, #0.3
-            "generations": 1000
+            "generations": 25
     }
 
     heft_schedule = do_run_heft()
-    ga_schedule = do_run_ga(initial_schedule=None)
+    ga_schedule = do_run_ga(initial_schedule=heft_schedule)

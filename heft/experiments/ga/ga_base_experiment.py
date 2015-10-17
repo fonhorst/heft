@@ -25,10 +25,10 @@ class GABaseExperiment(AbstractExperiment):
         return inst()
 
     def __init__(self):
-        wf_name = "CyberShake_30"
+        wf_name = "Montage_25"
         GA_PARAMS = {
             "kbest": 5,
-            "n": 100,
+            "n": 25,
             "cxpb": 0.3,  # 0.8
             "mutpb": 0.9,  # 0.5
             "sweepmutpb": 0.3,  # 0.4
