@@ -1,4 +1,8 @@
 from copy import deepcopy
+import os
+import sys
+from heft.settings import RESOURCES_PATH
+import yaml
 
 from heft.algs.ga.GAImplementation.GAFunctions2 import mark_finished
 from heft.algs.ga.GAImplementation.GAImpl import GAFactory
@@ -10,75 +14,113 @@ from heft.core.environment.ResourceManager import Schedule
 from heft.core.environment.Utility import wf, Utility
 from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
 
-
-"""
-:return Schedule
-"""
-def do_run_heft():
-    heft_schedule = run_heft(_wf, rm, estimator)
-    #Utility.validate_static_schedule(_wf, heft_schedule)
-    print("HEFT makespan: " + str(Utility.makespan(heft_schedule)))
-    return heft_schedule
+import scoop
+if scoop.IS_RUNNING:
+    from scoop import futures
+    map_func = futures.map
+else:
+    map_func = map
 
 
-def do_run_ga(initial_schedule):
-    def default_fixed_schedule_part(resource_manager):
-         fix_schedule_part = Schedule({node: [] for node in HeftHelper.to_nodes(resource_manager.get_resources())})
-         return fix_schedule_part
+class Config(dict):
+    @staticmethod
+    def load_from_file(path):
+        with open(path, "r") as f:
+            cfg = yaml.load(f)
 
-    fix_schedule_part = default_fixed_schedule_part(rm)
-    ((the_best_individual, pop, schedule, iter_stopped), logbook) = GAFactory.default()\
-        .create_ga(silent=False,
-                   wf=_wf,
-                   resource_manager=rm,
-                   estimator=estimator,
-                   ga_params=GA_PARAMS)(fix_schedule_part, initial_schedule)
+        return Config(cfg)
 
-    _validate(wf, estimator, schedule)
-    print("GA makespan: " + str(Utility.makespan(schedule)))
-    return schedule
+    def __init__(self, dct):
+        super().__init__(dct)
+        self.ga_params = dct["ga_params"]
+        self.wf_name = dct["wf_name"]
+
+    # the dict have to contain the following params
+    # - ga_params = {
+    #         "Kbest": 5,
+    #         "population": 100,
+    #         "crossover_probability": 0.4, #0.3
+    #         "replacing_mutation_probability": 0.2, #0.1
+    #         "sweep_mutation_probability": 0.3, #0.3
+    #         "generations": 25
+    # }
+
+    # - wf_name
 
 
-def _validate(wf, estimator, schedule):
-    ax_makespan = Utility.makespan(schedule)
-    seq_time_validaty = Utility.validateNodesSeq(schedule)
-    sched = deepcopy(schedule)
-    mark_finished(sched)
-    Utility.validate_static_schedule(_wf, schedule)
-    ## TODO: obsolete remove it later
-    #  dependency_validaty = Utility.validateParentsAndChildren(sched, wf)
-    #  transfer_dependency_validaty = Utility.static_validateParentsAndChildren_transfer(sched, wf, estimator)
-    #  print("=============Results====================")
-    #  print("              Makespan %s" % str(max_makespan))
-    #  print("          Seq validaty %s" % str(seq_time_validaty))
-    #  print("   Dependancy validaty %s" % str(dependency_validaty))
-    #  print("    Transfer validaty %s" % str(transfer_dependency_validaty)
+class ParametrizedGaRunner:
+    def __init__(self, config):
+        self._config = config
+
+        self._wf = wf(self._config.wf_name)
+        # it's equal 10, 15, 25, 30 when ideal_flops == 1
+        self._rm = ExperimentResourceManager(rg.r([0.5, 0.75, 1.25, 1.5]))
+        # estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
+        #                                     ideal_flops=ideal_flops, transfer_time=100)
+        self._estimator = ExperimentEstimator(ideal_flops=1, transfer_nodes=100, transfer_blades=100)
+        # transfer_nodes means now channel bandwidth
+        # MB_100_CHANNEL = 100*1024*1024
+        # MB_100_CHANNEL = 7*1024*1024
+        # estimator = TransferCalcExperimentEstimator(ideal_flops=ideal_flops,
+        #                                             transfer_nodes=MB_100_CHANNEL, transfer_blades=100)
+        pass
+
+    def do_run_heft(self):
+        heft_schedule = run_heft(self._wf, self._rm, self._estimator)
+        # Utility.validate_static_schedule(_wf, heft_schedule)
+        print("HEFT makespan: " + str(Utility.makespan(heft_schedule)))
+        return heft_schedule
+
+    def do_run_ga(self, initial_schedule):
+        def default_fixed_schedule_part(resource_manager):
+            fix_schedule_part = Schedule({node: [] for node in HeftHelper.to_nodes(resource_manager.get_resources())})
+            return fix_schedule_part
+
+        fix_schedule_part = default_fixed_schedule_part(self._rm)
+        ((the_best_individual, pop, schedule, iter_stopped), logbook) = GAFactory.default()\
+            .create_ga(silent=False,
+                       wf=self._wf,
+                       resource_manager=self._rm,
+                       estimator=self._estimator,
+                       ga_params=self._config.ga_params)(fix_schedule_part, initial_schedule)
+
+        self._validate(self._wf, self._estimator, schedule)
+        print("GA makespan: " + str(Utility.makespan(schedule)))
+        return schedule
+
+    # the func return the makespan of ga's schedule
+    def __call__(self):
+        heft_schedule = self.do_run_heft()
+        ga_schedule = self.do_run_ga(initial_schedule=heft_schedule)
+        return Utility.makespan(ga_schedule)
+
+    def _validate(self, _wf, estimator, schedule):
+        sched = deepcopy(schedule)
+        mark_finished(sched)
+        Utility.validate_static_schedule(_wf, schedule)
+        pass
+
+
+def run_exp(config):
+    runner = ParametrizedGaRunner(config)
+    ga_makespan = runner()
+    return ga_makespan
 
 
 if __name__ == '__main__':
 
-    ideal_flops = 1
+    if len(sys.argv) != 2:
+        raise Exception("Path to config or folder with config is not found")
 
-    _wf = wf("Montage_25")
-    # rm = ExperimentResourceManager(rg.r([0.5, 0.75, 1.25, 1.5]))
-    rm = ExperimentResourceManager(rg.r([1.2, 1.2, 1.2, 1.0, 1.0, 1.0, 0.8, 0.8, 0.8]))
-    # estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
-    #                                     ideal_flops=ideal_flops, transfer_time=100)
-    estimator = ExperimentEstimator(ideal_flops=ideal_flops, transfer_nodes=100, transfer_blades=100)
+    # example of config is in resources folder: paramgarunner_example.yaml
+    cfg_path = sys.argv[1]
+    if os.path.isdir(cfg_path):
+        configs_to_be_executed = [os.path.join(cfg_path, el) for el in os.listdir(cfg_path)]
+    else:
+        configs_to_be_executed = [cfg_path]
 
-    ## transfer_nodes means now channel bandwidth
-    # MB_100_CHANNEL = 100*1024*1024
-    # MB_100_CHANNEL = 7*1024*1024
-    # estimator = TransferCalcExperimentEstimator(ideal_flops=ideal_flops, transfer_nodes=MB_100_CHANNEL, transfer_blades=100)
+    configs_to_be_executed = [Config.load_from_file(cfg) for cfg in configs_to_be_executed]
+    ga_makespans = list(map_func(run_exp, configs_to_be_executed))
+    print(ga_makespans)
 
-    GA_PARAMS = {
-            "Kbest": 5,
-            "population": 100,
-            "crossover_probability": 0.4, #0.3
-            "replacing_mutation_probability": 0.2, #0.1
-            "sweep_mutation_probability": 0.3, #0.3
-            "generations": 25
-    }
 
-    heft_schedule = do_run_heft()
-    ga_schedule = do_run_ga(initial_schedule=heft_schedule)
