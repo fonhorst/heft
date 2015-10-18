@@ -23,17 +23,21 @@ if scoop.IS_RUNNING:
 else:
     map_func = map
 
-
+CURRENT_CONFIG = None
 class Config(dict):
     @staticmethod
     def load_from_file(path):
+        pathparts = path.split('\\')
+        filename = pathparts[len(pathparts)-1]
+        name = filename.split('.')[0]
         with open(path, "r") as f:
             cfg = yaml.load(f)
 
-        return Config(cfg)
+        return Config(cfg, name)
 
-    def __init__(self, dct):
+    def __init__(self, dct, name):
         super().__init__(dct)
+        self.name = name
         self.ga_params = dct["ga_params"]
         self.wf_name = dct["wf_name"]
 
@@ -103,18 +107,6 @@ class ParametrizedGaRunner:
         pass
 
 
-def run_exp():
-    cfg_path = "E:\\Melnik\\heft\\resources\\config\\1.yaml"
-    if os.path.isdir(cfg_path):
-        configs_to_be_executed = [os.path.join(cfg_path, el) for el in os.listdir(cfg_path)]
-    else:
-        configs_to_be_executed = [cfg_path]
-
-    configs_to_be_executed = [Config.load_from_file(cfg) for cfg in configs_to_be_executed]
-    config = configs_to_be_executed[0]
-    runner = ParametrizedGaRunner(config)
-    ga_makespan = runner()
-    return ga_makespan
 
 
 if __name__ == '__main__':
@@ -123,11 +115,18 @@ if __name__ == '__main__':
     #    raise Exception("Path to config or folder with config is not found")
 
     # example of config is in resources folder: paramgarunner_example.yaml
+    cfg_path = "E:\\Melnik\\heft\\resources\\config"
+    if os.path.isdir(cfg_path):
+        configs_to_be_executed = [os.path.join(cfg_path, el) for el in os.listdir(cfg_path)]
+    else:
+        configs_to_be_executed = [cfg_path]
+
+    configs_to_be_executed = [Config.load_from_file(cfg) for cfg in configs_to_be_executed]
 
     repeat_count = 100
-    result, logbooks = unzip_result(repeat(run_exp, repeat_count))
-    logbook = logbooks_in_data(logbooks)
-    data_to_file("./CyberShake_30_full.txt", 25, logbook)
-    print(result)
-
-
+    for config in configs_to_be_executed:
+        runner = ParametrizedGaRunner(config)
+        result, logbooks = unzip_result(repeat(runner, repeat_count))
+        logbook = logbooks_in_data(logbooks)
+        data_to_file("./"+config.name+".txt", 300, logbook)
+        print(result)

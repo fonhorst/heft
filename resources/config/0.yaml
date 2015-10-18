@@ -1,7 +1,7 @@
 ga_params:
   Kbest: 5
   population: 100
-  init_sched_percent: 0.01
+  init_sched_percent: 0
   crossover_probability: 0.4
   replacing_mutation_probability: 0.2
   sweep_mutation_probability: 0.3
