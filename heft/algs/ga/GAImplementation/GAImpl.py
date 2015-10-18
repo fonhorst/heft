@@ -83,6 +83,7 @@ class GAFactory:
     DEFAULT_REPLACING_MUTATION_PROBABILITY = 0.5
     DEFAULT_SWEEP_MUTATION_PROBABILITY = 0.4
     DEFAULT_GENERATIONS = 100
+    DEFAULT_INIT_SCHED_PERCENT = 0.05
 
     _default_instance = None
 
@@ -104,6 +105,7 @@ class GAFactory:
 
 
         POPSIZE = ga_params.get("population", self.DEFAULT_POPULATION)
+        INIT_SCHED_PERCENT = ga_params.get("init_sched_percent", self.DEFAULT_INIT_SCHED_PERCENT)
         CXPB = ga_params.get('crossover_probability', self.DEFAULT_CROSSOVER_PROBABILITY)
         MUTPB = ga_params.get('replacing_mutation_probability', self.DEFAULT_REPLACING_MUTATION_PROBABILITY)
         NGEN = ga_params.get('generations', self.DEFAULT_GENERATIONS)
@@ -180,7 +182,7 @@ class GAFactory:
                     print("empty_init_solutions")
                     init_solutions = []
                 else:
-                    init_solutions = [creator.Individual(copy.deepcopy(ga_functions.initial_chromosome)) for _ in range(int(POPSIZE*0.9))]
+                    init_solutions = [creator.Individual(copy.deepcopy(ga_functions.initial_chromosome)) for _ in range(int(POPSIZE*INIT_SCHED_PERCENT))]
 
                 pop = initial_population + toolbox.population(n=POPSIZE - len(initial_population) - len(init_solutions)) + init_solutions
 
@@ -200,7 +202,7 @@ class GAFactory:
                 stats = tools.Statistics(key=lambda x: 1/x.fitness.values[0])
                 stats.register("min", numpy.min)
                 stats.register("max", numpy.max)
-                stats.register("avr", numpy.mean)
+                stats.register("avg", numpy.mean)
                 stats.register("std", numpy.std)
 
                 logbook = tools.Logbook()
@@ -295,7 +297,7 @@ class GAFactory:
                     std = abs(sum2 / length - mean**2)**0.5
                     worst = 1/min(fits)
                     best = 1/max(fits)
-                    avr = 1/mean
+                    avg = 1/mean
 
                     data = stats.compile(pop)
                     logbook.record(gen=g, **data)

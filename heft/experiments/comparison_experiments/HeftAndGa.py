@@ -3,6 +3,8 @@ import os
 import sys
 from heft.settings import RESOURCES_PATH
 import yaml
+from heft.algs.common.utilities import unzip_result, logbooks_in_data, data_to_file
+from heft.experiments.cga.utilities.common import repeat
 
 from heft.algs.ga.GAImplementation.GAFunctions2 import mark_finished
 from heft.algs.ga.GAImplementation.GAImpl import GAFactory
@@ -54,10 +56,10 @@ class ParametrizedGaRunner:
 
         self._wf = wf(self._config.wf_name)
         # it's equal 10, 15, 25, 30 when ideal_flops == 1
-        self._rm = ExperimentResourceManager(rg.r([0.5, 0.75, 1.25, 1.5]))
+        self._rm = ExperimentResourceManager(rg.r([10, 15, 25, 30]))
         # estimator = SimpleTimeCostEstimator(comp_time_cost=0, transf_time_cost=0, transferMx=None,
         #                                     ideal_flops=ideal_flops, transfer_time=100)
-        self._estimator = ExperimentEstimator(ideal_flops=1, transfer_nodes=100, transfer_blades=100)
+        self._estimator = ExperimentEstimator(ideal_flops=20, transfer_nodes=100, transfer_blades=100)
         # transfer_nodes means now channel bandwidth
         # MB_100_CHANNEL = 100*1024*1024
         # MB_100_CHANNEL = 7*1024*1024
@@ -86,13 +88,13 @@ class ParametrizedGaRunner:
 
         self._validate(self._wf, self._estimator, schedule)
         print("GA makespan: " + str(Utility.makespan(schedule)))
-        return schedule
+        return schedule, logbook
 
     # the func return the makespan of ga's schedule
     def __call__(self):
         heft_schedule = self.do_run_heft()
-        ga_schedule = self.do_run_ga(initial_schedule=heft_schedule)
-        return Utility.makespan(ga_schedule)
+        ga_schedule, logbook = self.do_run_ga(initial_schedule=heft_schedule)
+        return (Utility.makespan(ga_schedule), logbook)
 
     def _validate(self, _wf, estimator, schedule):
         sched = deepcopy(schedule)
@@ -101,7 +103,15 @@ class ParametrizedGaRunner:
         pass
 
 
-def run_exp(config):
+def run_exp():
+    cfg_path = "E:\\Melnik\\heft\\resources\\config\\1.yaml"
+    if os.path.isdir(cfg_path):
+        configs_to_be_executed = [os.path.join(cfg_path, el) for el in os.listdir(cfg_path)]
+    else:
+        configs_to_be_executed = [cfg_path]
+
+    configs_to_be_executed = [Config.load_from_file(cfg) for cfg in configs_to_be_executed]
+    config = configs_to_be_executed[0]
     runner = ParametrizedGaRunner(config)
     ga_makespan = runner()
     return ga_makespan
@@ -109,18 +119,15 @@ def run_exp(config):
 
 if __name__ == '__main__':
 
-    if len(sys.argv) != 2:
-        raise Exception("Path to config or folder with config is not found")
+    #if len(sys.argv) != 2:
+    #    raise Exception("Path to config or folder with config is not found")
 
     # example of config is in resources folder: paramgarunner_example.yaml
-    cfg_path = sys.argv[1]
-    if os.path.isdir(cfg_path):
-        configs_to_be_executed = [os.path.join(cfg_path, el) for el in os.listdir(cfg_path)]
-    else:
-        configs_to_be_executed = [cfg_path]
 
-    configs_to_be_executed = [Config.load_from_file(cfg) for cfg in configs_to_be_executed]
-    ga_makespans = list(map_func(run_exp, configs_to_be_executed))
-    print(ga_makespans)
+    repeat_count = 100
+    result, logbooks = unzip_result(repeat(run_exp, repeat_count))
+    logbook = logbooks_in_data(logbooks)
+    data_to_file("./CyberShake_30_full.txt", 25, logbook)
+    print(result)
 
 
