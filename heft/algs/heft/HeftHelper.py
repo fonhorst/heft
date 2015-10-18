@@ -20,6 +20,7 @@ class HeftHelper(Scheduler):
             result = set()
             for resource in resources:
                 result.update(resource.nodes)
+            result = list(sorted(result, key=lambda x: x.name))
             return result
 
     @staticmethod
