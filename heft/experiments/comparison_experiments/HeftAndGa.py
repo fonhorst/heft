@@ -43,21 +43,37 @@ class Config(dict):
         return Config(cfg, name)
 
     @staticmethod
-    def gaParamsInvestigationConfigs():
+    def gaParamsInvestigationConfigs(is_test_configs=False):
 
-        base_config = {
-            "ga_params": {
-                "Kbest": 50,
-                "population": 6,
-                CXPB: 0.1,
-                MUTPB: 0.1,
-                SWEEPMUTPB: 0.1,
-                "generations": 100
-            },
-            "wf_name": "Montage_25"
-        }
+        if is_test_configs:
+            base_config = {
+                "ga_params": {
+                    "Kbest": 5,
+                    "population": 6,
+                    CXPB: 0.1,
+                    MUTPB: 0.1,
+                    SWEEPMUTPB: 0.1,
+                    "generations": 5
+                },
+                "wf_name": "Montage_25"
+            }
 
-        param_values = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+            param_values = [0.1, 0.2]
+
+        else:
+            base_config = {
+                "ga_params": {
+                    "Kbest": 5,
+                    "population": 50,
+                    CXPB: 0.1,
+                    MUTPB: 0.1,
+                    SWEEPMUTPB: 0.1,
+                    "generations": 100
+                },
+                "wf_name": "Montage_25"
+            }
+
+            param_values = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
         def buildGaParams(cxpb, mutpb, sweepmutpb):
             config = deepcopy(base_config)
@@ -183,12 +199,25 @@ class ParametrizedGaRunner:
 
 if __name__ == '__main__':
 
-    outFilepath = "D:/wspace/out_{0}_{1}.txt".format(datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
-                                                     uuid.uuid4())
+    if len(sys.argv) > 1:
+        mode = sys.argv[1]
+    else:
+        mode = "normal"
 
-    configSets = Config.gaParamsInvestigationConfigs()
+    if mode == "test":
+        outFilepath = "./test_out_{0}_{1}.txt".format(datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
+                                                         uuid.uuid4())
+        configSets = Config.gaParamsInvestigationConfigs(is_test_configs=True)
 
-    repeat_count = 10
+        repeat_count = 2
+
+    else:
+        outFilepath = "./out_{0}_{1}.txt".format(datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
+                                                         uuid.uuid4())
+        configSets = Config.gaParamsInvestigationConfigs()
+
+        repeat_count = 10
+
     for config in configSets:
         runner = ParametrizedGaRunner(config)
         print("cxpb: {0}, mutpb: {1}, sweepmutpb: {2}".format(config.ga_params[CXPB],
