@@ -1,5 +1,7 @@
 from copy import deepcopy
 from functools import partial
+from statistics import mean
+import uuid
 from deap import tools
 from deap.base import Toolbox
 import numpy
@@ -24,7 +26,7 @@ class GABaseExperiment(AbstractExperiment):
         inst = GABaseExperiment(**kwargs)
         return inst()
 
-    def __init__(self):
+    def __init__(self, ga_params=None):
         wf_name = "Montage_25"
         GA_PARAMS = {
             "kbest": 5,
@@ -36,7 +38,10 @@ class GABaseExperiment(AbstractExperiment):
             "gen_step": 300,
             "is_silent": False
         }
-        self.GA_PARAMS = GA_PARAMS
+        if ga_params is None:
+            self.GA_PARAMS = GA_PARAMS
+        else:
+            self.GA_PARAMS = ga_params
         self.wf_name = wf_name
 
     def __call__(self):
@@ -97,10 +102,56 @@ def fix_schedule(res, heft):
         res.mapping[item] = res.mapping[item].append(heft.mapping[item])
     return res
 
+# if __name__ == "__main__":
+#     exp = GABaseExperiment()
+#     repeat_count = 1
+#     result, logbooks = unzip_result(repeat(exp, repeat_count))
+#     logbook = logbooks_in_data(logbooks)
+#     #data_to_file("./CyberShake_30_full.txt", 300, logbook)
+#     print(result)
+
 if __name__ == "__main__":
-    exp = GABaseExperiment()
-    repeat_count = 1
-    result, logbooks = unzip_result(repeat(exp, repeat_count))
-    logbook = logbooks_in_data(logbooks)
-    #data_to_file("./CyberShake_30_full.txt", 300, logbook)
-    print(result)
+
+    outFilepath = "D:/wspace/out_{0}.txt".format(uuid.uuid4())
+
+    base_ga_params = {
+            "kbest": 5,
+            "n": 5,
+            "cxpb": 0.3,  # 0.8
+            "mutpb": 0.9,  # 0.5
+            "sweepmutpb": 0.3,  # 0.4
+            "gen_curr": 0,
+            "gen_step": 5,
+            "is_silent": False
+    }
+
+    param_values = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    params_names = ["cxpb", "mutpb", "sweepmutpb"]
+
+    def buildGaParams(cxpb, mutpb, sweepmutpb):
+        ga_params = deepcopy(base_ga_params)
+        ga_params["cxpb"] = cxpb
+        ga_params["mutpb"] = mutpb
+        ga_params["sweepmutpb"] = sweepmutpb
+        return ga_params
+
+
+    gaParamsSets = [buildGaParams(cxpb, mutpb, sweepmutpb) for cxpb in param_values
+                for mutpb in param_values
+                for sweepmutpb in param_values]
+
+    for ga_params in gaParamsSets:
+        exp = GABaseExperiment(ga_params)
+        print("cxpb: {0}, mutpb: {1}, sweepmutpb: {2}".format(ga_params["cxpb"],
+                                                              ga_params["mutpb"],
+                                                              ga_params["sweepmutpb"]))
+        repeat_count = 1
+        makespans, logbooks = unzip_result(repeat(exp, repeat_count))
+        out_line = "{0}\t{1}\t{2}\t{3}".format(ga_params["cxpb"],
+                                               ga_params["mutpb"],
+                                               ga_params["sweepmutpb"],
+                                               mean(makespans))
+        with open(outFilepath,"a") as out:
+            out.writelines([out_line])
+
+        print(makespans)
