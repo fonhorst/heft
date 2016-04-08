@@ -1,18 +1,22 @@
+from copy import deepcopy
 from functools import partial
+import scoop
+import sys
+import heft
 
 from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_old_ga
 from heft.experiments.comparison_experiments.gaheft_series.experiments import do_gaheft_exp
 from heft.experiments.comparison_experiments.gaheft_series.utilities import changing_reliability_run, test_run
+from settings import TEMP_PATH
 
+if scoop.IS_RUNNING:
+    from scoop import futures
+    map_func = futures.map
+else:
+    map_func = map
+    heft.experiments.cga.utilities.common.USE_SCOOP = False
 
 EXPERIMENT_NAME = "gaheft_for_ga"
-REPEAT_COUNT = 100
-# WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
-WF_NAMES = ["Montage_25"]
-# RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
-RELIABILITY = [0.95]
-INDIVIDUALS_COUNTS = [5]
-# INDIVIDUALS_COUNTS = [60, 105, 150]
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
@@ -20,12 +24,12 @@ BASE_PARAMS = {
     "alg_name": "ga",
     "alg_params": {
         "kbest": 5,
-        "n": 10,
+        "n": 50,
         "cxpb": 0.3,  # 0.8
         "mutpb": 0.1,  # 0.5
         "sweepmutpb": 0.3,  # 0.4
         "gen_curr": 0,
-        "gen_step": 300,
+        "gen_step": 200,
         "is_silent": True
     },
     "executor_params": {
@@ -51,5 +55,33 @@ BASE_PARAMS = {
 ga_exp = partial(do_gaheft_exp, alg_builder=create_old_ga)
 
 if __name__ == "__main__":
-    # test_run(ga_exp, BASE_PARAMS)
-    changing_reliability_run(ga_exp, RELIABILITY, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS, is_debug=True)
+
+    if len(sys.argv) > 1:
+        mode = sys.argv[1]
+    else:
+        mode = "normal"
+
+    if mode == 'test':
+        REPEAT_COUNT = 1
+        WF_NAMES = ["Montage_25"]
+        RELIABILITY = [0.9]
+        INDIVIDUALS_COUNTS = [6]
+        exp_params = deepcopy(BASE_PARAMS)
+        exp_params["alg_params"]["n"] = 6
+        exp_params["alg_params"]["gen_step"] = 5
+    else:
+        REPEAT_COUNT = 25
+        WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+        RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+        INDIVIDUALS_COUNTS = [50]
+        exp_params = BASE_PARAMS
+
+    # profile_test_run(pso_exp, BASE_PARAMS)
+    # test_run(pso_exp, BASE_PARAMS)
+    changing_reliability_run(ga_exp,
+                             RELIABILITY,
+                             INDIVIDUALS_COUNTS,
+                             REPEAT_COUNT,
+                             WF_NAMES,
+                             exp_params,
+                             path_to_save=TEMP_PATH + "/new_gaheft_ga")
