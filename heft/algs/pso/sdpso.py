@@ -8,6 +8,7 @@ Velocity => {(task_name, node_name): probability}
 from copy import deepcopy
 import random
 import math
+import deap
 
 from heft.algs.SimpleRandomizedHeuristic import SimpleRandomizedHeuristic
 from heft.algs.common.individuals import FitAdapter
@@ -48,11 +49,6 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
     n = len(pop) if pop is not None else params["n"]
     best = params.get('best', None)
 
-    hallOfFame = []
-    hallOfFameSize = int(math.log(n))
-    if hallOfFameSize == 0:
-        print("need more particles")
-
     if pop is None:
         pop = toolbox.population(n)
 
@@ -64,15 +60,11 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
         best = deepcopy(p)
 
     for g in range(gen_curr, gen_curr + gen_step, 1):
-        #print("g: {0}".format(g))
         for p in pop:
             if not hasattr(p, "fitness") or not p.fitness.valid:
                 p.fitness = toolbox.fitness(p)
             if not p.best or p.best.fitness < p.fitness:
                 p.best = deepcopy(p)
-
-            # if not best or (len(hallOfFame) > 0 and hallOfFame[hallOfFameSize-1].fitness < p.fitness):
-            #     hallOfFame = changeHall(hallOfFame, p, hallOfFameSize)
 
             if not best or best.fitness < p.fitness:
                 best = deepcopy(p)
@@ -86,12 +78,6 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
             for p in pop:
                 del p.fitness
         pass
-
-    
-
-
-    # hallOfFame.sort(key=lambda p:p.fitness, reverse=True)
-    # best = hallOfFame[0]
 
     return pop, logbook, best
 
