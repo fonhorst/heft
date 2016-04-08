@@ -167,7 +167,8 @@ def do_gaheft_exp_for_cga(saver, alg_builder, wf_name, **params):
 
 def do_inherited_pop_exp(saver, alg_builder, chromosome_cleaner_builder, wf_name, **params):
     _wf = wf(wf_name)
-    rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
+    rm = ExperimentResourceManager(rg.generate_resources([r if isinstance(r, (list, tuple, dict)) else [r]
+                                                          for r in params["resource_set"]["nodes_conf"]]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
     chromosome_cleaner = chromosome_cleaner_builder(_wf, rm, estimator)
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
@@ -225,19 +226,20 @@ def do_inherited_pop_exp(saver, alg_builder, chromosome_cleaner_builder, wf_name
 
 
 def do_triple_island_exp(saver, alg_builder, chromosome_cleaner_builder, schedule_to_chromosome_converter_builder, wf_name, **params):
+
+    print("EXPERIMENT RUN START===========================")
+
     _wf = wf(wf_name)
-    rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
+    rm = ExperimentResourceManager(rg.generate_resources([r if isinstance(r, (list, tuple, dict)) else [r]
+                                                          for r in params["resource_set"]["nodes_conf"]]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
     chromosome_cleaner = chromosome_cleaner_builder(_wf, rm, estimator)
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
 
-
     mpga = alg_builder(_wf, rm, estimator,
-                          params["init_sched_percent"],
-                          log_book=None, stats=None,
-                          alg_params=params["alg_params"])
-
-
+                       params["init_sched_percent"],
+                       log_book=None, stats=None,
+                       alg_params=params["alg_params"])
 
     machine = MIGaHeftExecutor(heft_planner=dynamic_heft,
                                wf=_wf,
@@ -251,7 +253,6 @@ def do_triple_island_exp(saver, alg_builder, chromosome_cleaner_builder, schedul
     machine.init()
     machine.run()
     resulted_schedule = machine.current_schedule
-
 
     Utility.validate_dynamic_schedule(_wf, resulted_schedule)
 
@@ -269,6 +270,8 @@ def do_triple_island_exp(saver, alg_builder, chromosome_cleaner_builder, schedul
 
     if saver is not None:
         saver(data)
+
+    print("EXPERIMENT RUN END=========================")
 
     return data
 
