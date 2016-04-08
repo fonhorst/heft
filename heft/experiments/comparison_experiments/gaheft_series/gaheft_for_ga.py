@@ -25,9 +25,9 @@ BASE_PARAMS = {
     "alg_params": {
         "kbest": 5,
         "n": 50,
-        "cxpb": 0.3,  # 0.8
-        "mutpb": 0.1,  # 0.5
-        "sweepmutpb": 0.3,  # 0.4
+        "cxpb": 0.8,  # 0.8
+        "mutpb": 0.6,  # 0.5
+        "sweepmutpb": 0.5,  # 0.4
         "gen_curr": 0,
         "gen_step": 200,
         "is_silent": True
