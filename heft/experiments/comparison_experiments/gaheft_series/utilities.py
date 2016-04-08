@@ -11,7 +11,7 @@ from heft.algs.ga.GAImplementation.GAFunctions2 import unmoveable_tasks, GAFunct
 from heft.algs.pso.ordering_operators import numseq_to_ordering
 from heft.core.environment.BaseElements import Node
 from heft.core.environment.Utility import wf
-from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat
+from heft.experiments.cga.utilities.common import UniqueNameSaver, multi_repeat, SingleFileSaver
 from heft.settings import TEMP_PATH
 from heft.algs.gsa.ordering_mapping_operators import CompoundParticle as GsaCompoundParticle
 
@@ -144,7 +144,7 @@ def test_run(exp, base_params):
 def changing_reliability_run(exp, reliability, individuals_counts, repeat_count, wf_names, base_params, is_debug=False):
 
     path = os.path.join(TEMP_PATH, "gaheft_series")
-    saver = UniqueNameSaver(path, base_params["experiment_name"])
+    saver = SingleFileSaver(path, base_params["experiment_name"])
 
     configs = []
     for r in reliability:
@@ -158,24 +158,11 @@ def changing_reliability_run(exp, reliability, individuals_counts, repeat_count,
     to_run = [partial(exp, saver=saver, wf_name=wf_name, **params) for wf_name in wf_names for params in configs]
     to_run = randomize_order(to_run)
 
-
-    # i = 0
-    # results = []
-    # for _ in range(repeat_count):
-    #     for t in to_run:
-    #         print("//////////////////////RUN NUMBER {0}=================".format(i))
-    #         i += 1
-    #         results.append(t())
-
     if is_debug:
         results = [t() for t in to_run for _ in range(repeat_count)]
     else:
         results = multi_repeat(repeat_count, to_run)
 
-    # path = save_path if save_path is not None else os.path.join(TEMP_PATH, "gaheft_series")
-    # saver = UniqueNameSaver(path, base_params["experiment_name"])
-    # for result in results:
-    #     saver(result)
     pass
 
 

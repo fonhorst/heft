@@ -4,6 +4,7 @@ import os
 import uuid
 
 ## TODO: make a blocking wrapper
+import datetime
 from deap import tools
 import distance
 import math
@@ -13,6 +14,7 @@ from heft.algs.ga.coevolution.cga import rounddeciter
 from heft.algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
 
 USE_SCOOP = True
+
 
 class UniqueNameSaver:
     @staticmethod
@@ -38,6 +40,29 @@ class UniqueNameSaver:
         return self._directory
 
     directory = property(get_directory)
+    pass
+
+
+class SingleFileSaver:
+    def __init__(self, directory, file_prefix=""):
+        self._filename = "./{0}_out_{1}_{2}.txt".format(file_prefix, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
+                                                         uuid.uuid4())
+        self._path = os.path.join(directory, self._filename)
+        self._directory = directory
+        pass
+
+    def __call__(self, data):
+        if not os.path.exists(self._directory):
+            os.makedirs(self._directory)
+
+        line = json.dumps(data) + '\n'
+        with open(self._path, "a") as f:
+            f.write(line)
+        return self._filename
+
+    def get_directory(self):
+        return self._directory
+
     pass
 
 
