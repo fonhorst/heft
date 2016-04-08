@@ -8,6 +8,7 @@ import heft
 from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_pfpso
 from heft.experiments.comparison_experiments.gaheft_series.experiments import do_gaheft_exp
 from heft.experiments.comparison_experiments.gaheft_series.utilities import test_run, changing_reliability_run
+from settings import RESOURCES_PATH, TEMP_PATH
 
 if scoop.IS_RUNNING:
     from scoop import futures
@@ -87,4 +88,4 @@ if __name__ == "__main__":
                              REPEAT_COUNT,
                              WF_NAMES,
                              exp_params,
-                             path_to_save="D:/exp_runs")
+                             path_to_save=TEMP_PATH + "/new_gaheft_pso")
