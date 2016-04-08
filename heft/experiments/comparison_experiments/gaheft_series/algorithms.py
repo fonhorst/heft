@@ -120,12 +120,14 @@ def create_pfpso(wf, rm, estimator,
                  alg_params=None):
     def alg(fixed_schedule_part, initial_schedule, current_time=0.0, initial_population=None):
 
-
-        generate_ = partial(generate, wf=wf, rm=rm, estimator=estimator,
-                            fixed_schedule_part=fixed_schedule_part, current_time=current_time,
+        generate_ = partial(generate,
+                            wf=wf, rm=rm, estimator=estimator,
+                            fixed_schedule_part=fixed_schedule_part,
+                            current_time=current_time,
                             base_generate=pso_generate,
                             init_sched_percent=init_sched_percent,
-                            initial_schedule=initial_schedule, initial_population=initial_population)
+                            initial_schedule=initial_schedule,
+                            initial_population=initial_population)
 
         task_map = {task.id: task for task in wf.get_all_unique_tasks()}
         node_map = {node.name: node for node in rm.get_nodes()}

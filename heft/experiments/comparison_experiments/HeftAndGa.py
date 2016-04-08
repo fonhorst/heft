@@ -6,6 +6,7 @@ import datetime
 import uuid
 from heft.settings import RESOURCES_PATH
 import yaml
+import heft
 from heft.algs.common.utilities import unzip_result, logbooks_in_data, data_to_file
 from heft.experiments.cga.utilities.common import repeat
 
@@ -25,6 +26,7 @@ if scoop.IS_RUNNING:
     map_func = futures.map
 else:
     map_func = map
+    heft.experiments.cga.utilities.common.USE_SCOOP = False
 
 CXPB = "crossover_probability"
 MUTPB = "replacing_mutation_probability"

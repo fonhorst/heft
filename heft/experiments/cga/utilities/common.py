@@ -12,6 +12,7 @@ from heft.algs.common.individuals import ListBasedIndividual
 from heft.algs.ga.coevolution.cga import rounddeciter
 from heft.algs.ga.coevolution.operators import MAPPING_SPECIE, ORDERING_SPECIE
 
+USE_SCOOP = True
 
 class UniqueNameSaver:
     @staticmethod
@@ -112,9 +113,12 @@ class ComparableMixin(object):
 
 
 def multi_repeat(n, funcs):
-    fs = [futures.submit(func) for func in funcs for _ in range(n)]
-    futures.wait(fs)
-    return [f.result() for f in fs]
+    if USE_SCOOP:
+        fs = [futures.submit(func) for func in funcs for _ in range(n)]
+        futures.wait(fs)
+        return [f.result() for f in fs]
+    else:
+        return [func() for func in funcs for _ in range(n)]
 
 def repeat(func, n):
     return multi_repeat(n, [func])
