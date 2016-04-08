@@ -225,10 +225,6 @@ class Workflow:
         if all(p_id in finished_tasks for p_id in p_ids):
             return True
 
-        print("task_id: {0}".format(task_id))
-        print("p_ids: {0}".format(p_ids))
-        print("finished_tasks: {0}".format(finished_tasks))
-
         return False
 
 

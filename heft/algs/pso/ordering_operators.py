@@ -51,7 +51,6 @@ def numseq_to_ordering(wf, ordering_particle, fixed_tasks_ids=[]):
         correct_ordering = [] + fixed_tasks_ids
 
         while len(left_ordering) > 0:
-            print("---NEW_ITERATION---")
 
             length_before = len(correct_ordering)
 
