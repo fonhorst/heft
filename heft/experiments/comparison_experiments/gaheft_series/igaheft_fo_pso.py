@@ -8,6 +8,7 @@ from heft.experiments.comparison_experiments.gaheft_series.algorithms import cre
     create_pso_cleaner
 from heft.experiments.comparison_experiments.gaheft_series.experiments import do_inherited_pop_exp
 from heft.experiments.comparison_experiments.gaheft_series.utilities import inherited_pop_run
+from settings import TEMP_PATH
 
 if scoop.IS_RUNNING:
     from scoop import futures
@@ -85,4 +86,5 @@ if __name__ == "__main__":
     inherited_pop_run(pso_exp,
                       WF_TASKIDS_MAPPING,
                       REPEAT_COUNT,
-                      exp_params)
+                      exp_params,
+                      path_to_save=TEMP_PATH + "/new_igaheft_pso")

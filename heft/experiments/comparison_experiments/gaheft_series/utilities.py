@@ -213,10 +213,14 @@ def changing_tasks_run(exp, individuals_counts, repeat_count, wf_names, base_par
     pass
 
 
-def inherited_pop_run(exp, wf_tasksids_mapping, repeat_count, base_params, is_debug=False):
+def inherited_pop_run(exp, wf_tasksids_mapping, repeat_count, base_params, path_to_save=None):
 
-    path = os.path.join(TEMP_PATH, "igaheft_series")
-    saver = UniqueNameSaver(path, base_params["experiment_name"])
+    if path_to_save is None:
+        path = os.path.join(TEMP_PATH, "gaheft_series")
+    else:
+        path = path_to_save
+
+    saver = saver = SingleFileSaver(path, base_params["experiment_name"])
 
     to_run = []
     for wf_name, ids in wf_tasksids_mapping.items():
@@ -228,15 +232,8 @@ def inherited_pop_run(exp, wf_tasksids_mapping, repeat_count, base_params, is_de
 
     to_run = randomize_order(to_run)
 
-    if is_debug:
-        results = [t() for t in to_run for _ in range(repeat_count)]
-    else:
-        results = multi_repeat(repeat_count, to_run)
+    results = multi_repeat(repeat_count, to_run)
 
-    # path = save_path if save_path is not None else os.path.join(TEMP_PATH, "igaheft_series")
-    # saver = UniqueNameSaver(path, base_params["experiment_name"])
-    # for result in results:
-    #     saver(result)
     pass
 
 
