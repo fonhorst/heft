@@ -29,6 +29,17 @@ class GaHeftOldPopExecutor(FailOnce, InheritedGaHeftExecutor):
 
         pass
 
+    def init(self):
+        super().init()
+
+        self.executor_stat_data = {
+            "event": "Init(not-an-event)",
+            "random_init_logbook": None,
+            "inherited_init_logbook": None
+
+        }
+
+
     def _task_start_handler(self, event):
 
         res = self._check_event_for_ga_result(event)
@@ -144,7 +155,3 @@ class GaHeftOldPopExecutor(FailOnce, InheritedGaHeftExecutor):
         else:
             raise Exception("Unhandled event: {0}".format(event))
         pass
-
-
-
-    pass

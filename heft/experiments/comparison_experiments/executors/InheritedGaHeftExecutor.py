@@ -52,7 +52,7 @@ class InheritedGaHeftExecutor(GaHeftExecutor):
 
     ## TODO: merge with GAOldPopExecutor
     def _clean_chromosome(self, chromosome, event, current_cleaned_schedule):
-        print("Current event {0}".format(event))
+        #print("Current event {0}".format(event))
         if isinstance(event, NodeFailed):
             return self.chromosome_cleaner(chromosome, current_cleaned_schedule)
         elif isinstance(event, NodeUp):

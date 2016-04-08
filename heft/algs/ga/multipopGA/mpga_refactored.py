@@ -36,13 +36,14 @@ def run_mpga(toolbox, logbook, stats, gen_curr=0, gen_step=1, invalidate_fitness
         if gen_step == 0:
             return populations
         new_populations = {}
+        best = None
         for name, p in populations.items():
             pop, _, bst = toolbox.run_alg(logbook=None, stats=None, initial_pop=p, gen_curr=gen_curr, gen_step=gen_step)
             new_populations[name] = pop
             best = acquire_best(bst)
 
         toolbox.migration(new_populations, migrCount)
-        gather_info(logbook, stats, g, merge_populations(populations), need_to_print=is_silent)
+        gather_info(logbook, stats, g, merge_populations(populations), best, need_to_print=is_silent)
         return new_populations
 
 
@@ -64,7 +65,7 @@ def run_mpga(toolbox, logbook, stats, gen_curr=0, gen_step=1, invalidate_fitness
                                          gen_step=gen_after_merge)
 
     best = acquire_best(bst)
-    gather_info(logbook, stats, gen_before_merge + gen_after_merge, merge_populations(populations), need_to_print=is_silent)
+    gather_info(logbook, stats, gen_before_merge + gen_after_merge, merge_populations(populations), best, need_to_print=is_silent)
 
     return pop, logbook, best
 

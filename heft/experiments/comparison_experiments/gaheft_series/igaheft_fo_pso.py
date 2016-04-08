@@ -1,28 +1,31 @@
+from copy import deepcopy
 from functools import partial
+import sys
+import scoop
+import heft
 
 from heft.experiments.comparison_experiments.gaheft_series.algorithms import create_pfpso, \
     create_pso_cleaner
 from heft.experiments.comparison_experiments.gaheft_series.experiments import do_inherited_pop_exp
 from heft.experiments.comparison_experiments.gaheft_series.utilities import inherited_pop_run
 
+if scoop.IS_RUNNING:
+    from scoop import futures
+    map_func = futures.map
+else:
+    map_func = map
+    heft.experiments.cga.utilities.common.USE_SCOOP = False
 
 EXPERIMENT_NAME = "igaheft_for_pso"
-REPEAT_COUNT = 50
-WF_TASKIDS_MAPPING = {
-    "Montage_75": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
-                    "ID00050_000", "ID00070_000"]
-}
-
-
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
-    "init_sched_percent": 0.00,
+    "init_sched_percent": 0.05,
     "alg_name": "pso",
     "alg_params": {
-        "w": 0.1,
-        "c1": 0.6,
-        "c2": 0.2,
+        "w": 0.6,
+        "c1": 1.4,
+        "c2": 1.2,
         "n": 50,
         "gen_curr": 0,
         "gen_step": 300,
@@ -52,5 +55,34 @@ pso_exp = partial(do_inherited_pop_exp, alg_builder=create_pfpso, chromosome_cle
 # profile_test_run = profile_decorator(test_run)
 
 if __name__ == "__main__":
-    inherited_pop_run(pso_exp, WF_TASKIDS_MAPPING, REPEAT_COUNT, BASE_PARAMS)
-    # test_run(pso_exp, BASE_PARAMS)
+
+    if len(sys.argv) > 1:
+        mode = sys.argv[1]
+    else:
+        mode = "normal"
+
+    if mode == 'test':
+        REPEAT_COUNT = 1
+        WF_TASKIDS_MAPPING = {
+            "Montage_75": ["ID00020_000"]
+        }
+        exp_params = deepcopy(BASE_PARAMS)
+        exp_params["alg_params"]["n"] = 6
+        exp_params["alg_params"]["gen_step"] = 5
+    else:
+        REPEAT_COUNT = 25
+        WF_TASKIDS_MAPPING = {
+            "Montage_75": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
+                           "ID00050_000", "ID00070_000"]
+        }
+        exp_params = BASE_PARAMS
+
+    WF_TASKIDS_MAPPING = {
+        "Montage_75": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
+                        "ID00050_000", "ID00070_000"]
+    }
+
+    inherited_pop_run(pso_exp,
+                      WF_TASKIDS_MAPPING,
+                      REPEAT_COUNT,
+                      exp_params)
