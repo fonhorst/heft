@@ -29,7 +29,7 @@ BASE_PARAMS = {
         "c2": 1.2,
         "n": 50,
         "gen_curr": 0,
-        "gen_step": 300,
+        "gen_step": 200,
         "is_silent": True
     },
     "executor_params": {
@@ -71,7 +71,7 @@ if __name__ == "__main__":
         exp_params["alg_params"]["n"] = 6
         exp_params["alg_params"]["gen_step"] = 5
     else:
-        REPEAT_COUNT = 25
+        REPEAT_COUNT = 50
         WF_TASKIDS_MAPPING = {
             "Montage_75": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
                            "ID00050_000", "ID00070_000"]
