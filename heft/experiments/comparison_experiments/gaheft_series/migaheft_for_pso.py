@@ -106,4 +106,4 @@ if __name__ == "__main__":
                              REPEAT_COUNT,
                              WF_NAMES,
                              exp_params,
-                             path_to_save=TEMP_PATH + "/new_gaheft_pso")
+                             path_to_save=TEMP_PATH + "/new_migaheft_pso")
