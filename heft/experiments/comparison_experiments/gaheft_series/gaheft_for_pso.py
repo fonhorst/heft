@@ -87,4 +87,4 @@ if __name__ == "__main__":
                              REPEAT_COUNT,
                              WF_NAMES,
                              exp_params,
-                             is_debug=True)
+                             path_to_save="D:/exp_runs")

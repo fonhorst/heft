@@ -16,8 +16,13 @@ def gather_info(logbook, stats, g, pop, best, need_to_print=True):
     for co-evolution scheme, it is required to record best, instead of min of population
     """
     data = stats.compile(pop) if stats is not None else None
+
+    if data is None:
+        return None
+
     if best is not None:
-        data['best'] = best[1].values[0]
+        data['best'] = best.fitness #best[1].values[0]
+
     if logbook is not None:
         logbook.record(gen=g, evals=len(pop), **data)
         if need_to_print:

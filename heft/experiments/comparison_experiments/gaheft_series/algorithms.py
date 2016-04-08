@@ -136,7 +136,15 @@ def create_pfpso(wf, rm, estimator,
 
         pf_schedule = partial(schedule_builder, current_time=current_time)
 
+
         lb, st = deepcopy(log_book), deepcopy(stats)
+
+        if st is None:
+            st = tools.Statistics(key=lambda x: 1/x.fitness.values[0])
+            st.register("min", numpy.min)
+            st.register("max", numpy.max)
+            st.register("avg", numpy.mean)
+            st.register("std", numpy.std)
 
         pso = create_pso_alg(pf_schedule, generate_, logbook=lb, stats=st, **alg_params)
         pop, logbook, best = pso()

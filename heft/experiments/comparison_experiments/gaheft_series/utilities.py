@@ -141,9 +141,13 @@ def test_run(exp, base_params):
     pass
 
 
-def changing_reliability_run(exp, reliability, individuals_counts, repeat_count, wf_names, base_params, is_debug=False):
+def changing_reliability_run(exp, reliability, individuals_counts, repeat_count, wf_names, base_params, path_to_save=None):
 
-    path = os.path.join(TEMP_PATH, "gaheft_series")
+    if path_to_save is None:
+        path = os.path.join(TEMP_PATH, "gaheft_series")
+    else:
+        path = path_to_save
+
     saver = SingleFileSaver(path, base_params["experiment_name"])
 
     configs = []
@@ -158,10 +162,7 @@ def changing_reliability_run(exp, reliability, individuals_counts, repeat_count,
     to_run = [partial(exp, saver=saver, wf_name=wf_name, **params) for wf_name in wf_names for params in configs]
     to_run = randomize_order(to_run)
 
-    if is_debug:
-        results = [t() for t in to_run for _ in range(repeat_count)]
-    else:
-        results = multi_repeat(repeat_count, to_run)
+    results = multi_repeat(repeat_count, to_run)
 
     pass
 

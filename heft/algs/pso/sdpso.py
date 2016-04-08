@@ -42,34 +42,26 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
     c2
     n
     """
-
-    #print("PSO_STARTED")
-
-    # pso = MappingPSO(w, c1, c2, gen, n, toolbox, stats, logbook)
-    # return pso()
-
     pop = initial_pop
 
     w, c1, c2 = params["w"], params["c1"], params["c2"]
-
     n = len(pop) if pop is not None else params["n"]
-    ## TODO: remove it later
-    #w = w * (500 - gen_curr)/500
-
     best = params.get('best', None)
-
-    #curFile = open("C:\Melnik\Experiments\Work\PSO_compare" + "\\"  +  "SD generations.txt", 'w')
 
     hallOfFame = []
     hallOfFameSize = int(math.log(n))
     if hallOfFameSize == 0:
         print("need more particles")
 
-    bestIndex = 0
-    changeChance = 0.1
-
     if pop is None:
         pop = toolbox.population(n)
+
+    if best is None:
+        for p in pop:
+            p.fitness = toolbox.fitness(p)
+
+        p = max(pop, key=lambda p: p.fitness)
+        best = deepcopy(p)
 
     for g in range(gen_curr, gen_curr + gen_step, 1):
         #print("g: {0}".format(g))
@@ -79,12 +71,15 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
             if not p.best or p.best.fitness < p.fitness:
                 p.best = deepcopy(p)
 
-            if not best or hallOfFame[hallOfFameSize-1].fitness < p.fitness:
-                hallOfFame = changeHall(hallOfFame, p, hallOfFameSize)
-            #if not best or best.fitness < p.fitness:
-             #   best = deepcopy(p)
+            # if not best or (len(hallOfFame) > 0 and hallOfFame[hallOfFameSize-1].fitness < p.fitness):
+            #     hallOfFame = changeHall(hallOfFame, p, hallOfFameSize)
+
+            if not best or best.fitness < p.fitness:
+                best = deepcopy(p)
+
         # Gather all the fitnesses in one list and print the stats
-        gather_info(logbook, stats, g, pop)
+        gather_info(logbook, stats, g, pop, best)
+
         for p in pop:
             toolbox.update(w, c1, c2, p, best, pop)
         if invalidate_fitness and not g == gen_step-1:
@@ -95,8 +90,8 @@ def run_pso(toolbox, logbook, stats, gen_curr, gen_step=1, invalidate_fitness=Tr
     
 
 
-    hallOfFame.sort(key=lambda p:p.fitness, reverse=True)
-    best = hallOfFame[0]
+    # hallOfFame.sort(key=lambda p:p.fitness, reverse=True)
+    # best = hallOfFame[0]
 
     return pop, logbook, best
 
