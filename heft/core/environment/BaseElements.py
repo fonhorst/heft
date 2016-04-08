@@ -207,6 +207,31 @@ class Workflow:
         build(self.head_task)
         self._parent_child_dict = {k: set(v) for k, v in self._parent_child_dict.items()}
 
+    def is_task_ready(self, task_id, finished_tasks):
+        """
+        checks if a task with task_id is ready to execute
+        depending on what tasks have been already finished
+        :param task_id:
+        :param finished_tasks:
+        :return:
+        """
+
+        p_ids = [p.id for p in self.byId(task_id).parents]
+
+        # consists of only HEAD - it is ok
+        if self.head_task.id in p_ids:
+            return True
+
+        if all(p_id in finished_tasks for p_id in p_ids):
+            return True
+
+        print("task_id: {0}".format(task_id))
+        print("p_ids: {0}".format(p_ids))
+        print("finished_tasks: {0}".format(finished_tasks))
+
+        return False
+
+
 
 class AbstractWorkflow(Workflow):
     def copy(self):

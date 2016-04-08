@@ -35,20 +35,50 @@ def ordering_to_numseq(ordering, min=-1, max=1):
 
 
 def numseq_to_ordering(wf, ordering_particle, fixed_tasks_ids=[]):
-    def recover_ordering(ordering):
-        corrected_ordering = []
 
-        while len(ordering) > 0:
-            ord_iter = iter(ordering)
-            while True:
-                t, v = next(ord_iter)
-                if Utility.is_enough_to_be_executed(wf, t, corrected_ordering + fixed_tasks_ids):
-                    ordering.remove((t, v))
-                    corrected_ordering.append(t)
-                    break
-                pass
-            pass
+    def recover_ordering(ordering):
+        """
+        this function is aimed to recover ordering
+        taking into account parent-child relations
+        :param ordering:
+        :return:
+        """
+
+        # 1. for each taks you should verify can it be executed
+        # regarding to parents have already been put to correct sequence
+
+        left_ordering = [task_id for task_id, value in ordering]
+        correct_ordering = [] + fixed_tasks_ids
+
+        while len(left_ordering) > 0:
+            print("---NEW_ITERATION---")
+
+            length_before = len(correct_ordering)
+
+            not_ready_to_execute = []
+            for task_id in left_ordering:
+                if wf.is_task_ready(task_id, correct_ordering):
+                    correct_ordering.append(task_id)
+                else:
+                    not_ready_to_execute.append(task_id)
+            left_ordering = not_ready_to_execute
+
+            length_after = len(correct_ordering)
+
+            assert length_before < length_after, 'there is no new task recovered for correct ordering. ' \
+                                                 'length_before: {0}, length_after: {1}'.format(length_before, length_after) + ' ' \
+                                                 'probably, error in the logic.'
+
+        corrected_ordering = correct_ordering[len(fixed_tasks_ids):]
         return corrected_ordering
+
+
+
+
+
+
+
+
 
     ordering = sorted(ordering_particle.entity.items(), key=lambda x: x[1])
 
