@@ -74,7 +74,7 @@ if __name__ == "__main__":
         exp_params["alg_params"]["n"] = 6
         exp_params["alg_params"]["gen_step"] = 5
     else:
-        REPEAT_COUNT = 50
+        REPEAT_COUNT = 25
         WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
         RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
         INDIVIDUALS_COUNTS = [50]
