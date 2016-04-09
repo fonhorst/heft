@@ -2,6 +2,7 @@ from itertools import groupby
 import json
 import os
 from statistics import mean
+from matplotlib import pyplot
 
 
 def json_files(directory):
@@ -23,9 +24,10 @@ def combine_results(paths):
         "experiment_name": {
             "alg_name": {
                 "wf_name": {
-                    "reliability_value": "value",
-                    "mean_value": "value",
-                    "values_set": [("fail_count", "value")]
+                    "reliability_value": {
+                        "mean_value": "value",
+                        "values_set": [("fail_count", "value")]
+                    }
                 }
             }
         }
@@ -56,7 +58,7 @@ def combine_results(paths):
 
         return {
             "mean": mean_makespan,
-            #"values": values_array,
+            # "values": values_array,
         }
 
     experiments = (record for path in paths for record in extract_data(path))
@@ -78,14 +80,80 @@ def combine_results(paths):
     return experiments
 
 
-if __name__ == "__main__":
+def visualize(experiments, directory_to_save=None):
+    """
+    takes a dict which is in format
+    described for combine_results
+    and draws combined picture
+    :param experiments:
+    :return: nothing
+    """
 
-    output_path = "D:/exp_runs/experiments.txt"
+    wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+    reliability = ["0.9", "0.925", "0.95", "0.975", "0.99"]
 
-    json_paths = json_files("D:/exp_runs/all")
+    if not os.path.exists(directory_to_save):
+        os.makedirs(directory_to_save)
+
+    def common_settings():
+        pyplot.grid(True)
+        ax = pyplot.gca()
+        ax.set_xlim(0, len(reliability))
+        ax.set_xscale('linear')
+        pyplot.xticks(range(0, len(reliability)))
+        ax.set_xticklabels(reliability)
+        ax.set_ylabel("profit, %", fontsize=45)
+        ax.set_xlabel("reliability", fontsize=45)
+        pyplot.tick_params(axis='both', which='major', labelsize=32)
+        pyplot.tick_params(axis='both', which='minor', labelsize=32)
+        pass
+
+    for i, wf_name in enumerate(wf_names):
+
+        pyplot.figure(i, figsize=(18, 12))
+        common_settings()
+
+        heft_line = experiments["gaheft_for_heft"]["heft"][wf_name]
+        ga_line = experiments["gaheft_for_ga"]["ga"][wf_name]
+        pso_line = experiments["gaheft_for_pso"]["pso"][wf_name]
+
+        heft_line = [heft_line[rel]["mean"] for rel in reliability]
+        ga_line = [ga_line[rel]["mean"] for rel in reliability]
+        pso_line = [pso_line[rel]["mean"] for rel in reliability]
+
+        ga_line = [((heft_value/ga_value) - 1)*100 for ga_value, heft_value in zip(ga_line, heft_line)]
+        pso_line = [((heft_value/pso_value) - 1)*100 for pso_value, heft_value in zip(pso_line, heft_line)]
+
+        pyplot.plot(ga_line, "-gD", linewidth=4.0, markersize=10)
+        pyplot.plot(pso_line, "-yD", linewidth=4.0, markersize=10)
+
+        pyplot.savefig(os.path.join(directory_to_save, str(wf_name) + ".png"),
+                       label="recalculation",
+                       dpi=96.0,
+                       format="png")
+
+    pass
+
+
+def extract_and_save(input_path, output_path):
+    json_paths = json_files(input_path)
     results = combine_results(json_paths)
 
     with open(output_path, "w") as file:
         json.dump(results, file)
+    pass
+
+if __name__ == "__main__":
+
+    # output_path = "D:/exp_runs/experiments.txt"
+    # input_path = "D:/exp_runs/all"
+    # extract_and_save(input_path, output_path)
+
+    experiments_path = "D:/exp_runs/experiments_ga_pso_mipso_heft.txt"
+    picture_path = "D:/exp_runs/pictures"
+    with open(experiments_path, "r") as file:
+        experiments = json.load(file)
+
+    visualize(experiments, picture_path)
 
     pass
