@@ -1,18 +1,24 @@
-from functools import partial
+import scoop
+
+import heft
 from heft.algs.heft.DSimpleHeft import DynamicHeft
 from heft.core.CommonComponents.ExperimentalManagers import ExperimentResourceManager
 from heft.core.environment.Utility import wf, Utility
 from heft.experiments.cga.mobjective.utility import SimpleTimeCostEstimator
-from heft.core.environment.ResourceGenerator import ResourceGenerator as rg
+from heft.core.environment.BladeResourceGenrator import ResourceGenerator as rg
 from heft.experiments.comparison_experiments.executors.GaHeftExecutor import GaHeftExecutor
-from heft.experiments.comparison_experiments.executors.HeftExecutor import HeftExecutor
 from heft.experiments.comparison_experiments.gaheft_series.utilities import changing_reliability_run, test_run
+from settings import TEMP_PATH
+
+if scoop.IS_RUNNING:
+    from scoop import futures
+    map_func = futures.map
+else:
+    map_func = map
+    heft.experiments.cga.utilities.common.USE_SCOOP = False
 
 EXPERIMENT_NAME = "gaheft_for_heft"
-REPEAT_COUNT = 100
-WF_NAMES = ["Montage_75"]
-RELIABILITY = [0.9]
-INDIVIDUALS_COUNTS = [50]
+
 
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
@@ -37,14 +43,17 @@ BASE_PARAMS = {
     }
 }
 
+
 def heft_exp(saver, wf_name, **params):
     _wf = wf(wf_name)
-    rm = ExperimentResourceManager(rg.r(params["resource_set"]["nodes_conf"]))
+
+    resources = params["resource_set"]["nodes_conf"]
+
+    rm = ExperimentResourceManager(rg.generate_resources([r if isinstance(r, (list, tuple, dict)) else [r]
+                                                          for r in resources]))
     estimator = SimpleTimeCostEstimator(**params["estimator_settings"])
 
     dynamic_heft = DynamicHeft(_wf, rm, estimator)
-    # heft_machine = HeftExecutor(rm, heft_planner=dynamic_heft,
-    #                             **params["executor_params"])
 
     heft_machine = GaHeftExecutor(heft_planner=dynamic_heft,
                                   wf=_wf,
@@ -65,8 +74,6 @@ def heft_exp(saver, wf_name, **params):
         "params": params,
         "result": {
             "makespan": Utility.makespan(resulted_schedule),
-            ## TODO: this function should be remade to adapt under conditions of dynamic env
-            #"overall_transfer_time": Utility.overall_transfer_time(resulted_schedule, _wf, estimator),
             "overall_execution_time": Utility.overall_execution_time(resulted_schedule),
             "overall_failed_tasks_count": Utility.overall_failed_tasks_count(resulted_schedule)
         }
@@ -78,5 +85,16 @@ def heft_exp(saver, wf_name, **params):
     return data
 
 if __name__ == "__main__":
-    # test_run(heft_exp, BASE_PARAMS)
-    changing_reliability_run(heft_exp, RELIABILITY, INDIVIDUALS_COUNTS, REPEAT_COUNT, WF_NAMES, BASE_PARAMS, is_debug=True)
+
+    REPEAT_COUNT = 2
+    WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+    RELIABILITY = [0.99, 0.975, 0.95, 0.925, 0.9]
+    INDIVIDUALS_COUNTS = [50]
+
+    changing_reliability_run(heft_exp,
+                             RELIABILITY,
+                             INDIVIDUALS_COUNTS,
+                             REPEAT_COUNT,
+                             WF_NAMES,
+                             BASE_PARAMS,
+                             path_to_save=TEMP_PATH + "/new_gaheft_heft")
