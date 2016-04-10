@@ -65,7 +65,7 @@ if __name__ == "__main__":
     if mode == 'test':
         REPEAT_COUNT = 1
         WF_TASKIDS_MAPPING = {
-            "Montage_75": ["ID00020_000"]
+            "Montage_75": ["ID00020_000_Montage_75"]
         }
         exp_params = deepcopy(BASE_PARAMS)
         exp_params["alg_params"]["n"] = 6
@@ -73,15 +73,10 @@ if __name__ == "__main__":
     else:
         REPEAT_COUNT = 50
         WF_TASKIDS_MAPPING = {
-            "Montage_75": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
-                           "ID00050_000", "ID00070_000"]
+            "Montage_75": ["ID00000_000_Montage_75", "ID00010_000_Montage_75", "ID00020_000_Montage_75", "ID00040_000_Montage_75",
+                            "ID00050_000_Montage_75", "ID00070_000_Montage_75"]
         }
         exp_params = BASE_PARAMS
-
-    WF_TASKIDS_MAPPING = {
-        "Montage_75": ["ID00000_000", "ID00010_000", "ID00020_000", "ID00040_000",
-                        "ID00050_000", "ID00070_000"]
-    }
 
     inherited_pop_run(pso_exp,
                       WF_TASKIDS_MAPPING,

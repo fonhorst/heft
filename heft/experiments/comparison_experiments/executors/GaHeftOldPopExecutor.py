@@ -101,6 +101,8 @@ class GaHeftOldPopExecutor(FailOnce, InheritedGaHeftExecutor):
 
         ((best_op, pop_op, schedule_op, stopped_iteration_op), logbook_op) = result
 
+        print("I_M HERE")
+
         self.past_pop = pop_op
 
         ## save logbook data

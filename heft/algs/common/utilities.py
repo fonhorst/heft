@@ -21,7 +21,8 @@ def gather_info(logbook, stats, g, pop, best, need_to_print=True):
         return None
 
     if best is not None:
-        data['best'] = best.fitness #best[1].values[0]
+        # TODO: very bad practice. remake it.
+        data['best'] = best.fitness.values[0] # best[1].values[0]
 
     if logbook is not None:
         logbook.record(gen=g, evals=len(pop), **data)
