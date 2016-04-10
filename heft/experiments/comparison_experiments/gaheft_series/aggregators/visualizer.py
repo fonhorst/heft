@@ -135,6 +135,68 @@ def visualize(experiments, directory_to_save=None):
     pass
 
 
+def visualize_migaheft(experiments, directory_to_save=None):
+    """
+    takes a dict which is in format
+    described for combine_results
+    and draws combined picture
+    :param experiments:
+    :return: nothing
+    """
+
+    wf_names = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+
+    if not os.path.exists(directory_to_save):
+        os.makedirs(directory_to_save)
+
+    def common_settings():
+        pyplot.grid(True)
+        ax = pyplot.gca()
+        ax.set_xlim(0, len(wf_names))
+        ax.set_xscale('linear')
+        pyplot.xticks(range(0, len(wf_names)))
+        ax.set_xticklabels(wf_names)
+        ax.set_ylabel("profit, %", fontsize=45)
+        ax.set_xlabel("Workflow", fontsize=45)
+        pyplot.tick_params(axis='both', which='major', labelsize=32)
+        pyplot.tick_params(axis='both', which='minor', labelsize=32)
+        pass
+
+    miga = []
+    mipso = []
+
+    for i, wf_name in enumerate(wf_names):
+
+        pyplot.figure(i, figsize=(18, 12))
+        common_settings()
+
+        # ga_line = experiments["gaheft_for_ga"]["ga"][wf_name]
+        # pso_line = experiments["gaheft_for_pso"]["pso"][wf_name]
+
+        heft_line = experiments["gaheft_for_heft"]["heft"][wf_name]
+
+        ga_line = heft_line
+        pso_line = heft_line
+
+        miga_line = experiments["migaheft_for_ga"]["ga"][wf_name]
+        mipso_line = experiments["migaheft_for_pso"]["pso"][wf_name]
+
+        miga_value = (ga_line["0.95"]["mean"] / miga_line["0.95"]["mean"] - 1) * 100
+        mipso_value = (pso_line["0.95"]["mean"] / mipso_line["0.95"]["mean"] - 1) * 100
+
+        miga.append(miga_value)
+        mipso.append(mipso_value)
+
+    pyplot.plot(miga, "-gD", linewidth=4.0, markersize=10)
+    pyplot.plot(mipso, "-yD", linewidth=4.0, markersize=10)
+
+    pyplot.savefig(os.path.join(directory_to_save, "migaheft.png"),
+                   label="recalculation",
+                   dpi=96.0,
+                   format="png")
+    pass
+
+
 def extract_and_save(input_path, output_path):
     json_paths = json_files(input_path)
     results = combine_results(json_paths)
@@ -145,15 +207,19 @@ def extract_and_save(input_path, output_path):
 
 if __name__ == "__main__":
 
-    # output_path = "D:/exp_runs/experiments.txt"
-    # input_path = "D:/exp_runs/all"
+    base_path = "D:/exp_runs/full"
+
+    # input_path = os.path.join(base_path, "exps")
+    # output_path = os.path.join(base_path, "experiments.txt")
     # extract_and_save(input_path, output_path)
 
-    experiments_path = "D:/exp_runs/experiments_ga_pso_mipso_heft.txt"
-    picture_path = "D:/exp_runs/pictures"
+    experiments_path = os.path.join(base_path, "experiments.txt")
+    picture_path = os.path.join(base_path, "pictures")
     with open(experiments_path, "r") as file:
         experiments = json.load(file)
 
-    visualize(experiments, picture_path)
+    # visualize(experiments, picture_path)
+
+    visualize_migaheft(experiments, picture_path)
 
     pass
