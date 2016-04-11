@@ -22,7 +22,7 @@ EXPERIMENT_NAME = "igaheft_for_ga"
 BASE_PARAMS = {
     "experiment_name": EXPERIMENT_NAME,
     "init_sched_percent": 0.05,
-    "alg_name": "pso",
+    "alg_name": "ga",
     "alg_params": {
         "kbest": 5,
         "n": 50,

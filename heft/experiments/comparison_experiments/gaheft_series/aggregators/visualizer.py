@@ -50,6 +50,8 @@ def combine_results(paths):
 
     def by_reliability(record): return record["params"]["estimator_settings"]["reliability"]
 
+    def by_failed_task_id(record): return record["params"]["executor_params"]["task_id_to_fail"]
+
     def extract_results(record_iter):
         values_array = [(record["result"]["makespan"],
                          record["result"]["overall_failed_tasks_count"])for record in record_iter]
@@ -61,6 +63,28 @@ def combine_results(paths):
             # "values": values_array,
         }
 
+    def extract_igaheft_iters(record_iter):
+
+        record_iter = list(record_iter)
+
+        random_pop_values = [[iter["min"] for iter in record["result"]["random_init_logbook"]]
+                             for record in record_iter
+                             if record["result"]["random_init_logbook"] is not None]
+        inherited_pop_values = [[iter["min"] for iter in record["result"]["inherited_init_logbook"]]
+                                for record in record_iter
+                                if record["result"]["inherited_init_logbook"] is not None]
+
+        iter_count = len(random_pop_values[0])
+
+        mean_random_pop_values = [mean(exp[i] for exp in random_pop_values) for i in range(iter_count)]
+        mean_inherited_pop_values = [mean(exp[i] for exp in inherited_pop_values) for i in range(iter_count)]
+
+        return {
+            "random_iter_mean": mean_random_pop_values,
+            "inherited_iter_mean": mean_inherited_pop_values
+        }
+
+
     experiments = (record for path in paths for record in extract_data(path))
 
     experiments = {
@@ -69,6 +93,10 @@ def combine_results(paths):
                 wf_name: {
                     reliability: extract_results(g3)
                     for reliability, g3 in groupby(sorted(g2, key=by_reliability), by_reliability)
+                } if not exp_name.startswith("igaheft") else {
+                    failed_task_id: extract_igaheft_iters(g3)
+                    for failed_task_id, g3 in groupby(sorted(g2, key=by_failed_task_id), by_failed_task_id)
+                    if failed_task_id.endswith(wf_name)
                 }
                 for wf_name, g2 in groupby(sorted(g1, key=by_wf_name), by_wf_name)
             }
@@ -124,6 +152,13 @@ def visualize(experiments, directory_to_save=None):
         ga_line = [((heft_value/ga_value) - 1)*100 for ga_value, heft_value in zip(ga_line, heft_line)]
         pso_line = [((heft_value/pso_value) - 1)*100 for pso_value, heft_value in zip(pso_line, heft_line)]
 
+        print("WF_NAME: {0}".format(wf_name))
+        print("GA")
+        print(str(ga_line))
+        print("pso")
+        print(str(pso_line))
+
+
         pyplot.plot(ga_line, "-gD", linewidth=4.0, markersize=10)
         pyplot.plot(pso_line, "-yD", linewidth=4.0, markersize=10)
 
@@ -169,9 +204,7 @@ def visualize_migaheft(experiments, directory_to_save=None):
 
         pyplot.figure(i, figsize=(18, 12))
         common_settings()
-
-        # ga_line = experiments["gaheft_for_ga"]["ga"][wf_name]
-        # pso_line = experiments["gaheft_for_pso"]["pso"][wf_name]
+        common_settings()
 
         heft_line = experiments["gaheft_for_heft"]["heft"][wf_name]
 
@@ -187,6 +220,12 @@ def visualize_migaheft(experiments, directory_to_save=None):
         miga.append(miga_value)
         mipso.append(mipso_value)
 
+    print("GA")
+    print(str(miga))
+
+    print("PSO")
+    print(str(mipso))
+
     pyplot.plot(miga, "-gD", linewidth=4.0, markersize=10)
     pyplot.plot(mipso, "-yD", linewidth=4.0, markersize=10)
 
@@ -195,6 +234,66 @@ def visualize_migaheft(experiments, directory_to_save=None):
                    dpi=96.0,
                    format="png")
     pass
+
+
+def visualize_igaheft(experiments, directory_to_save=None):
+    """
+    takes a dict which is in format
+    described for combine_results
+    and draws combined picture
+    :param experiments:
+    :return: nothing
+    """
+
+    failed_task_ids = ["ID00000_000_Montage_75", "ID00010_000_Montage_75", "ID00020_000_Montage_75",
+                       "ID00040_000_Montage_75", "ID00050_000_Montage_75", "ID00070_000_Montage_75"]
+
+    if not os.path.exists(directory_to_save):
+        os.makedirs(directory_to_save)
+
+    iter_count = 200
+    iters = [0, 25, 50, 75, 100, 125, 150, 175, 199]
+
+    def common_settings():
+        pyplot.grid(True)
+        ax = pyplot.gca()
+        ax.set_xlim(0, len(iters))
+        ax.set_xscale('linear')
+        pyplot.xticks(range(0, len(iters)))
+        ax.set_xticklabels(iters)
+        ax.set_ylabel("profit, %", fontsize=45)
+        ax.set_xlabel("reliability", fontsize=45)
+        pyplot.tick_params(axis='both', which='major', labelsize=32)
+        pyplot.tick_params(axis='both', which='minor', labelsize=32)
+        pass
+
+    for i, failed_task_id in enumerate(failed_task_ids):
+
+        pyplot.figure(i, figsize=(18, 12))
+        common_settings()
+
+        random_ga_line = experiments["igaheft_for_ga"]["pso"]["Montage_75"][failed_task_id]["random_iter_mean"]
+        inherited_ga_line = experiments["igaheft_for_ga"]["pso"]["Montage_75"][failed_task_id]["inherited_iter_mean"]
+        random_pso_line = experiments["igaheft_for_pso"]["pso"]["Montage_75"][failed_task_id]["random_iter_mean"]
+        inherited_pso_line = experiments["igaheft_for_pso"]["pso"]["Montage_75"][failed_task_id]["inherited_iter_mean"]
+
+        ga_line = [((rand_val/inh_val) - 1)*100 for inh_val, rand_val in zip(inherited_ga_line, random_ga_line)]
+        pso_line = [((rand_val/inh_val) - 1)*100 for inh_val, rand_val in zip(inherited_pso_line, random_pso_line)]
+
+        ga_line = [ga_line[it] for it in iters]
+        pso_line = [pso_line[it] for it in iters]
+
+        pyplot.plot(ga_line, "-gD", linewidth=4.0, markersize=10)
+        pyplot.plot(pso_line, "-yD", linewidth=4.0, markersize=10)
+
+        pyplot.savefig(os.path.join(directory_to_save, str(failed_task_id) + ".png"),
+                       label="recalculation",
+                       dpi=96.0,
+                       format="png")
+
+    pass
+
+
 
 
 def extract_and_save(input_path, output_path):
@@ -220,6 +319,8 @@ if __name__ == "__main__":
 
     # visualize(experiments, picture_path)
 
-    visualize_migaheft(experiments, picture_path)
+    # visualize_migaheft(experiments, picture_path)
+
+    visualize_igaheft(experiments, picture_path)
 
     pass

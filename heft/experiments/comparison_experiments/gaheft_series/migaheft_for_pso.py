@@ -95,7 +95,7 @@ if __name__ == "__main__":
         exp_params["alg_params"]["generations_count_after_merge"] = 5
     else:
         REPEAT_COUNT = 50
-        WF_NAMES = ["Montage_25", "Montage_40", "Montage_50", "Montage_75"]
+        WF_NAMES = ["Montage_25"]#, "Montage_40", "Montage_50", "Montage_75"]
         RELIABILITY = [0.95]
         INDIVIDUALS_COUNTS = [20, 35, 50]
         exp_params = BASE_PARAMS
